@@ -27,7 +27,7 @@ Performance regressions discovered after content growth are expensive and threat
 - global_gate: e2e
 
 ### S1 — Set up benchmark harness
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/benchmarks/PCDynasty.Benchmarks/PCDynasty.Benchmarks.csproj`, `game/benchmarks/PCDynasty.Benchmarks/BenchmarkConfig.cs`, `game/benchmarks/PCDynasty.Benchmarks/README.md`
 - **Gate**: type
 - acceptance:

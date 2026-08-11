@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>PCDynasty.Benchmarks</AssemblyName>
+    <RootNamespace>PCDynasty.Benchmarks</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/PCDynasty.Careers/PCDynasty.Careers.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Content/PCDynasty.Content.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Persistence.Sqlite/PCDynasty.Persistence.Sqlite.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.World/PCDynasty.World.csproj" />
+  </ItemGroup>
+</Project>
