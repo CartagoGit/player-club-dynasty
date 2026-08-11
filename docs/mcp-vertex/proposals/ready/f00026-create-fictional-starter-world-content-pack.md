@@ -42,7 +42,7 @@ The vertical slices need legal, reproducible content without depending on unlice
   - "Data validates through the public import contract and contains no protected identities."
 
 ### S3 — Add content import integration scenario
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/tests/PCDynasty.Content.Integration.Tests/StarterWorldImportTests.cs`, `game/tests/PCDynasty.Content.Integration.Tests/Fixtures/StarterWorldExpected.json`
 - **Gate**: e2e
