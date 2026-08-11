@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Competition/PCDynasty.Competition.csproj" />
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../PCDynasty.Knowledge/PCDynasty.Knowledge.csproj" />
   </ItemGroup>

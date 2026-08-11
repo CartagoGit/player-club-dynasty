@@ -2,7 +2,7 @@
 id: f00007
 title: "Create the first football competition vertical slice"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: football
 date: 2026-08-11
@@ -42,7 +42,7 @@ This is the smallest proof that rules, standings and transitions can support a r
   - "Thousands of generated seasons preserve participant and outcome invariants."
 
 ### S3 — Expose season result read models
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Competitions/SeasonTableQuery.cs`, `game/src/PCDynasty.Application/Competitions/SeasonTableView.cs`, `game/tests/PCDynasty.Application.Tests/SeasonTableQueryTests.cs`
 - **Gate**: type
