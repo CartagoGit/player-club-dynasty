@@ -2,7 +2,7 @@
 id: f00002
 title: "Define sport packs and TestSport safeguards"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: core
 date: 2026-08-11
@@ -43,7 +43,7 @@ The core extensibility invariant needs an executable guard before FootballPack g
   - "A one-versus-one sport loads without clubs, positions, goals or bench."
 
 ### S3 — Add core independence guard
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/tests/PCDynasty.Architecture.Tests/PCDynasty.Architecture.Tests.csproj`, `game/tests/PCDynasty.Architecture.Tests/CoreDependencyTests.cs`
 - **Gate**: type
