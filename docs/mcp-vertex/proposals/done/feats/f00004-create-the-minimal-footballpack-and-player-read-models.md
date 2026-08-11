@@ -2,7 +2,7 @@
 id: f00004
 title: "Create the minimal FootballPack and player read models"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: football
 date: 2026-08-11
@@ -42,7 +42,7 @@ Football must prove the pack boundary without defining football concepts in Core
   - "Positions describe familiarity and relevance, never structural attribute ownership."
 
 ### S3 — Produce player summary read models
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Players/PlayerSummaryQuery.cs`, `game/src/PCDynasty.Application/Players/PlayerSummaryView.cs`, `game/tests/PCDynasty.Application.Tests/PCDynasty.Application.Tests.csproj`, `game/tests/PCDynasty.Application.Tests/PlayerSummaryQueryTests.cs`
 - **Gate**: type

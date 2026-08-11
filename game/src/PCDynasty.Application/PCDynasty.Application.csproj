@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Application</AssemblyName>
+    <RootNamespace>PCDynasty.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
+    <ProjectReference Include="../PCDynasty.Knowledge/PCDynasty.Knowledge.csproj" />
+  </ItemGroup>
+</Project>
