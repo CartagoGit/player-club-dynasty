@@ -34,7 +34,7 @@ The vertical slices need legal, reproducible content without depending on unlice
   - "Content declares license, version, dependencies and fictional origin."
 
 ### S2 — Add fictional people and competition data
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/content/starter-world/data/people.json`, `game/content/starter-world/data/competitions.json`, `game/content/starter-world/data/rules.json`
 - **Gate**: none

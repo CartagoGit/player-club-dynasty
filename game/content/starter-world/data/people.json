@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "entities": [
+    {
+      "externalId": "person:alven-roake",
+      "kindId": "person",
+      "values": { "display-name": "Alven Roake", "birth-year": "2001", "occupation": "player", "technique": "62", "form": "58", "physical": "66", "mental": "61" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:aurora-quay", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:brina-sorel",
+      "kindId": "person",
+      "values": { "display-name": "Brina Sorel", "birth-year": "1998", "occupation": "player", "technique": "67", "form": "63", "physical": "59", "mental": "70" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:maris-cobalt", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:cael-dorven",
+      "kindId": "person",
+      "values": { "display-name": "Cael Dorven", "birth-year": "1996", "occupation": "manager", "reputation": "53" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:cinder-valley", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:dema-ivren",
+      "kindId": "person",
+      "values": { "display-name": "Dema Ivren", "birth-year": "2003", "occupation": "player", "technique": "57", "form": "61", "physical": "72", "mental": "55" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:cinder-valley", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:elira-morn",
+      "kindId": "person",
+      "values": { "display-name": "Elira Morn", "birth-year": "1987", "occupation": "manager", "reputation": "60" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:northglass-rovers", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:fen-avelar",
+      "kindId": "person",
+      "values": { "display-name": "Fen Avelar", "birth-year": "2000", "occupation": "player", "technique": "69", "form": "66", "physical": "60", "mental": "64" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:solspire-azul", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:garen-tyl",
+      "kindId": "person",
+      "values": { "display-name": "Garen Tyl", "birth-year": "1999", "occupation": "player", "technique": "60", "form": "56", "physical": "68", "mental": "65" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:forge-lantern", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:halia-vesk",
+      "kindId": "person",
+      "values": { "display-name": "Halia Vesk", "birth-year": "1984", "occupation": "manager", "reputation": "58" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:forge-lantern", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:iven-ralco",
+      "kindId": "person",
+      "values": { "display-name": "Iven Ralco", "birth-year": "2002", "occupation": "player", "technique": "64", "form": "60", "physical": "63", "mental": "62" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:maris-cobalt", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:jora-kelm",
+      "kindId": "person",
+      "values": { "display-name": "Jora Kelm", "birth-year": "1997", "occupation": "player", "technique": "58", "form": "64", "physical": "70", "mental": "59" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:northglass-rovers", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:kessa-virel",
+      "kindId": "person",
+      "values": { "display-name": "Kessa Virel", "birth-year": "1991", "occupation": "manager", "reputation": "55" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:maris-cobalt", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:loren-maive",
+      "kindId": "person",
+      "values": { "display-name": "Loren Maive", "birth-year": "2004", "occupation": "player", "technique": "61", "form": "55", "physical": "65", "mental": "57" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:aurora-quay", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:maela-dorn",
+      "kindId": "person",
+      "values": { "display-name": "Maela Dorn", "birth-year": "1989", "occupation": "manager", "reputation": "57" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:aurora-quay", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:neris-calvo",
+      "kindId": "person",
+      "values": { "display-name": "Neris Calvo", "birth-year": "1995", "occupation": "manager", "reputation": "62" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:solspire-azul", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:oren-luma",
+      "kindId": "person",
+      "values": { "display-name": "Oren Luma", "birth-year": "2001", "occupation": "player", "technique": "70", "form": "62", "physical": "58", "mental": "67" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:solspire-azul", "required": true },
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:pavel-norr",
+      "kindId": "person",
+      "values": { "display-name": "Pavel Norr", "birth-year": "2000", "occupation": "player", "technique": "63", "form": "59", "physical": "71", "mental": "60" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:northglass-rovers", "required": true },
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:quira-senn",
+      "kindId": "person",
+      "values": { "display-name": "Quira Senn", "birth-year": "2002", "occupation": "player", "technique": "65", "form": "57", "physical": "64", "mental": "66" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:forge-lantern", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    },
+    {
+      "externalId": "person:rovan-tess",
+      "kindId": "person",
+      "values": { "display-name": "Rovan Tess", "birth-year": "1986", "occupation": "manager", "reputation": "52" },
+      "references": [
+        { "relationId": "club", "targetExternalId": "club:cinder-valley", "required": true },
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true }
+      ]
+    }
+  ]
+}
