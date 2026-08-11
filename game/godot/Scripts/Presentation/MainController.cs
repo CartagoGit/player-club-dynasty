@@ -34,9 +34,12 @@ public partial class MainController : Control
     private string _selectedSection = "resumen";
     private string? _selectedClubId;
 
+    private static MainController? _current;
+
     public override void _Ready()
     {
         _service = WorldService.Instance;
+        _current = this;
         if (_service is null)
         {
             GD.PushError("[MainController] WorldService was not initialized before _Ready.");
@@ -823,6 +826,10 @@ AppendMatchAndPersist(new HistoryEntry(
 
     // ----- Historial ------------------------------------------------------
 
+    private static string _historyCompetitionFilter = "(todas)";
+    private static string _historyClubFilter = "(todos)";
+    private static string _historyOrder = "fecha";
+
     private static void RenderHistory(Control root)
     {
         var layout = new VBoxContainer();
@@ -832,7 +839,6 @@ AppendMatchAndPersist(new HistoryEntry(
         var competitions = entries.Select(e => e.CompetitionDisplayName).Distinct(StringComparer.Ordinal).OrderBy(c => c, StringComparer.Ordinal).ToArray();
         var clubs = WorldService.Instance?.ListClubs().ToArray() ?? Array.Empty<ClubRow>();
 
-        // Aggregate panel: total matches, goals, distinct competitions.
         var totalGoals = entries.Sum(e => e.HomeGoals + e.AwayGoals);
         var header = new Label
         {
@@ -865,11 +871,20 @@ AppendMatchAndPersist(new HistoryEntry(
             layout.AddChild(new HSeparator());
 
             var filtered = FilterHistoryEntries(entries);
-            var ordered = OrderHistoryEntries(filtered, "fecha");
+            var ordered = OrderHistoryEntries(filtered, _historyOrder);
 
+            int shown = 0;
             foreach (var entry in ordered)
             {
                 layout.AddChild(BuildHistoryRow(entry));
+                shown++;
+            }
+
+            if (shown == 0)
+            {
+                var note = new Label { Text = "(sin partidos que con los filtros actuales)" };
+                note.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+                layout.AddChild(note);
             }
         }
 
@@ -881,15 +896,88 @@ AppendMatchAndPersist(new HistoryEntry(
         var row = new HBoxContainer();
         row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
 
-        AddColumnHeader(row, "RESUMEN POR CLUB", 1100);
-        layout_add_filter(row, "Competiciones: " + (competitions.Length == 0 ? "—" : string.Join(", ", competitions)), 600);
-        layout_add_filter(row, $"Clubs: {clubs.Length}", 200);
-        return row;
-    }
+        // Competition filter.
+        var compLabel = new Label { Text = "Competición:" };
+        compLabel.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+        compLabel.AddThemeFontSizeOverride("font_size", 12);
+        row.AddChild(compLabel);
 
-    private static void layout_add_filter(HBoxContainer row, string text, int width)
-    {
-        AddColumnValue(row, text, width, ManagerDesignTokens.TextSecondary);
+        var compButton = new OptionButton();
+        compButton.AddItem("(todas)", 0);
+        for (int i = 0; i < competitions.Length; i++)
+        {
+            compButton.AddItem(competitions[i], i + 1);
+        }
+        compButton.Selected = Array.IndexOf(competitions, _historyCompetitionFilter) switch
+        {
+            -1 => 0,
+            int idx => idx + 1,
+        };
+        compButton.ItemSelected += (long idx) =>
+        {
+            _historyCompetitionFilter = compButton.GetItemText((int)idx);
+            _current?.RenderCurrent();
+        };
+        row.AddChild(compButton);
+
+        // Club filter.
+        var clubLabel = new Label { Text = "Club:" };
+        clubLabel.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+        clubLabel.AddThemeFontSizeOverride("font_size", 12);
+        row.AddChild(clubLabel);
+
+        var clubButton = new OptionButton();
+        clubButton.AddItem("(todos)", 0);
+        for (int i = 0; i < clubs.Length; i++)
+        {
+            clubButton.AddItem(clubs[i].DisplayName, i + 1);
+        }
+        int clubDefaultIndex = -1;
+        for (int i = 0; i < clubs.Length; i++)
+        {
+            if (clubs[i].DisplayName == _historyClubFilter)
+            {
+                clubDefaultIndex = i;
+                break;
+            }
+        }
+        clubButton.Selected = clubDefaultIndex < 0 ? 0 : clubDefaultIndex + 1;
+        clubButton.ItemSelected += (long idx) =>
+        {
+            _historyClubFilter = clubButton.GetItemText((int)idx);
+            _current?.RenderCurrent();
+        };
+        row.AddChild(clubButton);
+
+        // Order selector.
+        var orderLabel = new Label { Text = "Orden:" };
+        orderLabel.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+        orderLabel.AddThemeFontSizeOverride("font_size", 12);
+        row.AddChild(orderLabel);
+
+        var orderButton = new OptionButton();
+        orderButton.AddItem("Fecha (más reciente)", 0);
+        orderButton.AddItem("Competición", 1);
+        orderButton.AddItem("Goles totales", 2);
+        orderButton.Selected = _historyOrder switch
+        {
+            "competicion" => 1,
+            "goles" => 2,
+            _ => 0,
+        };
+        orderButton.ItemSelected += (long idx) =>
+        {
+            _historyOrder = (int)idx switch
+            {
+                1 => "competicion",
+                2 => "goles",
+                _ => "fecha",
+            };
+            _current?.RenderCurrent();
+        };
+        row.AddChild(orderButton);
+
+        return row;
     }
 
     private static PanelContainer BuildHistoryAggregateByClub(IReadOnlyList<HistoryEntry> entries)
@@ -949,8 +1037,20 @@ AppendMatchAndPersist(new HistoryEntry(
 
     private static IEnumerable<HistoryEntry> FilterHistoryEntries(IReadOnlyList<HistoryEntry> entries)
     {
-        // Phase 1: no filter UI yet, surface every entry. Hook for S20.
-        return entries;
+        IEnumerable<HistoryEntry> query = entries;
+        if (!string.Equals(_historyCompetitionFilter, "(todas)", StringComparison.Ordinal))
+        {
+            query = query.Where(e => string.Equals(e.CompetitionDisplayName, _historyCompetitionFilter, StringComparison.Ordinal));
+        }
+
+        if (!string.Equals(_historyClubFilter, "(todos)", StringComparison.Ordinal))
+        {
+            query = query.Where(e =>
+                string.Equals(e.HomeDisplayName, _historyClubFilter, StringComparison.Ordinal)
+                || string.Equals(e.AwayDisplayName, _historyClubFilter, StringComparison.Ordinal));
+        }
+
+        return query;
     }
 
     private static IEnumerable<HistoryEntry> OrderHistoryEntries(
