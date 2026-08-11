@@ -2,7 +2,7 @@
 id: v00002
 title: "Define quantified gameplay latency budgets"
 kind: perf
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11

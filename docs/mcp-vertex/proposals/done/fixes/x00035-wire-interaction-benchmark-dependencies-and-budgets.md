@@ -2,7 +2,7 @@
 id: x00035
 title: "Wire interaction benchmark dependencies and budgets"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11
