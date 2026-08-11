@@ -27,7 +27,7 @@ The world must evolve at scale while the dedicated fidelity protocol remains the
 - global_gate: e2e
 
 ### S1 — Create compact macro world state
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.World/State/WorldCheckpoint.cs`, `game/src/PCDynasty.World/State/ClubSeasonState.cs`, `game/tests/PCDynasty.World.Tests/WorldCheckpointTests.cs`
 - **Gate**: type
 - acceptance:
