@@ -27,7 +27,7 @@ Team performance cannot be reduced to player averages, and the manager needs und
 - global_gate: type
 
 ### S1 — Define training workload and response
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Simulation/Training/TrainingLoad.cs`, `game/src/PCDynasty.Simulation/Training/TrainingResponse.cs`, `game/tests/PCDynasty.Simulation.Tests/TrainingResponseTests.cs`
 - **Gate**: type
 - acceptance:
