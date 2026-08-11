@@ -27,7 +27,7 @@ Club management must create durable sporting and financial consequences beyond t
 - global_gate: type
 
 ### S1 — Define facilities and maintenance domain
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Club/PCDynasty.Club.csproj`, `game/src/PCDynasty.Club/Facilities/FacilityState.cs`, `game/tests/PCDynasty.Club.Tests/FacilityStateTests.cs`
 - **Gate**: type
 - acceptance:
