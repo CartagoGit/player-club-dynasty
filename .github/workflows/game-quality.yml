@@ -54,7 +54,7 @@ jobs:
       - name: Run all tests and latency gates
         run: >-
           ./scripts/test-all.sh --no-restore --no-build
-          --logger "trx;LogFileName=all-tests.trx"
+          --logger "trx;LogFilePrefix=all-tests"
           --results-directory TestResults/all
 
       - name: Publish test diagnostics
