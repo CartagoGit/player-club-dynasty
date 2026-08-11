@@ -27,7 +27,7 @@ Fast, reproducible match simulation is central to the manager experience and est
 - global_gate: type
 
 ### S1 — Define contest snapshots and event contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Core/Contests/ContestSnapshot.cs`, `game/src/PCDynasty.Core/Contests/ContestEvent.cs`, `game/tests/PCDynasty.Core.Tests/Contests/ContestSnapshotTests.cs`
 - **Gate**: type
 - acceptance:
