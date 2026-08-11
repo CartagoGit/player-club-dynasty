@@ -28,7 +28,7 @@ This is the smallest proof that rules, standings and transitions can support a r
 
 ### S1 — Define football points and season rules
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Football/Competitions/FootballScoringRules.cs`, `game/src/PCDynasty.Football/Competitions/DivisionRuleSet.cs`, `game/tests/PCDynasty.Football.Tests/DivisionRuleSetTests.cs`
+- **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Competitions/FootballScoringRules.cs`, `game/src/PCDynasty.Football/Competitions/DivisionRuleSet.cs`, `game/tests/PCDynasty.Football.Tests/DivisionRuleSetTests.cs`
 - **Gate**: type
 - acceptance:
   - "Football scoring is supplied by the pack and respects rule versions."
@@ -44,7 +44,7 @@ This is the smallest proof that rules, standings and transitions can support a r
 ### S3 — Expose season result read models
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Application/Competitions/SeasonTableQuery.cs`, `game/src/PCDynasty.Application/Competitions/SeasonTableView.cs`, `game/tests/PCDynasty.Application.Tests/SeasonTableQueryTests.cs`
+- **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Competitions/SeasonTableQuery.cs`, `game/src/PCDynasty.Application/Competitions/SeasonTableView.cs`, `game/tests/PCDynasty.Application.Tests/SeasonTableQueryTests.cs`
 - **Gate**: type
 - acceptance:
   - "Presentation receives read models rather than competition entities."
