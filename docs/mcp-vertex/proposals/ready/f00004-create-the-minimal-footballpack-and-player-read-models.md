@@ -28,7 +28,7 @@ Football must prove the pack boundary without defining football concepts in Core
 
 ### S1 — Define football attribute catalogue
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Attributes/FootballAttributeCatalog.cs`, `game/tests/PCDynasty.Football.Tests/FootballAttributeCatalogTests.cs`
+- **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Attributes/FootballAttributeCatalog.cs`, `game/tests/PCDynasty.Football.Tests/PCDynasty.Football.Tests.csproj`, `game/tests/PCDynasty.Football.Tests/FootballAttributeCatalogTests.cs`
 - **Gate**: type
 - acceptance:
   - "All football players have the complete catalogue with compiled IDs."
@@ -44,7 +44,7 @@ Football must prove the pack boundary without defining football concepts in Core
 ### S3 — Produce player summary read models
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Application/Players/PlayerSummaryQuery.cs`, `game/src/PCDynasty.Application/Players/PlayerSummaryView.cs`, `game/tests/PCDynasty.Application.Tests/PlayerSummaryQueryTests.cs`
+- **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Players/PlayerSummaryQuery.cs`, `game/src/PCDynasty.Application/Players/PlayerSummaryView.cs`, `game/tests/PCDynasty.Application.Tests/PCDynasty.Application.Tests.csproj`, `game/tests/PCDynasty.Application.Tests/PlayerSummaryQueryTests.cs`
 - **Gate**: type
 - acceptance:
   - "The view explains indicators and confidence without leaking Godot types."
