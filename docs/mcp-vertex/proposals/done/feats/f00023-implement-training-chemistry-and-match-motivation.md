@@ -2,7 +2,7 @@
 id: f00023
 title: "Implement training chemistry and match motivation"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: simulation
 date: 2026-08-11
@@ -41,7 +41,7 @@ Team performance cannot be reduced to player averages, and the manager needs und
   - "Chemistry has explainable factors and evolves from durable team events."
 
 ### S3 — Implement match context motivation
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Simulation/Motivation/MatchContext.cs`, `game/src/PCDynasty.Simulation/Motivation/MotivationResolver.cs`, `game/tests/PCDynasty.Simulation.Tests/MotivationResolverTests.cs`
 - **Gate**: type
