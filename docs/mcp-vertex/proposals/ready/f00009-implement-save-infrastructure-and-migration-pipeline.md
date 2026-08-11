@@ -34,7 +34,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
   - "Contracts separate snapshots, facts, versions and pack hashes."
 
 ### S2 — Implement local SQLite save adapter
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Persistence.Sqlite/PCDynasty.Persistence.Sqlite.csproj`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldStore.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/PCDynasty.Persistence.Sqlite.Tests.csproj`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteWorldStoreTests.cs`
 - **Gate**: e2e
