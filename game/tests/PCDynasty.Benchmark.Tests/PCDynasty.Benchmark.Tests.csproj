@@ -16,4 +16,11 @@
   <ItemGroup>
     <ProjectReference Include="../../benchmarks/PCDynasty.Benchmarks/PCDynasty.Benchmarks.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../benchmarks/interaction-budgets.json">
+      <Link>Fixtures/interaction-budgets.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

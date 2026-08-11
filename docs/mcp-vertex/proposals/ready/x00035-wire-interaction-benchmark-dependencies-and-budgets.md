@@ -34,7 +34,7 @@ The interaction benchmark slice cannot compile or load its external budget contr
   - "Interaction benchmarks compile against public Application query services."
 
 ### S2 — Copy interaction budget contract to test output
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/tests/PCDynasty.Benchmark.Tests/PCDynasty.Benchmark.Tests.csproj`
 - **Gate**: type
 - acceptance:
