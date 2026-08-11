@@ -27,7 +27,7 @@ Football must prove the pack boundary without defining football concepts in Core
 - global_gate: type
 
 ### S1 — Define football attribute catalogue
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Attributes/FootballAttributeCatalog.cs`, `game/tests/PCDynasty.Football.Tests/PCDynasty.Football.Tests.csproj`, `game/tests/PCDynasty.Football.Tests/FootballAttributeCatalogTests.cs`
 - **Gate**: type
 - acceptance:

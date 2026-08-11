@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Football</AssemblyName>
+    <RootNamespace>PCDynasty.Football</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
+    <ProjectReference Include="../PCDynasty.Packs.Abstractions/PCDynasty.Packs.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
