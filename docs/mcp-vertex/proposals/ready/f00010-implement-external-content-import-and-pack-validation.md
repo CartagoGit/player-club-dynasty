@@ -27,7 +27,7 @@ The game must load community or external databases without leaking external sche
 - global_gate: e2e
 
 ### S1 — Define normalized import contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj`, `game/src/PCDynasty.Content.Abstractions/IContentReader.cs`, `game/src/PCDynasty.Content.Abstractions/NormalizedContentModel.cs`, `game/tests/PCDynasty.Content.Abstractions.Tests/PCDynasty.Content.Abstractions.Tests.csproj`, `game/tests/PCDynasty.Content.Abstractions.Tests/NormalizedContentModelTests.cs`
 - **Gate**: type
 - acceptance:
