@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Football.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Application.Tests", "tests\PCDynasty.Application.Tests\PCDynasty.Application.Tests.csproj", "{6EDC723A-B58B-425B-997A-2B2C5B60679A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Simulation", "src\PCDynasty.Simulation\PCDynasty.Simulation.csproj", "{03F70302-A032-4361-9284-A81AF0EEDB61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Simulation.Tests", "tests\PCDynasty.Simulation.Tests\PCDynasty.Simulation.Tests.csproj", "{C87B5A18-766B-42A6-ACB9-A922C8C40C72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +90,13 @@ Global
 		{6EDC723A-B58B-425B-997A-2B2C5B60679A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EDC723A-B58B-425B-997A-2B2C5B60679A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EDC723A-B58B-425B-997A-2B2C5B60679A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F70302-A032-4361-9284-A81AF0EEDB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F70302-A032-4361-9284-A81AF0EEDB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F70302-A032-4361-9284-A81AF0EEDB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F70302-A032-4361-9284-A81AF0EEDB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C87B5A18-766B-42A6-ACB9-A922C8C40C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C87B5A18-766B-42A6-ACB9-A922C8C40C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C87B5A18-766B-42A6-ACB9-A922C8C40C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C87B5A18-766B-42A6-ACB9-A922C8C40C72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
