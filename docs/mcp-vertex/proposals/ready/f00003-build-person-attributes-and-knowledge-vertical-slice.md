@@ -44,7 +44,7 @@ The first product slice must make player information deep without making the cor
 ### S3 — Implement observation and confidence contracts
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Knowledge/PCDynasty.Knowledge.csproj`, `game/src/PCDynasty.Knowledge/Observations/Observation.cs`, `game/tests/PCDynasty.Knowledge.Tests/ObservationTests.cs`
+- **Files**: `game/src/PCDynasty.Knowledge/PCDynasty.Knowledge.csproj`, `game/src/PCDynasty.Knowledge/Observations/Observation.cs`, `game/tests/PCDynasty.Knowledge.Tests/PCDynasty.Knowledge.Tests.csproj`, `game/tests/PCDynasty.Knowledge.Tests/ObservationTests.cs`
 - **Gate**: type
 - acceptance:
   - "Knowledge has source, date, uncertainty and does not expose hidden truth."
