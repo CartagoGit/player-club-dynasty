@@ -9,16 +9,12 @@
 	"engines": {
 		"bun": ">=1.1.0"
 	},
-	"workspaces": [
-		"plugins/*",
-		"scripts/*"
-	],
 	"scripts": {
 		"mcp-vertex:serve": "bun scripts/dev.script.ts",
 		"mcp-vertex:doctor": "bun scripts/dev.script.ts --doctor",
 		"mcp-vertex:cli": "bun /home/cartago/_projects/mcp-vertex/packages/cli/src/index.ts",
-		"mcp-vertex:overview": "bun /home/cartago/_projects/mcp-vertex/packages/cli/src/index.ts --workspace=. --config=./mcp-vertex.config.json --preset=swarm --plugins=player-club --exclude-plugins=issues,web-fetch,external-mcps overview --json",
-		"mcp-vertex:catalog": "bun /home/cartago/_projects/mcp-vertex/packages/cli/src/index.ts --workspace=. --config=./mcp-vertex.config.json --preset=swarm --plugins=player-club --exclude-plugins=issues,web-fetch,external-mcps catalog --compact",
+		"mcp-vertex:overview": "bun /home/cartago/_projects/mcp-vertex/packages/cli/src/index.ts --workspace=. --config=./mcp-vertex.config.json --preset=swarm --plugins=mcp-vertex_player-club-dynasty --exclude-plugins=issues,web-fetch,external-mcps overview --json",
+		"mcp-vertex:catalog": "bun /home/cartago/_projects/mcp-vertex/packages/cli/src/index.ts --workspace=. --config=./mcp-vertex.config.json --preset=swarm --plugins=mcp-vertex_player-club-dynasty --exclude-plugins=issues,web-fetch,external-mcps catalog --compact",
 		"mcp-vertex:types": "bun /home/cartago/_projects/mcp-vertex/tools/scripts/types/generate-tool-types.script.ts",
 		"mcp-vertex:validate": "bun /home/cartago/_projects/mcp-vertex/tools/scripts/lint/file-conventions.script.ts && bun /home/cartago/_projects/mcp-vertex/tools/scripts/lint/proposals.script.ts && bun /home/cartago/_projects/mcp-vertex/tools/scripts/verify/plugin-tool-verify.script.ts",
 		"mcp-vertex:hints": "bun /home/cartago/_projects/mcp-vertex/tools/scripts/catalog/render-host-hints.script.ts",
@@ -27,10 +23,11 @@
 		"plugin:create": "bun /home/cartago/_projects/mcp-vertex/tools/scripts/create-plugin.ts",
 		"dev": "bun scripts/dev.script.ts",
 		"build": "bun scripts/build.script.ts",
-		"build:plugin": "bun scripts/build-plugin.script.ts",
+		"build:plugin": "bun scripts/build-plugin.script.ts mcp-vertex_player-club-dynasty",
 		"test": "bun test"
 	},
 	"devDependencies": {
+		"@mcp-vertex/core": "link:/home/cartago/_projects/mcp-vertex/packages/core",
 		"@types/bun": "1.3.14",
 		"typescript": "7.0.2",
 		"vitest": "4.1.10"

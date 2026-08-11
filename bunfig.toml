@@ -1,11 +1,11 @@
-# Bun config — links to the local mcp-vertex checkout via bun workspaces
-# Override the link target by setting MCP_VERTEX_ROOT in the environment.
+# Bun config — workspace is a leaf consumer of the local mcp-vertex checkout
+# (not part of its workspace tree). The `link:` protocol in package.json is
+# the supported way to point at the local checkout; bun creates the
+# `node_modules/@mcp-vertex/<pkg>` symlinks itself.
+#
+# Override the link target by setting MCP_VERTEX_ROOT in the environment
+# AND updating the `link:` paths in package.json + plugins/*/package.json
+# (bun does not expand env vars inside `link:` URLs at install time).
 
 [install]
-# Use the local mcp-vertex node_modules wherever possible (saves reinstall time).
 linker = "hoisted"
-
-[install.scopes]
-# Tell bun: "@mcp-vertex/*" packages resolve from /home/cartago/_projects/mcp-vertex
-# When MCP_VERTEX_ROOT is set, that path is used instead.
-"@mcp-vertex" = { path = "${MCP_VERTEX_ROOT:-/home/cartago/_projects/mcp-vertex}/packages" }

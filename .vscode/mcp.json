@@ -8,7 +8,7 @@
 				"--workspace=${workspaceFolder}",
 				"--config=${workspaceFolder}/mcp-vertex.config.json",
 				"--preset=swarm",
-				"--plugins=player-club",
+				"--plugins=mcp-vertex_player-club-dynasty",
 				"--exclude-plugins=issues,web-fetch,external-mcps"
 			]
 		}

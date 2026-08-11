@@ -1347,14 +1347,14 @@ Dominios posibles del FootballPack:
 
 Ejemplo conceptual:
 
-| Profesional | Técnico | Físico | Médico | Mental | Proyección |
-|---|---:|---:|---:|---:|---:|
-| Entrenador | alto | medio | bajo | medio | alto |
-| Preparador | bajo | muy alto | medio | bajo | medio |
-| Médico | bajo | alto | muy alto | bajo | bajo |
-| Psicólogo | bajo | bajo | bajo | muy alto | medio |
-| Analista | alto | medio | bajo | bajo | medio |
-| Scout | alto | medio | medio | medio | muy alto |
+| Profesional | Técnico |   Físico |   Médico |   Mental | Proyección |
+| ----------- | ------: | -------: | -------: | -------: | ---------: |
+| Entrenador  |    alto |    medio |     bajo |    medio |       alto |
+| Preparador  |    bajo | muy alto |    medio |     bajo |      medio |
+| Médico      |    bajo |     alto | muy alto |     bajo |       bajo |
+| Psicólogo   |    bajo |     bajo |     bajo | muy alto |      medio |
+| Analista    |    alto |    medio |     bajo |     bajo |      medio |
+| Scout       |    alto |    medio |    medio |    medio |   muy alto |
 
 ---
 
@@ -3858,3 +3858,7 @@ No buscamos la abstracción más sofisticada posible.
 Buscamos:
 
 > **la abstracción mínima suficientemente potente para construir un gran manager de fútbol hoy y permitir que mañana PC Dynasty pueda convertirse, mediante packs comunitarios, en una plataforma de gestión de otros deportes.**
+
+# !IMPORTANTE
+
+Más información de la conversación que hizo resultante este md en [CONVERSACIÓN INICIAL](./CONVERSATIONS/INIT_CONVERSATION_WITH_GPT-5.6-Sol.md)

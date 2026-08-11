@@ -6,23 +6,21 @@
 		"moduleResolution": "bundler",
 		"moduleDetection": "force",
 		"allowImportingTsExtensions": true,
-		"verbatimModuleSyntax": true,
+		"verbatimModuleSyntax": false,
 		"noEmit": true,
 		"strict": true,
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noPropertyAccessFromIndexSignature": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"types": ["@types/bun"],
+		"baseUrl": ".",
 		"paths": {
-			"@mcp-vertex/core/public": ["/home/cartago/_projects/mcp-vertex/packages/core/src/public/index.ts"],
-			"@mcp-vertex/core": ["/home/cartago/_projects/mcp-vertex/packages/core/src/index.ts"]
+			"@mcp-vertex/core/public": ["node_modules/@mcp-vertex/core/dist/public/index.d.ts"],
+			"@mcp-vertex/core": ["node_modules/@mcp-vertex/core/dist/index.d.ts"]
 		}
 	},
-	"include": ["src/**/*", "plugins/**/*", "scripts/**/*"],
-	"exclude": ["node_modules", "dist", "build", ".cache"]
+	"include": ["src/**/*", "scripts/**/*"],
+	"exclude": ["node_modules", "dist", "build", ".cache", "plugins/**/node_modules"]
 }

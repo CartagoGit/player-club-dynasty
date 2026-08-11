@@ -70,7 +70,8 @@
 		"test-convention": {
 			"options": {}
 		},
-		"player-club": {
+		"mcp-vertex_player-club-dynasty": {
+			"path": "plugins/mcp-vertex_player-club-dynasty/dist/index.js",
 			"options": {
 				"dataDir": "data",
 				"savesDir": "saves"
