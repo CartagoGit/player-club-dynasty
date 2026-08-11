@@ -96,12 +96,12 @@ public sealed class SqliteContentReader : IContentReader
         {
             string externalId = reader.GetString(0);
             if (!entities.TryAdd(externalId, new JsonContentEntity
-                {
-                    ExternalId = externalId,
-                    KindId = reader.GetString(1),
-                    Values = new Dictionary<string, string>(StringComparer.Ordinal),
-                    References = [],
-                }))
+            {
+                ExternalId = externalId,
+                KindId = reader.GetString(1),
+                Values = new Dictionary<string, string>(StringComparer.Ordinal),
+                References = [],
+            }))
             {
                 throw new FormatException($"Entity '{externalId}' appears more than once.");
             }
