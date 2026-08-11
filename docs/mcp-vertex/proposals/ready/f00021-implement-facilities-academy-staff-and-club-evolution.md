@@ -34,7 +34,7 @@ Club management must create durable sporting and financial consequences beyond t
   - "Quality, condition and modernization are distinct with explicit maintenance effects."
 
 ### S2 — Implement academy and youth generation
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Club/Academy/AcademyState.cs`, `game/src/PCDynasty.Club/Academy/YouthGenerator.cs`, `game/tests/PCDynasty.Club.Tests/YouthGeneratorTests.cs`
 - **Gate**: type
