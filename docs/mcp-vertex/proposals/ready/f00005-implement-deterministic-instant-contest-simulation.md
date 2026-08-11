@@ -44,7 +44,7 @@ Fast, reproducible match simulation is central to the manager experience and est
 ### S3 — Add football contest adapter and replay view
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Simulation/FootballContestPack.cs`, `game/src/PCDynasty.Application/Matches/MatchTimelineQuery.cs`, `game/tests/PCDynasty.Football.Tests/FootballContestPackTests.cs`
+- **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Simulation/FootballContestPack.cs`, `game/src/PCDynasty.Application/Matches/MatchTimelineQuery.cs`, `game/tests/PCDynasty.Football.Tests/PCDynasty.Football.Tests.csproj`, `game/tests/PCDynasty.Football.Tests/FootballContestPackTests.cs`
 - **Gate**: type
 - acceptance:
   - "Football mapping stays in the pack and produces a read-only timeline."
