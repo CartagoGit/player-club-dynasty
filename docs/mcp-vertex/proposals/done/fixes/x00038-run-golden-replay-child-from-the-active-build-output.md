@@ -2,7 +2,7 @@
 id: x00038
 title: "Run golden replay child from the active build output"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: quality
 date: 2026-08-11

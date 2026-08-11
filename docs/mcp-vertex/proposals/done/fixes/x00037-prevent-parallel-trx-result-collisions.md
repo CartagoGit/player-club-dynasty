@@ -2,7 +2,7 @@
 id: x00037
 title: "Prevent parallel TRX result collisions"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: quality
 date: 2026-08-11
