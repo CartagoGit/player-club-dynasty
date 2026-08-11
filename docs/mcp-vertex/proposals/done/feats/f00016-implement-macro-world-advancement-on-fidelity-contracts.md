@@ -2,7 +2,7 @@
 id: f00016
 title: "Implement macro world advancement on fidelity contracts"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: world
 date: 2026-08-11
@@ -42,7 +42,7 @@ The world must evolve at scale while the dedicated fidelity protocol remains the
   - "Transitions emit ordered facts through the deterministic simulation protocol."
 
 ### S3 — Materialize from committed macro history
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.World/Materialization/EntityMaterializer.cs`, `game/src/PCDynasty.World/Materialization/MaterializationResult.cs`, `game/tests/PCDynasty.World.Tests/EntityMaterializerTests.cs`
 - **Gate**: e2e

@@ -30,7 +30,7 @@ public sealed class MacroSeasonTransitionTests
                 new WorldDate(2030, 7, 1),
                 new[] { second, first }));
 
-        Assert.Equal(8, ordered.Checkpoint.Sequence);
+        Assert.Equal(900, ordered.Checkpoint.Sequence);
         Assert.Equal(new WorldDate(2030, 7, 1), ordered.Checkpoint.Date);
         Assert.Collection(
             ordered.Facts,

@@ -27,7 +27,7 @@ public static class MacroSeasonScheduler
 
         var checkpoint = new WorldCheckpoint(
             current.SchemaVersion,
-            checked(current.Sequence + 1),
+            transition.WorldTick,
             transition.EffectiveDate,
             transition.NextClubSeasons);
         MacroSeasonFact[] facts = checkpoint.ClubSeasons
