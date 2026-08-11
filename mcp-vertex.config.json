@@ -1,6 +1,6 @@
 {
 	"$schema": "/home/cartago/_projects/mcp-vertex/packages/core/schema/mcp-vertex.config.schema.json",
-	"coreVersion": "workspace",
+	"coreVersion": "latest-published",
 	"keepLegacy": false,
 	"cacheDir": ".cache/mcp-vertex",
 	"docsDir": "docs/mcp-vertex",
@@ -16,7 +16,7 @@
 		},
 		"search": {
 			"options": {
-				"roots": ["src", "plugins", "scripts", "docs"],
+				"roots": ["plugins", "scripts", "docs"],
 				"extensions": ["ts", "tsx", "js", "mjs", "cjs", "md", "json"],
 				"ignoreDirs": ["node_modules", ".cache", "dist", "build", ".git"]
 			}
