@@ -4,7 +4,7 @@ using PCDynasty.Careers.Development;
 namespace PCDynasty.Benchmarks;
 
 [MemoryDiagnoser]
-public sealed class DevelopmentBenchmarks
+public class DevelopmentBenchmarks
 {
     public const int CareerCount = 50_000;
 

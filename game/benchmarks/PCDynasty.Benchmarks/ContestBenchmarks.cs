@@ -5,7 +5,7 @@ using PCDynasty.Simulation.Contests;
 namespace PCDynasty.Benchmarks;
 
 [MemoryDiagnoser]
-public sealed class ContestBenchmarks
+public class ContestBenchmarks
 {
     public const int ContestCount = 32;
 
