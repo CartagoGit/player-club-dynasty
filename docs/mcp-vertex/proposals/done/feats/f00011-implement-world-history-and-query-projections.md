@@ -2,7 +2,7 @@
 id: f00011
 title: "Implement world history and query projections"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: world
 date: 2026-08-11
@@ -42,7 +42,7 @@ Decades of emergent stories need durable, explainable history without retaining 
   - "Queries reconstruct career and competition histories deterministically."
 
 ### S3 — Expose application history queries
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/History/HistoryQuery.cs`, `game/src/PCDynasty.Application/History/HistoryView.cs`, `game/tests/PCDynasty.Application.Tests/HistoryQueryTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
