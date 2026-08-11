@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -51,6 +51,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Persistence.Sqlite.Tests", "tests\PCDynasty.Persistence.Sqlite.Tests\PCDynasty.Persistence.Sqlite.Tests.csproj", "{AA60F1CC-5FB8-42E4-8D0D-6EA4BA53F93E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Persistence.Tests", "tests\PCDynasty.Persistence.Tests\PCDynasty.Persistence.Tests.csproj", "{32022F09-E366-4016-A252-C77EBA928469}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21933A6E-B76F-431B-98DF-B9CC256F96DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content.Abstractions", "src\PCDynasty.Content.Abstractions\PCDynasty.Content.Abstractions.csproj", "{1F3E50C9-7FE0-4345-948B-59CE61B3DED4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content.Importers", "src\PCDynasty.Content.Importers\PCDynasty.Content.Importers.csproj", "{260697C9-17CA-4F9B-90EF-7E64AADD94A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content", "src\PCDynasty.Content\PCDynasty.Content.csproj", "{9034DFC6-6873-458D-B040-11283A75BE30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FE56395D-14B3-4E01-8C18-67206530521D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content.Abstractions.Tests", "tests\PCDynasty.Content.Abstractions.Tests\PCDynasty.Content.Abstractions.Tests.csproj", "{32AF9D07-6B02-48BB-AEA6-F60318D1F345}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content.Importers.Tests", "tests\PCDynasty.Content.Importers.Tests\PCDynasty.Content.Importers.Tests.csproj", "{A4BCD50B-64ED-4AD9-B503-662240B67F29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Content.Tests", "tests\PCDynasty.Content.Tests\PCDynasty.Content.Tests.csproj", "{CB8932CF-60A6-4373-969F-1642F8062E53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,5 +174,37 @@ Global
 		{32022F09-E366-4016-A252-C77EBA928469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32022F09-E366-4016-A252-C77EBA928469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32022F09-E366-4016-A252-C77EBA928469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F3E50C9-7FE0-4345-948B-59CE61B3DED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F3E50C9-7FE0-4345-948B-59CE61B3DED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F3E50C9-7FE0-4345-948B-59CE61B3DED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F3E50C9-7FE0-4345-948B-59CE61B3DED4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260697C9-17CA-4F9B-90EF-7E64AADD94A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260697C9-17CA-4F9B-90EF-7E64AADD94A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260697C9-17CA-4F9B-90EF-7E64AADD94A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260697C9-17CA-4F9B-90EF-7E64AADD94A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9034DFC6-6873-458D-B040-11283A75BE30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9034DFC6-6873-458D-B040-11283A75BE30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9034DFC6-6873-458D-B040-11283A75BE30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9034DFC6-6873-458D-B040-11283A75BE30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AF9D07-6B02-48BB-AEA6-F60318D1F345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AF9D07-6B02-48BB-AEA6-F60318D1F345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AF9D07-6B02-48BB-AEA6-F60318D1F345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AF9D07-6B02-48BB-AEA6-F60318D1F345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4BCD50B-64ED-4AD9-B503-662240B67F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4BCD50B-64ED-4AD9-B503-662240B67F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4BCD50B-64ED-4AD9-B503-662240B67F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4BCD50B-64ED-4AD9-B503-662240B67F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB8932CF-60A6-4373-969F-1642F8062E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB8932CF-60A6-4373-969F-1642F8062E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB8932CF-60A6-4373-969F-1642F8062E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB8932CF-60A6-4373-969F-1642F8062E53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F3E50C9-7FE0-4345-948B-59CE61B3DED4} = {21933A6E-B76F-431B-98DF-B9CC256F96DF}
+		{260697C9-17CA-4F9B-90EF-7E64AADD94A6} = {21933A6E-B76F-431B-98DF-B9CC256F96DF}
+		{9034DFC6-6873-458D-B040-11283A75BE30} = {21933A6E-B76F-431B-98DF-B9CC256F96DF}
+		{32AF9D07-6B02-48BB-AEA6-F60318D1F345} = {FE56395D-14B3-4E01-8C18-67206530521D}
+		{A4BCD50B-64ED-4AD9-B503-662240B67F29} = {FE56395D-14B3-4E01-8C18-67206530521D}
+		{CB8932CF-60A6-4373-969F-1642F8062E53} = {FE56395D-14B3-4E01-8C18-67206530521D}
 	EndGlobalSection
 EndGlobal

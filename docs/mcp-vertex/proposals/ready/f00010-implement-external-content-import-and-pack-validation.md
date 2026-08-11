@@ -42,7 +42,7 @@ The game must load community or external databases without leaking external sche
   - "Equivalent input produces the same normalized model."
 
 ### S3 — Compile and validate packs
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Content/PCDynasty.Content.csproj`, `game/src/PCDynasty.Content/PackCompiler.cs`, `game/src/PCDynasty.Content/PackValidator.cs`, `game/tests/PCDynasty.Content.Tests/PCDynasty.Content.Tests.csproj`, `game/tests/PCDynasty.Content.Tests/PackCompilerTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
