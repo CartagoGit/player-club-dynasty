@@ -2,7 +2,7 @@
 id: f00017
 title: "Build Godot presentation shell and manager design system"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: presentation
 date: 2026-08-11
@@ -42,7 +42,7 @@ The game needs the usability spirit of classic football managers without copying
   - "Defines original colors, typography, spacing, navigation and progressive disclosure patterns."
 
 ### S3 — Build reusable navigation and information components
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/godot/Scripts/Components/SidebarNavigator.cs`, `game/godot/Scripts/Components/MetricCard.cs`, `game/godot/Scripts/Components/DetailDrilldown.cs`
 - **Gate**: type
