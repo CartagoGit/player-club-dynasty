@@ -27,7 +27,7 @@ The game must feel instant while playing; benchmarks need product-visible limits
 - global_gate: e2e
 
 ### S1 — Define reference hardware and latency budgets
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/benchmarks/interaction-budgets.json`, `docs/architecture/0009-performance-reference-and-budgets.md`
 - **Gate**: none
 - acceptance:
