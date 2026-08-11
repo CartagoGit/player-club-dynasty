@@ -27,7 +27,7 @@ World scale is unsafe unless low-fidelity summaries can become detailed without 
 - global_gate: type
 
 ### S1 — Define fidelity ledger contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.World/PCDynasty.World.csproj`, `game/src/PCDynasty.World/Commitments/HistoricalCommitment.cs`, `game/src/PCDynasty.World/Commitments/FidelityOwnership.cs`, `game/tests/PCDynasty.World.Tests/PCDynasty.World.Tests.csproj`, `game/tests/PCDynasty.World.Tests/FidelityOwnershipTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:

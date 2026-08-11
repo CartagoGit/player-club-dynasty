@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.World</AssemblyName>
+    <RootNamespace>PCDynasty.World</RootNamespace>
+  </PropertyGroup>
+</Project>
