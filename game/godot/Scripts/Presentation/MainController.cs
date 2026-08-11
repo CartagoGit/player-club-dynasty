@@ -159,12 +159,60 @@ public partial class MainController : Control
             ["Sin alertas activas — temporada en pretemporada."],
             ManagerDesignTokens.TextSecondary));
 
+        layout.AddChild(BuildUpcomingFixturesPanel(club));
+
         layout.AddChild(BuildPanel(
             "SIGUIENTES DECISIONES",
             ["Avanzar pretemporada", "Revisar plantilla", "Configurar alineación"],
             ManagerDesignTokens.Accent));
 
         root.AddChild(layout);
+    }
+
+    private static PanelContainer BuildUpcomingFixturesPanel(ClubRow club)
+    {
+        var played = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var entry in MatchHistory.Instance.Snapshot())
+        {
+            if (string.Equals(entry.HomeClubId, club.ExternalId, StringComparison.Ordinal))
+            {
+                played.Add(entry.AwayClubId);
+            }
+            else if (string.Equals(entry.AwayClubId, club.ExternalId, StringComparison.Ordinal))
+            {
+                played.Add(entry.HomeClubId);
+            }
+        }
+
+        var clubs = WorldService.Instance?.ListClubs() ?? Array.Empty<ClubRow>();
+        var upcoming = clubs
+            .Where(other => !string.Equals(other.ExternalId, club.ExternalId, StringComparison.Ordinal))
+            .Where(other => !played.Contains(other.ExternalId))
+            .OrderBy(other => other.DisplayName, StringComparer.Ordinal)
+            .ToArray();
+
+        var lines = new List<string>();
+        if (upcoming.Length == 0)
+        {
+            lines.Add("Has jugado contra todos los clubes — completa la pretemporada.");
+        }
+        else
+        {
+            lines.Add($"{upcoming.Length} rivales pendientes:");
+            foreach (var rival in upcoming.Take(6))
+            {
+                lines.Add($"· {rival.DisplayName} · {rival.CountryShortName}");
+            }
+            if (upcoming.Length > 6)
+            {
+                lines.Add($"· y {upcoming.Length - 6} más...");
+            }
+        }
+
+        return BuildPanel(
+            "PRÓXIMOS RIVALES",
+            lines.ToArray(),
+            ManagerDesignTokens.Accent);
     }
 
     private HBoxContainer BuildClubHeader(ClubRow club)
@@ -1000,6 +1048,39 @@ public partial class MainController : Control
             participants: participants,
             seed: seed);
 
+        // Log every fixture into the match history so the user can browse
+        // every goal from every played season via the Historial tab.
+        foreach (var fixture in season.Fixtures)
+        {
+            MatchHistory.Instance.Append(new HistoryEntry(
+                CompetitionDisplayName: competition.DisplayName,
+                HomeDisplayName: fixture.HomeDisplayName,
+                AwayDisplayName: fixture.AwayDisplayName,
+                HomeClubId: fixture.HomeClubId,
+                AwayClubId: fixture.AwayClubId,
+                HomeGoals: fixture.HomeGoals,
+                AwayGoals: fixture.AwayGoals,
+                Seed: 0,
+                PlayedAtUtc: DateTime.UtcNow));
+        }
+
+        var myStanding = season.Standings.FirstOrDefault(s => s.ClubExternalId == club.ExternalId);
+        if (myStanding is not null)
+        {
+            SeasonHistory.Instance.Append(new SeasonHistoryEntry(
+                CompetitionDisplayName: competition.DisplayName,
+                ManagedClubId: club.ExternalId,
+                ManagedClubDisplayName: club.DisplayName,
+                ManagedPosition: PositionOf(season, club.ExternalId),
+                ManagedPoints: myStanding.Points,
+                ManagedGoalsFor: myStanding.GoalsFor,
+                ManagedGoalsAgainst: myStanding.GoalsAgainst,
+                TotalClubs: season.Standings.Length,
+                TotalFixtures: season.Fixtures.Length,
+                PlayedAtUtc: DateTime.UtcNow,
+                FinalStandings: season.Standings));
+        }
+
         var root = GetNodeOrNull<Control>(ContentRootPath);
         var status = GetNodeOrNull<Label>(StatusLabelPath);
         if (root is null)
@@ -1010,7 +1091,6 @@ public partial class MainController : Control
         ClearChildren(root);
         root.AddChild(BuildSeasonReport(club, season));
 
-        var myStanding = season.Standings.FirstOrDefault(s => s.ClubExternalId == club.ExternalId);
         if (myStanding is not null)
         {
             status?.SetText($"● {competition.DisplayName} · puesto {PositionOf(season, club.ExternalId)} · {myStanding.Points} pts");
