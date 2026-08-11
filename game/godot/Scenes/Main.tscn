@@ -43,6 +43,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
+ContentRootPath = NodePath("Layout/ContentMargin/Content")
+SidebarPath = NodePath("")
+StatusLabelPath = NodePath("Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel/StatusLabel")
+OverviewButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Overview")
+SquadButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Squad")
+CompetitionsButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Competitions")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1

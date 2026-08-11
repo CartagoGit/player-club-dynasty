@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="../src/PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../src/PCDynasty.Editor/PCDynasty.Editor.csproj" />
+    <ProjectReference Include="../src/PCDynasty.Presentation.Core/PCDynasty.Presentation.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

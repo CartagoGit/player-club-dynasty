@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Presentation.Core/PCDynasty.Presentation.Core.csproj" />
   </ItemGroup>
 </Project>
