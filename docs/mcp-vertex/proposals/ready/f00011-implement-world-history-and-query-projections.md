@@ -28,7 +28,7 @@ Decades of emergent stories need durable, explainable history without retaining 
 
 ### S1 — Define historical event contracts
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.History/PCDynasty.History.csproj`, `game/src/PCDynasty.History/Events/HistoricalEvent.cs`, `game/tests/PCDynasty.History.Tests/HistoricalEventTests.cs`
+- **Files**: `game/src/PCDynasty.History/PCDynasty.History.csproj`, `game/src/PCDynasty.History/Events/HistoricalEvent.cs`, `game/tests/PCDynasty.History.Tests/PCDynasty.History.Tests.csproj`, `game/tests/PCDynasty.History.Tests/HistoricalEventTests.cs`
 - **Gate**: type
 - acceptance:
   - "History records durable facts with compact indices."
@@ -44,7 +44,7 @@ Decades of emergent stories need durable, explainable history without retaining 
 ### S3 — Expose application history queries
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Application/History/HistoryQuery.cs`, `game/src/PCDynasty.Application/History/HistoryView.cs`, `game/tests/PCDynasty.Application.Tests/HistoryQueryTests.cs`
+- **Files**: `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/History/HistoryQuery.cs`, `game/src/PCDynasty.Application/History/HistoryView.cs`, `game/tests/PCDynasty.Application.Tests/HistoryQueryTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Read models stay independent from storage and Godot."
