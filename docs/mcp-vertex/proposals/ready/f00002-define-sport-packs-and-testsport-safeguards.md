@@ -35,7 +35,7 @@ The core extensibility invariant needs an executable guard before FootballPack g
   - "Defines stable, football-free contracts using compiled IDs."
 
 ### S2 — Implement TestSport definitions
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.TestSport/PCDynasty.TestSport.csproj`, `game/src/PCDynasty.TestSport/TestSportPack.cs`, `game/tests/PCDynasty.TestSport.Tests/TestSportPackTests.cs`
 - **Gate**: type
