@@ -2,7 +2,7 @@
 id: x00029
 title: "Wire declarative editor services into Godot presentation"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: modding
 date: 2026-08-11
@@ -34,7 +34,7 @@ The Godot editor slice consumes PCDynasty.Editor but its project and source meta
   - "Godot presentation compiles against declarative editor application services."
 
 ### S2 — Track editor controller metadata
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scripts/Editor/PackEditorController.cs.uid`, `game/godot/Scripts/Editor/ValidationReportPanel.cs.uid`
 - **Gate**: type

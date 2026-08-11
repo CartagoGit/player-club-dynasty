@@ -2,7 +2,7 @@
 id: f00025
 title: "Build declarative content editor and validation workflow"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: modding
 date: 2026-08-11
@@ -42,7 +42,7 @@ Community and internal content needs safe, usable editing without exposing engin
   - "Editable graphs validate before producing a pack."
 
 ### S3 — Build Godot editor screens
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/godot/Scenes/Editor/PackEditor.tscn`, `game/godot/Scripts/Editor/PackEditorController.cs`, `game/godot/Scripts/Editor/ValidationReportPanel.cs`
 - **Gate**: type
