@@ -27,7 +27,7 @@ External tools, importers and future clients must integrate without depending on
 - global_gate: type
 
 ### S1 — Define public contract ownership and versions
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Contracts/ContractVersion.cs`, `game/src/PCDynasty.Contracts/Commands/CommandEnvelope.cs`, `game/src/PCDynasty.Contracts/Events/EventEnvelope.cs`, `game/tests/PCDynasty.Contracts.Tests/PCDynasty.Contracts.Tests.csproj`, `game/tests/PCDynasty.Contracts.Tests/ContractEnvelopeTests.cs`
 - **Gate**: type
 - acceptance:
