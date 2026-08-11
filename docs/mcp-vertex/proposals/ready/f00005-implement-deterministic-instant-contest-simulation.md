@@ -36,7 +36,7 @@ Fast, reproducible match simulation is central to the manager experience and est
 ### S2 — Implement deterministic contest runner
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Simulation/PCDynasty.Simulation.csproj`, `game/src/PCDynasty.Simulation/Contests/ContestSimulator.cs`, `game/tests/PCDynasty.Simulation.Tests/ContestSimulatorTests.cs`
+- **Files**: `game/src/PCDynasty.Simulation/PCDynasty.Simulation.csproj`, `game/src/PCDynasty.Simulation/Contests/ContestSimulator.cs`, `game/tests/PCDynasty.Simulation.Tests/PCDynasty.Simulation.Tests.csproj`, `game/tests/PCDynasty.Simulation.Tests/ContestSimulatorTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Same inputs and seed always produce the same ordered events."
