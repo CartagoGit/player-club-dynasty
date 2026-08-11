@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../src/PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Careers/PCDynasty.Careers.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Content/PCDynasty.Content.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
