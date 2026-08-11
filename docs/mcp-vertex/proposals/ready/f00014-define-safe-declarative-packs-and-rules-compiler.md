@@ -27,7 +27,7 @@ Packs need extensibility without granting arbitrary code execution or making the
 - global_gate: type
 
 ### S1 — Define pack trust and capability model
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Content.Abstractions/Packs/PackTrustLevel.cs`, `game/src/PCDynasty.Content.Abstractions/Packs/PackCapability.cs`, `game/tests/PCDynasty.Content.Tests/PackCapabilityTests.cs`
 - **Gate**: type
 - acceptance:
