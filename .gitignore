@@ -22,6 +22,7 @@ build/
 **/.godot/
 **/.import/
 **/.mono/
+*.translation
 export_credentials.cfg
 
 # editor / OS

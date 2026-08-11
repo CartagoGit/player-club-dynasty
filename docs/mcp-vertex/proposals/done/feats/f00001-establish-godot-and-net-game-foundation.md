@@ -2,7 +2,7 @@
 id: f00001
 title: "Establish Godot and .NET game foundation"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: architecture
 date: 2026-08-11
@@ -47,7 +47,7 @@ The initial plan requires a proposal before substantial implementation and the r
   - "The solution builds and tests with the documented .NET SDK."
 
 ### S3 — Create the Godot presentation adapter shell
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/godot/project.godot`, `game/godot/PCDynasty.Presentation.csproj`, `game/godot/Scripts/Main.cs`, `game/godot/Scenes/Main.tscn`
 - **Gate**: type

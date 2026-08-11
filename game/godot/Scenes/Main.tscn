@@ -1,0 +1,214 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
+bg_color = Color(0.035, 0.102, 0.157, 1)
+border_width_right = 2
+border_color = Color(0.831, 0.643, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.055, 0.118, 0.173, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.122, 0.224, 0.302, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_value"]
+bg_color = Color(0.075, 0.169, 0.227, 1)
+border_width_left = 3
+border_color = Color(0.831, 0.643, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nav"]
+bg_color = Color(0.055, 0.137, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.025, 0.047, 0.075, 1)
+
+[node name="Layout" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sidebar" type="PanelContainer" parent="Layout"]
+custom_minimum_size = Vector2(246, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sidebar")
+
+[node name="SidebarMargin" type="MarginContainer" parent="Layout/Sidebar"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 30
+
+[node name="SidebarContent" type="VBoxContainer" parent="Layout/Sidebar/SidebarMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Brand" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.902, 0.741, 0.333, 1)
+theme_override_font_sizes/font_size = 25
+text = "PC DYNASTY"
+
+[node name="Season" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.561, 0.682, 0.757, 1)
+theme_override_font_sizes/font_size = 13
+text = "TEMPORADA DE DEMOSTRACIÓN"
+
+[node name="Separator" type="HSeparator" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+
+[node name="Overview" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
+text = "  RESUMEN"
+alignment = 0
+
+[node name="Squad" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
+text = "  PLANTILLA"
+alignment = 0
+
+[node name="Competitions" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
+text = "  COMPETICIONES"
+alignment = 0
+
+[node name="Spacer" type="Control" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Status" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.412, 0.733, 0.573, 1)
+theme_override_font_sizes/font_size = 13
+text = "● NÚCLEO CONECTADO"
+
+[node name="ContentMargin" type="MarginContainer" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 34
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 34
+
+[node name="Content" type="VBoxContainer" parent="Layout/ContentMargin"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="HBoxContainer" parent="Layout/ContentMargin/Content"]
+layout_mode = 2
+
+[node name="TitleBlock" type="VBoxContainer" parent="Layout/ContentMargin/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="Layout/ContentMargin/Content/Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
+theme_override_font_sizes/font_size = 30
+text = "Panel del club"
+
+[node name="Subtitle" type="Label" parent="Layout/ContentMargin/Content/Header/TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.561, 0.682, 0.757, 1)
+theme_override_font_sizes/font_size = 15
+text = "Una base rápida para el futuro motor del manager"
+
+[node name="Date" type="Label" parent="Layout/ContentMargin/Content/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.902, 0.741, 0.333, 1)
+theme_override_font_sizes/font_size = 16
+text = "PRETEMPORADA"
+vertical_alignment = 1
+
+[node name="CorePanel" type="PanelContainer" parent="Layout/ContentMargin/Content"]
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="PanelMargin" type="MarginContainer" parent="Layout/ContentMargin/Content/CorePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="PanelContent" type="VBoxContainer" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PanelTitle" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
+theme_override_font_sizes/font_size = 20
+text = "Estado del motor"
+
+[node name="PanelDescription" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
+theme_override_font_sizes/font_size = 14
+text = "La presentación consulta datos del Core sin apropiarse de sus reglas."
+
+[node name="ValuePanel" type="PanelContainer" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_value")
+
+[node name="CoreValueLabel" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
+theme_override_font_sizes/font_size = 18
+text = "Leyendo el núcleo…"
+horizontal_alignment = 1
+
+[node name="Footer" type="Label" parent="Layout/ContentMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.365, 0.482, 0.561, 1)
+theme_override_font_sizes/font_size = 12
+text = "PC Dynasty · Presentación Godot independiente del dominio"
