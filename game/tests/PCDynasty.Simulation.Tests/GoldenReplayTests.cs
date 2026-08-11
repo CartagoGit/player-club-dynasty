@@ -23,9 +23,7 @@ public sealed class GoldenReplayTests
             return;
         }
 
-        string projectPath = Path.GetFullPath(
-            "../../../PCDynasty.Simulation.Tests.csproj",
-            AppContext.BaseDirectory);
+        string assemblyPath = typeof(GoldenReplayTests).Assembly.Location;
         var startInfo = new ProcessStartInfo("dotnet")
         {
             RedirectStandardOutput = true,
@@ -33,9 +31,7 @@ public sealed class GoldenReplayTests
             UseShellExecute = false,
         };
         startInfo.ArgumentList.Add("test");
-        startInfo.ArgumentList.Add(projectPath);
-        startInfo.ArgumentList.Add("--no-build");
-        startInfo.ArgumentList.Add("--no-restore");
+        startInfo.ArgumentList.Add(assemblyPath);
         startInfo.ArgumentList.Add("--filter");
         startInfo.ArgumentList.Add(
             $"FullyQualifiedName={typeof(GoldenReplayTests).FullName}.{nameof(ChildReplayMatchesFixture)}");
