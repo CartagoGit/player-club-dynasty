@@ -42,7 +42,7 @@ The game must feel instant while playing; benchmarks need product-visible limits
   - "Opening player, club and competition views remains within defined interaction budgets."
 
 ### S3 — Implement background-work telemetry contract
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Application/Performance/WorkBudget.cs`, `game/src/PCDynasty.Application/Performance/BackgroundWorkStatus.cs`, `game/tests/PCDynasty.Application.Tests/WorkBudgetTests.cs`
 - **Gate**: type
