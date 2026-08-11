@@ -2,7 +2,7 @@
 id: f00014
 title: "Define safe declarative packs and rules compiler"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: content
 date: 2026-08-11
@@ -42,7 +42,7 @@ Packs need extensibility without granting arbitrary code execution or making the
   - "Rules compile to a bounded, validated IR with no arbitrary execution."
 
 ### S3 — Implement pack security validation
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Content/PCDynasty.Content.csproj`, `game/src/PCDynasty.Content/Validation/PackSecurityValidator.cs`, `game/tests/PCDynasty.Content.Tests/PackSecurityValidatorTests.cs`
 - **Gate**: type
