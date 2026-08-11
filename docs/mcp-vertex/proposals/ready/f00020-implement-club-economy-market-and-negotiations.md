@@ -42,7 +42,7 @@ A credible manager ecosystem needs money conservation, imperfect valuations and 
   - "Market, internal, asking, transfer and contract values remain distinct."
 
 ### S3 — Implement negotiation and market rounds
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Market/Negotiation/NegotiationEngine.cs`, `game/src/PCDynasty.Market/Rounds/MarketRoundResolver.cs`, `game/tests/PCDynasty.Market.Tests/MarketRoundResolverTests.cs`
 - **Gate**: e2e
