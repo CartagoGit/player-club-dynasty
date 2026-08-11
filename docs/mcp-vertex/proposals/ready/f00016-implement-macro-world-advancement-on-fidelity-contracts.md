@@ -36,7 +36,7 @@ The world must evolve at scale while the dedicated fidelity protocol remains the
 ### S2 — Implement macro season scheduler
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.World/Seasons/MacroSeasonTransition.cs`, `game/src/PCDynasty.World/Seasons/MacroSeasonScheduler.cs`, `game/tests/PCDynasty.World.Tests/MacroSeasonTransitionTests.cs`
+- **Files**: `game/src/PCDynasty.World/PCDynasty.World.csproj`, `game/src/PCDynasty.World/Seasons/MacroSeasonTransition.cs`, `game/src/PCDynasty.World/Seasons/MacroSeasonScheduler.cs`, `game/tests/PCDynasty.World.Tests/MacroSeasonTransitionTests.cs`
 - **Gate**: type
 - acceptance:
   - "Transitions emit ordered facts through the deterministic simulation protocol."
