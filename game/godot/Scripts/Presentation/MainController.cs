@@ -25,6 +25,7 @@ public partial class MainController : Control
     [Export] public NodePath OverviewButtonPath { get; set; } = new();
     [Export] public NodePath SquadButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
+    [Export] public NodePath HistoryButtonPath { get; set; } = new();
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
@@ -50,6 +51,7 @@ public partial class MainController : Control
         Wire(OverviewButtonPath, "resumen");
         Wire(SquadButtonPath, "plantilla");
         Wire(CompetitionsButtonPath, "competiciones");
+        Wire(HistoryButtonPath, "historial");
     }
 
     private void Wire(NodePath path, string sectionId)
@@ -111,6 +113,10 @@ public partial class MainController : Control
             case "competiciones":
                 RenderCompetitions(root, club);
                 status?.SetText($"● {club.DisplayName} · competiciones");
+                break;
+            case "historial":
+                RenderHistory(root);
+                status?.SetText($"● Historial de partidos");
                 break;
             default:
                 RenderClubOverview(root, club);
@@ -411,6 +417,17 @@ public partial class MainController : Control
         long seed = unchecked((long)(DateTime.UtcNow.Ticks & 0x7FFFFFFFFFFFFFFF));
         var result = MatchSimulator.Simulate(club, rival, seed);
 
+        MatchHistory.Instance.Append(new HistoryEntry(
+            CompetitionDisplayName: competition.DisplayName,
+            HomeDisplayName: club.DisplayName,
+            AwayDisplayName: rival.DisplayName,
+            HomeClubId: club.ExternalId,
+            AwayClubId: rival.ExternalId,
+            HomeGoals: result.HomeGoals,
+            AwayGoals: result.AwayGoals,
+            Seed: result.Seed,
+            PlayedAtUtc: DateTime.UtcNow));
+
         var root = GetNodeOrNull<Control>(ContentRootPath);
         var status = GetNodeOrNull<Label>(StatusLabelPath);
         if (root is null)
@@ -419,7 +436,7 @@ public partial class MainController : Control
         }
 
         ClearChildren(root);
-        root.AddChild(BuildMatchReport(club, result));
+        root.AddChild(BuildMatchReport(club, result, competition.DisplayName));
 
         string winner = result.HomeGoals > result.AwayGoals
             ? club.ShortName
@@ -429,7 +446,7 @@ public partial class MainController : Control
         status?.SetText($"● {club.ShortName} {result.HomeGoals}-{result.AwayGoals} {rival.ShortName} · {winner}");
     }
 
-    private VBoxContainer BuildMatchReport(ClubRow club, MatchResult result)
+    private VBoxContainer BuildMatchReport(ClubRow club, MatchResult result, string competitionDisplayName)
     {
         var layout = new VBoxContainer();
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
@@ -458,7 +475,7 @@ public partial class MainController : Control
 
         var meta = new Label
         {
-            Text = $"Jornada simulada · seed {result.Seed} · {result.Events.Count} intentos · {result.Events.Count(e => e.IsGoal)} goles",
+            Text = $"{competitionDisplayName} · seed {result.Seed} · {result.Events.Count} intentos · {result.Events.Count(e => e.IsGoal)} goles",
         };
         meta.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
         meta.AddThemeFontSizeOverride("font_size", 12);
@@ -491,16 +508,50 @@ public partial class MainController : Control
             }
         }
 
-        // Back button.
+        // Replay + back buttons.
+        var actions = new HBoxContainer();
+        actions.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
+
+        var replayButton = new Button
+        {
+            Text = "  ↻ Repetir (misma seed)",
+            Alignment = HorizontalAlignment.Left,
+        };
+        replayButton.Pressed += () => ReplayMatch(result, competitionDisplayName);
+        actions.AddChild(replayButton);
+
         var backButton = new Button
         {
             Text = "  ← Volver a competiciones",
             Alignment = HorizontalAlignment.Left,
         };
         backButton.Pressed += () => RenderCurrent();
-        layout.AddChild(backButton);
+        actions.AddChild(backButton);
+
+        layout.AddChild(actions);
 
         return layout;
+    }
+
+    private void ReplayMatch(MatchResult previous, string competitionDisplayName)
+    {
+        // Deterministic replay: same clubs, same seed => same result.
+        var replay = MatchSimulator.Simulate(previous.HomeClub, previous.AwayClub, previous.Seed);
+
+        var root = GetNodeOrNull<Control>(ContentRootPath);
+        var status = GetNodeOrNull<Label>(StatusLabelPath);
+        if (root is null)
+        {
+            return;
+        }
+
+        ClearChildren(root);
+        root.AddChild(BuildMatchReport(previous.HomeClub, replay, competitionDisplayName));
+
+        bool sameScore = replay.HomeGoals == previous.HomeGoals && replay.AwayGoals == previous.AwayGoals;
+        status?.SetText(sameScore
+            ? $"● Repetición · {replay.HomeGoals}-{replay.AwayGoals} (idéntica, seed {previous.Seed})"
+            : $"● Repetición · {replay.HomeGoals}-{replay.AwayGoals} (difiere — seed no determinista)");
     }
 
     // ----- Club picker -----------------------------------------------------
@@ -568,6 +619,65 @@ public partial class MainController : Control
         _selectedClubId = clubExternalId;
         _selectedSection = "resumen";
         RenderCurrent();
+    }
+
+    // ----- Historial ------------------------------------------------------
+
+    private static void RenderHistory(Control root)
+    {
+        var layout = new VBoxContainer();
+        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        var entries = MatchHistory.Instance.Snapshot();
+        var header = new Label
+        {
+            Text = $"HISTORIAL DE PARTIDOS · {entries.Count} REGISTROS",
+        };
+        header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
+        header.AddThemeFontSizeOverride("font_size", 18);
+        layout.AddChild(header);
+
+        if (entries.Count == 0)
+        {
+            var empty = new Label { Text = "Sin partidos jugados todavía — ve a Competiciones." };
+            empty.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+            layout.AddChild(empty);
+        }
+        else
+        {
+            var headerRow = new HBoxContainer();
+            headerRow.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+            AddColumnHeader(headerRow, "CUÁNDO", 130);
+            AddColumnHeader(headerRow, "COMPETICIÓN", 200);
+            AddColumnHeader(headerRow, "LOCAL", 200);
+            AddColumnHeader(headerRow, "", 30);
+            AddColumnHeader(headerRow, "VISITANTE", 200);
+            AddColumnHeader(headerRow, "SEED", 110, HorizontalAlignment.Right);
+            layout.AddChild(headerRow);
+            layout.AddChild(new HSeparator());
+
+            foreach (var entry in entries.Reverse())
+            {
+                layout.AddChild(BuildHistoryRow(entry));
+            }
+        }
+
+        root.AddChild(layout);
+    }
+
+    private static HBoxContainer BuildHistoryRow(HistoryEntry entry)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        AddColumnValue(row, entry.PlayedAtUtc.ToLocalTime().ToString("HH:mm:ss", Inv), 130, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, entry.CompetitionDisplayName, 200, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, entry.HomeDisplayName, 200, ManagerDesignTokens.TextPrimary);
+        AddColumnValue(row, $"{entry.HomeGoals}-{entry.AwayGoals}", 30, ManagerDesignTokens.Accent, HorizontalAlignment.Center);
+        AddColumnValue(row, entry.AwayDisplayName, 200, ManagerDesignTokens.TextPrimary);
+        AddColumnValue(row, entry.Seed.ToString(Inv), 110, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+
+        return row;
     }
 
     // ----- helpers --------------------------------------------------------

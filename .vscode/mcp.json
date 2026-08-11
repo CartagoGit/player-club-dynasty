@@ -10,6 +10,34 @@
 				"--preset=swarm",
 				"--exclude-plugins=issues,web-fetch,external-mcps"
 			]
+		},
+		"godot": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"-y",
+				"@coding-solo/godot-mcp"
+			],
+			"env": {
+				"GODOT_PATH": "/tmp/pcdynasty-godot/Godot_v4.7.1-stable_mono_linux_x86_64/Godot_v4.7.1-stable_mono_linux.x86_64",
+				"DEBUG": "false"
+			},
+			"autoApprove": [
+				"launch_editor",
+				"run_project",
+				"get_debug_output",
+				"stop_project",
+				"get_godot_version",
+				"list_projects",
+				"get_project_info",
+				"create_scene",
+				"add_node",
+				"load_sprite",
+				"export_mesh_library",
+				"save_scene",
+				"get_uid",
+				"update_project_uids"
+			]
 		}
 	}
 }

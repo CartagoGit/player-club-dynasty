@@ -49,6 +49,7 @@ StatusLabelPath = NodePath("Layout/ContentMargin/Content/CorePanel/PanelMargin/P
 OverviewButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Overview")
 SquadButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Squad")
 CompetitionsButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Competitions")
+HistoryButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/History")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -123,6 +124,15 @@ theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
 text = "  COMPETICIONES"
+alignment = 0
+
+[node name="History" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
+text = "  HISTORIAL"
 alignment = 0
 
 [node name="Spacer" type="Control" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
