@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "entities": [
+    {
+      "externalId": "country:norvane",
+      "kindId": "country",
+      "values": {
+        "display-name": "Commonwealth of Norvane",
+        "short-name": "Norvane",
+        "region-id": "region:boreal-arc",
+        "currency-id": "currency:norvane-crown",
+        "language-id": "language:norvan"
+      },
+      "references": []
+    },
+    {
+      "externalId": "country:soldara",
+      "kindId": "country",
+      "values": {
+        "display-name": "Republic of Soldara",
+        "short-name": "Soldara",
+        "region-id": "region:azure-coast",
+        "currency-id": "currency:soldaran-sol",
+        "language-id": "language:soldaran"
+      },
+      "references": []
+    },
+    {
+      "externalId": "country:velmora",
+      "kindId": "country",
+      "values": {
+        "display-name": "Velmoran Union",
+        "short-name": "Velmora",
+        "region-id": "region:ember-vales",
+        "currency-id": "currency:velmoran-mark",
+        "language-id": "language:velmoran"
+      },
+      "references": []
+    }
+  ]
+}

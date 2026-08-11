@@ -27,7 +27,7 @@ The vertical slices need legal, reproducible content without depending on unlice
 - global_gate: e2e
 
 ### S1 — Define starter pack manifest and source data
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/content/starter-world/pack.json`, `game/content/starter-world/data/countries.json`, `game/content/starter-world/data/clubs.json`
 - **Gate**: none
 - acceptance:

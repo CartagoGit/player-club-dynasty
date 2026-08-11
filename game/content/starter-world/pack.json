@@ -1,0 +1,28 @@
+{
+  "packId": "pcdynasty.starter-world",
+  "displayName": "Horizonte Inicial",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "minimumGameVersion": "0.1.0",
+  "license": {
+    "spdxId": "CC0-1.0",
+    "notice": "Dedicated to the public domain for unrestricted game development and community use."
+  },
+  "origin": {
+    "fictional": true,
+    "generatedFor": "Player Club Dynasty",
+    "statement": "All countries, organizations, people and competitions in this pack are original fictional creations. Any resemblance is coincidental."
+  },
+  "dependencies": [],
+  "requestedCapabilities": [
+    "data",
+    "declarative-rules"
+  ],
+  "documents": [
+    "data/countries.json",
+    "data/clubs.json",
+    "data/people.json",
+    "data/competitions.json",
+    "data/rules.json"
+  ]
+}
