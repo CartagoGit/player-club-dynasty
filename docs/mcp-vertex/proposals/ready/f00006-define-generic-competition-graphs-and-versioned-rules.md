@@ -34,7 +34,7 @@ League is not the generic competition abstraction; scalable seasons need graphs 
   - "Stages and transitions validate without league-specific concepts."
 
 ### S2 — Implement effective-dated rules
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Rules/PCDynasty.Rules.csproj`, `game/src/PCDynasty.Rules/Versioning/EffectiveRuleSet.cs`, `game/tests/PCDynasty.Rules.Tests/PCDynasty.Rules.Tests.csproj`, `game/tests/PCDynasty.Rules.Tests/EffectiveRuleSetTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
