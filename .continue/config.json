@@ -1,0 +1,19 @@
+{
+	"$schema": "https://continue.dev/schema.json",
+	"name": "Player Club Dynasty",
+	"version": "0.1.0",
+	"docs": [
+		{
+			"name": "AGENTS.md",
+			"startUrl": "AGENTS.md"
+		},
+		{
+			"name": "AGENT-BOOTSTRAP",
+			"startUrl": "docs/mcp-vertex/AGENT-BOOTSTRAP.md"
+		},
+		{
+			"name": "host-hints",
+			"startUrl": "docs/mcp-vertex/host-hints/agent-instructions.generated.md"
+		}
+	]
+}

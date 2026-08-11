@@ -1,0 +1,16 @@
+{
+	"servers": {
+		"mcp-vertex": {
+			"type": "stdio",
+			"command": "bun",
+			"args": [
+				"/home/cartago/_projects/mcp-vertex/tools/scripts/host/host-server.script.ts",
+				"--workspace=${workspaceFolder}",
+				"--config=${workspaceFolder}/mcp-vertex.config.json",
+				"--preset=swarm",
+				"--plugins=player-club",
+				"--exclude-plugins=issues,web-fetch,external-mcps"
+			]
+		}
+	}
+}

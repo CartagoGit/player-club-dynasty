@@ -1,0 +1,24 @@
+{
+	"files.exclude": {
+		"**/node_modules": true,
+		"**/dist": true,
+		"**/.cache": true,
+		"**/.verify-tmp": true
+	},
+	"editor.formatOnSave": false,
+	"js/ts.tsdk.path": "node_modules/typescript/lib",
+	"js/ts.tsdk.promptToUseWorkspaceVersion": true,
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"yaml.schemas": {
+		"/home/cartago/_projects/mcp-vertex/packages/core/schema/mcp-vertex.config.schema.json": [
+			"mcp-vertex.config.json"
+		]
+	},
+	"mcp-vertex.workspace": "${workspaceFolder}",
+	"mcp-vertex.configFile": "${workspaceFolder}/mcp-vertex.config.json"
+}

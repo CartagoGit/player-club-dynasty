@@ -1,0 +1,2 @@
+# Proposals parked here have a blocker on another proposal/slice.
+# Move to `ready/` when the blocker clears, or to `retired/` if cancelled.

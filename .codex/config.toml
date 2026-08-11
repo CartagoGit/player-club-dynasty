@@ -1,0 +1,18 @@
+# Codex config — Player Club Dynasty
+# Codex reads workspace AGENTS.md by default; the file is a pointer to
+# docs/mcp-vertex/AGENT-BOOTSTRAP.md. This file just records the local
+# MCP server entry (matches .vscode/mcp.json).
+
+[projects."/home/cartago/_projects/games/player-club-dynasty"]
+trust_level = "trusted"
+
+[mcp_servers.mcp-vertex]
+command = "bun"
+args = [
+  "/home/cartago/_projects/mcp-vertex/tools/scripts/host/host-server.script.ts",
+  "--workspace=/home/cartago/_projects/games/player-club-dynasty",
+  "--config=/home/cartago/_projects/games/player-club-dynasty/mcp-vertex.config.json",
+  "--preset=swarm",
+  "--plugins=player-club",
+  "--exclude-plugins=issues,web-fetch,external-mcps",
+]

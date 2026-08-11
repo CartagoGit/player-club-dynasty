@@ -1,0 +1,52 @@
+{
+	"name": "@player-club/plugin",
+	"version": "0.1.0",
+	"type": "module",
+	"description": "Project-scoped MCP plugin for Player Club Dynasty: exposes the squad, the season clock, and the match log so any agent can drive the football-manager simulation through the mcp-vertex host.",
+	"author": "Cartago",
+	"license": "BSD-3-Clause",
+	"keywords": [
+		"mcp",
+		"model-context-protocol",
+		"player-club-dynasty",
+		"football-manager",
+		"plugin",
+		"cartago"
+	],
+	"main": "./dist/index.js",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./public": {
+			"types": "./dist/public/index.d.ts",
+			"import": "./dist/public/index.js"
+		}
+	},
+	"scripts": {
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"build": "bun ../../scripts/build-plugin.script.ts"
+	},
+	"peerDependencies": {
+		"@mcp-vertex/core": "workspace:*"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@mcp-vertex/core": "workspace:*",
+		"@types/bun": "latest",
+		"typescript": "7.0.2",
+		"vitest": "4.1.10"
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts"
+}

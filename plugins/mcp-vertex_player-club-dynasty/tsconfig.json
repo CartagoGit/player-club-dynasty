@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"lib": ["ESNext", "DOM"],
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"verbatimModuleSyntax": false,
+		"noEmit": true,
+		"types": ["@types/bun", "vitest/globals"],
+		"baseUrl": ".",
+		"paths": {
+			"@mcp-vertex/core/public": ["../../node_modules/@mcp-vertex/core/dist/public/index.d.ts"],
+			"@mcp-vertex/core": ["../../node_modules/@mcp-vertex/core/dist/index.d.ts"]
+		}
+	},
+	"include": ["src/**/*", "tests/**/*"],
+	"exclude": ["node_modules", "dist"]
+}

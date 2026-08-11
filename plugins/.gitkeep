@@ -1,0 +1,2 @@
+# Project-scoped MCP plugins. Create a new one with `bun run plugin:create <name>`.
+# The host picks up any plugin in this directory via `bun scripts/build-plugin.script.ts <name>`.
