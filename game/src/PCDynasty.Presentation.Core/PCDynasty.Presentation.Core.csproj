@@ -9,4 +9,7 @@
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.29" />
+  </ItemGroup>
 </Project>

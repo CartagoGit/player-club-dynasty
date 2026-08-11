@@ -43,8 +43,64 @@ public partial class MainController : Control
             return;
         }
 
+        LoadCareerFromDisk();
         BindSidebar();
         RenderCurrent();
+    }
+
+    private static CareerStore CreateStore()
+    {
+        string savesRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(
+            ProjectSettings.GlobalizePath("res://../"), "..", "saves"));
+        string databasePath = System.IO.Path.Combine(savesRoot, "career.sqlite");
+        return new CareerStore(databasePath);
+    }
+
+    private static void AppendMatchAndPersist(HistoryEntry entry)
+    {
+        MatchHistory.Instance.Append(entry);
+        try
+        {
+            CreateStore().SaveMatch(entry);
+        }
+        catch (System.Exception exception)
+        {
+            GD.PushWarning($"[CareerStore] Could not persist match: {exception.Message}");
+        }
+    }
+
+    private static void AppendSeasonAndPersist(SeasonHistoryEntry entry)
+    {
+        SeasonHistory.Instance.Append(entry);
+        try
+        {
+            CreateStore().SaveSeason(entry);
+        }
+        catch (System.Exception exception)
+        {
+            GD.PushWarning($"[CareerStore] Could not persist season: {exception.Message}");
+        }
+    }
+
+    private static void LoadCareerFromDisk()
+    {
+        try
+        {
+            var store = CreateStore();
+
+            foreach (var match in store.LoadMatches())
+            {
+                MatchHistory.Instance.Append(match);
+            }
+            foreach (var season in store.LoadSeasons())
+            {
+                SeasonHistory.Instance.Append(season);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            GD.PushWarning($"[CareerStore] Could not load career: {exception.Message}");
+        }
     }
 
     private void BindSidebar()
@@ -500,7 +556,7 @@ public partial class MainController : Control
         long seed = unchecked((long)(DateTime.UtcNow.Ticks & 0x7FFFFFFFFFFFFFFF));
         var result = MatchSimulator.Simulate(club, rival, seed);
 
-        MatchHistory.Instance.Append(new HistoryEntry(
+AppendMatchAndPersist(new HistoryEntry(
             CompetitionDisplayName: competition.DisplayName,
             HomeDisplayName: club.DisplayName,
             AwayDisplayName: rival.DisplayName,
@@ -1081,7 +1137,7 @@ public partial class MainController : Control
         // every goal from every played season via the Historial tab.
         foreach (var fixture in season.Fixtures)
         {
-            MatchHistory.Instance.Append(new HistoryEntry(
+            AppendMatchAndPersist(new HistoryEntry(
                 CompetitionDisplayName: competition.DisplayName,
                 HomeDisplayName: fixture.HomeDisplayName,
                 AwayDisplayName: fixture.AwayDisplayName,
@@ -1096,7 +1152,7 @@ public partial class MainController : Control
         var myStanding = season.Standings.FirstOrDefault(s => s.ClubExternalId == club.ExternalId);
         if (myStanding is not null)
         {
-            SeasonHistory.Instance.Append(new SeasonHistoryEntry(
+            AppendSeasonAndPersist(new SeasonHistoryEntry(
                 CompetitionDisplayName: competition.DisplayName,
                 ManagedClubId: club.ExternalId,
                 ManagedClubDisplayName: club.DisplayName,
