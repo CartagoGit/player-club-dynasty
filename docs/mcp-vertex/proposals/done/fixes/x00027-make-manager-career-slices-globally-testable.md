@@ -2,7 +2,7 @@
 id: x00027
 title: "Make manager career slices globally testable"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: career
 date: 2026-08-11
@@ -34,7 +34,7 @@ The manager career feature proposal names test files but omits the test project 
   - "The career tests have an isolated executable test project referencing the career assembly."
 
 ### S2 — Include career projects in solution
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/PCDynasty.sln`
 - **Gate**: type
