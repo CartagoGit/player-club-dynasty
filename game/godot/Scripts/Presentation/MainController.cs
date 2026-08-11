@@ -473,6 +473,8 @@ public partial class MainController : Control
 
         layout.AddChild(scoreboard);
 
+        var stats = MatchStats.Compute(result);
+
         var meta = new Label
         {
             Text = $"{competitionDisplayName} · seed {result.Seed} · {result.Events.Count} intentos · {result.Events.Count(e => e.IsGoal)} goles",
@@ -480,6 +482,9 @@ public partial class MainController : Control
         meta.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
         meta.AddThemeFontSizeOverride("font_size", 12);
         layout.AddChild(meta);
+
+        // Stats panel: shots, saves, misses, cards, possession.
+        layout.AddChild(BuildStatsTable(stats));
 
         // Event timeline (only goals).
         var goalsHeader = new Label { Text = "GOLES" };
@@ -619,6 +624,62 @@ public partial class MainController : Control
         _selectedClubId = clubExternalId;
         _selectedSection = "resumen";
         RenderCurrent();
+    }
+
+    // ----- Stats -----------------------------------------------------------
+
+    private static PanelContainer BuildStatsTable(MatchStatsRow stats)
+    {
+        var panel = new PanelContainer();
+        var style = new StyleBoxFlat
+        {
+            BgColor = ManagerDesignTokens.Surface,
+            BorderColor = ManagerDesignTokens.Border,
+            BorderWidthLeft = 1,
+            BorderWidthTop = 1,
+            BorderWidthRight = 1,
+            BorderWidthBottom = 1,
+            CornerRadiusTopLeft = ManagerDesignTokens.CornerRadius,
+            CornerRadiusTopRight = ManagerDesignTokens.CornerRadius,
+            CornerRadiusBottomRight = ManagerDesignTokens.CornerRadius,
+            CornerRadiusBottomLeft = ManagerDesignTokens.CornerRadius,
+            ContentMarginLeft = ManagerDesignTokens.Space16,
+            ContentMarginTop = ManagerDesignTokens.Space12,
+            ContentMarginRight = ManagerDesignTokens.Space16,
+            ContentMarginBottom = ManagerDesignTokens.Space12,
+        };
+        panel.AddThemeStyleboxOverride("panel", style);
+
+        var col = new VBoxContainer();
+        col.AddThemeConstantOverride("separation", ManagerDesignTokens.Space4);
+
+        var title = new Label { Text = "ESTADÍSTICAS" };
+        title.AddThemeColorOverride("font_color", ManagerDesignTokens.Accent);
+        title.AddThemeFontSizeOverride("font_size", 14);
+        col.AddChild(title);
+
+        col.AddChild(BuildStatRow("Tiros", stats.HomeShots, stats.AwayShots));
+        col.AddChild(BuildStatRow("Paradas", stats.HomeSaves, stats.AwaySaves));
+        col.AddChild(BuildStatRow("Fuera", stats.HomeMisses, stats.AwayMisses));
+        col.AddChild(BuildStatRow("Tarjetas", stats.HomeCards, stats.AwayCards));
+        col.AddChild(BuildStatRow("Posesión", $"{stats.HomePossession}%", $"{stats.AwayPossession}%"));
+
+        panel.AddChild(col);
+        return panel;
+    }
+
+    private static HBoxContainer BuildStatRow(string label, int home, int away) =>
+        BuildStatRow(label, home.ToString(Inv), away.ToString(Inv));
+
+    private static HBoxContainer BuildStatRow(string label, string home, string away)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        AddColumnValue(row, label, 140, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, home, 80, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
+        AddColumnValue(row, "-", 20, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Center);
+        AddColumnValue(row, away, 80, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Left);
+        return row;
     }
 
     // ----- Historial ------------------------------------------------------

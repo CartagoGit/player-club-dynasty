@@ -153,7 +153,34 @@ public sealed record MatchEvent(
     bool IsHomeActor,
     bool IsGoal,
     int Magnitude,
-    string Description);
+    string Description)
+{
+    /// <summary>
+    /// Coarse-grained event type derived from <see cref="IsGoal"/> and
+    /// <see cref="Magnitude"/> so the UI can colour and group them
+    /// without owning a parallel taxonomy.
+    /// </summary>
+    public MatchEventKind Kind => Classify(IsGoal, Magnitude);
+
+    private static MatchEventKind Classify(bool isGoal, int magnitude) => isGoal
+        ? MatchEventKind.Goal
+        : magnitude switch
+        {
+            >= 80 => MatchEventKind.Save,
+            >= 60 => MatchEventKind.Shot,
+            >= 40 => MatchEventKind.Card,
+            _ => MatchEventKind.Miss,
+        };
+}
+
+public enum MatchEventKind
+{
+    Goal,
+    Shot,
+    Save,
+    Miss,
+    Card,
+}
 
 /// <summary>
 /// Final outcome of a simulated match, including the full event timeline so
