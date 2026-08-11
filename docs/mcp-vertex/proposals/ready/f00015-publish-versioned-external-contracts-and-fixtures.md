@@ -28,7 +28,7 @@ External tools, importers and future clients must integrate without depending on
 
 ### S1 — Define public contract ownership and versions
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Contracts/ContractVersion.cs`, `game/src/PCDynasty.Contracts/Commands/CommandEnvelope.cs`, `game/src/PCDynasty.Contracts/Events/EventEnvelope.cs`
+- **Files**: `game/src/PCDynasty.Contracts/ContractVersion.cs`, `game/src/PCDynasty.Contracts/Commands/CommandEnvelope.cs`, `game/src/PCDynasty.Contracts/Events/EventEnvelope.cs`, `game/tests/PCDynasty.Contracts.Tests/PCDynasty.Contracts.Tests.csproj`, `game/tests/PCDynasty.Contracts.Tests/ContractEnvelopeTests.cs`
 - **Gate**: type
 - acceptance:
   - "Contracts expose immutable versioned envelopes and causal metadata."
