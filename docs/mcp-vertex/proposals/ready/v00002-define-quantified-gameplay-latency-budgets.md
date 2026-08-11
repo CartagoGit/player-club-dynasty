@@ -34,7 +34,7 @@ The game must feel instant while playing; benchmarks need product-visible limits
   - "Budgets distinguish UI interaction, background work, season advance and first-load scenarios."
 
 ### S2 — Create interaction performance scenarios
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/benchmarks/PCDynasty.Benchmarks/InteractionBenchmarks.cs`, `game/benchmarks/PCDynasty.Benchmarks/MaterializationBenchmarks.cs`, `game/tests/PCDynasty.Benchmark.Tests/InteractionBudgetTests.cs`
 - **Gate**: e2e
