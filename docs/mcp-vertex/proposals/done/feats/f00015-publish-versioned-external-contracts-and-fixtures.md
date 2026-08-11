@@ -2,7 +2,7 @@
 id: f00015
 title: "Publish versioned external contracts and fixtures"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: integration
 date: 2026-08-11
@@ -42,7 +42,7 @@ External tools, importers and future clients must integrate without depending on
   - "External data and save metadata contracts remain independent from domain entities."
 
 ### S3 — Add compatibility fixture suite
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/tests/PCDynasty.Contracts.Tests/Fixtures/v1-command.json`, `game/tests/PCDynasty.Contracts.Tests/CompatibilityFixtureTests.cs`
 - **Gate**: type
