@@ -2,7 +2,7 @@
 id: x00028
 title: "Make declarative editor slices globally testable"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: modding
 date: 2026-08-11
@@ -34,7 +34,7 @@ The editor proposal names tests but omits their project and solution integration
   - "Editor tests have an isolated executable test project referencing editor services."
 
 ### S2 — Include editor projects in solution
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/PCDynasty.sln`
 - **Gate**: type
