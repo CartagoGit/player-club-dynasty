@@ -2,7 +2,7 @@
 id: x00034
 title: "Allow benchmark workload inheritance"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11

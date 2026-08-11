@@ -2,7 +2,7 @@
 id: x00032
 title: "Make benchmark regression gates executable"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11
@@ -34,7 +34,7 @@ The benchmark proposal names a regression test source file but omits its executa
   - "Benchmark budget tests reference the benchmark assembly and public runtime assemblies."
 
 ### S2 — Include benchmark regression tests in solution
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/PCDynasty.sln`
 - **Gate**: e2e

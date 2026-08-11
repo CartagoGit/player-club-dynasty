@@ -2,7 +2,7 @@
 id: v00001
 title: "Establish simulation benchmarks and performance budgets"
 kind: perf
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11

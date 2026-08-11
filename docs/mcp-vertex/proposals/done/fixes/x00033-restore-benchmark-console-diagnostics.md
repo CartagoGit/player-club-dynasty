@@ -2,7 +2,7 @@
 id: x00033
 title: "Restore benchmark console diagnostics"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: performance
 date: 2026-08-11
