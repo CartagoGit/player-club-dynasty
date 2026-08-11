@@ -34,7 +34,7 @@ The game needs the usability spirit of classic football managers without copying
   - "Godot references Application contracts one-way and has no domain logic."
 
 ### S2 — Define proprietary manager UI tokens and patterns
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Theme/PCDynastyTheme.tres`, `game/godot/Theme/ManagerDesignTokens.cs`, `docs/design/manager-ui-style-guide.md`
 - **Gate**: none
