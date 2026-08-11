@@ -2,7 +2,7 @@
 id: f00020
 title: "Implement club economy market and negotiations"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: economy
 date: 2026-08-11
