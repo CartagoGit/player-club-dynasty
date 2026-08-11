@@ -2,7 +2,7 @@
 id: x00023
 title: "Make economy and market slices independently testable"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: economy
 date: 2026-08-11
@@ -34,7 +34,7 @@ The proposal owns behavioral test sources but omitted both test project files.
   - "Economy tests reference the Economy project and repository test packages."
 
 ### S2 — Add Market test project
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/tests/PCDynasty.Market.Tests/PCDynasty.Market.Tests.csproj`
 - **Gate**: none
 - acceptance:
