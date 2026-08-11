@@ -34,7 +34,7 @@ This is the smallest proof that rules, standings and transitions can support a r
   - "Football scoring is supplied by the pack and respects rule versions."
 
 ### S2 — Implement promotion and relegation resolver
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Football/Competitions/PromotionRelegationResolver.cs`, `game/src/PCDynasty.Football/Competitions/SeasonClosure.cs`, `game/tests/PCDynasty.Football.Tests/PromotionRelegationResolverTests.cs`
 - **Gate**: type
