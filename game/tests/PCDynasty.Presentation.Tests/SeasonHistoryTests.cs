@@ -70,11 +70,54 @@ public sealed class SeasonHistoryTests
         Assert.Same(SeasonHistory.Instance, SeasonHistory.Instance);
     }
 
+    [Fact]
+    public void LatestSeasonForReturnsMostRecentForClub()
+    {
+        var history = SeasonHistory.CreateForTesting();
+        history.Append(NewEntryFor("club:a", "Alpha", position: 3, points: 6));
+        history.Append(NewEntryFor("club:b", "Bravo", position: 1, points: 9));
+        history.Append(NewEntryFor("club:a", "Alpha", position: 2, points: 7));
+
+        var latest = history.LatestSeasonFor("club:a");
+
+        Assert.NotNull(latest);
+        Assert.Equal("Alpha", latest!.ManagedClubDisplayName);
+        Assert.Equal(2, latest.ManagedPosition);
+        Assert.Equal(7, latest.ManagedPoints);
+    }
+
+    [Fact]
+    public void LatestSeasonForReturnsNullForUnknownClub()
+    {
+        var history = SeasonHistory.CreateForTesting();
+        history.Append(NewEntryFor("club:a", "Alpha", position: 1, points: 9));
+
+        Assert.Null(history.LatestSeasonFor("club:unknown"));
+    }
+
+    [Fact]
+    public void SeasonsForFiltersByClubIdAndPreservesOrder()
+    {
+        var history = SeasonHistory.CreateForTesting();
+        history.Append(NewEntryFor("club:a", "Alpha", position: 3, points: 6));
+        history.Append(NewEntryFor("club:b", "Bravo", position: 1, points: 9));
+        history.Append(NewEntryFor("club:a", "Alpha", position: 1, points: 9));
+
+        var seasons = history.SeasonsFor("club:a");
+
+        Assert.Equal(2, seasons.Count);
+        Assert.Equal(3, seasons[0].ManagedPosition);
+        Assert.Equal(1, seasons[1].ManagedPosition);
+    }
+
     private static SeasonHistoryEntry NewEntry(int position, int points) =>
+        NewEntryFor("club:test", "Test FC", position, points);
+
+    private static SeasonHistoryEntry NewEntryFor(string clubId, string clubName, int position, int points) =>
         new(
             CompetitionDisplayName: "Test Cup",
-            ManagedClubId: "club:test",
-            ManagedClubDisplayName: "Test FC",
+            ManagedClubId: clubId,
+            ManagedClubDisplayName: clubName,
             ManagedPosition: position,
             ManagedPoints: points,
             ManagedGoalsFor: 10,

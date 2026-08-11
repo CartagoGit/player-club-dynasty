@@ -159,6 +159,7 @@ public partial class MainController : Control
             ["Sin alertas activas — temporada en pretemporada."],
             ManagerDesignTokens.TextSecondary));
 
+        layout.AddChild(BuildCareerPanel(club));
         layout.AddChild(BuildUpcomingFixturesPanel(club));
 
         layout.AddChild(BuildPanel(
@@ -167,6 +168,34 @@ public partial class MainController : Control
             ManagerDesignTokens.Accent));
 
         root.AddChild(layout);
+    }
+
+    private static PanelContainer BuildCareerPanel(ClubRow club)
+    {
+        var seasons = SeasonHistory.Instance.SeasonsFor(club.ExternalId);
+        var lines = new List<string>();
+
+        if (seasons.Count == 0)
+        {
+            lines.Add("Sin temporadas jugadas todavía — Competiciones → Jugar temporada completa.");
+        }
+        else
+        {
+            var latest = seasons[^1];
+            string championBadge = latest.ManagedPosition == 1 ? " ★ CAMPEÓN" : string.Empty;
+            lines.Add($"Última: {latest.CompetitionDisplayName} · puesto {latest.ManagedPosition}/{latest.TotalClubs}{championBadge}");
+            lines.Add($"Puntos: {latest.ManagedPoints} · {latest.ManagedGoalsFor}GF / {latest.ManagedGoalsAgainst}GC");
+
+            int wins = seasons.Count(entry => entry.ManagedPosition == 1);
+            int podiums = seasons.Count(entry => entry.ManagedPosition <= 3);
+            int totalPoints = seasons.Sum(entry => entry.ManagedPoints);
+            lines.Add($"Histórico: {seasons.Count} temp · {wins} títulos · {podiums} podios · {totalPoints} pts totales");
+        }
+
+        return BuildPanel(
+            "CARRERA",
+            lines.ToArray(),
+            ManagerDesignTokens.Accent);
     }
 
     private static PanelContainer BuildUpcomingFixturesPanel(ClubRow club)
