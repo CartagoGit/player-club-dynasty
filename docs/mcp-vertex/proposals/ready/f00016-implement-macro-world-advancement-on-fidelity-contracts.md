@@ -34,7 +34,7 @@ The world must evolve at scale while the dedicated fidelity protocol remains the
   - "World state has explicit date, version and compact annual club state."
 
 ### S2 — Implement macro season scheduler
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.World/PCDynasty.World.csproj`, `game/src/PCDynasty.World/Seasons/MacroSeasonTransition.cs`, `game/src/PCDynasty.World/Seasons/MacroSeasonScheduler.cs`, `game/tests/PCDynasty.World.Tests/MacroSeasonTransitionTests.cs`
 - **Gate**: type

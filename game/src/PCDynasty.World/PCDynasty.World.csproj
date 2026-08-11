@@ -3,4 +3,7 @@
     <AssemblyName>PCDynasty.World</AssemblyName>
     <RootNamespace>PCDynasty.World</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Contracts/PCDynasty.Contracts.csproj" />
+  </ItemGroup>
 </Project>
