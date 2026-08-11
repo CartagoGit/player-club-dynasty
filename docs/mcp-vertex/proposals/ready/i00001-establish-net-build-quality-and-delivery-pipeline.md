@@ -42,7 +42,7 @@ Architecture standards only become permanent when the build prevents regressions
   - "Core tests and forbidden-dependency checks run without Godot."
 
 ### S3 — Add CI quality workflow
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `.github/workflows/game-quality.yml`, `game/scripts/run-benchmarks.sh`
 - **Gate**: e2e
