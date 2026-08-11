@@ -95,6 +95,13 @@ public partial class MainController : Control
             return;
         }
 
+        if (_selectedSection == "club_picker")
+        {
+            RenderClubPicker(root, clubs);
+            status?.SetText("● Selección de club");
+            return;
+        }
+
         switch (_selectedSection)
         {
             case "plantilla":
@@ -114,7 +121,7 @@ public partial class MainController : Control
 
     // ----- Resumen --------------------------------------------------------
 
-    private static void RenderClubOverview(Control root, ClubRow club)
+    private void RenderClubOverview(Control root, ClubRow club)
     {
         var layout = new VBoxContainer();
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
@@ -148,7 +155,7 @@ public partial class MainController : Control
         root.AddChild(layout);
     }
 
-    private static HBoxContainer BuildClubHeader(ClubRow club)
+    private HBoxContainer BuildClubHeader(ClubRow club)
     {
         var band = new HBoxContainer();
         band.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
@@ -202,7 +209,18 @@ public partial class MainController : Control
         phase.AddThemeFontSizeOverride("font_size", 16);
         band.AddChild(phase);
 
+        var pickBtn = new Button { Text = "Cambiar club" };
+        pickBtn.AddThemeFontSizeOverride("font_size", 12);
+        pickBtn.Pressed += OpenClubPicker;
+        band.AddChild(pickBtn);
+
         return band;
+    }
+
+    private void OpenClubPicker()
+    {
+        _selectedSection = "club_picker";
+        RenderCurrent();
     }
 
     // ----- Plantilla ------------------------------------------------------
@@ -475,6 +493,73 @@ public partial class MainController : Control
         layout.AddChild(backButton);
 
         return layout;
+    }
+
+    // ----- Club picker -----------------------------------------------------
+
+    private void RenderClubPicker(Control root, IReadOnlyList<ClubRow> clubs)
+    {
+        var layout = new VBoxContainer();
+        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        var header = new Label
+        {
+            Text = $"SELECCIONA UN CLUB · {clubs.Count} DISPONIBLES",
+        };
+        header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
+        header.AddThemeFontSizeOverride("font_size", 18);
+        layout.AddChild(header);
+
+        var headerRow = new HBoxContainer();
+        headerRow.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        AddColumnHeader(headerRow, "CLUB", 260);
+        AddColumnHeader(headerRow, "PAÍS", 100);
+        AddColumnHeader(headerRow, "FUND.", 60);
+        AddColumnHeader(headerRow, "PREST.", 70, HorizontalAlignment.Right);
+        AddColumnHeader(headerRow, "AFIC.", 70, HorizontalAlignment.Right);
+        AddColumnHeader(headerRow, "PLANT.", 70, HorizontalAlignment.Right);
+        AddColumnHeader(headerRow, "ACCIÓN", 110, HorizontalAlignment.Right);
+        layout.AddChild(headerRow);
+        layout.AddChild(new HSeparator());
+
+        foreach (var club in clubs)
+        {
+            layout.AddChild(BuildClubPickerRow(club));
+        }
+
+        root.AddChild(layout);
+    }
+
+    private HBoxContainer BuildClubPickerRow(ClubRow club)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        AddColumnValue(row, club.DisplayName, 260, ManagerDesignTokens.TextPrimary);
+        AddColumnValue(row, club.CountryShortName, 100, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, club.FoundedYear, 60, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, club.Prestige.ToString(Inv), 70, ValueColor(club.Prestige), HorizontalAlignment.Right);
+        AddColumnValue(row, club.Fanbase.ToString(Inv), 70, ValueColor(club.Fanbase), HorizontalAlignment.Right);
+        AddColumnValue(row, club.SquadSize.ToString(Inv), 70, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
+
+        var pickBtn = new Button { Text = "Elegir" };
+        pickBtn.AddThemeFontSizeOverride("font_size", 12);
+        string capturedId = club.ExternalId;
+        pickBtn.Pressed += () => PickClub(capturedId);
+        var cell = new HBoxContainer();
+        cell.CustomMinimumSize = new Vector2(110, 0);
+        cell.AddChild(pickBtn);
+        cell.SizeFlagsHorizontal = 0;
+        row.AddChild(cell);
+
+        return row;
+    }
+
+    private void PickClub(string clubExternalId)
+    {
+        _selectedClubId = clubExternalId;
+        _selectedSection = "resumen";
+        RenderCurrent();
     }
 
     // ----- helpers --------------------------------------------------------
