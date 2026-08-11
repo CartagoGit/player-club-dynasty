@@ -27,7 +27,7 @@ Non-omniscient information and useful professionals are core gameplay, not decor
 - global_gate: type
 
 ### S1 — Define staff capability and knowledge domains
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Knowledge/Staff/StaffKnowledgeProfile.cs`, `game/src/PCDynasty.Knowledge/Staff/KnowledgeDomain.cs`, `game/tests/PCDynasty.Knowledge.Tests/KnowledgeDomainTests.cs`
 - **Gate**: type
 - acceptance:
