@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Core", "src\PCDynasty.Core\PCDynasty.Core.csproj", "{C0A3EC40-38B4-4EFC-992B-A225AEFC8E63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCDynasty.Core.Tests", "tests\PCDynasty.Core.Tests\PCDynasty.Core.Tests.csproj", "{0D39B550-8C43-4BD6-961D-27891684D6D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0A3EC40-38B4-4EFC-992B-A225AEFC8E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0A3EC40-38B4-4EFC-992B-A225AEFC8E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0A3EC40-38B4-4EFC-992B-A225AEFC8E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0A3EC40-38B4-4EFC-992B-A225AEFC8E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D39B550-8C43-4BD6-961D-27891684D6D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D39B550-8C43-4BD6-961D-27891684D6D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D39B550-8C43-4BD6-961D-27891684D6D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D39B550-8C43-4BD6-961D-27891684D6D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
