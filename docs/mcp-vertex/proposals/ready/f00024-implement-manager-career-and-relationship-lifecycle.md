@@ -27,7 +27,7 @@ The product includes a career experience in which managers and staff can evolve 
 - global_gate: type
 
 ### S1 — Define career identity and reputation
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Career/PCDynasty.Career.csproj`, `game/src/PCDynasty.Career/Manager/ManagerCareer.cs`, `game/tests/PCDynasty.Career.Tests/ManagerCareerTests.cs`
 - **Gate**: type
 - acceptance:
