@@ -28,7 +28,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
 
 ### S1 — Define deterministic protocol contracts
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Contracts/PCDynasty.Contracts.csproj`, `game/src/PCDynasty.Contracts/Simulation/DeterministicSimulationSpec.cs`, `game/src/PCDynasty.Contracts/Simulation/EventSequence.cs`
+- **Files**: `game/src/PCDynasty.Contracts/PCDynasty.Contracts.csproj`, `game/src/PCDynasty.Contracts/Simulation/DeterministicSimulationSpec.cs`, `game/src/PCDynasty.Contracts/Simulation/EventSequence.cs`, `game/tests/PCDynasty.Contracts.Tests/PCDynasty.Contracts.Tests.csproj`, `game/tests/PCDynasty.Contracts.Tests/DeterministicSimulationSpecTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Protocol versions PRNG, canonical serialization, time, precision and total event ordering."
@@ -36,7 +36,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
 ### S2 — Implement deterministic seed and arithmetic services
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Simulation/Determinism/SeedDeriver.cs`, `game/src/PCDynasty.Simulation/Determinism/DeterministicNumber.cs`, `game/tests/PCDynasty.Simulation.Tests/DeterminismTests.cs`
+- **Files**: `game/src/PCDynasty.Simulation/PCDynasty.Simulation.csproj`, `game/src/PCDynasty.Simulation/Determinism/SeedDeriver.cs`, `game/src/PCDynasty.Simulation/Determinism/DeterministicNumber.cs`, `game/tests/PCDynasty.Simulation.Tests/DeterminismTests.cs`
 - **Gate**: type
 - acceptance:
   - "Derived seeds and numeric outcomes are stable across runs."
@@ -44,7 +44,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
 ### S3 — Add golden replay fixtures
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/tests/PCDynasty.Simulation.Tests/Fixtures/GoldenReplay.json`, `game/tests/PCDynasty.Simulation.Tests/GoldenReplayTests.cs`, `game/tests/PCDynasty.Simulation.Tests/ParallelReplayTests.cs`
+- **Files**: `game/tests/PCDynasty.Simulation.Tests/PCDynasty.Simulation.Tests.csproj`, `game/tests/PCDynasty.Simulation.Tests/Fixtures/GoldenReplay.json`, `game/tests/PCDynasty.Simulation.Tests/GoldenReplayTests.cs`, `game/tests/PCDynasty.Simulation.Tests/ParallelReplayTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "Independent process and series/parallel execution reproduce canonical facts."
