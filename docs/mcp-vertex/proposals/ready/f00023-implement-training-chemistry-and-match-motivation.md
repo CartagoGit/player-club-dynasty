@@ -34,7 +34,7 @@ Team performance cannot be reduced to player averages, and the manager needs und
   - "Training affects form, fatigue and development through shared domain policies."
 
 ### S2 — Implement team chemistry state
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Simulation/Teams/TeamChemistry.cs`, `game/src/PCDynasty.Simulation/Teams/ChemistryAdvancer.cs`, `game/tests/PCDynasty.Simulation.Tests/ChemistryAdvancerTests.cs`
 - **Gate**: type
 - acceptance:
