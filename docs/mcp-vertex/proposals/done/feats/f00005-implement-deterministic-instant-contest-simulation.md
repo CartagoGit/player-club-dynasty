@@ -2,7 +2,7 @@
 id: f00005
 title: "Implement deterministic instant contest simulation"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: simulation
 date: 2026-08-11
@@ -42,7 +42,7 @@ Fast, reproducible match simulation is central to the manager experience and est
   - "Same inputs and seed always produce the same ordered events."
 
 ### S3 — Add football contest adapter and replay view
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Simulation/FootballContestPack.cs`, `game/src/PCDynasty.Application/Matches/MatchTimelineQuery.cs`, `game/tests/PCDynasty.Football.Tests/PCDynasty.Football.Tests.csproj`, `game/tests/PCDynasty.Football.Tests/FootballContestPackTests.cs`
 - **Gate**: type

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../src/PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Football/PCDynasty.Football.csproj" />
   </ItemGroup>
