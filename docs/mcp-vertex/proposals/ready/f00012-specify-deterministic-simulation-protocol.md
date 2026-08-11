@@ -34,7 +34,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
   - "Protocol versions PRNG, canonical serialization, time, precision and total event ordering."
 
 ### S2 — Implement deterministic seed and arithmetic services
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Simulation/PCDynasty.Simulation.csproj`, `game/src/PCDynasty.Simulation/Determinism/SeedDeriver.cs`, `game/src/PCDynasty.Simulation/Determinism/DeterministicNumber.cs`, `game/tests/PCDynasty.Simulation.Tests/DeterminismTests.cs`
 - **Gate**: type
