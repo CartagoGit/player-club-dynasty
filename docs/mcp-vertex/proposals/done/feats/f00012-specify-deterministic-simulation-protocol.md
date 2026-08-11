@@ -2,7 +2,7 @@
 id: f00012
 title: "Specify deterministic simulation protocol"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: simulation
 date: 2026-08-11
@@ -42,7 +42,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
   - "Derived seeds and numeric outcomes are stable across runs."
 
 ### S3 — Add golden replay fixtures
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/tests/PCDynasty.Simulation.Tests/PCDynasty.Simulation.Tests.csproj`, `game/tests/PCDynasty.Simulation.Tests/Fixtures/GoldenReplay.json`, `game/tests/PCDynasty.Simulation.Tests/GoldenReplayTests.cs`, `game/tests/PCDynasty.Simulation.Tests/ParallelReplayTests.cs`
 - **Gate**: e2e

@@ -17,4 +17,10 @@
     <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Fixtures/GoldenReplay.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
