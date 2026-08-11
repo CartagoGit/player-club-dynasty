@@ -27,7 +27,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
 - global_gate: e2e
 
 ### S1 — Define persistence contracts and manifest
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj`, `game/src/PCDynasty.Persistence.Abstractions/IWorldStore.cs`, `game/src/PCDynasty.Persistence.Abstractions/SaveManifest.cs`, `game/tests/PCDynasty.Persistence.Abstractions.Tests/PCDynasty.Persistence.Abstractions.Tests.csproj`, `game/tests/PCDynasty.Persistence.Abstractions.Tests/SaveManifestTests.cs`
 - **Gate**: type
 - acceptance:

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Persistence.Abstractions</AssemblyName>
+    <RootNamespace>PCDynasty.Persistence.Abstractions</RootNamespace>
+  </PropertyGroup>
+</Project>
