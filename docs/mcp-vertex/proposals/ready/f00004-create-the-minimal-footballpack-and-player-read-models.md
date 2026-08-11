@@ -34,7 +34,7 @@ Football must prove the pack boundary without defining football concepts in Core
   - "All football players have the complete catalogue with compiled IDs."
 
 ### S2 — Define position familiarity and role relevance
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Football/Positions/PositionFamiliarity.cs`, `game/src/PCDynasty.Football/Positions/RoleRelevance.cs`, `game/tests/PCDynasty.Football.Tests/PositionFamiliarityTests.cs`
 - **Gate**: type
