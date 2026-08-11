@@ -2,7 +2,7 @@
 id: f00022
 title: "Implement scouting staff knowledge and projections"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: knowledge
 date: 2026-08-11
@@ -42,7 +42,7 @@ Non-omniscient information and useful professionals are core gameplay, not decor
   - "Conflicting and stale observations produce explainable confidence estimates."
 
 ### S3 — Implement projections and scouting assignments
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Knowledge/Projections/PlayerProjection.cs`, `game/src/PCDynasty.Knowledge/Scouting/ScoutingAssignment.cs`, `game/tests/PCDynasty.Knowledge.Tests/PlayerProjectionTests.cs`
 - **Gate**: type
