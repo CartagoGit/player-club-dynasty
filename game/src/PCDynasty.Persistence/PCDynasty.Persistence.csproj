@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Persistence</AssemblyName>
+    <RootNamespace>PCDynasty.Persistence</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

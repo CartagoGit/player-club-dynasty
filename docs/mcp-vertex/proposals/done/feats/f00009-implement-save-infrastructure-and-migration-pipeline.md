@@ -2,7 +2,7 @@
 id: f00009
 title: "Implement save infrastructure and migration pipeline"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: persistence
 date: 2026-08-11
@@ -42,7 +42,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
   - "Append and checkpoint are atomic and reload a consistent world."
 
 ### S3 — Implement migrations and recovery
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Persistence/PCDynasty.Persistence.csproj`, `game/src/PCDynasty.Persistence/Migrations/SaveMigrator.cs`, `game/tests/PCDynasty.Persistence.Tests/PCDynasty.Persistence.Tests.csproj`, `game/tests/PCDynasty.Persistence.Tests/SaveMigratorTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
