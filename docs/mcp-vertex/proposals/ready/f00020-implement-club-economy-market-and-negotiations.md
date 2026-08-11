@@ -34,7 +34,7 @@ A credible manager ecosystem needs money conservation, imperfect valuations and 
   - "Money is conserved and revenues, costs, debt and budgets have explicit ownership."
 
 ### S2 — Implement valuations and contracts
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Market/PCDynasty.Market.csproj`, `game/src/PCDynasty.Market/Valuation/PlayerValuation.cs`, `game/src/PCDynasty.Market/Contracts/ContractOffer.cs`
 - **Gate**: type
