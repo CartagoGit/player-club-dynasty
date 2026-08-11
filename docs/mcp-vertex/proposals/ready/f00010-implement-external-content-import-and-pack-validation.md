@@ -52,7 +52,7 @@ The game must load community or external databases without leaking external sche
 ### S4 — Add SQLite content reader
 - **Status**: pending
 - **DependsOn**: [S1, S3]
-- **Files**: `game/src/PCDynasty.Content.Importers/SqliteContentReader.cs`, `game/tests/PCDynasty.Content.Importers.Tests/SqliteContentReaderTests.cs`
+- **Files**: `game/src/PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj`, `game/src/PCDynasty.Content.Importers/SqliteContentReader.cs`, `game/tests/PCDynasty.Content.Importers.Tests/SqliteContentReaderTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "A large local database imports through the same external contract."
