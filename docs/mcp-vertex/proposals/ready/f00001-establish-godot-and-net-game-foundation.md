@@ -37,7 +37,7 @@ The initial plan requires a proposal before substantial implementation and the r
   - "States the web-export limitation for Godot C# and the contingency if browser delivery becomes required."
 
 ### S2 — Bootstrap the engine-neutral simulation core
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/PCDynasty.sln`, `game/Directory.Build.props`, `game/src/PCDynasty.Core/PCDynasty.Core.csproj`, `game/src/PCDynasty.Core/Domain/PersonId.cs`, `game/src/PCDynasty.Core/Domain/AttributeId.cs`, `game/src/PCDynasty.Core/Domain/AttributeVector.cs`, `game/tests/PCDynasty.Core.Tests/PCDynasty.Core.Tests.csproj`, `game/tests/PCDynasty.Core.Tests/Domain/AttributeVectorTests.cs`
 - **Gate**: type
