@@ -2,7 +2,7 @@
 id: f00018
 title: "Create player club and lineup interaction vertical slice"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: presentation
 date: 2026-08-11
@@ -41,7 +41,7 @@ This validates the manager's core daily flow and the classic quick-navigation UX
   - "Dense club information remains scannable and uses shared components."
 
 ### S3 — Build lineup command flow
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/godot/Scenes/Matches/LineupSelection.tscn`, `game/godot/Scripts/Matches/LineupSelectionController.cs`, `game/godot/Scripts/Matches/LineupCommandMapper.cs`
 - **Gate**: e2e
