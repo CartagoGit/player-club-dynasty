@@ -34,7 +34,7 @@ Emergent careers need believable changes without fixed visible potential or dail
   - "Development uses talent, work, opportunity and biological factors without a fixed public potential."
 
 ### S2 — Implement lazy development advancement
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Careers/Development/DevelopmentAdvancer.cs`, `game/src/PCDynasty.Careers/Development/CareerWear.cs`, `game/tests/PCDynasty.Careers.Tests/DevelopmentAdvancerTests.cs`
 - **Gate**: type
