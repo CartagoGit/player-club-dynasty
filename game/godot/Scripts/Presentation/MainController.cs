@@ -829,9 +829,14 @@ AppendMatchAndPersist(new HistoryEntry(
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
 
         var entries = MatchHistory.Instance.Snapshot();
+        var competitions = entries.Select(e => e.CompetitionDisplayName).Distinct(StringComparer.Ordinal).OrderBy(c => c, StringComparer.Ordinal).ToArray();
+        var clubs = WorldService.Instance?.ListClubs().ToArray() ?? Array.Empty<ClubRow>();
+
+        // Aggregate panel: total matches, goals, distinct competitions.
+        var totalGoals = entries.Sum(e => e.HomeGoals + e.AwayGoals);
         var header = new Label
         {
-            Text = $"HISTORIAL DE PARTIDOS · {entries.Count} REGISTROS",
+            Text = $"HISTORIAL DE PARTIDOS · {entries.Count} partidos · {totalGoals} goles · {competitions.Length} competiciones",
         };
         header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
         header.AddThemeFontSizeOverride("font_size", 18);
@@ -845,6 +850,9 @@ AppendMatchAndPersist(new HistoryEntry(
         }
         else
         {
+            layout.AddChild(BuildHistoryFilters(competitions, clubs));
+            layout.AddChild(BuildHistoryAggregateByClub(entries));
+
             var headerRow = new HBoxContainer();
             headerRow.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
             AddColumnHeader(headerRow, "CUÁNDO", 130);
@@ -856,7 +864,10 @@ AppendMatchAndPersist(new HistoryEntry(
             layout.AddChild(headerRow);
             layout.AddChild(new HSeparator());
 
-            foreach (var entry in entries.Reverse())
+            var filtered = FilterHistoryEntries(entries);
+            var ordered = OrderHistoryEntries(filtered, "fecha");
+
+            foreach (var entry in ordered)
             {
                 layout.AddChild(BuildHistoryRow(entry));
             }
@@ -864,6 +875,93 @@ AppendMatchAndPersist(new HistoryEntry(
 
         root.AddChild(layout);
     }
+
+    private static HBoxContainer BuildHistoryFilters(string[] competitions, ClubRow[] clubs)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        AddColumnHeader(row, "RESUMEN POR CLUB", 1100);
+        layout_add_filter(row, "Competiciones: " + (competitions.Length == 0 ? "—" : string.Join(", ", competitions)), 600);
+        layout_add_filter(row, $"Clubs: {clubs.Length}", 200);
+        return row;
+    }
+
+    private static void layout_add_filter(HBoxContainer row, string text, int width)
+    {
+        AddColumnValue(row, text, width, ManagerDesignTokens.TextSecondary);
+    }
+
+    private static PanelContainer BuildHistoryAggregateByClub(IReadOnlyList<HistoryEntry> entries)
+    {
+        var stats = new Dictionary<string, (int Played, int Wins, int Draws, int Losses, int Gf, int Ga)>(StringComparer.Ordinal);
+        foreach (var entry in entries)
+        {
+            Accumulate(stats, entry.HomeClubId, entry.HomeGoals, entry.AwayGoals, isHome: true);
+            Accumulate(stats, entry.AwayClubId, entry.AwayGoals, entry.HomeGoals, isHome: false);
+        }
+
+        var rows = stats.Select(kv =>
+        {
+            string clubName = WorldService.Instance?.FindClub(kv.Key)?.DisplayName ?? kv.Key;
+            int points = kv.Value.Wins * 3 + kv.Value.Draws;
+            int diff = kv.Value.Gf - kv.Value.Ga;
+            return $"{clubName} · {kv.Value.Played}PJ {kv.Value.Wins}G {kv.Value.Draws}E {kv.Value.Losses}P · {kv.Value.Gf}GF {kv.Value.Ga}GC ({diff:+#;-#;0}) · {points} pts";
+        }).OrderByDescending(s => ExtractPoints(s)).Take(8).ToArray();
+
+        return BuildPanel(
+            "ACUMULADO HISTÓRICO",
+            rows.Length == 0 ? ["Sin datos"] : rows,
+            ManagerDesignTokens.Accent);
+    }
+
+    private static void Accumulate(
+        Dictionary<string, (int Played, int Wins, int Draws, int Losses, int Gf, int Ga)> stats,
+        string clubId,
+        int gf,
+        int ga,
+        bool isHome)
+    {
+        stats.TryGetValue(clubId, out var current);
+        int wins = current.Wins + (gf > ga ? 1 : 0);
+        int draws = current.Draws + (gf == ga ? 1 : 0);
+        int losses = current.Losses + (gf < ga ? 1 : 0);
+        stats[clubId] = (
+            current.Played + 1,
+            wins,
+            draws,
+            losses,
+            current.Gf + gf,
+            current.Ga + ga);
+    }
+
+    private static int ExtractPoints(string line)
+    {
+        int idx = line.LastIndexOf('·');
+        if (idx < 0)
+        {
+            return 0;
+        }
+
+        string tail = line[(idx + 1)..].Trim().Replace(" pts", string.Empty);
+        return int.TryParse(tail, out var parsed) ? parsed : 0;
+    }
+
+    private static IEnumerable<HistoryEntry> FilterHistoryEntries(IReadOnlyList<HistoryEntry> entries)
+    {
+        // Phase 1: no filter UI yet, surface every entry. Hook for S20.
+        return entries;
+    }
+
+    private static IEnumerable<HistoryEntry> OrderHistoryEntries(
+        IEnumerable<HistoryEntry> entries,
+        string orderBy) =>
+        orderBy switch
+        {
+            "competicion" => entries.OrderBy(e => e.CompetitionDisplayName, StringComparer.Ordinal).ThenByDescending(e => e.PlayedAtUtc),
+            "goles" => entries.OrderByDescending(e => e.HomeGoals + e.AwayGoals).ThenByDescending(e => e.PlayedAtUtc),
+            _ => entries.OrderByDescending(e => e.PlayedAtUtc),
+        };
 
     private static HBoxContainer BuildHistoryRow(HistoryEntry entry)
     {
