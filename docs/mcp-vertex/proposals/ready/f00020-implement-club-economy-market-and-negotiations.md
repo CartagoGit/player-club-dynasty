@@ -27,7 +27,7 @@ A credible manager ecosystem needs money conservation, imperfect valuations and 
 - global_gate: e2e
 
 ### S1 — Define financial ledgers and annual club state
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Economy/PCDynasty.Economy.csproj`, `game/src/PCDynasty.Economy/Ledgers/ClubLedger.cs`, `game/tests/PCDynasty.Economy.Tests/ClubLedgerTests.cs`
 - **Gate**: type
 - acceptance:
