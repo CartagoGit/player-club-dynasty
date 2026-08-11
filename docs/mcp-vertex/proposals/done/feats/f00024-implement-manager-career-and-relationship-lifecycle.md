@@ -2,7 +2,7 @@
 id: f00024
 title: "Implement manager career and relationship lifecycle"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: career
 date: 2026-08-11
@@ -42,7 +42,7 @@ The product includes a career experience in which managers and staff can evolve 
   - "Appointments and departures have explicit causes and effective dates."
 
 ### S3 — Implement offer and appointment resolver
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Career/Offers/CareerOfferResolver.cs`, `game/src/PCDynasty.Career/Offers/AppointmentDecision.cs`, `game/tests/PCDynasty.Career.Tests/CareerOfferResolverTests.cs`
 - **Gate**: type
