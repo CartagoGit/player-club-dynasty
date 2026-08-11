@@ -27,7 +27,7 @@ This validates the manager's core daily flow and the classic quick-navigation UX
 - global_gate: e2e
 
 ### S1 — Build player profile screen
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/godot/Scenes/Players/PlayerProfile.tscn`, `game/godot/Scripts/Players/PlayerProfileController.cs`, `game/godot/Scripts/Players/PlayerMetricDetailPanel.cs`
 - **Gate**: type
 - acceptance:
