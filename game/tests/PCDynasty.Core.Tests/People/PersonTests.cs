@@ -67,4 +67,16 @@ public sealed class PersonTests
             "fictional:country:monteluz",
             languageIds: ["es", " "]));
     }
+
+    [Fact]
+    public void RejectsADefaultPersonIdentity()
+    {
+        var profile = new PersonProfile(
+            "Iria",
+            "Valdés",
+            new DateOnly(2001, 3, 17),
+            "fictional:country:monteluz");
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Person(default, profile));
+    }
 }
