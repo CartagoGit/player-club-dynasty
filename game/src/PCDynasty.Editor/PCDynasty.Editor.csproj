@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Editor</AssemblyName>
+    <RootNamespace>PCDynasty.Editor</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

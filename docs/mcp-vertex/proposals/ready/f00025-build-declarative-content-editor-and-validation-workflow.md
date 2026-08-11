@@ -27,7 +27,7 @@ Community and internal content needs safe, usable editing without exposing engin
 - global_gate: type
 
 ### S1 — Create editor document and validation services
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Editor/PCDynasty.Editor.csproj`, `game/src/PCDynasty.Editor/Documents/PackDocument.cs`, `game/tests/PCDynasty.Editor.Tests/PackDocumentTests.cs`
 - **Gate**: type
 - acceptance:
