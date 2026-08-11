@@ -34,7 +34,7 @@ The product includes a career experience in which managers and staff can evolve 
   - "Manager progression and history use durable facts."
 
 ### S2 — Implement organization relationships
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Career/Relationships/OrganizationRelationship.cs`, `game/src/PCDynasty.Career/Relationships/RelationshipLifecycle.cs`, `game/tests/PCDynasty.Career.Tests/RelationshipLifecycleTests.cs`
 - **Gate**: type
