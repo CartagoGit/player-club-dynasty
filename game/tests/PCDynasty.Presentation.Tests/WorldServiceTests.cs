@@ -114,4 +114,55 @@ public sealed class WorldServiceTests
     {
         Assert.Throws<ArgumentException>(() => WorldService.Initialize(new JsonContentReader(), " "));
     }
+
+    [Fact]
+    public async Task ListCompetitionsForClubReturnsLeaguesAndCup()
+    {
+        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        await service.ReloadAsync();
+
+        var competitions = service.ListCompetitionsForClub("club:aurora-quay");
+
+        Assert.NotEmpty(competitions);
+        var names = competitions.Select(c => c.DisplayName).ToArray();
+        Assert.Contains("Boreal Series", names);
+        Assert.Contains("Horizon Cup", names);
+    }
+
+    [Fact]
+    public async Task ListCompetitionsForClubExposesRivalShortNames()
+    {
+        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        await service.ReloadAsync();
+
+        var competitions = service.ListCompetitionsForClub("club:aurora-quay");
+        var boreal = Assert.Single(competitions, c => c.ExternalId == "competition:boreal-series");
+
+        Assert.Equal("round-robin", boreal.Format);
+        Assert.Equal("annual", boreal.Frequency);
+        Assert.Contains("Northglass", boreal.Rivals);
+        Assert.DoesNotContain("Aurora Quay", boreal.Rivals);
+    }
+
+    [Fact]
+    public async Task ListCompetitionsForClubReturnsEmptyForUnknownClub()
+    {
+        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        await service.ReloadAsync();
+
+        var competitions = service.ListCompetitionsForClub("club:not-a-real-club");
+
+        Assert.Empty(competitions);
+    }
+
+    [Fact]
+    public async Task FindClubReturnsNullForUnknownClub()
+    {
+        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        await service.ReloadAsync();
+
+        var club = service.FindClub("club:not-a-real-club");
+
+        Assert.Null(club);
+    }
 }

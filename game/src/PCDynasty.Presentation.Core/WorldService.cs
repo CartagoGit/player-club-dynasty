@@ -126,6 +126,38 @@ public sealed class WorldService
             .ToImmutableArray();
     }
 
+    /// <summary>
+    /// Snapshot of every competition the given club participates in,
+    /// including the rival clubs that share the competition.
+    /// </summary>
+    public IReadOnlyList<CompetitionRow> ListCompetitionsForClub(string clubExternalId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
+
+        var competitions = RequireModel(ref _competitions, "competitions.json");
+        var clubs = RequireModel(ref _clubs, "clubs.json");
+
+        var clubNames = BuildClubShortNames(clubs);
+
+        return competitions.Entities
+            .Where(entity => entity.KindId == "competition"
+                && CompetitionIncludesClub(entity, clubExternalId))
+            .Select(entity => ProjectCompetition(entity, clubExternalId, clubNames))
+            .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
+            .ToImmutableArray();
+    }
+
+    /// <summary>
+    /// Look up a club by its external identifier. Returns null if missing.
+    /// </summary>
+    public ClubRow? FindClub(string clubExternalId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
+
+        return ListClubs().FirstOrDefault(club =>
+            string.Equals(club.ExternalId, clubExternalId, StringComparison.Ordinal));
+    }
+
     private async Task<ContentReadResult> ReadFileAsync(string fileName, CancellationToken cancellationToken)
     {
         string path = Path.Combine(_contentRoot, "data", fileName);
@@ -228,12 +260,87 @@ public sealed class WorldService
         return counts;
     }
 
+    private static bool CompetitionIncludesClub(NormalizedContentEntity competition, string clubExternalId)
+    {
+        foreach (var reference in competition.References)
+        {
+            if (string.Equals(reference.RelationId, "participant", StringComparison.Ordinal)
+                && string.Equals(reference.TargetExternalId, clubExternalId, StringComparison.Ordinal))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static Dictionary<string, string> BuildClubShortNames(NormalizedContentModel clubs)
+    {
+        var names = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var entity in clubs.Entities)
+        {
+            if (entity.KindId != "club")
+            {
+                continue;
+            }
+
+            string name = ReadValue(entity, "short-name", string.Empty);
+            if (name.Length == 0)
+            {
+                name = ReadValue(entity, "display-name", entity.ExternalId);
+            }
+
+            names[entity.ExternalId] = name;
+        }
+
+        return names;
+    }
+
+    private static CompetitionRow ProjectCompetition(
+        NormalizedContentEntity entity,
+        string clubExternalId,
+        Dictionary<string, string> clubNames)
+    {
+        string displayName = ReadValue(entity, "display-name", entity.ExternalId);
+        string format = ReadValue(entity, "format", "—");
+        string frequency = ReadValue(entity, "edition-frequency", "—");
+
+        var rivals = new List<string>();
+        foreach (var reference in entity.References)
+        {
+            if (!string.Equals(reference.RelationId, "participant", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            if (string.Equals(reference.TargetExternalId, clubExternalId, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            if (clubNames.TryGetValue(reference.TargetExternalId, out var rivalName))
+            {
+                rivals.Add(rivalName);
+            }
+        }
+
+        rivals.Sort(StringComparer.Ordinal);
+
+        return new CompetitionRow(
+            ExternalId: entity.ExternalId,
+            DisplayName: displayName,
+            Format: format,
+            Frequency: frequency,
+            Rivals: rivals.ToImmutableArray());
+    }
+
     private static ClubRow ProjectClub(
         NormalizedContentEntity entity,
         Dictionary<string, string> countryNames,
         Dictionary<string, int> playersPerClub)
     {
         string displayName = ReadValue(entity, "display-name", entity.ExternalId);
+        string shortName = ReadValue(entity, "short-name", displayName);
         string city = ReadValue(entity, "city", "—");
         string foundedYear = ReadValue(entity, "founded-year", "—");
         int prestige = ParseInt(ReadValue(entity, "prestige", "0"));
@@ -255,6 +362,7 @@ public sealed class WorldService
         return new ClubRow(
             ExternalId: entity.ExternalId,
             DisplayName: displayName,
+            ShortName: shortName,
             City: city,
             CountryShortName: countryShortName,
             FoundedYear: foundedYear,
@@ -308,6 +416,7 @@ public sealed class WorldService
 public sealed record ClubRow(
     string ExternalId,
     string DisplayName,
+    string ShortName,
     string City,
     string CountryShortName,
     string FoundedYear,
@@ -327,3 +436,13 @@ public sealed record PlayerRow(
     int Physical,
     int Mental,
     int Overall);
+
+/// <summary>
+/// Immutable projection of a competition the player club participates in.
+/// </summary>
+public sealed record CompetitionRow(
+    string ExternalId,
+    string DisplayName,
+    string Format,
+    string Frequency,
+    IReadOnlyList<string> Rivals);
