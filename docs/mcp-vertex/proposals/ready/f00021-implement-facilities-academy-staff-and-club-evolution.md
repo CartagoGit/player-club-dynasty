@@ -42,7 +42,7 @@ Club management must create durable sporting and financial consequences beyond t
   - "Youth output derives from facilities, region and time with controlled randomness."
 
 ### S3 — Implement staff and club evolution effects
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Club/Staff/StaffEffectResolver.cs`, `game/src/PCDynasty.Club/Reputation/ClubEvolution.cs`, `game/tests/PCDynasty.Club.Tests/ClubEvolutionTests.cs`
 - **Gate**: type
