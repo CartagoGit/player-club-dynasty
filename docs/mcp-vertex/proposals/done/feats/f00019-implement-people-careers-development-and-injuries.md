@@ -2,7 +2,7 @@
 id: f00019
 title: "Implement people careers development and injuries"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: people
 date: 2026-08-11
