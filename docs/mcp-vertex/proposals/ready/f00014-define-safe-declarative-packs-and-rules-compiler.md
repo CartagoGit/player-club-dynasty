@@ -34,7 +34,7 @@ Packs need extensibility without granting arbitrary code execution or making the
   - "Audited engine extensions and declarative community packs have distinct permitted capabilities."
 
 ### S2 — Define declarative rule intermediate representation
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Rules/Compilation/RuleIntermediateRepresentation.cs`, `game/src/PCDynasty.Rules/Compilation/RuleComplexityLimits.cs`, `game/tests/PCDynasty.Rules.Tests/RuleIntermediateRepresentationTests.cs`
 - **Gate**: type
