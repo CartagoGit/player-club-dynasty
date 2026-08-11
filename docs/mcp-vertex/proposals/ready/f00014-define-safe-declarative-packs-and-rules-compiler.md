@@ -44,7 +44,7 @@ Packs need extensibility without granting arbitrary code execution or making the
 ### S3 — Implement pack security validation
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Content/Validation/PackSecurityValidator.cs`, `game/tests/PCDynasty.Content.Tests/PackSecurityValidatorTests.cs`
+- **Files**: `game/src/PCDynasty.Content/PCDynasty.Content.csproj`, `game/src/PCDynasty.Content/Validation/PackSecurityValidator.cs`, `game/tests/PCDynasty.Content.Tests/PackSecurityValidatorTests.cs`
 - **Gate**: type
 - acceptance:
   - "Forbidden paths, code and excessive complexity are rejected deterministically."
