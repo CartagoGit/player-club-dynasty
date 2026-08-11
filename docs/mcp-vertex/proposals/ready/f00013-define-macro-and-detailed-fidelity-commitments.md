@@ -28,7 +28,7 @@ World scale is unsafe unless low-fidelity summaries can become detailed without 
 
 ### S1 — Define fidelity ledger contracts
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.World/Commitments/HistoricalCommitment.cs`, `game/src/PCDynasty.World/Commitments/FidelityOwnership.cs`, `game/tests/PCDynasty.World.Tests/FidelityOwnershipTests.cs`
+- **Files**: `game/src/PCDynasty.World/PCDynasty.World.csproj`, `game/src/PCDynasty.World/Commitments/HistoricalCommitment.cs`, `game/src/PCDynasty.World/Commitments/FidelityOwnership.cs`, `game/tests/PCDynasty.World.Tests/PCDynasty.World.Tests.csproj`, `game/tests/PCDynasty.World.Tests/FidelityOwnershipTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Committed outcomes, ownership intervals and promotion boundaries are explicit."
