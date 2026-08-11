@@ -26,6 +26,7 @@ public partial class MainController : Control
     [Export] public NodePath SquadButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
     [Export] public NodePath HistoryButtonPath { get; set; } = new();
+    [Export] public NodePath WorldButtonPath { get; set; } = new();
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
@@ -52,6 +53,7 @@ public partial class MainController : Control
         Wire(SquadButtonPath, "plantilla");
         Wire(CompetitionsButtonPath, "competiciones");
         Wire(HistoryButtonPath, "historial");
+        Wire(WorldButtonPath, "mundial");
     }
 
     private void Wire(NodePath path, string sectionId)
@@ -117,6 +119,10 @@ public partial class MainController : Control
             case "historial":
                 RenderHistory(root);
                 status?.SetText($"● Historial de partidos");
+                break;
+            case "mundial":
+                RenderWorldOverview(root);
+                status?.SetText($"● Mundial de competiciones");
                 break;
             default:
                 RenderClubOverview(root, club);
@@ -890,6 +896,74 @@ public partial class MainController : Control
             parent.RemoveChild(child);
             child.QueueFree();
         }
+    }
+
+    // ----- Mundial --------------------------------------------------------
+
+    private static void RenderWorldOverview(Control root)
+    {
+        var layout = new VBoxContainer();
+        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        var competitions = WorldService.Instance?.ListAllCompetitions() ?? Array.Empty<CompetitionRow>();
+
+        var header = new Label
+        {
+            Text = $"MUNDIAL DE COMPETICIONES · {competitions.Count} LIGAS Y COPAS",
+        };
+        header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
+        header.AddThemeFontSizeOverride("font_size", 18);
+        layout.AddChild(header);
+
+        // Aggregated overview: count clubs that play in at least one competition.
+        var participatingClubIds = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var competition in competitions)
+        {
+            foreach (var rival in competition.Rivals)
+            {
+                participatingClubIds.Add(rival);
+            }
+        }
+
+        var summary = new Label
+        {
+            Text = $"{participatingClubIds.Count} clubes inscritos en al menos una competición",
+        };
+        summary.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+        summary.AddThemeFontSizeOverride("font_size", 12);
+        layout.AddChild(summary);
+
+        layout.AddChild(new HSeparator());
+
+        // Table header.
+        var headerRow = new HBoxContainer();
+        headerRow.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        AddColumnHeader(headerRow, "COMPETICIÓN", 260);
+        AddColumnHeader(headerRow, "FORMATO", 120);
+        AddColumnHeader(headerRow, "FRECUENCIA", 120);
+        AddColumnHeader(headerRow, "RIVALES", 80, HorizontalAlignment.Right);
+        layout.AddChild(headerRow);
+        layout.AddChild(new HSeparator());
+
+        foreach (var competition in competitions)
+        {
+            layout.AddChild(BuildWorldCompetitionRow(competition));
+        }
+
+        root.AddChild(layout);
+    }
+
+    private static HBoxContainer BuildWorldCompetitionRow(CompetitionRow competition)
+    {
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        AddColumnValue(row, competition.DisplayName, 260, ManagerDesignTokens.TextPrimary);
+        AddColumnValue(row, competition.Format, 120, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, competition.Frequency, 120, ManagerDesignTokens.TextSecondary);
+        AddColumnValue(row, competition.Rivals.Count.ToString(Inv), 80, ManagerDesignTokens.Accent, HorizontalAlignment.Right);
+
+        return row;
     }
 
     // ----- Temporada completa --------------------------------------------

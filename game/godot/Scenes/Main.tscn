@@ -50,6 +50,7 @@ OverviewButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Overv
 SquadButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Squad")
 CompetitionsButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Competitions")
 HistoryButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/History")
+WorldButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/World")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -133,6 +134,15 @@ theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
 text = "  HISTORIAL"
+alignment = 0
+
+[node name="World" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
+text = "  MUNDIAL"
 alignment = 0
 
 [node name="Spacer" type="Control" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]

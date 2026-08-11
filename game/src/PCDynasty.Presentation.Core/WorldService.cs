@@ -148,6 +148,25 @@ public sealed class WorldService
     }
 
     /// <summary>
+    /// Every competition the world knows about, ordered by name. Used by
+    /// the world-overview screen so the manager can see the global
+    /// calendar, not only their own club's fixtures.
+    /// </summary>
+    public IReadOnlyList<CompetitionRow> ListAllCompetitions()
+    {
+        var competitions = RequireModel(ref _competitions, "competitions.json");
+        var clubs = RequireModel(ref _clubs, "clubs.json");
+
+        var clubNames = BuildClubShortNames(clubs);
+
+        return competitions.Entities
+            .Where(entity => entity.KindId == "competition")
+            .Select(entity => ProjectCompetition(entity, string.Empty, clubNames))
+            .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
+            .ToImmutableArray();
+    }
+
+    /// <summary>
     /// Look up a club by its external identifier. Returns null if missing.
     /// </summary>
     public ClubRow? FindClub(string clubExternalId)
