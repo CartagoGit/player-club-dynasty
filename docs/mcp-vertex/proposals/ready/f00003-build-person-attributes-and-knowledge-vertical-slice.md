@@ -34,7 +34,7 @@ The first product slice must make player information deep without making the cor
   - "Person identity and personal profile are immutable and sport-neutral."
 
 ### S2 — Implement attribute storage and derived indicators
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Core/Performance/CapabilityProfile.cs`, `game/src/PCDynasty.Core/Performance/CurrentPerformance.cs`, `game/tests/PCDynasty.Core.Tests/Performance/CurrentPerformanceTests.cs`
 - **Gate**: type
