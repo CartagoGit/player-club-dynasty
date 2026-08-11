@@ -34,7 +34,7 @@ Community and internal content needs safe, usable editing without exposing engin
   - "Editor models are separate from domain and save models."
 
 ### S2 — Create competition graph editor services
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Editor/Competitions/CompetitionGraphEditor.cs`, `game/src/PCDynasty.Editor/Competitions/CompetitionValidationReport.cs`, `game/tests/PCDynasty.Editor.Tests/CompetitionGraphEditorTests.cs`
 - **Gate**: type
