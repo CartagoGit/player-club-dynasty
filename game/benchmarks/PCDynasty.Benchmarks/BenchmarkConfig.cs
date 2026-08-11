@@ -1,9 +1,11 @@
 using System.Globalization;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Json;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 
 namespace PCDynasty.Benchmarks;
@@ -31,6 +33,8 @@ public sealed class BenchmarkConfig : ManualConfig
             .WithEnvironmentVariable("PCDYNASTY_BENCHMARK_SEED", seed));
         AddDiagnoser(MemoryDiagnoser.Default);
         AddExporter(MarkdownExporter.GitHub, JsonExporter.Full);
+        AddLogger(ConsoleLogger.Default);
+        AddColumnProvider(DefaultColumnProviders.Instance);
         WithArtifactsPath(Path.Combine(
             Directory.GetCurrentDirectory(),
             "BenchmarkDotNet.Artifacts"));
