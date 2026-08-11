@@ -28,7 +28,7 @@ League is not the generic competition abstraction; scalable seasons need graphs 
 
 ### S1 — Create competition graph contracts
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Competition/PCDynasty.Competition.csproj`, `game/src/PCDynasty.Competition/Stages/CompetitionGraph.cs`, `game/tests/PCDynasty.Competition.Tests/CompetitionGraphTests.cs`
+- **Files**: `game/src/PCDynasty.Competition/PCDynasty.Competition.csproj`, `game/src/PCDynasty.Competition/Stages/CompetitionGraph.cs`, `game/tests/PCDynasty.Competition.Tests/PCDynasty.Competition.Tests.csproj`, `game/tests/PCDynasty.Competition.Tests/CompetitionGraphTests.cs`
 - **Gate**: type
 - acceptance:
   - "Stages and transitions validate without league-specific concepts."
@@ -36,7 +36,7 @@ League is not the generic competition abstraction; scalable seasons need graphs 
 ### S2 — Implement effective-dated rules
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Rules/PCDynasty.Rules.csproj`, `game/src/PCDynasty.Rules/Versioning/EffectiveRuleSet.cs`, `game/tests/PCDynasty.Rules.Tests/EffectiveRuleSetTests.cs`
+- **Files**: `game/src/PCDynasty.Rules/PCDynasty.Rules.csproj`, `game/src/PCDynasty.Rules/Versioning/EffectiveRuleSet.cs`, `game/tests/PCDynasty.Rules.Tests/PCDynasty.Rules.Tests.csproj`, `game/tests/PCDynasty.Rules.Tests/EffectiveRuleSetTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Rule selection is explicit by date and version."
