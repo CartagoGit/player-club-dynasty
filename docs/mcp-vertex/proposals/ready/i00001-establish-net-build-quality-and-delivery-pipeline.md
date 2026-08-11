@@ -34,7 +34,7 @@ Architecture standards only become permanent when the build prevents regressions
   - "SDK, nullable, analyzers and warnings-as-errors are reproducibly configured."
 
 ### S2 — Add test and architecture check entrypoints
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/scripts/test-all.sh`, `game/scripts/check-architecture.sh`, `game/README.md`
 - **Gate**: type
