@@ -2,7 +2,7 @@
 id: f00010
 title: "Implement external content import and pack validation"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: content
 date: 2026-08-11
@@ -50,7 +50,7 @@ The game must load community or external databases without leaking external sche
   - "Invalid references or dependency graphs fail with useful diagnostics."
 
 ### S4 — Add SQLite content reader
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S3]
 - **Files**: `game/src/PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj`, `game/src/PCDynasty.Content.Importers/SqliteContentReader.cs`, `game/tests/PCDynasty.Content.Importers.Tests/SqliteContentReaderTests.cs`
 - **Gate**: e2e
