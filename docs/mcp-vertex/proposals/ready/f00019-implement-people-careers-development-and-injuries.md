@@ -27,7 +27,7 @@ Emergent careers need believable changes without fixed visible potential or dail
 - global_gate: type
 
 ### S1 — Define development and biological profiles
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Careers/PCDynasty.Careers.csproj`, `game/src/PCDynasty.Careers/Development/BiologicalProfile.cs`, `game/tests/PCDynasty.Careers.Tests/BiologicalProfileTests.cs`
 - **Gate**: type
 - acceptance:
