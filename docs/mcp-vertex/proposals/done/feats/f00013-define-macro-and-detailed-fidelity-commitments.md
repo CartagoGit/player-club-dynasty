@@ -2,7 +2,7 @@
 id: f00013
 title: "Define macro and detailed fidelity commitments"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: world
 date: 2026-08-11
@@ -42,7 +42,7 @@ World scale is unsafe unless low-fidelity summaries can become detailed without 
   - "Materialization never rewrites confirmed history."
 
 ### S3 — Add cross-fidelity differential suite
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/tests/PCDynasty.World.Tests/CrossFidelitySimulationTests.cs`, `game/tests/PCDynasty.World.Tests/Fixtures/FidelityScenario.json`
 - **Gate**: e2e
