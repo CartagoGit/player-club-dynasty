@@ -27,7 +27,7 @@ League is not the generic competition abstraction; scalable seasons need graphs 
 - global_gate: type
 
 ### S1 — Create competition graph contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Competition/PCDynasty.Competition.csproj`, `game/src/PCDynasty.Competition/Stages/CompetitionGraph.cs`, `game/tests/PCDynasty.Competition.Tests/PCDynasty.Competition.Tests.csproj`, `game/tests/PCDynasty.Competition.Tests/CompetitionGraphTests.cs`
 - **Gate**: type
 - acceptance:
