@@ -2,7 +2,7 @@
 id: f00003
 title: "Build person, attributes and knowledge vertical slice"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: people
 date: 2026-08-11
@@ -42,7 +42,7 @@ The first product slice must make player information deep without making the cor
   - "Technique, form, physical and mental factors derive a current indicator without duplicating state."
 
 ### S3 — Implement observation and confidence contracts
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Knowledge/PCDynasty.Knowledge.csproj`, `game/src/PCDynasty.Knowledge/Observations/Observation.cs`, `game/tests/PCDynasty.Knowledge.Tests/PCDynasty.Knowledge.Tests.csproj`, `game/tests/PCDynasty.Knowledge.Tests/ObservationTests.cs`
 - **Gate**: type
