@@ -2,7 +2,7 @@
 id: f00006
 title: "Define generic competition graphs and versioned rules"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: competition
 date: 2026-08-11
@@ -42,7 +42,7 @@ League is not the generic competition abstraction; scalable seasons need graphs 
   - "Rule selection is explicit by date and version."
 
 ### S3 — Implement ranking and outcome contracts
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Competition/Rankings/RankingTable.cs`, `game/src/PCDynasty.Competition/Outcomes/QualificationOutcome.cs`, `game/tests/PCDynasty.Competition.Tests/RankingTableTests.cs`
 - **Gate**: type
