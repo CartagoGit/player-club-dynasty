@@ -34,7 +34,7 @@ World scale is unsafe unless low-fidelity summaries can become detailed without 
   - "Committed outcomes, ownership intervals and promotion boundaries are explicit."
 
 ### S2 — Implement fidelity promotion protocol
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.World/Materialization/FidelityPromotion.cs`, `game/src/PCDynasty.World/Materialization/MaterializationLedger.cs`, `game/tests/PCDynasty.World.Tests/FidelityPromotionTests.cs`
 - **Gate**: type
