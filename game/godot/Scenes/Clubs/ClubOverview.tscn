@@ -1,0 +1,103 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Clubs/ClubOverviewController.cs" id="1_controller"]
+[ext_resource type="Theme" path="res://Theme/PCDynastyTheme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://Scripts/Clubs/ClubMetricGrid.cs" id="3_grid"]
+
+[node name="ClubOverview" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_controller")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="ClubName" type="Label" parent="Margin/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Club"
+
+[node name="ClubContext" type="Label" parent="Margin/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+text = "Temporada y competición"
+
+[node name="Metrics" type="GridContainer" parent="Margin/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_grid")
+
+[node name="LowerPanels" type="HBoxContainer" parent="Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="AlertsPanel" type="PanelContainer" parent="Margin/Content/LowerPanels"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AlertsMargin" type="MarginContainer" parent="Margin/Content/LowerPanels/AlertsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="AlertsColumn" type="VBoxContainer" parent="Margin/Content/LowerPanels/AlertsPanel/AlertsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Margin/Content/LowerPanels/AlertsPanel/AlertsMargin/AlertsColumn"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Atención"
+
+[node name="Alerts" type="VBoxContainer" parent="Margin/Content/LowerPanels/AlertsPanel/AlertsMargin/AlertsColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ActionsPanel" type="PanelContainer" parent="Margin/Content/LowerPanels"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ActionsMargin" type="MarginContainer" parent="Margin/Content/LowerPanels/ActionsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ActionsColumn" type="VBoxContainer" parent="Margin/Content/LowerPanels/ActionsPanel/ActionsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Margin/Content/LowerPanels/ActionsPanel/ActionsMargin/ActionsColumn"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Siguientes decisiones"
+
+[node name="NextActions" type="VBoxContainer" parent="Margin/Content/LowerPanels/ActionsPanel/ActionsMargin/ActionsColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6

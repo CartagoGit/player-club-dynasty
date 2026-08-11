@@ -34,7 +34,7 @@ This validates the manager's core daily flow and the classic quick-navigation UX
   - "Shows summary then reasons, history and confidence through read models."
 
 ### S2 — Build club overview screen
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/godot/Scenes/Clubs/ClubOverview.tscn`, `game/godot/Scripts/Clubs/ClubOverviewController.cs`, `game/godot/Scripts/Clubs/ClubMetricGrid.cs`
 - **Gate**: type
 - acceptance:
