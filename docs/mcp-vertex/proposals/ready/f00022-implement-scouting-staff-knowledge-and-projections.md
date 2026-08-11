@@ -34,7 +34,7 @@ Non-omniscient information and useful professionals are core gameplay, not decor
   - "Staff knowledge is regional/domain-specific and decoupled from person truth."
 
 ### S2 — Implement observation aging and fusion
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Knowledge/Observations/ObservationAging.cs`, `game/src/PCDynasty.Knowledge/Observations/KnowledgeFusion.cs`, `game/tests/PCDynasty.Knowledge.Tests/KnowledgeFusionTests.cs`
 - **Gate**: type
