@@ -27,7 +27,7 @@ The game needs the usability spirit of classic football managers without copying
 - global_gate: type
 
 ### S1 — Create Godot presentation shell
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/godot/project.godot`, `game/godot/PCDynasty.Presentation.csproj`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scenes/Main.tscn`
 - **Gate**: type
 - acceptance:

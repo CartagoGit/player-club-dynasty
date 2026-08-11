@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3]
 
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
+[ext_resource type="Script" path="res://Scripts/PresentationBootstrap.cs" id="1_main"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
 bg_color = Color(0.035, 0.102, 0.157, 1)
@@ -127,7 +127,7 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.412, 0.733, 0.573, 1)
 theme_override_font_sizes/font_size = 13
-text = "● NÚCLEO CONECTADO"
+text = "● PRESENTACIÓN DISPONIBLE"
 
 [node name="ContentMargin" type="MarginContainer" parent="Layout"]
 layout_mode = 2
@@ -187,24 +187,24 @@ theme_override_constants/separation = 14
 layout_mode = 2
 theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
 theme_override_font_sizes/font_size = 20
-text = "Estado del motor"
+text = "Estado de la presentación"
 
 [node name="PanelDescription" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
 theme_override_font_sizes/font_size = 14
-text = "La presentación consulta datos del Core sin apropiarse de sus reglas."
+text = "El shell renderiza modelos de lectura sin apropiarse de reglas del dominio."
 
 [node name="ValuePanel" type="PanelContainer" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_value")
 
-[node name="CoreValueLabel" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel"]
+[node name="StatusLabel" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
 theme_override_font_sizes/font_size = 18
-text = "Leyendo el núcleo…"
+text = "Inicializando presentación…"
 horizontal_alignment = 1
 
 [node name="Footer" type="Label" parent="Layout/ContentMargin/Content"]

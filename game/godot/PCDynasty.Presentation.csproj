@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../src/PCDynasty.Core/PCDynasty.Core.csproj" />
+    <ProjectReference Include="../src/PCDynasty.Application/PCDynasty.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Scripts/Main.cs" />
   </ItemGroup>
 </Project>
