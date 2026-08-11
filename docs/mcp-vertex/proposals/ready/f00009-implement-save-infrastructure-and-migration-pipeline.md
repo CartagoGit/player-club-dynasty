@@ -28,7 +28,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
 
 ### S1 — Define persistence contracts and manifest
 - **Status**: pending
-- **Files**: `game/src/PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj`, `game/src/PCDynasty.Persistence.Abstractions/IWorldStore.cs`, `game/src/PCDynasty.Persistence.Abstractions/SaveManifest.cs`
+- **Files**: `game/src/PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj`, `game/src/PCDynasty.Persistence.Abstractions/IWorldStore.cs`, `game/src/PCDynasty.Persistence.Abstractions/SaveManifest.cs`, `game/tests/PCDynasty.Persistence.Abstractions.Tests/PCDynasty.Persistence.Abstractions.Tests.csproj`, `game/tests/PCDynasty.Persistence.Abstractions.Tests/SaveManifestTests.cs`
 - **Gate**: type
 - acceptance:
   - "Contracts separate snapshots, facts, versions and pack hashes."
@@ -36,7 +36,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
 ### S2 — Implement local SQLite save adapter
 - **Status**: pending
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Persistence.Sqlite/PCDynasty.Persistence.Sqlite.csproj`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldStore.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteWorldStoreTests.cs`
+- **Files**: `game/src/PCDynasty.Persistence.Sqlite/PCDynasty.Persistence.Sqlite.csproj`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldStore.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/PCDynasty.Persistence.Sqlite.Tests.csproj`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteWorldStoreTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "Append and checkpoint are atomic and reload a consistent world."
@@ -44,7 +44,7 @@ Long-lived careers require reproducibility and safe evolution independently of t
 ### S3 — Implement migrations and recovery
 - **Status**: pending
 - **DependsOn**: [S1, S2]
-- **Files**: `game/src/PCDynasty.Persistence/PCDynasty.Persistence.csproj`, `game/src/PCDynasty.Persistence/Migrations/SaveMigrator.cs`, `game/tests/PCDynasty.Persistence.Tests/SaveMigratorTests.cs`
+- **Files**: `game/src/PCDynasty.Persistence/PCDynasty.Persistence.csproj`, `game/src/PCDynasty.Persistence/Migrations/SaveMigrator.cs`, `game/tests/PCDynasty.Persistence.Tests/PCDynasty.Persistence.Tests.csproj`, `game/tests/PCDynasty.Persistence.Tests/SaveMigratorTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:
   - "Version migration is explicit, tested and preserves recoverable input."
