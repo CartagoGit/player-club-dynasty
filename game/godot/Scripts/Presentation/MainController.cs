@@ -376,6 +376,14 @@ public partial class MainController : Control
         playButton.Pressed += () => PlayMatch(club, competition);
         col.AddChild(playButton);
 
+        var seasonButton = new Button
+        {
+            Text = $"  Jugar temporada completa ({competition.Rivals.Count} partidos)",
+            Alignment = HorizontalAlignment.Left,
+        };
+        seasonButton.Pressed += () => PlaySeason(club, competition);
+        col.AddChild(seasonButton);
+
         panel.AddChild(col);
         return panel;
     }
@@ -711,5 +719,177 @@ public partial class MainController : Control
             parent.RemoveChild(child);
             child.QueueFree();
         }
+    }
+
+    // ----- Temporada completa --------------------------------------------
+
+    private void PlaySeason(ClubRow club, CompetitionRow competition)
+    {
+        if (_service is null || competition.Rivals.Count == 0)
+        {
+            return;
+        }
+
+        var clubs = _service.ListClubs();
+        var participants = new List<ClubRow> { club };
+        foreach (var rivalName in competition.Rivals)
+        {
+            var match = clubs.FirstOrDefault(c =>
+                string.Equals(c.ShortName, rivalName, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c.DisplayName, rivalName, StringComparison.OrdinalIgnoreCase));
+            if (match is not null)
+            {
+                participants.Add(match);
+            }
+        }
+
+        if (participants.Count < 2)
+        {
+            return;
+        }
+
+        long seed = unchecked((long)(DateTime.UtcNow.Ticks & 0x7FFFFFFFFFFFFFFF));
+        var season = SeasonSimulator.Simulate(
+            competitionExternalId: competition.ExternalId,
+            competitionDisplayName: competition.DisplayName,
+            participants: participants,
+            seed: seed);
+
+        var root = GetNodeOrNull<Control>(ContentRootPath);
+        var status = GetNodeOrNull<Label>(StatusLabelPath);
+        if (root is null)
+        {
+            return;
+        }
+
+        ClearChildren(root);
+        root.AddChild(BuildSeasonReport(club, season));
+
+        var myStanding = season.Standings.FirstOrDefault(s => s.ClubExternalId == club.ExternalId);
+        if (myStanding is not null)
+        {
+            status?.SetText($"● {competition.DisplayName} · puesto {PositionOf(season, club.ExternalId)} · {myStanding.Points} pts");
+        }
+    }
+
+    private static VBoxContainer BuildSeasonReport(ClubRow club, SeasonResult season)
+    {
+        var layout = new VBoxContainer();
+        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        var header = new Label
+        {
+            Text = $"{season.CompetitionDisplayName.ToUpperInvariant()} · CLASIFICACIÓN FINAL",
+        };
+        header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
+        header.AddThemeFontSizeOverride("font_size", 18);
+        layout.AddChild(header);
+
+        var meta = new Label
+        {
+            Text = $"{season.Standings.Length} clubes · {season.Fixtures.Length} partidos · seed {season.Standings.Length}",
+        };
+        meta.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+        meta.AddThemeFontSizeOverride("font_size", 12);
+        layout.AddChild(meta);
+
+        layout.AddChild(new HSeparator());
+
+        // Standings table.
+        var standingsHeader = new HBoxContainer();
+        standingsHeader.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        AddColumnHeader(standingsHeader, "#", 30);
+        AddColumnHeader(standingsHeader, "CLUB", 260);
+        AddColumnHeader(standingsHeader, "PTS", 60, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "PJ", 50, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "G", 50, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "E", 50, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "P", 50, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "GF", 60, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "GC", 60, HorizontalAlignment.Right);
+        AddColumnHeader(standingsHeader, "DG", 60, HorizontalAlignment.Right);
+        layout.AddChild(standingsHeader);
+        layout.AddChild(new HSeparator());
+
+        for (int i = 0; i < season.Standings.Length; i++)
+        {
+            layout.AddChild(BuildStandingRow(i + 1, season.Standings[i], club.ExternalId));
+        }
+
+        // Fixture results.
+        layout.AddChild(new HSeparator());
+        var fixturesTitle = new Label { Text = "RESULTADOS" };
+        fixturesTitle.AddThemeColorOverride("font_color", ManagerDesignTokens.Accent);
+        fixturesTitle.AddThemeFontSizeOverride("font_size", 14);
+        layout.AddChild(fixturesTitle);
+
+        foreach (var fixture in season.Fixtures)
+        {
+            layout.AddChild(BuildFixtureRow(fixture, club.ExternalId));
+        }
+
+        return layout;
+    }
+
+    private static HBoxContainer BuildStandingRow(int position, StandingRow row, string managedClubId)
+    {
+        var line = new HBoxContainer();
+        line.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        var isManaged = string.Equals(row.ClubExternalId, managedClubId, StringComparison.Ordinal);
+
+        AddColumnValue(line, position.ToString(Inv), 30, isManaged ? ManagerDesignTokens.Accent : ManagerDesignTokens.TextSecondary);
+        AddColumnValue(line, row.DisplayName, 260, isManaged ? ManagerDesignTokens.Accent : ManagerDesignTokens.TextPrimary);
+        AddColumnValue(line, row.Points.ToString(Inv), 60, isManaged ? ManagerDesignTokens.Accent : ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.Played.ToString(Inv), 50, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.Wins.ToString(Inv), 50, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.Draws.ToString(Inv), 50, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.Losses.ToString(Inv), 50, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.GoalsFor.ToString(Inv), 60, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.GoalsAgainst.ToString(Inv), 60, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        AddColumnValue(line, row.GoalDifference.ToString("+#;-#;0", Inv), 60, DiffColor(row.GoalDifference), HorizontalAlignment.Right);
+
+        return line;
+    }
+
+    private static HBoxContainer BuildFixtureRow(SeasonFixture fixture, string managedClubId)
+    {
+        var line = new HBoxContainer();
+        line.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+
+        bool homeManaged = string.Equals(fixture.HomeClubId, managedClubId, StringComparison.Ordinal);
+        bool awayManaged = string.Equals(fixture.AwayClubId, managedClubId, StringComparison.Ordinal);
+        var homeColor = homeManaged ? ManagerDesignTokens.Accent : ManagerDesignTokens.TextPrimary;
+        var awayColor = awayManaged ? ManagerDesignTokens.Accent : ManagerDesignTokens.TextPrimary;
+
+        AddColumnValue(line, fixture.HomeDisplayName, 260, homeColor);
+        AddColumnValue(line, fixture.HomeGoals.ToString(Inv), 40, homeColor, HorizontalAlignment.Right);
+        AddColumnValue(line, "-", 20, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Center);
+        AddColumnValue(line, fixture.AwayGoals.ToString(Inv), 40, awayColor, HorizontalAlignment.Left);
+        AddColumnValue(line, fixture.AwayDisplayName, 260, awayColor);
+
+        return line;
+    }
+
+    private static int PositionOf(SeasonResult season, string clubExternalId)
+    {
+        for (int i = 0; i < season.Standings.Length; i++)
+        {
+            if (string.Equals(season.Standings[i].ClubExternalId, clubExternalId, StringComparison.Ordinal))
+            {
+                return i + 1;
+            }
+        }
+
+        return 0;
+    }
+
+    private static Color DiffColor(int diff)
+    {
+        return diff switch
+        {
+            > 0 => ManagerDesignTokens.Positive,
+            < 0 => ManagerDesignTokens.Negative,
+            _ => ManagerDesignTokens.TextSecondary,
+        };
     }
 }
