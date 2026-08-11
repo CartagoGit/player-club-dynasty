@@ -34,7 +34,7 @@ External tools, importers and future clients must integrate without depending on
   - "Contracts expose immutable versioned envelopes and causal metadata."
 
 ### S2 — Define import and save contract schemas
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Contracts/Content/ContentImportContract.cs`, `game/src/PCDynasty.Contracts/Persistence/SaveManifestContract.cs`, `game/tests/PCDynasty.Contracts.Tests/ContractSchemaTests.cs`
 - **Gate**: type
