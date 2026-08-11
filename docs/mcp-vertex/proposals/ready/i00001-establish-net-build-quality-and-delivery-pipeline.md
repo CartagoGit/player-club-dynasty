@@ -27,7 +27,7 @@ Architecture standards only become permanent when the build prevents regressions
 - global_gate: e2e
 
 ### S1 — Pin SDK and solution-wide compiler standards
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/global.json`, `game/Directory.Build.props`, `game/.editorconfig`
 - **Gate**: type
 - acceptance:
