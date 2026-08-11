@@ -27,7 +27,7 @@ Decades of emergent stories need durable, explainable history without retaining 
 - global_gate: type
 
 ### S1 — Define historical event contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.History/PCDynasty.History.csproj`, `game/src/PCDynasty.History/Events/HistoricalEvent.cs`, `game/tests/PCDynasty.History.Tests/PCDynasty.History.Tests.csproj`, `game/tests/PCDynasty.History.Tests/HistoricalEventTests.cs`
 - **Gate**: type
 - acceptance:

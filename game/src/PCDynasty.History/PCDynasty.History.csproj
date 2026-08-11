@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.History</AssemblyName>
+    <RootNamespace>PCDynasty.History</RootNamespace>
+  </PropertyGroup>
+</Project>
