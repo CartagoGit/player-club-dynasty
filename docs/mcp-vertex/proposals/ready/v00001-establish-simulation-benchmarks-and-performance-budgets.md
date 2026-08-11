@@ -34,7 +34,7 @@ Performance regressions discovered after content growth are expensive and threat
   - "Benchmarks run outside Godot with reproducible seeds and environment metadata."
 
 ### S2 — Benchmark contest and development paths
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/benchmarks/PCDynasty.Benchmarks/ContestBenchmarks.cs`, `game/benchmarks/PCDynasty.Benchmarks/DevelopmentBenchmarks.cs`, `game/tests/PCDynasty.Benchmark.Tests/BenchmarkBudgetTests.cs`
 - **Gate**: e2e
