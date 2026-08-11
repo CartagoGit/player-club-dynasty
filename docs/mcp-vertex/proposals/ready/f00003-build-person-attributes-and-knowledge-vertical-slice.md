@@ -27,7 +27,7 @@ The first product slice must make player information deep without making the cor
 - global_gate: type
 
 ### S1 — Create people domain contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Core/People/Person.cs`, `game/src/PCDynasty.Core/People/PersonProfile.cs`, `game/tests/PCDynasty.Core.Tests/People/PersonTests.cs`
 - **Gate**: type
 - acceptance:
