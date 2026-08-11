@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Competition/PCDynasty.Competition.csproj" />
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../PCDynasty.Packs.Abstractions/PCDynasty.Packs.Abstractions.csproj" />
+    <ProjectReference Include="../PCDynasty.Rules/PCDynasty.Rules.csproj" />
     <ProjectReference Include="../PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>
 </Project>

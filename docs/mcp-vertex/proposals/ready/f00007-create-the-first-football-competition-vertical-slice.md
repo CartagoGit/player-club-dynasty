@@ -27,7 +27,7 @@ This is the smallest proof that rules, standings and transitions can support a r
 - global_gate: e2e
 
 ### S1 — Define football points and season rules
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Football/PCDynasty.Football.csproj`, `game/src/PCDynasty.Football/Competitions/FootballScoringRules.cs`, `game/src/PCDynasty.Football/Competitions/DivisionRuleSet.cs`, `game/tests/PCDynasty.Football.Tests/DivisionRuleSetTests.cs`
 - **Gate**: type
 - acceptance:
