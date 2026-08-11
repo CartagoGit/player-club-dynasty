@@ -2,7 +2,7 @@
 id: f00021
 title: "Implement facilities academy staff and club evolution"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: club
 date: 2026-08-11
