@@ -42,7 +42,7 @@ Performance regressions discovered after content growth are expensive and threat
   - "Budgets and regression reporting exist for hot simulation paths."
 
 ### S3 — Benchmark macro world and persistence
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/benchmarks/PCDynasty.Benchmarks/MacroWorldBenchmarks.cs`, `game/benchmarks/PCDynasty.Benchmarks/PersistenceBenchmarks.cs`, `game/benchmarks/budgets.json`
 - **Gate**: e2e

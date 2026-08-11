@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "measurement": "median elapsed time after warm-up on one stable runner",
+  "workloads": [
+    {
+      "id": "contest-batch",
+      "operations": 32,
+      "fixture": "22 participants and 256 ordered events per contest",
+      "maxMedianMilliseconds": 100
+    },
+    {
+      "id": "development-batch",
+      "operations": 50000,
+      "fixture": "one deterministic aggregate career advance per operation",
+      "maxMedianMilliseconds": 100
+    },
+    {
+      "id": "macro-season-advance",
+      "operations": 1,
+      "fixture": "512 clubs across 16 competitions",
+      "maxMedianMilliseconds": 50
+    },
+    {
+      "id": "materialization",
+      "operations": 1,
+      "fixture": "one club promoted from a 512-club checkpoint",
+      "maxMedianMilliseconds": 16
+    },
+    {
+      "id": "persistence-load",
+      "operations": 1,
+      "fixture": "1 MiB snapshot plus 256 facts from an external SQLite save",
+      "maxMedianMilliseconds": 100
+    },
+    {
+      "id": "persistence-checkpoint",
+      "operations": 1,
+      "fixture": "atomic 1 MiB external SQLite checkpoint",
+      "maxMedianMilliseconds": 100
+    }
+  ]
+}
