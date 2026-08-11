@@ -2,7 +2,7 @@
 id: i00001
 title: "Establish .NET build quality and delivery pipeline"
 kind: infra
-status: ready
+status: done
 type: proposal
 track: quality
 date: 2026-08-11

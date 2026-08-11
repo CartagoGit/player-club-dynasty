@@ -2,7 +2,7 @@
 id: x00036
 title: "Align importer formatting with quality gate"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: quality
 date: 2026-08-11
