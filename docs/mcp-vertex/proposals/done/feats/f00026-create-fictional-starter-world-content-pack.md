@@ -2,7 +2,7 @@
 id: f00026
 title: "Create fictional starter world content pack"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: content
 date: 2026-08-11

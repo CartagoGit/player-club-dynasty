@@ -2,7 +2,7 @@
 id: x00031
 title: "Make starter world integration scenario executable"
 kind: fix
-status: ready
+status: done
 type: proposal
 track: content
 date: 2026-08-11
@@ -34,7 +34,7 @@ The starter-world proposal names integration test files but omits their executab
   - "Starter-world integration tests reference public content reader and compiler assemblies."
 
 ### S2 — Include content integration tests in solution
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/PCDynasty.sln`
 - **Gate**: e2e
