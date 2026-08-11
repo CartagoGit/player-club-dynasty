@@ -27,7 +27,7 @@ Reproducibility must be an executable contract, not merely an intention, for lon
 - global_gate: type
 
 ### S1 — Define deterministic protocol contracts
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Contracts/PCDynasty.Contracts.csproj`, `game/src/PCDynasty.Contracts/Simulation/DeterministicSimulationSpec.cs`, `game/src/PCDynasty.Contracts/Simulation/EventSequence.cs`, `game/tests/PCDynasty.Contracts.Tests/PCDynasty.Contracts.Tests.csproj`, `game/tests/PCDynasty.Contracts.Tests/DeterministicSimulationSpecTests.cs`, `game/PCDynasty.sln`
 - **Gate**: type
 - acceptance:

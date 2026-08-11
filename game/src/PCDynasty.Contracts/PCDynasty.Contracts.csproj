@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Contracts</AssemblyName>
+    <RootNamespace>PCDynasty.Contracts</RootNamespace>
+  </PropertyGroup>
+</Project>
