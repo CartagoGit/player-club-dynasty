@@ -7,8 +7,26 @@ node_modules/
 dist/
 build/
 
+# .NET build, test and benchmark outputs
+**/[Bb]in/
+**/[Oo]bj/
+**/TestResults/
+**/BenchmarkDotNet.Artifacts/
+*.user
+*.suo
+*.rsuser
+*.userosscache
+*.sln.docstates
+
+# Godot-generated editor/import state
+**/.godot/
+**/.import/
+**/.mono/
+export_credentials.cfg
+
 # editor / OS
 .vscode/.cache/
+.vs/
 .idea/
 .DS_Store
 Thumbs.db
