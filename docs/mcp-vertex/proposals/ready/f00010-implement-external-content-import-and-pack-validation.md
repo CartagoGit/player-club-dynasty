@@ -34,7 +34,7 @@ The game must load community or external databases without leaking external sche
   - "External providers communicate through versioned DTOs and diagnostics."
 
 ### S2 — Implement JSON and CSV readers
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj`, `game/src/PCDynasty.Content.Importers/JsonContentReader.cs`, `game/src/PCDynasty.Content.Importers/CsvContentReader.cs`, `game/tests/PCDynasty.Content.Importers.Tests/PCDynasty.Content.Importers.Tests.csproj`, `game/tests/PCDynasty.Content.Importers.Tests/ContentReaderTests.cs`
 - **Gate**: type
