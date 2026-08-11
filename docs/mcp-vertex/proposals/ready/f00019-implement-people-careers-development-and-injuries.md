@@ -42,7 +42,7 @@ Emergent careers need believable changes without fixed visible potential or dail
   - "Elapsed time advances deterministically on demand with no daily world-wide loop."
 
 ### S3 — Implement injuries and recovery states
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Careers/Injuries/InjuryInstance.cs`, `game/src/PCDynasty.Careers/Injuries/RecoveryAdvancer.cs`, `game/tests/PCDynasty.Careers.Tests/RecoveryAdvancerTests.cs`
 - **Gate**: type
