@@ -15,10 +15,9 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"types": ["@types/bun"],
-		"baseUrl": ".",
 		"paths": {
-			"@mcp-vertex/core/public": ["node_modules/@mcp-vertex/core/dist/public/index.d.ts"],
-			"@mcp-vertex/core": ["node_modules/@mcp-vertex/core/dist/index.d.ts"]
+			"@mcp-vertex/core/public": ["./node_modules/@mcp-vertex/core/src/public/index.ts"],
+			"@mcp-vertex/core": ["./node_modules/@mcp-vertex/core/src/index.ts"]
 		}
 	},
 	"include": ["src/**/*", "scripts/**/*"],

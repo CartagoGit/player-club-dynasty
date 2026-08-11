@@ -1,6 +1,6 @@
 import { definePlugin } from '@mcp-vertex/core/public';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import z from 'zod';
 
 import type { IDataFile, IPlayer } from './lib/types';
@@ -63,7 +63,7 @@ export default definePlugin({
 		const parsed = OptionsSchema.safeParse(ctx.options);
 		const opts = parsed.success ? parsed.data : DEFAULT_OPTIONS;
 		const prefix = ctx.namespacePrefix;
-		const dataFileAbs = ctx.workspace.resolve(opts.dataDir, 'clubs.json');
+		const dataFileAbs = ctx.workspace.resolve(join(opts.dataDir, 'clubs.json'));
 		ensureFile(dataFileAbs, { clubs: [], currentSeason: 1 });
 
 		const listClubsRegistration = {

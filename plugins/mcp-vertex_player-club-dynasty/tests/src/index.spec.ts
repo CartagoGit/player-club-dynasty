@@ -18,7 +18,7 @@ describe('@player-club-dynasty/mcp-vertex-plugin', () => {
 
 	it('parses the options schema with sane defaults', () => {
 		const schema = plugin.optionsSchema;
-		expect(schema).toBeDefined();
+		if (!schema) throw new Error('expected optionsSchema');
 		const parsed = schema.safeParse({});
 		expect(parsed.success).toBe(true);
 	});

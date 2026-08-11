@@ -24,7 +24,8 @@
 		"dev": "bun scripts/dev.script.ts",
 		"build": "bun scripts/build.script.ts",
 		"build:plugin": "bun scripts/build-plugin.script.ts mcp-vertex_player-club-dynasty",
-		"test": "bun test"
+		"typecheck": "bunx tsc --noEmit -p tsconfig.json && bun run --cwd plugins/mcp-vertex_player-club-dynasty typecheck",
+		"test": "bun run --cwd plugins/mcp-vertex_player-club-dynasty test"
 	},
 	"devDependencies": {
 		"@mcp-vertex/core": "link:/home/cartago/_projects/mcp-vertex/packages/core",

@@ -1,5 +1,0 @@
-{
-	"extends": "../mcp-vertex_player-club-dynasty/tsconfig.json",
-	"include": [],
-	"exclude": ["**/*"]
-}

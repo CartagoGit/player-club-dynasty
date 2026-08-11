@@ -1,4 +1,16 @@
 {
+	"terminal.integrated.profiles.linux": {
+		"Bash (login)": {
+			"path": "/bin/bash",
+			"args": ["--login"]
+		}
+	},
+
+	// Por defecto (para todo lo que abra terminal: Copilot incluido) → Bash
+	"terminal.integrated.defaultProfile.linux": "Bash (login)",
+
+	// Habilitar prompt files de GitHub Copilot
+	"chat.promptFiles": true,
 	"files.exclude": {
 		"**/node_modules": true,
 		"**/dist": true,

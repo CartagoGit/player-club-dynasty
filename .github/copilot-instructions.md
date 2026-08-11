@@ -5,3 +5,11 @@
 > (Copilot Chat — close-marker contract).
 >
 > This file is a pointer. All content lives in the bootstrap.
+
+<!-- mcp-vertex:begin -->
+
+# mcp-vertex host hints (auto-generated)
+
+See `docs/mcp-vertex/host-hints/agent-instructions.generated.md` for the live agent catalog.
+
+<!-- mcp-vertex:end -->

@@ -1,1 +1,0 @@
-// Moved to plugins/mcp-vertex_player-club-dynasty/vitest.config.ts
