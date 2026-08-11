@@ -34,7 +34,7 @@ Decades of emergent stories need durable, explainable history without retaining 
   - "History records durable facts with compact indices."
 
 ### S2 — Create history projections
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.History/Projections/CareerHistoryProjection.cs`, `game/src/PCDynasty.History/Projections/CompetitionHistoryProjection.cs`, `game/tests/PCDynasty.History.Tests/HistoryProjectionTests.cs`
 - **Gate**: type
