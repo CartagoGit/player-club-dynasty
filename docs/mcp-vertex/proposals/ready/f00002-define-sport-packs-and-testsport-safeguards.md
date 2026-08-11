@@ -28,7 +28,7 @@ The core extensibility invariant needs an executable guard before FootballPack g
 - global_gate: type
 
 ### S1 — Create sport contract primitives
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Packs.Abstractions/PCDynasty.Packs.Abstractions.csproj`, `game/src/PCDynasty.Packs.Abstractions/Sports/ISportPack.cs`, `game/src/PCDynasty.Packs.Abstractions/Sports/SportDefinition.cs`
 - **Gate**: type
 - acceptance:
