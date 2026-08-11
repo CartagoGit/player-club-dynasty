@@ -46,6 +46,9 @@ bun-debug.log*
 data/
 saves/
 
+# authored, distributable game content is source, not local generated data
+!game/content/**
+
 # AI-tool caches that re-create themselves on demand
 .claude/settings.local.json
 .continue/dev_data/
