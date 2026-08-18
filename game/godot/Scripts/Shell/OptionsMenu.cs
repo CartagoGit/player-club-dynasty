@@ -71,14 +71,18 @@ public sealed partial class OptionsMenu : VBoxContainer
     /// Registers one area. The control is reparented into the menu and stays
     /// hidden until the player walks into its section.
     /// </summary>
-    public void AddSection(string title, Control content)
+    /// <param name="name">
+    /// Stable node name for the entry. The title is translated, so anything
+    /// that needs to address an area — a test, a shortcut — uses this instead.
+    /// </param>
+    public void AddSection(string title, Control content, string name = "")
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
         ArgumentNullException.ThrowIfNull(content);
 
         var entry = new Button
         {
-            Name = $"Section{_sections.Count + 1}",
+            Name = string.IsNullOrWhiteSpace(name) ? $"Section{_sections.Count + 1}" : name,
             Text = $"  {title.ToUpperInvariant()}",
             Alignment = HorizontalAlignment.Left,
             CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),

@@ -87,9 +87,9 @@ public partial class MainMenuController : Node
         // Settings is a menu of areas, not one stacked panel: the player picks
         // language, look, display or data first and only then sees its controls.
         options.AddChild(_optionsMenu);
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.LanguageHeader, languageSection);
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.ThemeHeader, themeSection);
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.DisplayHeader, BuildDisplaySection(preferences));
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.LanguageHeader, languageSection, "SectionLanguage");
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.ThemeHeader, themeSection, "SectionTheme");
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.DisplayHeader, BuildDisplaySection(preferences), "SectionDisplay");
 
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(preferences.ThemeId));
     }

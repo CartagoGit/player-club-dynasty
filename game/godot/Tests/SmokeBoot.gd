@@ -32,15 +32,10 @@ func _run() -> void:
 		return
 	var entries := _find_node(settings, "OptionsEntries")
 	_expect(entries.get_child_count() >= 3, "Settings must offer its areas as a menu, not one stacked panel.")
-	var data_entry: Button = null
-	for entry in entries.get_children():
-		if (entry as Button).text.strip_edges() == "DATOS":
-			data_entry = entry as Button
+	# Areas are addressed by node name: their titles are translated.
+	var data_entry := _find_node(settings, "SectionData") as Button
 	if data_entry == null:
-		var listed := ""
-		for entry in entries.get_children():
-			listed += "'" + (entry as Button).text.strip_edges() + "' "
-		_fail("The settings menu has no data area. Areas: " + listed)
+		_fail("The settings menu has no data area.")
 		return
 	data_entry.emit_signal("pressed")
 	await process_frame
@@ -124,11 +119,16 @@ func _run() -> void:
 	var signed_player := _first_cell_text(first_candidate)
 	_expect(not signed_player.begins_with("MARKET_"), "The market must render sentences, not translation keys.")
 	var sign_player := _find_node(first_candidate, "Sign") as Button
-	sign_player.emit_signal("pressed")
 	var market_notice_path := market_path + "/Notice"
-	if not await _wait_until(func() -> bool: return scene.has_node(market_notice_path) and _label_text(scene, market_notice_path).contains("FICHAJE CERRADO")):
-		_fail("An affordable one-click transfer was not settled.")
+	# Language-independent: the notice must change from its idle sentence and
+	# the signed player must leave the list. Asserting Spanish copy here made
+	# the smoke fail on an English fallback.
+	var idle_notice := _label_text(scene, market_notice_path) if scene.has_node(market_notice_path) else ""
+	sign_player.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return scene.has_node(market_notice_path) and _label_text(scene, market_notice_path) != idle_notice):
+		_fail("An affordable one-click transfer was not settled. Notice still reads: " + (_label_text(scene, market_notice_path) if scene.has_node(market_notice_path) else "<no notice node>"))
 		return
+	_expect(not _label_text(scene, market_notice_path).begins_with("MARKET_"), "The settlement notice must be a sentence, not a translation key.")
 	_expect(_row_count(_content(scene), "CandidateRows") == candidate_count - 1, "The acquired player must leave the transfer candidate list.")
 
 	finances.emit_signal("pressed")

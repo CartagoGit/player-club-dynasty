@@ -37,7 +37,25 @@ public partial class PresentationBootstrap : Control
 
     public override void _Ready()
     {
-        _ = InitializeAndLoadAsync();
+        _ = StartAsync();
+    }
+
+    /// <summary>
+    /// Runs the bootstrap and reports anything it throws. Without this the
+    /// task simply faults: the menu never appears, nothing is printed, and the
+    /// player is left with a blank window.
+    /// </summary>
+    private async Task StartAsync()
+    {
+        try
+        {
+            await InitializeAndLoadAsync();
+        }
+        catch (System.Exception exception)
+        {
+            WorldStatus.Text = $"NO SE PUDO INICIAR EL JUEGO · {exception.Message}";
+            GD.PushError($"[PresentationBootstrap] {exception}");
+        }
     }
 
     private async Task InitializeAndLoadAsync()
@@ -92,11 +110,17 @@ public partial class PresentationBootstrap : Control
         LocaleActivationService service = new(registry, loader, probe);
 
         string? savedLocaleId = ReadSavedLocaleId();
+        bool hadSavedChoice = !string.IsNullOrWhiteSpace(savedLocaleId);
         LocaleActivationOutcome outcome = service.Activate(savedLocaleId);
 
         switch (outcome)
         {
-            case LocaleActivationOutcome.Recovered recovered:
+            // A first launch on a system language the game does not ship is an
+            // ordinary fallback, not a failure: reporting it would greet every
+            // new player with a modal they have to dismiss, and a headless run
+            // with nobody to dismiss it would hang forever. A saved choice that
+            // stops loading is a real regression, so that one is reported.
+            case LocaleActivationOutcome.Recovered recovered when hadSavedChoice:
                 await ShowAndAwaitPanelAsync(
                     PCDynasty.Presentation.Core.Diagnostics.ApplicationErrorBuilder.FromActivationOutcome(recovered));
                 break;
@@ -345,7 +369,7 @@ public partial class PresentationBootstrap : Control
             SelectExternalWorld,
             RestoreIntegratedWorld);
         _contentSourceSection = section;
-        settings.AddSection(_localeSession!.ActiveFile.Options.DataHeader, section);
+        settings.AddSection(_localeSession!.ActiveFile.Options.DataHeader, section, "SectionData");
     }
 
     private void OpenCareer(WorldService service, string clubId, CareerRuntimeMode mode)
