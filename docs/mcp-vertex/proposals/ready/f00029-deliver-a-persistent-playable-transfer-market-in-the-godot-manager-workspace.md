@@ -1,0 +1,87 @@
+---
+id: f00029
+title: "Deliver a persistent playable transfer market in the Godot manager workspace"
+kind: feat
+status: ready
+type: proposal
+track: product
+date: 2026-08-18
+---
+
+# f00029 — Deliver a persistent playable transfer market in the Godot manager workspace
+
+## Goal
+
+Enable the managed club to browse deterministic transfer candidates, complete affordable signings, persist them in the externally supplied career database, immediately update transfer finances and squad membership, and restore the result when continuing a career.
+
+## why
+
+The classic-manager workspace still exposes Mercado as a disabled placeholder. A vertical slice must connect the existing market engine to career-scoped contracts, atomic SQLite settlement, squad projection and an original high-density Godot screen.
+
+## non-goals
+
+- Player sales, loans, agents and multi-round contract negotiation
+- Remote or server-side persistence
+- Changing the immutable starter-world content files
+- Copying protected visuals or assets from PC Fútbol
+
+## Slices
+
+- global_gate: e2e
+
+### S1 — Define engine-neutral transfer contracts and application use case
+- **Status**: pending
+- **Files**: `game/src/PCDynasty.Contracts/Careers/CareerTransferRecord.cs`, `game/src/PCDynasty.Contracts/Careers/ICareerTransferStore.cs`, `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Market/CareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/ICareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/TransferCandidate.cs`, `game/src/PCDynasty.Application/Market/TransferOfferResult.cs`, `game/tests/PCDynasty.Contracts.Tests/CareerTransferRecordTests.cs`, `game/tests/PCDynasty.Application.Tests/Market/CareerTransferMarketServiceTests.cs`
+- **Gate**: type
+- acceptance:
+  - "Contracts are immutable, validate all external values and live outside engine and persistence assemblies."
+  - "The application service depends only on IManagerWorld, contracts, TimeProvider and the existing PCDynasty.Market negotiation/valuation model."
+  - "Candidates exclude the managed squad and already acquired players, remain deterministic, and expose an asking price."
+  - "An accepted offer atomically requests settlement against the expected finance snapshot; rejected or stale settlements do not mutate career state."
+  - "Tests cover affordability, below-asking rejection, duplicate prevention, finance decrement and acquired-squad projection."
+
+### S2 — Persist transfers and finance settlement atomically in external SQLite
+- **Status**: pending
+- **DependsOn**: [S1]
+- **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferSchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteCareerTransferStoreTests.cs`
+- **Gate**: e2e
+- acceptance:
+  - "The store receives the database path from the caller and never assumes a project-local database."
+  - "A single SQLite transaction inserts the accepted transfer and updates the matching finance snapshot or rolls back both."
+  - "Optimistic snapshot mismatch and duplicate player settlement return false without partial writes."
+  - "Clear removes only career transfer rows and never unrelated external tables."
+  - "Roundtrip, rollback, duplicate, clear and external-table preservation tests pass."
+
+### S3 — Connect the playable market and acquired squad to Godot
+- **Status**: pending
+- **DependsOn**: [S1, S2]
+- **Files**: `game/godot/PCDynasty.Presentation.csproj`, `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Careers/CareerRuntime.cs`, `game/godot/Scripts/Careers/CareerRuntimeFactory.cs`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/WorkspaceSection.cs`, `game/godot/Scripts/Workspace/Screens/MarketScreen.cs`, `game/godot/Scripts/Workspace/Screens/MarketScreen.cs.uid`, `game/godot/Scripts/Workspace/Screens/SquadScreen.cs`, `game/scripts/smoke-boot-godot.sh`, `game/tests/PCDynasty.Presentation.Tests/CareerRuntimeFactoryTests.cs`, `game/tests/PCDynasty.Architecture.Tests/PresentationStructureTests.cs`
+- **Gate**: e2e
+- acceptance:
+  - "Mercado is enabled and navigable from the sidebar with an original dense classic-manager layout consistent with existing design tokens."
+  - "The screen lists candidates and supports an affordable one-click signing with explicit success or rejection feedback."
+  - "After signing, transfer budget and cash decrease, the candidate disappears, and the player appears in the managed squad."
+  - "New career clears prior transfers while Continue restores transfer, squad and finance state from the same external database."
+  - "Presentation depends on the application port, concrete SQLite construction remains only in the composition root, and no mutable static state or service locator is introduced."
+  - "Godot smoke exercises New career, Mercado signing, Finanzas and Plantilla, then Continue and verifies the same persisted result without runtime errors."
+  - "Release build, focused tests, architecture tests, repository hygiene and full Godot smoke pass."
+
+## acceptance
+
+- Contracts are immutable, validate all external values and live outside engine and persistence assemblies.
+- The application service depends only on IManagerWorld, contracts, TimeProvider and the existing PCDynasty.Market negotiation/valuation model.
+- Candidates exclude the managed squad and already acquired players, remain deterministic, and expose an asking price.
+- An accepted offer atomically requests settlement against the expected finance snapshot; rejected or stale settlements do not mutate career state.
+- Tests cover affordability, below-asking rejection, duplicate prevention, finance decrement and acquired-squad projection.
+- The store receives the database path from the caller and never assumes a project-local database.
+- A single SQLite transaction inserts the accepted transfer and updates the matching finance snapshot or rolls back both.
+- Optimistic snapshot mismatch and duplicate player settlement return false without partial writes.
+- Clear removes only career transfer rows and never unrelated external tables.
+- Roundtrip, rollback, duplicate, clear and external-table preservation tests pass.
+- Mercado is enabled and navigable from the sidebar with an original dense classic-manager layout consistent with existing design tokens.
+- The screen lists candidates and supports an affordable one-click signing with explicit success or rejection feedback.
+- After signing, transfer budget and cash decrease, the candidate disappears, and the player appears in the managed squad.
+- New career clears prior transfers while Continue restores transfer, squad and finance state from the same external database.
+- Presentation depends on the application port, concrete SQLite construction remains only in the composition root, and no mutable static state or service locator is introduced.
+- Godot smoke exercises New career, Mercado signing, Finanzas and Plantilla, then Continue and verifies the same persisted result without runtime errors.
+- Release build, focused tests, architecture tests, repository hygiene and full Godot smoke pass.
