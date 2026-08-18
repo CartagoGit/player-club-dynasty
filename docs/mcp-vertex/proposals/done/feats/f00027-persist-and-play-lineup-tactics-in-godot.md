@@ -2,7 +2,7 @@
 id: f00027
 title: "Persist and play lineup tactics in Godot"
 kind: feat
-status: review
+status: done
 type: proposal
 track: gameplay
 date: 2026-08-18
@@ -40,7 +40,10 @@ The workspace currently exposes a disabled tactics button even though lineup com
   - "The tactics sidebar route is enabled and survives reopening through the external career database."
   - "Godot workspace contains no SQLite or schema code."
   - "Application, persistence, architecture and Godot smoke tests remain green."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: delivery-verifier
+- review-log: approved by delivery-verifier — Independent review verified contracts, DIP, external transactional persistence, Godot reuse, restore flow, architecture boundary, full Release suite and smoke.
 ## acceptance
 
 - An immutable external LineupPlan contract validates unique participants, assignments and order.
