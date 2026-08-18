@@ -68,6 +68,31 @@ public sealed class SqliteWorldStoreTests : IDisposable
         Assert.Equal([7, 8], afterCheckpoint.Snapshot.Payload.AsSpan().ToArray());
     }
 
+    [Fact]
+    public void AdapterUsesFocusedConnectionSchemaReaderAndWriterFiles()
+    {
+        string sourceRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Persistence.Sqlite");
+        string[] collaboratorNames =
+        [
+            "WorldStoreConcurrencyException.cs",
+            "SqliteWorldConnectionFactory.cs",
+            "SqliteWorldSchema.cs",
+            "SqliteWorldReader.cs",
+            "SqliteWorldWriter.cs",
+        ];
+
+        foreach (string collaboratorName in collaboratorNames)
+        {
+            Assert.True(
+                File.Exists(Path.Combine(sourceRoot, collaboratorName)),
+                $"World persistence responsibility must use '{collaboratorName}'.");
+        }
+
+        Assert.True(
+            File.ReadLines(Path.Combine(sourceRoot, "SqliteWorldStore.cs")).Count() <= 150,
+            "The public world adapter must remain a small orchestration boundary.");
+    }
+
     public void Dispose()
     {
         if (Directory.Exists(temporaryDirectory))
@@ -85,5 +110,21 @@ public sealed class SqliteWorldStoreTests : IDisposable
             snapshotSequence,
             lastFactSequence,
             new Dictionary<string, string> { ["pack:football"] = "sha256:abc123" });
+    }
+
+    private static string FindGameRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null)
+        {
+            if (Directory.Exists(Path.Combine(current.FullName, "src", "PCDynasty.Persistence.Sqlite")))
+            {
+                return current.FullName;
+            }
+
+            current = current.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the game source root.");
     }
 }

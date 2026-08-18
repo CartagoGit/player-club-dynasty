@@ -38,7 +38,7 @@ The current architecture gates protect dependency direction, but several legacy 
   - "No productive C# file in the refactored WorldService cluster exceeds 180 lines."
 
 ### S2 — Decompose the SQLite world store adapter
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/WorldStoreConcurrencyException.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldConnectionFactory.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldSchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteWorldWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteWorldStoreTests.cs`
 - **Gate**: e2e
 - acceptance:
