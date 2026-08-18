@@ -2,7 +2,7 @@
 id: f00028
 title: "Connect persistent career finances to the Godot manager workspace"
 kind: feat
-status: review
+status: done
 type: proposal
 track: manager-workspace
 date: 2026-08-18
@@ -36,8 +36,10 @@ The finance navigation is still disabled even though the economy ledger exists. 
   - "Finance persistence contracts contain immutable engine-neutral values and no Godot, SQLite or presentation dependency."
   - "The application service creates a deterministic opening ledger from the selected fictional club, persists it through ICareerFinanceStore and returns a focused overview."
   - "New and continued career behavior is explicit and covered without static or service-locator state."
-- review-state: in_review
+- review-state: done
 - review-implementer: root
+- review-reviewer: review_tactics
+- review-log: approved by review_tactics — Contracts, deterministic ledger lifecycle and focused tests verified independently.
 ### S2 — Persist career finance state in external SQLite
 - **Status**: done
 - **DependsOn**: [S1]
@@ -47,8 +49,10 @@ The finance navigation is still disabled even though the economy ledger exists. 
   - "The adapter implements ICareerFinanceStore against the caller-provided database path and preserves existing career tables."
   - "Schema, reading and transactional writing remain focused internal collaborators."
   - "Round-trip, replace and clear semantics are tested against temporary external SQLite databases."
-- review-state: in_review
+- review-state: done
 - review-implementer: root
+- review-reviewer: review_tactics
+- review-log: approved by review_tactics — External SQLite round-trip, transactional upsert and non-destructive clear verified independently.
 ### S3 — Enable and render the finance office in Godot
 - **Status**: done
 - **DependsOn**: [S1, S2]
@@ -59,10 +63,11 @@ The finance navigation is still disabled even though the economy ledger exists. 
   - "New career resets finance state while Continue restores it from the same external career database."
   - "Godot depends only on ICareerFinanceService at the screen boundary; SQLite composition stays in CareerRuntimeFactory."
   - "SmokeBoot opens the finance route and verifies meaningful rendered values without duplicate engine instances or visible loading."
-- review-state: changes_requested
+- review-state: done
 - review-implementer: root
-- review-reviewer: review_tactics
+- review-reviewer: review_world_fix_fresh
 - review-log: requested_changes by review_tactics — Changing the browsed club then opening Finances requests an uninitialized finance state. Preserve the managed career club for finances or explicitly guard the route, and cover Club Picker to Finances.
+- review-log: approved by review_world_fix_fresh — Fresh review verified managed-club scoping, club-browser regression, delegate lifecycle, build and SmokeBoot.
 ## acceptance
 
 - Finance persistence contracts contain immutable engine-neutral values and no Godot, SQLite or presentation dependency.
