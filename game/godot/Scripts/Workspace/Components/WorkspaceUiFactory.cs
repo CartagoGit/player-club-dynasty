@@ -143,6 +143,13 @@ internal static class WorkspaceUiFactory
         return calendar.AgeOf(birthYear).ToString(InvariantCulture);
     }
 
+    /// <summary>
+    /// Money as the shell writes it everywhere: finances, market and header had
+    /// three copies of this line.
+    /// </summary>
+    internal static string FormatMoney(long amount, string currency) =>
+        string.Create(InvariantCulture, $"{amount / 1_000_000m:0.0} M {currency}");
+
     internal static Color ValueColor(int value) => value switch
     {
         >= 80 => ManagerDesignTokens.Positive,

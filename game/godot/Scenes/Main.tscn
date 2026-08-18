@@ -414,122 +414,109 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Layout" type="HBoxContainer" parent="Workspace"]
+[node name="Frame" type="VBoxContainer" parent="Workspace"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
-[node name="Sidebar" type="PanelContainer" parent="Workspace/Layout"]
+[node name="Header" type="PanelContainer" parent="Workspace/Frame"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Layout" type="HBoxContainer" parent="Workspace/Frame"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Sidebar" type="PanelContainer" parent="Workspace/Frame/Layout"]
 custom_minimum_size = Vector2(254, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_sidebar")
 
-[node name="SidebarMargin" type="MarginContainer" parent="Workspace/Layout/Sidebar"]
+[node name="SidebarMargin" type="MarginContainer" parent="Workspace/Frame/Layout/Sidebar"]
 layout_mode = 2
 theme_override_constants/margin_left = 22
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 22
 theme_override_constants/margin_bottom = 22
 
-[node name="SidebarContent" type="VBoxContainer" parent="Workspace/Layout/Sidebar/SidebarMargin"]
+[node name="SidebarContent" type="VBoxContainer" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin"]
 layout_mode = 2
 theme_override_constants/separation = 7
 
-[node name="Brand" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Brand" type="Label" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
 theme_override_font_sizes/font_size = 24
 text = "PC DYNASTY"
 
-[node name="Desk" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Desk" type="Label" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 theme_override_font_sizes/font_size = 12
 text = "DESPACHO DEL MANAGER"
 
-[node name="Separator" type="HSeparator" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Separator" type="HSeparator" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 layout_mode = 2
 
-[node name="Overview" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Overview" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "  RESUMEN"
 alignment = 0
 
-[node name="Squad" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Squad" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "  PLANTILLA"
 alignment = 0
 
-[node name="Tactics" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Tactics" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "  TÁCTICA"
 alignment = 0
 
-[node name="Competitions" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Competitions" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "  COMPETICIONES"
 alignment = 0
 
-[node name="Market" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Market" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 tooltip_text = "Negocia fichajes con cargo inmediato al presupuesto de la carrera."
 text = "  MERCADO"
 alignment = 0
 
-[node name="Scouting" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
-custom_minimum_size = Vector2(0, 38)
-layout_mode = 2
-disabled = true
-theme_override_styles/disabled = SubResource("Style_disabled_nav")
-tooltip_text = "La red de scouting se conectará en la siguiente fase."
-text = "  SCOUTING"
-alignment = 0
-
-[node name="Finances" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Finances" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 tooltip_text = "Control presupuestario, tesorería y balance de la carrera."
 text = "  FINANZAS"
 alignment = 0
 
-[node name="History" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-text = "  HISTORIAL"
-alignment = 0
-
-[node name="World" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="World" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "  MUNDO"
 alignment = 0
 
-[node name="MainMenu" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="MainMenu" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "  MENÚ PRINCIPAL"
 alignment = 0
 
-[node name="SidebarSpacer" type="Control" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="SidebarSpacer" type="Control" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Status" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.345, 0.776, 0.604, 1)
-theme_override_font_sizes/font_size = 12
-text = "● PREPARANDO DESPACHO"
-autowrap_mode = 2
-
-[node name="ContentMargin" type="MarginContainer" parent="Workspace/Layout"]
+[node name="ContentMargin" type="MarginContainer" parent="Workspace/Frame/Layout"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 34
@@ -537,18 +524,29 @@ theme_override_constants/margin_top = 28
 theme_override_constants/margin_right = 34
 theme_override_constants/margin_bottom = 28
 
-[node name="ContentScroll" type="ScrollContainer" parent="Workspace/Layout/ContentMargin"]
+[node name="ContentScroll" type="ScrollContainer" parent="Workspace/Frame/Layout/ContentMargin"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Content" type="VBoxContainer" parent="Workspace/Layout/ContentMargin/ContentScroll"]
+[node name="Content" type="VBoxContainer" parent="Workspace/Frame/Layout/ContentMargin/ContentScroll"]
 custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="Loading" type="Label" parent="Workspace/Layout/ContentMargin/ContentScroll/Content"]
+[node name="Loading" type="Label" parent="Workspace/Frame/Layout/ContentMargin/ContentScroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 theme_override_font_sizes/font_size = 18
 text = "Preparando el despacho del manager..."
+
+[node name="StatusBar" type="PanelContainer" parent="Workspace/Frame"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="StatusText" type="Label" parent="Workspace/Frame/StatusBar"]
+layout_mode = 2
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+theme_override_font_sizes/font_size = 13
+text = "Listo."

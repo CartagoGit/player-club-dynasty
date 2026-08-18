@@ -105,13 +105,13 @@ internal sealed class MarketScreen
         WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerAge(candidate.BirthYear, _calendar), 48, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, candidate.Technique.ToString(WorkspaceUiFactory.InvariantCulture), 48, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, candidate.Overall.ToString(WorkspaceUiFactory.InvariantCulture), 48, WorkspaceUiFactory.ValueColor(candidate.Overall), HorizontalAlignment.Right);
-        WorkspaceUiFactory.AddColumnValue(row, FormatMoney(candidate.AskingPrice, candidate.Currency), 120, ManagerDesignTokens.Accent, HorizontalAlignment.Right);
+        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.FormatMoney(candidate.AskingPrice, candidate.Currency), 120, ManagerDesignTokens.Accent, HorizontalAlignment.Right);
         var action = new Button
         {
             Name = "Sign",
             Text = "FICHAR",
             CustomMinimumSize = new Vector2(110, ManagerDesignTokens.MinimumPointerTarget),
-            TooltipText = $"Presentar {FormatMoney(candidate.AskingPrice, candidate.Currency)} por {candidate.PlayerName}",
+            TooltipText = $"Presentar {WorkspaceUiFactory.FormatMoney(candidate.AskingPrice, candidate.Currency)} por {candidate.PlayerName}",
         };
         action.Pressed += () => Sign(candidate);
         row.AddChild(action);
@@ -126,7 +126,7 @@ internal sealed class MarketScreen
             candidate.AskingPrice);
         _lastOfferAccepted = result.Accepted;
         _notice = result.Accepted
-            ? $"FICHAJE CERRADO · {candidate.PlayerName} · presupuesto restante {FormatMoney(result.RemainingTransferBudget, candidate.Currency)}"
+            ? $"FICHAJE CERRADO · {candidate.PlayerName} · presupuesto restante {WorkspaceUiFactory.FormatMoney(result.RemainingTransferBudget, candidate.Currency)}"
             : $"OFERTA RECHAZADA · {RejectionText(result.Reason)}";
         _refresh();
     }
@@ -141,6 +141,4 @@ internal sealed class MarketScreen
         _ => reason,
     };
 
-    private static string FormatMoney(long amount, string currency) =>
-        $"{amount / 1_000_000m:0.0} M {currency}";
 }

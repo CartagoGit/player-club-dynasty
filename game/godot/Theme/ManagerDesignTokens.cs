@@ -29,6 +29,20 @@ public static class ManagerDesignTokens
     public const int SidebarWidth = 248;
     public const int ContentMaximumWidth = 1440;
     public const int MinimumPointerTarget = 40;
+
+    /// <summary>Height of the persistent club header.</summary>
+    public const int HeaderHeight = 64;
+
+    /// <summary>Height of the status strip along the bottom of the screen.</summary>
+    public const int StatusBarHeight = 30;
+
+    /// <summary>Width of the area rail.</summary>
+    public const int RailWidth = 232;
+
+    /// <summary>Table row heights; the dense one is the classic default.</summary>
+    public const int RowHeightDense = 26;
+
+    public const int RowHeightComfortable = 34;
     public const int CornerRadius = 6;
     public const float MinimumTextContrast = 4.5f;
 }

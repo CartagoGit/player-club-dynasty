@@ -35,10 +35,10 @@ internal sealed class FinancesScreen
         office.AddChild(WorkspaceUiFactory.CreatePanel(
             "CUENTA DE RESULTADOS",
             [
-                $"Ingresos previstos · {FormatMoney(overview.Revenue, overview.Currency)}",
-                $"Costes operativos · {FormatMoney(overview.Costs, overview.Currency)}",
-                $"Resultado operativo · {FormatMoney(overview.OperatingResult, overview.Currency)}",
-                $"Deuda financiera · {FormatMoney(overview.Debt, overview.Currency)}",
+                $"Ingresos previstos · {WorkspaceUiFactory.FormatMoney(overview.Revenue, overview.Currency)}",
+                $"Costes operativos · {WorkspaceUiFactory.FormatMoney(overview.Costs, overview.Currency)}",
+                $"Resultado operativo · {WorkspaceUiFactory.FormatMoney(overview.OperatingResult, overview.Currency)}",
+                $"Deuda financiera · {WorkspaceUiFactory.FormatMoney(overview.Debt, overview.Currency)}",
             ],
             overview.OperatingResult >= 0 ? ManagerDesignTokens.Positive : ManagerDesignTokens.Negative));
         office.AddChild(WorkspaceUiFactory.CreatePanel(
@@ -84,7 +84,7 @@ internal sealed class FinancesScreen
         caption.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
         caption.AddThemeFontSizeOverride("font_size", 11);
         content.AddChild(caption);
-        var value = new Label { Name = "Value", Text = FormatMoney(amount, currency) };
+        var value = new Label { Name = "Value", Text = WorkspaceUiFactory.FormatMoney(amount, currency) };
         value.AddThemeColorOverride("font_color", color);
         value.AddThemeFontSizeOverride("font_size", 23);
         content.AddChild(value);
@@ -92,6 +92,4 @@ internal sealed class FinancesScreen
         return panel;
     }
 
-    private static string FormatMoney(long amount, string currency) =>
-        $"{amount / 1_000_000m:0.0} M {currency}";
 }

@@ -262,17 +262,17 @@ public partial class PresentationBootstrap : Control
         _workspaceController = new ManagerWorkspaceController
         {
             Name = "WorkspaceController",
-            ContentRootPath = new NodePath("../Workspace/Layout/ContentMargin/ContentScroll/Content"),
-            StatusLabelPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Status"),
-            OverviewButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview"),
-            SquadButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
-            TacticsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics"),
-            CompetitionsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
-            MarketButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Market"),
-            FinancesButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances"),
-            HistoryButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/History"),
-            WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
-            MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
+            ContentRootPath = new NodePath("../Workspace/Frame/Layout/ContentMargin/ContentScroll/Content"),
+            StatusLabelPath = new NodePath("../Workspace/Frame/StatusBar/StatusText"),
+            HeaderPath = new NodePath("../Workspace/Frame/Header"),
+            OverviewButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Overview"),
+            SquadButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
+            TacticsButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics"),
+            CompetitionsButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
+            MarketButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market"),
+            FinancesButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Finances"),
+            WorldButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
+            MainMenuButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
         };
         _workspaceController.Configure(
             service,

@@ -17,13 +17,13 @@ public partial class ManagerWorkspaceController : Control
 {
     [Export] public NodePath ContentRootPath { get; set; } = new();
     [Export] public NodePath StatusLabelPath { get; set; } = new();
+    [Export] public NodePath HeaderPath { get; set; } = new();
     [Export] public NodePath OverviewButtonPath { get; set; } = new();
     [Export] public NodePath SquadButtonPath { get; set; } = new();
     [Export] public NodePath TacticsButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
     [Export] public NodePath MarketButtonPath { get; set; } = new();
     [Export] public NodePath FinancesButtonPath { get; set; } = new();
-    [Export] public NodePath HistoryButtonPath { get; set; } = new();
     [Export] public NodePath WorldButtonPath { get; set; } = new();
     [Export] public NodePath MainMenuButtonPath { get; set; } = new();
 
@@ -43,6 +43,9 @@ public partial class ManagerWorkspaceController : Control
     private WorldScreen? _worldScreen;
     private ClubPickerScreen? _clubPickerScreen;
     private readonly List<(Button Button, Action Handler)> _buttonBindings = [];
+    private readonly Dictionary<WorkspaceSection, Button> _railEntries = [];
+    private ICareerFinanceService? _finances;
+    private CareerCalendar? _calendar;
     internal void Configure(
         IManagerWorld world,
         string selectedClubId,
@@ -78,10 +81,13 @@ public partial class ManagerWorkspaceController : Control
             historyPersistence,
             _managed,
             RenderCurrent,
-            SetStatus);
+            SetStatus,
+            () => SelectSection(WorkspaceSection.History));
         _marketScreen = new MarketScreen(transferMarket, _managed, calendar, RenderCurrent);
         _financesScreen = new FinancesScreen(financeService, _managed);
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
+        _finances = financeService;
+        _calendar = calendar;
         _worldScreen = new WorldScreen(world);
         _clubPickerScreen = new ClubPickerScreen(SelectClub);
     }
@@ -100,7 +106,6 @@ public partial class ManagerWorkspaceController : Control
         Wire(CompetitionsButtonPath, WorkspaceSection.Competitions);
         Wire(MarketButtonPath, WorkspaceSection.Market);
         Wire(FinancesButtonPath, WorkspaceSection.Finances);
-        Wire(HistoryButtonPath, WorkspaceSection.History);
         Wire(WorldButtonPath, WorkspaceSection.World);
 
         Button? mainMenu = GetNodeOrNull<Button>(MainMenuButtonPath);
@@ -121,7 +126,28 @@ public partial class ManagerWorkspaceController : Control
     private void Wire(NodePath path, WorkspaceSection section)
     {
         Button? button = GetNodeOrNull<Button>(path);
-        if (button is not null) Bind(button, () => SelectSection(section));
+        if (button is null)
+        {
+            return;
+        }
+
+        _railEntries[section] = button;
+        Bind(button, () => SelectSection(section));
+    }
+
+    /// <summary>The active area keeps its gold edge so the rail answers "where am I".</summary>
+    private void HighlightActiveArea()
+    {
+        foreach ((WorkspaceSection section, Button entry) in _railEntries)
+        {
+            bool active = section == _selectedSection
+                || (_selectedSection == WorkspaceSection.History && section == WorkspaceSection.Competitions)
+                || (_selectedSection == WorkspaceSection.ClubPicker && section == WorkspaceSection.Overview);
+            entry.AddThemeStyleboxOverride("normal", ClassicChrome.RailEntry(active));
+            entry.AddThemeColorOverride(
+                "font_color",
+                active ? ManagerDesignTokens.TextPrimary : ManagerDesignTokens.TextSecondary);
+        }
     }
 
     private void Bind(Button button, Action handler)
@@ -150,6 +176,7 @@ public partial class ManagerWorkspaceController : Control
             return;
         }
 
+        HighlightActiveArea();
         WorkspaceUiFactory.Clear(root);
         IReadOnlyList<ClubRow> clubs = _world.ListClubs();
         if (_browsed is null || _managed is null || clubs.Count == 0)
@@ -165,6 +192,7 @@ public partial class ManagerWorkspaceController : Control
             return;
         }
 
+        RenderHeader(clubs);
         switch (_selectedSection)
         {
             case WorkspaceSection.Squad:
@@ -206,6 +234,39 @@ public partial class ManagerWorkspaceController : Control
                 SetStatus($"● {club.DisplayName}");
                 break;
         }
+    }
+
+    /// <summary>
+    /// The header always describes the managed club, never the browsed one:
+    /// it answers "what do I run", not "what am I looking at".
+    /// </summary>
+    private void RenderHeader(IReadOnlyList<ClubRow> clubs)
+    {
+        WorkspaceHeader? header = GetNodeOrNull<WorkspaceHeader>(HeaderPath);
+        if (header is null || _managed is null || _calendar is null || _finances is null)
+        {
+            return;
+        }
+
+        ClubRow? managedClub = clubs.FirstOrDefault(club => _managed.Owns(club.ExternalId));
+        if (managedClub is null)
+        {
+            return;
+        }
+
+        string money;
+        try
+        {
+            ClubFinanceOverview overview = _finances.GetOverview(_managed);
+            money = WorkspaceUiFactory.FormatMoney(overview.Cash, overview.Currency);
+        }
+        catch (InvalidOperationException)
+        {
+            // The career has no finance state yet; the header still names the club.
+            money = "—";
+        }
+
+        header.Show(managedClub, _calendar, money);
     }
 
     private void SetStatus(string text)

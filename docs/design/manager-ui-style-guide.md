@@ -1,8 +1,14 @@
 # Sistema visual de PC Dynasty
 
-Este sistema busca la rapidez, densidad informativa y navegación directa de un
-manager de escritorio clásico, con una identidad propia. No replica pantallas,
-recursos, tipografías, proporciones ni composición comercial de otros juegos.
+Este sistema adopta deliberadamente la **gramática de interfaz de los managers
+de escritorio clásicos de los años noventa**: placa de título sobre fondo a
+sangre, panel con marco y bisel, cabecera persistente con club, fecha y dinero,
+raíl compacto de áreas, tablas densas y barra de estado inferior. Esa gramática
+es lo que se busca reproducir en sensación y usabilidad.
+
+Lo que no se toma de nadie es el material: ilustraciones, iconos, tipografías,
+sonidos, capturas, textos, marcas y nombres son propios de este proyecto. La
+semejanza es de disposición y ritmo, no de recursos.
 
 ## Principios
 
@@ -43,6 +49,18 @@ licencia redistribuible. La escala recomendada es 13/15/18/24/32 px para metadat
 cuerpo, subtítulo, título de panel y título de vista. Números tabulares se alinean
 a la derecha. La rejilla de espaciado es 2, 4, 8, 12, 16, 24, 32 y 48 px; el radio
 común es 6 px.
+
+## Estructura de pantalla
+
+Toda pantalla de carrera se compone de cuatro bandas fijas:
+
+1. **Cabecera**: escudo, club gestionado, fecha de carrera y tesorería.
+2. **Raíl de áreas**: como máximo siete áreas agrupadas más la salida al menú.
+3. **Lienzo**: la vista activa, en paneles con marco y filas densas.
+4. **Barra de estado**: último mensaje, siempre visible, nunca oculto en el raíl.
+
+El menú principal usa la misma gramática: placa de título, pila de acciones en
+mayúsculas con pista de teclado y barra de estado inferior.
 
 ## Navegación
 

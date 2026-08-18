@@ -180,6 +180,16 @@ at a time.
   - "Contract, reputation, relationships, objectives, offers, dismissal and unemployment govern which club can be mutated."
   - "Changing club transfers authority with no state leaking from the previous club."
 
+### S12b — Adopt the classic manager interface grammar in the shell
+- **Status**: ready
+- **DependsOn**: [S2, S3]
+- **Owner**: `f00042`
+- **Files**: `docs/mcp-vertex/proposals/ready/f00042-adopt-the-classic-manager-interface-grammar-in-the-shell.md`
+- **Gate**: e2e
+- acceptance:
+  - "Menu, club workspace and options share one classic grammar with a persistent header and status strip."
+  - "Navigation is seven areas or fewer with no disabled placeholder, and preferences are applied and remembered."
+
 ### S13 — Rebuild the workspace as an original classic decision loop
 - **Status**: ready
 - **DependsOn**: [S2, S5, S6, S7, S8, S9, S10, S11, S12]
