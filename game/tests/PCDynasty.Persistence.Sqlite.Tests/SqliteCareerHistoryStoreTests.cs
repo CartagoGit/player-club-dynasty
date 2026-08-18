@@ -104,6 +104,29 @@ public sealed class SqliteCareerHistoryStoreTests : IDisposable
         Assert.Throws<ArgumentException>(() => new SqliteCareerHistoryStore(" "));
     }
 
+    [Fact]
+    public void AdapterSeparatesSchemaReadsAndWrites()
+    {
+        string sourceRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Persistence.Sqlite");
+        string[] collaboratorNames =
+        [
+            "SqliteCareerHistorySchema.cs",
+            "SqliteCareerHistoryReader.cs",
+            "SqliteCareerHistoryWriter.cs",
+        ];
+
+        foreach (string collaboratorName in collaboratorNames)
+        {
+            Assert.True(
+                File.Exists(Path.Combine(sourceRoot, collaboratorName)),
+                $"Career history responsibility must use '{collaboratorName}'.");
+        }
+
+        Assert.True(
+            File.ReadLines(Path.Combine(sourceRoot, "SqliteCareerHistoryStore.cs")).Count() <= 130,
+            "The public adapter must remain a small orchestration boundary.");
+    }
+
     private static HistoryEntry NewMatch(
         int homeGoals = 0,
         int awayGoals = 0,
@@ -133,4 +156,20 @@ public sealed class SqliteCareerHistoryStoreTests : IDisposable
             TotalFixtures: standings.Length * 2,
             PlayedAtUtc: DateTime.UtcNow,
             FinalStandings: standings);
+
+    private static string FindGameRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null)
+        {
+            if (Directory.Exists(Path.Combine(current.FullName, "src", "PCDynasty.Persistence.Sqlite")))
+            {
+                return current.FullName;
+            }
+
+            current = current.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the game source root.");
+    }
 }

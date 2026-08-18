@@ -47,7 +47,7 @@ The current architecture gates protect dependency direction, but several legacy 
   - "Concurrency, checkpoint and external database behavior remain unchanged."
 
 ### S3 — Decompose career-history persistence
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerHistoryStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerHistorySchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerHistoryReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerHistoryWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteCareerHistoryStoreTests.cs`
 - **Gate**: e2e
 - acceptance:
