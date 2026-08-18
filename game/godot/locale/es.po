@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "OPTIONS_LANGUAGE_HEADER"
+msgstr "IDIOMA"
+
+msgid "OPTIONS_LANGUAGE_HINT"
+msgstr "La interfaz del juego; el contenido del mundo no cambia."
+
+msgid "OPTIONS_THEME_HEADER"
+msgstr "TEMA"
+
+msgid "OPTIONS_THEME_HINT"
+msgstr "Cambia la paleta de la interfaz. La sesión se re-pinta al instante."
+
+msgid "LOCALE_COUNTRY_TOOLTIP"
+msgstr "%s"

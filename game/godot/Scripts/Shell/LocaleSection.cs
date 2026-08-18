@@ -36,9 +36,9 @@ public sealed partial class LocaleSection : VBoxContainer
 
     public override void _Ready()
     {
-        AddChild(Caption("IDIOMA", ManagerDesignTokens.Accent, 12));
+        AddChild(Caption(Tr("OPTIONS_LANGUAGE_HEADER"), ManagerDesignTokens.Accent, 12));
         AddChild(Caption(
-            "La interfaz del juego; el contenido del mundo no cambia.",
+            Tr("OPTIONS_LANGUAGE_HINT"),
             ManagerDesignTokens.TextSecondary,
             12));
 
@@ -59,7 +59,7 @@ public sealed partial class LocaleSection : VBoxContainer
             Name = $"Locale_{entry.Id.Value}",
             ToggleMode = true,
             ButtonGroup = _buttonGroup,
-            TooltipText = entry.CountryName,
+            TooltipText = Tr("LOCALE_COUNTRY_TOOLTIP", entry.CountryName),
             CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
         };
 

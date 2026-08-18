@@ -33,9 +33,9 @@ public sealed partial class ThemeSection : VBoxContainer
 
     public override void _Ready()
     {
-        AddChild(Caption("TEMA", ManagerDesignTokens.Accent, 12));
+        AddChild(Caption(Tr("OPTIONS_THEME_HEADER"), ManagerDesignTokens.Accent, 12));
         AddChild(Caption(
-            "Cambia la paleta de la interfaz. La sesión se re-pinta al instante.",
+            Tr("OPTIONS_THEME_HINT"),
             ManagerDesignTokens.TextSecondary,
             12));
 

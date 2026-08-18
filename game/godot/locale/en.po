@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "OPTIONS_LANGUAGE_HEADER"
+msgstr "LANGUAGE"
+
+msgid "OPTIONS_LANGUAGE_HINT"
+msgstr "The shell's language; the world's content does not change."
+
+msgid "OPTIONS_THEME_HEADER"
+msgstr "THEME"
+
+msgid "OPTIONS_THEME_HINT"
+msgstr "Changes the interface palette. The session re-paints instantly."
+
+msgid "LOCALE_COUNTRY_TOOLTIP"
+msgstr "%s"
