@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://Scripts/PresentationBootstrap.cs" id="1_main"]
 [ext_resource type="Theme" path="res://Theme/PCDynastyTheme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://djx3o6shq7mwb" path="res://Scripts/Workspace/Components/WorkspaceHeader.cs" id="3_workspaceheader"]
 
 [sub_resource type="StyleBoxFlat" id="Style_topbar"]
 bg_color = Color(0.039, 0.122, 0.18, 1)
@@ -426,6 +427,7 @@ theme_override_constants/separation = 0
 [node name="Header" type="PanelContainer" parent="Workspace/Frame"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
+script = ExtResource("3_workspaceheader")
 
 [node name="Layout" type="HBoxContainer" parent="Workspace/Frame"]
 layout_mode = 2
