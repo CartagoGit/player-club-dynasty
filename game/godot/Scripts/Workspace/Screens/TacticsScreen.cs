@@ -11,15 +11,27 @@ internal sealed class TacticsScreen
     private const string ScenePath = "res://Scenes/Matches/LineupSelection.tscn";
     private readonly ICareerLineupService _lineups;
     private readonly IManagerWorld _world;
+    private readonly ManagedClubContext _managed;
 
-    internal TacticsScreen(IManagerWorld world, ICareerLineupService lineups)
+    internal TacticsScreen(
+        IManagerWorld world,
+        ICareerLineupService lineups,
+        ManagedClubContext managed)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _lineups = lineups ?? throw new ArgumentNullException(nameof(lineups));
+        _managed = managed ?? throw new ArgumentNullException(nameof(managed));
     }
 
-    internal void Render(Control root, ClubRow club)
+    /// <summary>
+    /// A match plan is a command, so it is always authored for the managed
+    /// club even when the user is browsing a rival.
+    /// </summary>
+    internal void Render(Control root, ClubRow browsedClub)
     {
+        ClubRow club = _managed.Owns(browsedClub.ExternalId)
+            ? browsedClub
+            : _world.FindClub(_managed.ClubExternalId) ?? browsedClub;
         PackedScene scene = GD.Load<PackedScene>(ScenePath)
             ?? throw new InvalidOperationException($"Could not load tactics scene '{ScenePath}'.");
         LineupSelectionController controller = scene.Instantiate<LineupSelectionController>();
@@ -47,6 +59,6 @@ internal sealed class TacticsScreen
             $"{club.DisplayName.ToUpperInvariant()} · PLAN DE PARTIDO",
             candidates);
         _lineups.TryGetLatest(club.ExternalId, out LineupPlan? savedPlan);
-        controller.Bind(view, command => _lineups.Submit(command), savedPlan);
+        controller.Bind(view, command => _lineups.Submit(_managed, command), savedPlan);
     }
 }

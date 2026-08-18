@@ -16,9 +16,11 @@ public sealed class CareerFinanceService : ICareerFinanceService
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    public ClubFinanceOverview Open(ClubRow club, CareerFinanceMode mode)
+    public ClubFinanceOverview Open(ManagedClubContext managed, ClubRow club, CareerFinanceMode mode)
     {
+        ArgumentNullException.ThrowIfNull(managed);
         ArgumentNullException.ThrowIfNull(club);
+        managed.EnsureOwns(club.ExternalId);
         if (!Enum.IsDefined(mode))
         {
             throw new ArgumentOutOfRangeException(nameof(mode));
@@ -40,9 +42,10 @@ public sealed class CareerFinanceService : ICareerFinanceService
         return ToOverview(initial);
     }
 
-    public ClubFinanceOverview GetOverview(string clubExternalId)
+    public ClubFinanceOverview GetOverview(ManagedClubContext managed)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
+        ArgumentNullException.ThrowIfNull(managed);
+        string clubExternalId = managed.ClubExternalId;
         if (!_store.TryLoad(clubExternalId, out CareerFinanceState? state))
         {
             throw new InvalidOperationException(

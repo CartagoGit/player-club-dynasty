@@ -7,6 +7,8 @@ namespace PCDynasty.Application.Tests.Market;
 
 public sealed class CareerTransferMarketServiceTests
 {
+    private static readonly ManagedClubContext Managed = new("club:managed");
+
     private static readonly DateTimeOffset Now =
         new(2026, 8, 18, 12, 0, 0, TimeSpan.Zero);
 
@@ -18,8 +20,8 @@ public sealed class CareerTransferMarketServiceTests
         var service = Service(transfers);
         var reversed = Service(transfers, world: new FakeManagerWorld(reverse: true));
 
-        IReadOnlyList<TransferCandidate> first = service.ListCandidates("club:managed");
-        IReadOnlyList<TransferCandidate> second = reversed.ListCandidates("club:managed");
+        IReadOnlyList<TransferCandidate> first = service.ListCandidates(Managed);
+        IReadOnlyList<TransferCandidate> second = reversed.ListCandidates(Managed);
 
         Assert.Equal(first, second);
         Assert.Collection(
@@ -39,10 +41,10 @@ public sealed class CareerTransferMarketServiceTests
         var transfers = new InMemoryTransferStore();
         var finances = new InMemoryFinanceStore(Finance());
         var service = Service(transfers, finances);
-        TransferCandidate candidate = service.ListCandidates("club:managed")[0];
+        TransferCandidate candidate = service.ListCandidates(Managed)[0];
 
         TransferOfferResult result = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice - 1);
 
@@ -58,10 +60,10 @@ public sealed class CareerTransferMarketServiceTests
         var transfers = new InMemoryTransferStore();
         var finances = new InMemoryFinanceStore(Finance());
         var service = Service(transfers, finances);
-        TransferCandidate candidate = service.ListCandidates("club:managed")[0];
+        TransferCandidate candidate = service.ListCandidates(Managed)[0];
 
         TransferOfferResult result = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
 
@@ -70,10 +72,10 @@ public sealed class CareerTransferMarketServiceTests
         Assert.Equal(10_000_000 - candidate.AskingPrice, finances.State.Cash);
         Assert.Equal(8_000_000 - candidate.AskingPrice, finances.State.TransferBudget);
         Assert.Contains(
-            service.ListManagedSquad("club:managed"),
+            service.ListManagedSquad(Managed),
             player => player.ExternalId == candidate.PlayerExternalId);
         Assert.DoesNotContain(
-            service.ListCandidates("club:managed"),
+            service.ListCandidates(Managed),
             item => item.PlayerExternalId == candidate.PlayerExternalId);
     }
 
@@ -83,10 +85,10 @@ public sealed class CareerTransferMarketServiceTests
         var transfers = new InMemoryTransferStore();
         var finances = new InMemoryFinanceStore(Finance(cash: 100));
         var service = Service(transfers, finances);
-        TransferCandidate candidate = service.ListCandidates("club:managed")[0];
+        TransferCandidate candidate = service.ListCandidates(Managed)[0];
 
         TransferOfferResult result = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
 
@@ -102,15 +104,15 @@ public sealed class CareerTransferMarketServiceTests
         var transfers = new InMemoryTransferStore();
         var finances = new InMemoryFinanceStore(Finance());
         var service = Service(transfers, finances);
-        TransferCandidate candidate = service.ListCandidates("club:managed")[0];
+        TransferCandidate candidate = service.ListCandidates(Managed)[0];
         TransferOfferResult first = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
         long cashAfterFirst = finances.State.Cash;
 
         TransferOfferResult duplicate = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
 
@@ -127,11 +129,11 @@ public sealed class CareerTransferMarketServiceTests
         var transfers = new InMemoryTransferStore();
         var finances = new InMemoryFinanceStore(Finance());
         var service = Service(transfers, finances);
-        TransferCandidate candidate = service.ListCandidates("club:managed")[0];
+        TransferCandidate candidate = service.ListCandidates(Managed)[0];
         transfers.BeforeSettlement = () => finances.Save(Finance(cash: 9_999_999, updatedAt: Now.AddSeconds(1)));
 
         TransferOfferResult result = service.SubmitOffer(
-            "club:managed",
+            Managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
 
@@ -155,7 +157,7 @@ public sealed class CareerTransferMarketServiceTests
     {
         var service = Service(world: new FakeManagerWorld(sparseOnly: true));
 
-        TransferCandidate candidate = Assert.Single(service.ListCandidates("club:managed"));
+        TransferCandidate candidate = Assert.Single(service.ListCandidates(Managed));
 
         Assert.Equal("person:sparse", candidate.PlayerExternalId);
         Assert.Equal(250_000, candidate.AskingPrice);
@@ -166,7 +168,7 @@ public sealed class CareerTransferMarketServiceTests
     {
         var service = Service(world: new FakeManagerWorld(extremeOnly: true));
 
-        TransferCandidate candidate = Assert.Single(service.ListCandidates("club:managed"));
+        TransferCandidate candidate = Assert.Single(service.ListCandidates(Managed));
 
         Assert.Equal(100, candidate.Overall);
         Assert.Equal(100, candidate.Technique);
@@ -278,6 +280,10 @@ public sealed class CareerTransferMarketServiceTests
                     ? [AvailableTwin, AvailablePlayer, BestPlayer]
                     : [BestPlayer, AvailablePlayer, AvailableTwin];
 
+        public IReadOnlyList<ManagerRow> ListManagers(string clubExternalId) => [];
+
+        public IReadOnlyList<StaffRow> ListStaff(string clubExternalId) => [];
+
         public IReadOnlyList<CompetitionRow> ListCompetitionsForClub(string clubExternalId) => [];
 
         public IReadOnlyList<CompetitionRow> ListAllCompetitions() => [];
@@ -289,7 +295,7 @@ public sealed class CareerTransferMarketServiceTests
             new(id, name, name, "City", "Country", "1900", 50, 50, 1);
 
         private static PlayerRow Player(string id, string name, int overall) =>
-            new(id, name, 2000, overall, overall, overall, overall, overall);
+            new(id, name, 2000, new DateOnly(2000, 6, 1), "Country", overall, overall, overall, overall, overall);
     }
 
     private sealed class FixedTimeProvider(DateTimeOffset now) : TimeProvider

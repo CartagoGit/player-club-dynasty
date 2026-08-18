@@ -35,7 +35,14 @@ public sealed class ManagerWorldContractTests
     [Fact]
     public void ManagerWorldRowsAreSealedRecords()
     {
-        Type[] rowTypes = [typeof(ClubRow), typeof(PlayerRow), typeof(CompetitionRow)];
+        Type[] rowTypes =
+        [
+            typeof(ClubRow),
+            typeof(PlayerRow),
+            typeof(ManagerRow),
+            typeof(StaffRow),
+            typeof(CompetitionRow),
+        ];
 
         foreach (Type rowType in rowTypes)
         {
@@ -49,7 +56,9 @@ public sealed class ManagerWorldContractTests
     {
         MethodInfo[] methods = typeof(IManagerWorld).GetMethods();
 
-        Assert.Equal(5, methods.Length);
+        // Clubs, players, managers, staff, competitions per club, all
+        // competitions and a single club lookup: seven queries, no commands.
+        Assert.Equal(7, methods.Length);
         Assert.All(methods, method => Assert.DoesNotContain("Task", method.ReturnType.Name, StringComparison.Ordinal));
         Assert.DoesNotContain(methods, method => method.Name.StartsWith("Save", StringComparison.Ordinal));
         Assert.DoesNotContain(methods, method => method.Name.StartsWith("Update", StringComparison.Ordinal));

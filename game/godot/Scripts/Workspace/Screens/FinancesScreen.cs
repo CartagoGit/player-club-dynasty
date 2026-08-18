@@ -9,15 +9,17 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class FinancesScreen
 {
     private readonly ICareerFinanceService _finances;
+    private readonly ManagedClubContext _managed;
 
-    internal FinancesScreen(ICareerFinanceService finances)
+    internal FinancesScreen(ICareerFinanceService finances, ManagedClubContext managed)
     {
         _finances = finances ?? throw new ArgumentNullException(nameof(finances));
+        _managed = managed ?? throw new ArgumentNullException(nameof(managed));
     }
 
     internal void Render(Control root, ClubRow club)
     {
-        ClubFinanceOverview overview = _finances.GetOverview(club.ExternalId);
+        ClubFinanceOverview overview = _finances.GetOverview(_managed);
         var office = new VBoxContainer { Name = "FinancesOffice" };
         office.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
         office.AddChild(Header(club, overview));

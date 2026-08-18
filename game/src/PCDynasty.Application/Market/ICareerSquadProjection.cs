@@ -4,5 +4,5 @@ namespace PCDynasty.Application.Market;
 
 public interface ICareerSquadProjection
 {
-    IReadOnlyList<PlayerRow> ListManagedSquad(string managedClubExternalId);
+    IReadOnlyList<PlayerRow> ListManagedSquad(ManagedClubContext managed);
 }

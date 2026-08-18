@@ -27,9 +27,10 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    public IReadOnlyList<TransferCandidate> ListCandidates(string managedClubExternalId)
+    public IReadOnlyList<TransferCandidate> ListCandidates(ManagedClubContext managed)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(managedClubExternalId);
+        ArgumentNullException.ThrowIfNull(managed);
+        string managedClubExternalId = managed.ClubExternalId;
         HashSet<string> unavailablePlayers = _world
             .ListPlayers(managedClubExternalId)
             .Select(player => player.ExternalId)
@@ -50,9 +51,10 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
             .ToImmutableArray();
     }
 
-    public IReadOnlyList<PlayerRow> ListManagedSquad(string managedClubExternalId)
+    public IReadOnlyList<PlayerRow> ListManagedSquad(ManagedClubContext managed)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(managedClubExternalId);
+        ArgumentNullException.ThrowIfNull(managed);
+        string managedClubExternalId = managed.ClubExternalId;
         IEnumerable<PlayerRow> originalSquad = _world.ListPlayers(managedClubExternalId);
         HashSet<string> acquiredIds = _transferStore
             .ListForClub(managedClubExternalId)
@@ -72,15 +74,16 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
     }
 
     public TransferOfferResult SubmitOffer(
-        string managedClubExternalId,
+        ManagedClubContext managed,
         string playerExternalId,
         long offeredMinorUnits)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(managedClubExternalId);
+        ArgumentNullException.ThrowIfNull(managed);
+        string managedClubExternalId = managed.ClubExternalId;
         ArgumentException.ThrowIfNullOrWhiteSpace(playerExternalId);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offeredMinorUnits);
 
-        TransferCandidate? candidate = ListCandidates(managedClubExternalId)
+        TransferCandidate? candidate = ListCandidates(managed)
             .FirstOrDefault(item => string.Equals(
                 item.PlayerExternalId,
                 playerExternalId,

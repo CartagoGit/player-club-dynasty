@@ -1,4 +1,5 @@
 using PCDynasty.Application.Matches;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
 using Xunit;
 
@@ -6,6 +7,8 @@ namespace PCDynasty.Application.Tests.Matches;
 
 public sealed class CareerLineupServiceTests
 {
+    private static readonly ManagedClubContext Managed = new("club:test");
+
     private static readonly DateTimeOffset FixedNow = new(2026, 8, 18, 12, 0, 0, TimeSpan.Zero);
 
     [Fact]
@@ -19,7 +22,7 @@ public sealed class CareerLineupServiceTests
             [new LineupParticipantSelection("person:a", "starter", 0)],
             [KeyValuePair.Create("approach", "balanced")]);
 
-        LineupPlan saved = service.Submit(command);
+        LineupPlan saved = service.Submit(Managed, command);
 
         Assert.Same(saved, store.Saved);
         Assert.Equal(FixedNow, saved.SubmittedAtUtc);

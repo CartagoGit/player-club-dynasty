@@ -15,9 +15,17 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    public MatchExecution PlayMatch(string competitionDisplayName, ClubRow home, ClubRow away)
+    public MatchExecution PlayMatch(
+        ManagedClubContext managed,
+        string competitionDisplayName,
+        ClubRow home,
+        ClubRow away)
     {
+        ArgumentNullException.ThrowIfNull(managed);
+        ArgumentNullException.ThrowIfNull(home);
+        ArgumentNullException.ThrowIfNull(away);
         string competition = Required(competitionDisplayName, nameof(competitionDisplayName));
+        EnsureManagedTakesPart(managed, [home.ExternalId, away.ExternalId]);
         MatchResult result = MatchSimulator.Simulate(home, away, ReserveSeedRange(1));
         var history = new HistoryEntry(
             CompetitionDisplayName: competition,
@@ -32,6 +40,22 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
         return new MatchExecution(result, history);
     }
 
+    /// <summary>
+    /// A career may only produce facts for matches it takes part in: recording
+    /// a fixture between two rivals would let a browsed club rewrite history.
+    /// </summary>
+    private static void EnsureManagedTakesPart(
+        ManagedClubContext managed,
+        IReadOnlyList<string> clubExternalIds)
+    {
+        if (clubExternalIds.Any(managed.Owns))
+        {
+            return;
+        }
+
+        throw new ClubAuthorityException(managed.ClubExternalId, clubExternalIds[0]);
+    }
+
     public MatchResult Replay(MatchResult previous)
     {
         ArgumentNullException.ThrowIfNull(previous);
@@ -39,13 +63,16 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
     }
 
     public SeasonExecution PlaySeason(
+        ManagedClubContext managed,
         string competitionExternalId,
         string competitionDisplayName,
         ClubRow managedClub,
         IReadOnlyList<ClubRow> participants)
     {
+        ArgumentNullException.ThrowIfNull(managed);
         ArgumentNullException.ThrowIfNull(managedClub);
         ArgumentNullException.ThrowIfNull(participants);
+        managed.EnsureOwns(managedClub.ExternalId);
         ImmutableArray<ClubRow> participantSnapshot = participants.ToImmutableArray();
         if (!participantSnapshot.Any(club => string.Equals(
                 club.ExternalId,

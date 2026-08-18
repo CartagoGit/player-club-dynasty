@@ -7,6 +7,8 @@ namespace PCDynasty.Application.Tests.Finances;
 
 public sealed class CareerFinanceServiceTests
 {
+    private static readonly ManagedClubContext Managed = new("club:aurora");
+
     private static readonly DateTimeOffset FixedNow =
         new(2026, 8, 18, 12, 0, 0, TimeSpan.Zero);
     private static readonly ClubRow Club =
@@ -18,7 +20,7 @@ public sealed class CareerFinanceServiceTests
         var store = new MemoryFinanceStore();
         var service = new CareerFinanceService(store, new FixedTimeProvider(FixedNow));
 
-        ClubFinanceOverview overview = service.Open(Club, CareerFinanceMode.New);
+        ClubFinanceOverview overview = service.Open(Managed, Club, CareerFinanceMode.New);
 
         Assert.Equal(20_700_000, overview.Revenue);
         Assert.Equal(11_385_000, overview.Costs);
@@ -48,7 +50,7 @@ public sealed class CareerFinanceServiceTests
         var store = new MemoryFinanceStore(stored);
         var service = new CareerFinanceService(store, new FixedTimeProvider(FixedNow));
 
-        ClubFinanceOverview overview = service.Open(Club, CareerFinanceMode.Continue);
+        ClubFinanceOverview overview = service.Open(Managed, Club, CareerFinanceMode.Continue);
 
         Assert.Equal(123, overview.Cash);
         Assert.Equal(300, overview.OperatingResult);
@@ -62,12 +64,12 @@ public sealed class CareerFinanceServiceTests
         var store = new MemoryFinanceStore();
         var service = new CareerFinanceService(store, new FixedTimeProvider(FixedNow));
 
-        ClubFinanceOverview overview = service.Open(Club, CareerFinanceMode.Continue);
+        ClubFinanceOverview overview = service.Open(Managed, Club, CareerFinanceMode.Continue);
 
         Assert.Equal(Club.ExternalId, overview.ClubExternalId);
         Assert.Equal(1, store.SaveCount);
         Assert.Equal(0, store.ClearCount);
-        Assert.Equal(overview, service.GetOverview(Club.ExternalId));
+        Assert.Equal(overview, service.GetOverview(Managed));
     }
 
     private sealed class MemoryFinanceStore : ICareerFinanceStore

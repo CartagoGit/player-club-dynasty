@@ -25,7 +25,19 @@ public sealed class WorldService : IManagerWorld
     public IReadOnlyList<PlayerRow> ListPlayers(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldClubProjection.ListPlayers(_catalog.GetSnapshot(), clubExternalId);
+        return WorldPeopleProjection.ListPlayers(_catalog.GetSnapshot(), clubExternalId);
+    }
+
+    public IReadOnlyList<ManagerRow> ListManagers(string clubExternalId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
+        return WorldPeopleProjection.ListManagers(_catalog.GetSnapshot(), clubExternalId);
+    }
+
+    public IReadOnlyList<StaffRow> ListStaff(string clubExternalId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
+        return WorldPeopleProjection.ListStaff(_catalog.GetSnapshot(), clubExternalId);
     }
 
     public IReadOnlyList<CompetitionRow> ListCompetitionsForClub(string clubExternalId)

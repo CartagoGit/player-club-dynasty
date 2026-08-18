@@ -1,5 +1,6 @@
 using System.Globalization;
 using Godot;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Theme;
 
 namespace PCDynasty.Presentation.Workspace.Components;
@@ -128,16 +129,18 @@ internal static class WorkspaceUiFactory
             : $"{parts[0][0]}{parts[^1][0]}".ToUpperInvariant();
     }
 
-    internal static string PlayerAge(int birthYear) => (2026 - birthYear).ToString(InvariantCulture);
-
-    internal static string PlayerCountry(string playerExternalId)
+    /// <summary>Age of a person on the career's current date.</summary>
+    internal static string PlayerAge(DateOnly birthDate, CareerCalendar calendar)
     {
-        if (playerExternalId.Contains("aurora", StringComparison.OrdinalIgnoreCase)) return "NOR";
-        if (playerExternalId.Contains("cinder", StringComparison.OrdinalIgnoreCase)) return "VEL";
-        if (playerExternalId.Contains("forge", StringComparison.OrdinalIgnoreCase)) return "VEL";
-        if (playerExternalId.Contains("maris", StringComparison.OrdinalIgnoreCase)) return "SOL";
-        if (playerExternalId.Contains("northglass", StringComparison.OrdinalIgnoreCase)) return "NOR";
-        return "—";
+        ArgumentNullException.ThrowIfNull(calendar);
+        return calendar.AgeOf(birthDate).ToString(InvariantCulture);
+    }
+
+    /// <summary>Age when the content only declares a birth year.</summary>
+    internal static string PlayerAge(int birthYear, CareerCalendar calendar)
+    {
+        ArgumentNullException.ThrowIfNull(calendar);
+        return calendar.AgeOf(birthYear).ToString(InvariantCulture);
     }
 
     internal static Color ValueColor(int value) => value switch

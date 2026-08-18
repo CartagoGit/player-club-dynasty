@@ -90,6 +90,7 @@ versioned budgets.
   - "The Godot version is pinned in one file that the launcher, the smoke gate and CI all read."
   - "CI provisions the pinned Godot .NET editor, imports the project and builds it headless."
   - "CI runs the SmokeBoot scene and fails on a non-zero exit or on engine errors in its output."
+  - "The gate builds the assembly Godot actually loads: Godot runs the Debug build, so a Release-only build let the smoke validate stale code."
   - "Every budget names the benchmark that measures it, and the comparison fails when a result breaches its budget or has no published budget."
   - "A budget with no measurement is reported as uncovered and becomes an error under `--require-complete-coverage`, which `v00004` will turn on."
   - "A clean checkout leaves no tracked generated artifacts after the smoke run."

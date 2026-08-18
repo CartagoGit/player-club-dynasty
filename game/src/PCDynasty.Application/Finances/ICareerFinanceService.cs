@@ -10,7 +10,7 @@ public enum CareerFinanceMode
 
 public interface ICareerFinanceService
 {
-    ClubFinanceOverview Open(ClubRow club, CareerFinanceMode mode);
+    ClubFinanceOverview Open(ManagedClubContext managed, ClubRow club, CareerFinanceMode mode);
 
-    ClubFinanceOverview GetOverview(string clubExternalId);
+    ClubFinanceOverview GetOverview(ManagedClubContext managed);
 }

@@ -56,8 +56,10 @@ internal sealed class CareerRuntimeFactory
             session = sessionFactory.Restore();
         }
 
+        var managed = new ManagedClubContext(club.ExternalId);
         var finances = new CareerFinanceService(financeStore, _timeProvider);
         finances.Open(
+            managed,
             club,
             mode == CareerRuntimeMode.New
                 ? CareerFinanceMode.New
@@ -74,6 +76,7 @@ internal sealed class CareerRuntimeFactory
             new CareerHistoryPersistence(historyStore, session),
             finances,
             transferMarket,
-            transferMarket);
+            transferMarket,
+            CareerCalendar.StartingAt(_timeProvider));
     }
 }

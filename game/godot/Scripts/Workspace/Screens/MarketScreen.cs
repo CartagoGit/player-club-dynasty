@@ -9,13 +9,21 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class MarketScreen
 {
     private readonly ICareerTransferMarketService _market;
+    private readonly ManagedClubContext _managed;
+    private readonly CareerCalendar _calendar;
     private readonly Action _refresh;
     private string _notice = "Selecciona un objetivo para presentar una oferta por su precio solicitado.";
     private bool _lastOfferAccepted;
 
-    internal MarketScreen(ICareerTransferMarketService market, Action refresh)
+    internal MarketScreen(
+        ICareerTransferMarketService market,
+        ManagedClubContext managed,
+        CareerCalendar calendar,
+        Action refresh)
     {
         _market = market ?? throw new ArgumentNullException(nameof(market));
+        _managed = managed ?? throw new ArgumentNullException(nameof(managed));
+        _calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
     }
 
@@ -36,7 +44,7 @@ internal sealed class MarketScreen
 
         var rows = new VBoxContainer { Name = "CandidateRows" };
         rows.AddThemeConstantOverride("separation", ManagerDesignTokens.Space4);
-        IReadOnlyList<TransferCandidate> candidates = _market.ListCandidates(club.ExternalId);
+        IReadOnlyList<TransferCandidate> candidates = _market.ListCandidates(_managed);
         if (candidates.Count == 0)
         {
             rows.AddChild(WorkspaceUiFactory.CreateText(
@@ -47,7 +55,7 @@ internal sealed class MarketScreen
         {
             foreach (TransferCandidate candidate in candidates)
             {
-                rows.AddChild(CandidateRow(club, candidate));
+                rows.AddChild(CandidateRow(candidate));
             }
         }
 
@@ -88,13 +96,13 @@ internal sealed class MarketScreen
         return row;
     }
 
-    private HBoxContainer CandidateRow(ClubRow club, TransferCandidate candidate)
+    private HBoxContainer CandidateRow(TransferCandidate candidate)
     {
         var row = new HBoxContainer();
         row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         WorkspaceUiFactory.AddColumnValue(row, candidate.PlayerName, 210, ManagerDesignTokens.TextPrimary);
         WorkspaceUiFactory.AddColumnValue(row, candidate.SellerClubName, 190, ManagerDesignTokens.TextSecondary);
-        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerAge(candidate.BirthYear), 48, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
+        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerAge(candidate.BirthYear, _calendar), 48, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, candidate.Technique.ToString(WorkspaceUiFactory.InvariantCulture), 48, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, candidate.Overall.ToString(WorkspaceUiFactory.InvariantCulture), 48, WorkspaceUiFactory.ValueColor(candidate.Overall), HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, FormatMoney(candidate.AskingPrice, candidate.Currency), 120, ManagerDesignTokens.Accent, HorizontalAlignment.Right);
@@ -105,15 +113,15 @@ internal sealed class MarketScreen
             CustomMinimumSize = new Vector2(110, ManagerDesignTokens.MinimumPointerTarget),
             TooltipText = $"Presentar {FormatMoney(candidate.AskingPrice, candidate.Currency)} por {candidate.PlayerName}",
         };
-        action.Pressed += () => Sign(club, candidate);
+        action.Pressed += () => Sign(candidate);
         row.AddChild(action);
         return row;
     }
 
-    private void Sign(ClubRow club, TransferCandidate candidate)
+    private void Sign(TransferCandidate candidate)
     {
         TransferOfferResult result = _market.SubmitOffer(
-            club.ExternalId,
+            _managed,
             candidate.PlayerExternalId,
             candidate.AskingPrice);
         _lastOfferAccepted = result.Accepted;

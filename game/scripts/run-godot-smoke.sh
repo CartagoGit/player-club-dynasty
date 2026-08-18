@@ -110,6 +110,10 @@ printf 'run-godot-smoke: using %s\n' "${godot_bin}" >&2
 # Importing resources populates .godot/ so the headless run resolves res:// paths.
 "${godot_bin}" --headless --path "${project_dir}" --import >/dev/null
 
+# Godot loads the Debug assembly when it runs the project itself, and the
+# export uses Release, so both have to be current: building only Release made
+# the smoke run whatever Debug build happened to be lying around.
+dotnet build "${project_dir}/PCDynasty.Presentation.csproj" -c Debug --nologo >/dev/null
 dotnet build "${project_dir}/PCDynasty.Presentation.csproj" -c Release --nologo >/dev/null
 
 smoke_log="$(mktemp)"

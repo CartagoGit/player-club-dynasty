@@ -99,7 +99,9 @@ func _run() -> void:
 	_expect(_contains_label_text(scene.get_node(squad_path), signed_player), "The acquired player must appear in the managed squad.")
 	var squad := scene.get_node(squad_path) as VBoxContainer
 	var rendered_squad_size := squad.get_child_count() - 3
-	_expect(_label_text(squad, "SquadHeader").contains(str(rendered_squad_size) + " JUGADORES"), "The squad header must count acquired players.")
+	var managed_squad_header := _label_text(squad, "SquadHeader")
+	_expect(managed_squad_header.contains(str(rendered_squad_size) + " JUGADORES"), "The squad header must count acquired players.")
+	var managed_club_name := managed_squad_header.split(" · ")[0]
 
 	var overview := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview") as Button
 	overview.emit_signal("pressed")
@@ -128,6 +130,16 @@ func _run() -> void:
 	_expect(_label_text(scene, market_scope_path) == managed_market_scope, "Market must remain scoped to the managed career club.")
 	_expect(not _contains_label_text(scene.get_node(market_path + "/CandidateRows"), signed_player), "The signed player must stay unavailable after club browsing.")
 
+	squad_button.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return scene.has_node(squad_path)):
+		_fail("The squad of a browsed rival did not open.")
+		return
+	var rival_squad := scene.get_node(squad_path) as VBoxContainer
+	var rival_squad_size := rival_squad.get_child_count() - 3
+	_expect(rival_squad_size > 0, "A browsed rival must expose its own players.")
+	_expect(_label_text(rival_squad, "SquadHeader").contains(str(rival_squad_size) + " JUGADORES"), "A browsed squad must count only the players it renders.")
+	_expect(not _label_text(rival_squad, "SquadHeader").begins_with(managed_club_name), "Browsing a rival must show the rival squad, not the managed one.")
+
 	var tactics := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
 	_expect(not tactics.disabled, "The tactics route must be enabled.")
 	tactics.emit_signal("pressed")
@@ -139,6 +151,8 @@ func _run() -> void:
 		return
 
 	var lineup := scene.get_node(lineup_path) as Control
+	var lineup_title := (lineup.get_node("Margin/Content/Title") as Label).text
+	_expect(lineup_title.begins_with(managed_club_name), "A match plan must belong to the managed club even while browsing a rival.")
 	var candidates := lineup.get_node("Margin/Content/CandidateScroll/CandidateRows") as VBoxContainer
 	_expect(candidates.get_child_count() > 0, "The lineup selector must show the active squad.")
 	var submit := lineup.get_node("Margin/Content/ActionRow/Submit") as Button

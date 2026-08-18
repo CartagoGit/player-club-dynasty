@@ -10,27 +10,27 @@ internal sealed class SquadScreen
 {
     private readonly IManagerWorld _world;
     private readonly ICareerSquadProjection _careerSquad;
-    private readonly string _managedClubId;
+    private readonly ManagedClubContext _managed;
+    private readonly CareerCalendar _calendar;
 
     internal SquadScreen(
         IManagerWorld world,
         ICareerSquadProjection careerSquad,
-        string managedClubId)
+        ManagedClubContext managed,
+        CareerCalendar calendar)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _careerSquad = careerSquad ?? throw new ArgumentNullException(nameof(careerSquad));
-        _managedClubId = string.IsNullOrWhiteSpace(managedClubId)
-            ? throw new ArgumentException("Managed club id cannot be empty.", nameof(managedClubId))
-            : managedClubId;
+        _managed = managed ?? throw new ArgumentNullException(nameof(managed));
+        _calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
     }
 
     internal void Render(Control root, ClubRow club)
     {
-        IReadOnlyList<PlayerRow> players = string.Equals(
-            club.ExternalId,
-            _managedClubId,
-            StringComparison.Ordinal)
-            ? _careerSquad.ListManagedSquad(_managedClubId)
+        // Browsing a rival shows the world roster; only the managed club sees
+        // the career projection with its signings.
+        IReadOnlyList<PlayerRow> players = _managed.Owns(club.ExternalId)
+            ? _careerSquad.ListManagedSquad(_managed)
             : _world.ListPlayers(club.ExternalId);
         var layout = new VBoxContainer { Name = "SquadList" };
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
@@ -68,13 +68,13 @@ internal sealed class SquadScreen
         root.AddChild(layout);
     }
 
-    private static HBoxContainer BuildRow(PlayerRow player)
+    private HBoxContainer BuildRow(PlayerRow player)
     {
         var row = new HBoxContainer();
         row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
         WorkspaceUiFactory.AddColumnValue(row, player.DisplayName, 280, ManagerDesignTokens.TextPrimary);
-        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerCountry(player.ExternalId), 80, ManagerDesignTokens.TextSecondary);
-        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerAge(player.BirthYear), 60, ManagerDesignTokens.TextSecondary);
+        WorkspaceUiFactory.AddColumnValue(row, player.CountryShortName, 80, ManagerDesignTokens.TextSecondary);
+        WorkspaceUiFactory.AddColumnValue(row, WorkspaceUiFactory.PlayerAge(player.BirthDate, _calendar), 60, ManagerDesignTokens.TextSecondary);
         WorkspaceUiFactory.AddColumnValue(row, player.Technique.ToString(WorkspaceUiFactory.InvariantCulture), 60, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, player.Form.ToString(WorkspaceUiFactory.InvariantCulture), 60, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
         WorkspaceUiFactory.AddColumnValue(row, player.Physical.ToString(WorkspaceUiFactory.InvariantCulture), 60, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);

@@ -9,13 +9,16 @@ public class ManagerInteractionBenchmarks
 {
     private const int ClubCount = 20;
     private static readonly ClubRow[] Clubs = CreateClubs();
+
+    // Declared after Clubs: static initializers run in textual order.
+    private static readonly ManagedClubContext Managed = new(Clubs[0].ExternalId);
     private readonly CompetitionSimulationService simulation = new(
         new FixedTimeProvider(new DateTimeOffset(2026, 8, 18, 12, 0, 0, TimeSpan.Zero)));
 
     [Benchmark]
     public long PlayManagerMatch()
     {
-        MatchExecution execution = simulation.PlayMatch("Benchmark League", Clubs[0], Clubs[1]);
+        MatchExecution execution = simulation.PlayMatch(Managed, "Benchmark League", Clubs[0], Clubs[1]);
         return execution.Result.Seed
             + execution.Result.HomeGoals
             + execution.Result.AwayGoals
@@ -26,6 +29,7 @@ public class ManagerInteractionBenchmarks
     public long SimulateManagerSeason()
     {
         SeasonExecution execution = simulation.PlaySeason(
+            Managed,
             "competition:benchmark-league",
             "Benchmark League",
             Clubs[0],

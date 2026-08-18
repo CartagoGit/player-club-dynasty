@@ -31,8 +31,8 @@ public partial class ManagerWorkspaceController : Control
 
     private IManagerWorld? _world;
     private WorkspaceSection _selectedSection = WorkspaceSection.Overview;
-    private string? _managedClubId;
-    private string? _selectedClubId;
+    private ManagedClubContext? _managed;
+    private BrowsedClubContext? _browsed;
     private ClubOverviewScreen? _overviewScreen;
     private SquadScreen? _squadScreen;
     private TacticsScreen? _tacticsScreen;
@@ -52,12 +52,15 @@ public partial class ManagerWorkspaceController : Control
         CareerHistoryPersistence historyPersistence,
         ICareerFinanceService financeService,
         ICareerTransferMarketService transferMarket,
-        ICareerSquadProjection squadProjection)
+        ICareerSquadProjection squadProjection,
+        CareerCalendar calendar)
     {
+        ArgumentNullException.ThrowIfNull(calendar);
         _world = world ?? throw new ArgumentNullException(nameof(world));
-        _managedClubId = _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
-            ? throw new ArgumentException("Selected club id cannot be empty.", nameof(selectedClubId))
-            : selectedClubId;
+        // The career manages exactly one club; browsing starts there and may
+        // move anywhere without ever moving command authority with it.
+        _managed = new ManagedClubContext(selectedClubId);
+        _browsed = new BrowsedClubContext(selectedClubId);
         ArgumentNullException.ThrowIfNull(historyPersistence);
         ArgumentNullException.ThrowIfNull(competitionSimulation);
         ArgumentNullException.ThrowIfNull(lineupService);
@@ -67,16 +70,17 @@ public partial class ManagerWorkspaceController : Control
         ArgumentNullException.ThrowIfNull(squadProjection);
 
         _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
-        _squadScreen = new SquadScreen(world, squadProjection, _managedClubId);
-        _tacticsScreen = new TacticsScreen(world, lineupService);
+        _squadScreen = new SquadScreen(world, squadProjection, _managed, calendar);
+        _tacticsScreen = new TacticsScreen(world, lineupService, _managed);
         _competitionsScreen = new CompetitionsScreen(
             world,
             competitionSimulation,
             historyPersistence,
+            _managed,
             RenderCurrent,
             SetStatus);
-        _marketScreen = new MarketScreen(transferMarket, RenderCurrent);
-        _financesScreen = new FinancesScreen(financeService);
+        _marketScreen = new MarketScreen(transferMarket, _managed, calendar, RenderCurrent);
+        _financesScreen = new FinancesScreen(financeService, _managed);
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
         _worldScreen = new WorldScreen(world);
         _clubPickerScreen = new ClubPickerScreen(SelectClub);
@@ -134,7 +138,7 @@ public partial class ManagerWorkspaceController : Control
 
     private void SelectClub(string clubExternalId)
     {
-        _selectedClubId = clubExternalId;
+        _browsed = new BrowsedClubContext(clubExternalId);
         SelectSection(WorkspaceSection.Overview);
     }
 
@@ -148,14 +152,13 @@ public partial class ManagerWorkspaceController : Control
 
         WorkspaceUiFactory.Clear(root);
         IReadOnlyList<ClubRow> clubs = _world.ListClubs();
-        _selectedClubId ??= clubs.Count > 0 ? clubs[0].ExternalId : null;
-        if (_selectedClubId is null)
+        if (_browsed is null || _managed is null || clubs.Count == 0)
         {
             root.AddChild(WorkspaceUiFactory.CreateText("No hay clubs cargados.", ManagerDesignTokens.TextSecondary));
             return;
         }
 
-        ClubRow? club = clubs.FirstOrDefault(candidate => candidate.ExternalId == _selectedClubId);
+        ClubRow? club = clubs.FirstOrDefault(candidate => candidate.ExternalId == _browsed.ClubExternalId);
         if (club is null)
         {
             SetStatus("● Club no encontrado");
@@ -177,12 +180,12 @@ public partial class ManagerWorkspaceController : Control
                 SetStatus($"● {club.DisplayName} · plan de partido");
                 break;
             case WorkspaceSection.Finances:
-                ClubRow managedClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                ClubRow managedClub = clubs.First(candidate => _managed.Owns(candidate.ExternalId));
                 _financesScreen!.Render(root, managedClub);
                 SetStatus($"● {managedClub.DisplayName} · finanzas");
                 break;
             case WorkspaceSection.Market:
-                ClubRow marketClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                ClubRow marketClub = clubs.First(candidate => _managed.Owns(candidate.ExternalId));
                 _marketScreen!.Render(root, marketClub);
                 SetStatus($"● {marketClub.DisplayName} · mercado de fichajes");
                 break;

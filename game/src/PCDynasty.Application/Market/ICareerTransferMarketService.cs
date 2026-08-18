@@ -1,11 +1,13 @@
+using PCDynasty.Application.Workspace;
+
 namespace PCDynasty.Application.Market;
 
 public interface ICareerTransferMarketService
 {
-    IReadOnlyList<TransferCandidate> ListCandidates(string managedClubExternalId);
+    IReadOnlyList<TransferCandidate> ListCandidates(ManagedClubContext managed);
 
     TransferOfferResult SubmitOffer(
-        string managedClubExternalId,
+        ManagedClubContext managed,
         string playerExternalId,
         long offeredMinorUnits);
 }

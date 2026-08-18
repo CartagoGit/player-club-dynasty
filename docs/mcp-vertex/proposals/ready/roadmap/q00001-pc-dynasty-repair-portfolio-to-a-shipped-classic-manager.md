@@ -71,7 +71,7 @@ at a time.
   - "A negative check fails any proposal that declares a visible capability without a route from Main.tscn."
 
 ### S2 — Correct managed-club identity and authority
-- **Status**: ready
+- **Status**: review
 - **DependsOn**: [S1]
 - **Owner**: `x00041`
 - **Files**: `docs/mcp-vertex/proposals/ready/x00041-correct-managed-club-identity-and-command-authority.md`

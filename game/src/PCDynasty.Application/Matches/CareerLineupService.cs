@@ -1,3 +1,4 @@
+using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
 
 namespace PCDynasty.Application.Matches;
@@ -13,9 +14,11 @@ public sealed class CareerLineupService : ICareerLineupService
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    public LineupPlan Submit(SubmitLineupCommand command)
+    public LineupPlan Submit(ManagedClubContext managed, SubmitLineupCommand command)
     {
+        ArgumentNullException.ThrowIfNull(managed);
         ArgumentNullException.ThrowIfNull(command);
+        managed.EnsureOwns(command.ControlledEntityId);
         var plan = new LineupPlan(
             command.ControlledEntityId,
             command.ContestId,

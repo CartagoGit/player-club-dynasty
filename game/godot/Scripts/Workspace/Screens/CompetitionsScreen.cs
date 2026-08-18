@@ -13,6 +13,7 @@ internal sealed class CompetitionsScreen
     private readonly IManagerWorld _world;
     private readonly ICompetitionSimulationService _simulation;
     private readonly CareerHistoryPersistence _history;
+    private readonly ManagedClubContext _managed;
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
 
@@ -20,14 +21,16 @@ internal sealed class CompetitionsScreen
         IManagerWorld world,
         ICompetitionSimulationService simulation,
         CareerHistoryPersistence history,
+        ManagedClubContext managed,
         Action refresh,
         Action<string> setStatus)
     {
-        _world = world;
-        _simulation = simulation;
-        _history = history;
-        _refresh = refresh;
-        _setStatus = setStatus;
+        _world = world ?? throw new ArgumentNullException(nameof(world));
+        _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
+        _history = history ?? throw new ArgumentNullException(nameof(history));
+        _managed = managed ?? throw new ArgumentNullException(nameof(managed));
+        _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
+        _setStatus = setStatus ?? throw new ArgumentNullException(nameof(setStatus));
     }
 
     internal void Render(Control root, ClubRow club)
@@ -78,16 +81,28 @@ internal sealed class CompetitionsScreen
         rivals.AddThemeFontSizeOverride("font_size", 13);
         column.AddChild(rivals);
 
-        var playButton = new Button { Text = "  Jugar partido vs primer rival", Alignment = HorizontalAlignment.Left };
-        playButton.Pressed += () => PlayMatch(root, club, competition);
-        column.AddChild(playButton);
-        var seasonButton = new Button
+        // Playing a fixture writes career facts, so the actions exist only for
+        // the managed club; a browsed rival stays a read-only view.
+        if (_managed.Owns(club.ExternalId))
         {
-            Text = $"  Jugar temporada completa ({competition.Rivals.Count} partidos)",
-            Alignment = HorizontalAlignment.Left,
-        };
-        seasonButton.Pressed += () => PlaySeason(root, club, competition);
-        column.AddChild(seasonButton);
+            var playButton = new Button { Text = "  Jugar partido vs primer rival", Alignment = HorizontalAlignment.Left };
+            playButton.Pressed += () => PlayMatch(root, club, competition);
+            column.AddChild(playButton);
+            var seasonButton = new Button
+            {
+                Text = $"  Jugar temporada completa ({competition.Rivals.Count} partidos)",
+                Alignment = HorizontalAlignment.Left,
+            };
+            seasonButton.Pressed += () => PlaySeason(root, club, competition);
+            column.AddChild(seasonButton);
+        }
+        else
+        {
+            column.AddChild(WorkspaceUiFactory.CreateText(
+                "Sólo puedes disputar los partidos de tu club.",
+                ManagerDesignTokens.TextSecondary));
+        }
+
         panel.AddChild(column);
         return panel;
     }
@@ -100,7 +115,7 @@ internal sealed class CompetitionsScreen
             return;
         }
 
-        MatchExecution execution = _simulation.PlayMatch(competition.DisplayName, club, rival);
+        MatchExecution execution = _simulation.PlayMatch(_managed, competition.DisplayName, club, rival);
         MatchResult result = execution.Result;
         _history.Save(execution.History);
         ShowMatch(root, result, competition.DisplayName);
@@ -148,6 +163,7 @@ internal sealed class CompetitionsScreen
         }
 
         SeasonExecution execution = _simulation.PlaySeason(
+            _managed,
             competition.ExternalId,
             competition.DisplayName,
             club,

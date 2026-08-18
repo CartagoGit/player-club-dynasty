@@ -17,7 +17,9 @@ public sealed partial class PresentationStructureTests
             "WorldService.cs",
             "WorldContentCatalog.cs",
             "WorldClubProjection.cs",
+            "WorldPeopleProjection.cs",
             "WorldCompetitionProjection.cs",
+            "WorldCountryNames.cs",
         ];
 
         foreach (string file in files)
@@ -31,9 +33,11 @@ public sealed partial class PresentationStructureTests
             .GetTypes()
             .Where(type => type.Name is "WorldContentCatalog"
                 or "WorldClubProjection"
-                or "WorldCompetitionProjection")
+                or "WorldPeopleProjection"
+                or "WorldCompetitionProjection"
+                or "WorldCountryNames")
             .ToArray();
-        Assert.Equal(3, internalCollaborators.Length);
+        Assert.Equal(5, internalCollaborators.Length);
         Assert.All(internalCollaborators, type => Assert.False(type.IsPublic));
     }
 

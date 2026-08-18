@@ -6,6 +6,8 @@ namespace PCDynasty.Application.Tests.Competitions;
 
 public sealed class CompetitionSimulationServiceTests
 {
+    private static readonly ManagedClubContext Managed = new("club:home");
+
     private static readonly DateTimeOffset FixedNow = new(2026, 8, 18, 12, 30, 0, TimeSpan.Zero);
     private static readonly ClubRow Home = Club("club:home", "Home FC", 72);
     private static readonly ClubRow Away = Club("club:away", "Away FC", 58);
@@ -16,8 +18,8 @@ public sealed class CompetitionSimulationServiceTests
     {
         var service = Service();
 
-        MatchExecution first = service.PlayMatch("Test Cup", Home, Away);
-        MatchExecution second = service.PlayMatch("Test Cup", Home, Away);
+        MatchExecution first = service.PlayMatch(Managed, "Test Cup", Home, Away);
+        MatchExecution second = service.PlayMatch(Managed, "Test Cup", Home, Away);
 
         Assert.Equal(FixedNow.UtcDateTime, first.History.PlayedAtUtc);
         Assert.Equal(first.Result.Seed, first.History.Seed);
@@ -28,7 +30,7 @@ public sealed class CompetitionSimulationServiceTests
     public void ReplayUsesTheOriginalSeedAndProducesTheSameTimeline()
     {
         var service = Service();
-        MatchResult original = service.PlayMatch("Test Cup", Home, Away).Result;
+        MatchResult original = service.PlayMatch(Managed, "Test Cup", Home, Away).Result;
 
         MatchResult replay = service.Replay(original);
 
@@ -44,6 +46,7 @@ public sealed class CompetitionSimulationServiceTests
         var service = Service();
 
         SeasonExecution execution = service.PlaySeason(
+            Managed,
             "competition:test",
             "Test Cup",
             Home,
@@ -62,12 +65,13 @@ public sealed class CompetitionSimulationServiceTests
     {
         var service = Service();
         SeasonExecution season = service.PlaySeason(
+            Managed,
             "competition:test",
             "Test Cup",
             Home,
             [Home, Away, Third]);
 
-        MatchExecution nextMatch = service.PlayMatch("Test Cup", Home, Away);
+        MatchExecution nextMatch = service.PlayMatch(Managed, "Test Cup", Home, Away);
 
         Assert.DoesNotContain(nextMatch.Result.Seed, season.MatchHistory.Select(match => match.Seed));
         Assert.True(nextMatch.Result.Seed > season.MatchHistory.Max(match => match.Seed));
@@ -80,11 +84,12 @@ public sealed class CompetitionSimulationServiceTests
         Task<long[]>[] operations = Enumerable.Range(0, 12)
             .Select(index => Task.Run(() => index % 2 == 0
                 ? service.PlaySeason(
+            Managed,
                     $"competition:{index}",
                     "Test Cup",
                     Home,
                     [Home, Away, Third]).MatchHistory.Select(match => match.Seed).ToArray()
-                : [service.PlayMatch("Test Cup", Home, Away).Result.Seed]))
+                : [service.PlayMatch(Managed, "Test Cup", Home, Away).Result.Seed]))
             .ToArray();
 
         long[][] ranges = await Task.WhenAll(operations);
