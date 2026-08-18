@@ -37,7 +37,7 @@ public sealed class PresentationPreferencesTests
 
             PresentationPreferences loaded = store.Load();
 
-            Assert.Equal(PresentationPreferences.Default, new LoadedFlag(loaded));
+            Assert.True(PresentationPreferences.Default.ValueEquals(loaded));
         }
         finally
         {
@@ -83,7 +83,7 @@ public sealed class PresentationPreferencesTests
 
             PresentationPreferences loaded = store.Load();
 
-            Assert.Equal(PresentationPreferences.Default, new LoadedFlag(loaded));
+            Assert.True(PresentationPreferences.Default.ValueEquals(loaded));
         }
         finally
         {
@@ -170,16 +170,4 @@ public sealed class PresentationPreferencesTests
         Assert.Equal(new ThemePaletteId("forest"), withTheme.ThemeId);
     }
 
-    /// <summary>A wrapper that disables <see cref="PresentationPreferences"/>'s default reference equality for the assertion.</summary>
-    private sealed class LoadedFlag
-    {
-        private readonly PresentationPreferences _value;
-
-        public LoadedFlag(PresentationPreferences value) => _value = value;
-
-        public override bool Equals(object? obj) =>
-            obj is LoadedFlag other && _value.ValueEquals(other._value);
-
-        public override int GetHashCode() => _value.GetHashCode();
-    }
 }
