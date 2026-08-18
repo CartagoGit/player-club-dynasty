@@ -1,26 +1,25 @@
 using System.Collections.Immutable;
 using System.Globalization;
 using Microsoft.Data.Sqlite;
+using PCDynasty.Contracts.Careers;
 
-namespace PCDynasty.Presentation.Core;
+namespace PCDynasty.Persistence.Sqlite;
 
 /// <summary>
-/// SQLite-backed persistence for the session-level career history:
-/// every played match and every completed season. The store is opened
-/// lazily on the first save and survives process restarts.
+/// SQLite adapter for the engine-neutral career history contract.
+/// The caller chooses the database file, so saves can be imported, backed up
+/// or replaced without changing the manager or presentation layers.
 /// </summary>
 /// <remarks>
-/// Pure-local: the on-disk SQLite lives in <c>saves/career.sqlite</c> by
-/// default so users can find and back up their saves easily. Phase 5
-/// swaps this for the engine-neutral <c>IWorldStore</c> pipeline.
+/// The schema remains compatible with the original career prototype tables.
 /// </remarks>
-public sealed class CareerStore
+public sealed class SqliteCareerHistoryStore : ICareerHistoryStore
 {
     private readonly string _databasePath;
     private readonly object _gate = new();
     private bool _initialised;
 
-    public CareerStore(string databasePath)
+    public SqliteCareerHistoryStore(string databasePath)
     {
         if (string.IsNullOrWhiteSpace(databasePath))
         {
@@ -145,17 +144,17 @@ public sealed class CareerStore
             var result = new List<HistoryEntry>();
             while (reader.Read())
             {
-                    result.Add(new HistoryEntry(
-                        CompetitionDisplayName: reader.GetString(0),
-                        HomeClubId: reader.GetString(1),
-                        AwayClubId: reader.GetString(2),
-                        HomeDisplayName: reader.GetString(3),
-                        AwayDisplayName: reader.GetString(4),
-                        HomeGoals: reader.GetInt32(5),
-                        AwayGoals: reader.GetInt32(6),
-                        Seed: reader.GetInt64(7),
-                        PlayedAtUtc: DateTime.Parse(reader.GetString(8), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)));
-                }
+                result.Add(new HistoryEntry(
+                    CompetitionDisplayName: reader.GetString(0),
+                    HomeClubId: reader.GetString(1),
+                    AwayClubId: reader.GetString(2),
+                    HomeDisplayName: reader.GetString(3),
+                    AwayDisplayName: reader.GetString(4),
+                    HomeGoals: reader.GetInt32(5),
+                    AwayGoals: reader.GetInt32(6),
+                    Seed: reader.GetInt64(7),
+                    PlayedAtUtc: DateTime.Parse(reader.GetString(8), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)));
+            }
             return result.ToImmutableArray();
         }
     }
@@ -177,22 +176,22 @@ public sealed class CareerStore
             using var reader = command.ExecuteReader();
             var result = new List<SeasonHistoryEntry>();
             while (reader.Read())
-                {
-                    long seasonId = reader.GetInt64(0);
-                    var standings = LoadStandingsForSeason(connection, seasonId);
-                    result.Add(new SeasonHistoryEntry(
-                        CompetitionDisplayName: reader.GetString(1),
-                        ManagedClubId: reader.GetString(2),
-                        ManagedClubDisplayName: reader.GetString(3),
-                        ManagedPosition: reader.GetInt32(4),
-                        ManagedPoints: reader.GetInt32(5),
-                        ManagedGoalsFor: reader.GetInt32(6),
-                        ManagedGoalsAgainst: reader.GetInt32(7),
-                        TotalClubs: reader.GetInt32(8),
-                        TotalFixtures: reader.GetInt32(9),
-                        PlayedAtUtc: DateTime.Parse(reader.GetString(10), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                        FinalStandings: standings));
-                }
+            {
+                long seasonId = reader.GetInt64(0);
+                var standings = LoadStandingsForSeason(connection, seasonId);
+                result.Add(new SeasonHistoryEntry(
+                    CompetitionDisplayName: reader.GetString(1),
+                    ManagedClubId: reader.GetString(2),
+                    ManagedClubDisplayName: reader.GetString(3),
+                    ManagedPosition: reader.GetInt32(4),
+                    ManagedPoints: reader.GetInt32(5),
+                    ManagedGoalsFor: reader.GetInt32(6),
+                    ManagedGoalsAgainst: reader.GetInt32(7),
+                    TotalClubs: reader.GetInt32(8),
+                    TotalFixtures: reader.GetInt32(9),
+                    PlayedAtUtc: DateTime.Parse(reader.GetString(10), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
+                    FinalStandings: standings));
+            }
             return result.ToImmutableArray();
         }
     }

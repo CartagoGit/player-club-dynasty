@@ -1,30 +1,21 @@
 using Godot;
+using PCDynasty.Contracts.Careers;
 using PCDynasty.Presentation.Core;
 
 namespace PCDynasty.Presentation.Workspace.Persistence;
 
 internal sealed class CareerHistoryPersistence
 {
-    private readonly CareerStore _store;
+    private readonly ICareerHistoryStore _store;
     private readonly CareerSession _session;
     private bool _loaded;
 
-    private CareerHistoryPersistence(CareerStore store, CareerSession session)
+    internal CareerHistoryPersistence(ICareerHistoryStore store, CareerSession session)
     {
+        ArgumentNullException.ThrowIfNull(store);
+        ArgumentNullException.ThrowIfNull(session);
         _store = store;
         _session = session;
-    }
-
-    internal static CareerHistoryPersistence CreateDefault(CareerSession session)
-    {
-        ArgumentNullException.ThrowIfNull(session);
-        string savesRoot = Path.GetFullPath(Path.Combine(
-            ProjectSettings.GlobalizePath("res://../"),
-            "..",
-            "saves"));
-        return new CareerHistoryPersistence(
-            new CareerStore(Path.Combine(savesRoot, "career.sqlite")),
-            session);
     }
 
     internal void Load()

@@ -1,3 +1,5 @@
+using PCDynasty.Contracts.Careers;
+
 namespace PCDynasty.Presentation.Core;
 
 /// <summary>

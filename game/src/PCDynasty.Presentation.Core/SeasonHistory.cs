@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using PCDynasty.Contracts.Careers;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -71,16 +72,3 @@ public sealed class SeasonHistory
         }
     }
 }
-
-public sealed record SeasonHistoryEntry(
-    string CompetitionDisplayName,
-    string ManagedClubId,
-    string ManagedClubDisplayName,
-    int ManagedPosition,
-    int ManagedPoints,
-    int ManagedGoalsFor,
-    int ManagedGoalsAgainst,
-    int TotalClubs,
-    int TotalFixtures,
-    DateTime PlayedAtUtc,
-    ImmutableArray<StandingRow> FinalStandings);

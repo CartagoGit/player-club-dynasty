@@ -85,6 +85,45 @@ public sealed partial class PresentationStructureTests
         }
     }
 
+    [Fact]
+    public void PresentationCoreDoesNotOwnSqliteInfrastructure()
+    {
+        string presentationRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Presentation.Core");
+        string sqliteAdapterProject = File.ReadAllText(Path.Combine(
+            FindGameRoot(),
+            "src",
+            "PCDynasty.Persistence.Sqlite",
+            "PCDynasty.Persistence.Sqlite.csproj"));
+        string projectSource = File.ReadAllText(Path.Combine(
+            presentationRoot,
+            "PCDynasty.Presentation.Core.csproj"));
+        string[] sqliteSources = Directory
+            .EnumerateFiles(presentationRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(path => File.ReadAllText(path).Contains("Microsoft.Data.Sqlite", StringComparison.Ordinal))
+            .Select(path => Path.GetRelativePath(presentationRoot, path))
+            .ToArray();
+
+        Assert.DoesNotContain("Microsoft.Data.Sqlite", projectSource, StringComparison.Ordinal);
+        Assert.Empty(sqliteSources);
+        Assert.DoesNotContain("PCDynasty.Presentation.Core", sqliteAdapterProject, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void WorkspacePersistenceDependsOnTheCareerStorePort()
+    {
+        string source = File.ReadAllText(Path.Combine(
+            FindGameRoot(),
+            "godot",
+            "Scripts",
+            "Workspace",
+            "Persistence",
+            "CareerHistoryPersistence.cs"));
+
+        Assert.Contains("ICareerHistoryStore", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("SqliteCareerHistoryStore", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("ProjectSettings", source, StringComparison.Ordinal);
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

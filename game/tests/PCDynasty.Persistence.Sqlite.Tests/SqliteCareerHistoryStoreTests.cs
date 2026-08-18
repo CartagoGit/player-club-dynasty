@@ -1,14 +1,15 @@
 using System.Collections.Immutable;
-using PCDynasty.Presentation.Core;
+using PCDynasty.Contracts.Careers;
+using PCDynasty.Persistence.Sqlite;
 using Xunit;
 
-namespace PCDynasty.Presentation.Tests;
+namespace PCDynasty.Persistence.Sqlite.Tests;
 
-public sealed class CareerStoreTests : IDisposable
+public sealed class SqliteCareerHistoryStoreTests : IDisposable
 {
     private readonly string _databasePath;
 
-    public CareerStoreTests()
+    public SqliteCareerHistoryStoreTests()
     {
         _databasePath = Path.Combine(Path.GetTempPath(), $"pcd-career-{Guid.NewGuid():N}.sqlite");
     }
@@ -25,7 +26,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void SaveMatchAndLoadMatchesRoundTrip()
     {
-        var store = new CareerStore(_databasePath);
+        var store = new SqliteCareerHistoryStore(_databasePath);
         var entry = NewMatch(homeGoals: 2, awayGoals: 1, seed: 42);
 
         store.SaveMatch(entry);
@@ -41,7 +42,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void SaveMatchPersistsMultipleEntriesInOrder()
     {
-        var store = new CareerStore(_databasePath);
+        var store = new SqliteCareerHistoryStore(_databasePath);
         var first = NewMatch(homeGoals: 1, awayGoals: 0, playedAtUtc: DateTime.UtcNow.AddSeconds(-30));
         var second = NewMatch(homeGoals: 3, awayGoals: 3, playedAtUtc: DateTime.UtcNow.AddSeconds(-15));
 
@@ -57,7 +58,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void SaveSeasonPersistsStandingsAndRoundTrips()
     {
-        var store = new CareerStore(_databasePath);
+        var store = new SqliteCareerHistoryStore(_databasePath);
         var standings = ImmutableArray.Create(
             new StandingRow("club:a", "Alpha FC", "Alpha", 9, 3, 3, 0, 0, 8, 2),
             new StandingRow("club:b", "Bravo FC", "Bravo", 6, 3, 2, 0, 1, 5, 3));
@@ -78,7 +79,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void NewStoreStartsEmpty()
     {
-        var store = new CareerStore(_databasePath);
+        var store = new SqliteCareerHistoryStore(_databasePath);
 
         Assert.Empty(store.LoadMatches());
         Assert.Empty(store.LoadSeasons());
@@ -87,7 +88,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void ClearWipesEverything()
     {
-        var store = new CareerStore(_databasePath);
+        var store = new SqliteCareerHistoryStore(_databasePath);
         store.SaveMatch(NewMatch());
         store.SaveSeason(NewSeason(1, 9, ImmutableArray<StandingRow>.Empty));
 
@@ -100,7 +101,7 @@ public sealed class CareerStoreTests : IDisposable
     [Fact]
     public void RejectsEmptyDatabasePath()
     {
-        Assert.Throws<ArgumentException>(() => new CareerStore(" "));
+        Assert.Throws<ArgumentException>(() => new SqliteCareerHistoryStore(" "));
     }
 
     private static HistoryEntry NewMatch(

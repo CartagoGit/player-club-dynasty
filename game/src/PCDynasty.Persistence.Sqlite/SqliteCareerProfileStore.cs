@@ -1,58 +1,19 @@
 using System.Globalization;
 using Microsoft.Data.Sqlite;
+using PCDynasty.Contracts.Careers;
 
-namespace PCDynasty.Presentation.Core;
-
-public sealed record CareerProfile
-{
-    public CareerProfile(
-        string clubExternalId,
-        string clubDisplayName,
-        DateTimeOffset startedAtUtc,
-        DateTimeOffset lastPlayedAtUtc)
-    {
-        if (string.IsNullOrWhiteSpace(clubExternalId))
-        {
-            throw new ArgumentException("Club identity cannot be empty.", nameof(clubExternalId));
-        }
-
-        if (string.IsNullOrWhiteSpace(clubDisplayName))
-        {
-            throw new ArgumentException("Club display name cannot be empty.", nameof(clubDisplayName));
-        }
-
-        if (lastPlayedAtUtc < startedAtUtc)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(lastPlayedAtUtc),
-                "Last-played time cannot precede career start time.");
-        }
-
-        ClubExternalId = clubExternalId;
-        ClubDisplayName = clubDisplayName;
-        StartedAtUtc = startedAtUtc;
-        LastPlayedAtUtc = lastPlayedAtUtc;
-    }
-
-    public string ClubExternalId { get; }
-
-    public string ClubDisplayName { get; }
-
-    public DateTimeOffset StartedAtUtc { get; }
-
-    public DateTimeOffset LastPlayedAtUtc { get; }
-}
+namespace PCDynasty.Persistence.Sqlite;
 
 /// <summary>
 /// Stores the single active career identity in a caller-selected SQLite file.
 /// </summary>
-public sealed class CareerProfileStore
+public sealed class SqliteCareerProfileStore : ICareerProfileStore
 {
     private const int ActiveProfileId = 1;
     private readonly object _gate = new();
     private bool _schemaInitialized;
 
-    public CareerProfileStore(string databasePath)
+    public SqliteCareerProfileStore(string databasePath)
     {
         if (string.IsNullOrWhiteSpace(databasePath))
         {

@@ -2,6 +2,7 @@ using Godot;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
+using PCDynasty.Persistence.Sqlite;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Shell;
 using PCDynasty.Presentation.Workspace;
@@ -57,11 +58,21 @@ public partial class PresentationBootstrap : Control
     private void AttachMainMenu(IManagerWorld service)
     {
         _careerSession ??= new CareerSession();
-        _historyPersistence ??= CareerHistoryPersistence.CreateDefault(_careerSession);
+        _historyPersistence ??= CreateHistoryPersistence(_careerSession);
         _historyPersistence.Load();
         _mainMenuController = new MainMenuController { Name = "MainMenuController" };
         _mainMenuController.Configure(service, new ManagerShell(), clubId => OpenWorkspace(service, clubId));
         AddChild(_mainMenuController);
+    }
+
+    private static CareerHistoryPersistence CreateHistoryPersistence(CareerSession session)
+    {
+        string savesRoot = Path.GetFullPath(Path.Combine(
+            ProjectSettings.GlobalizePath("res://../"),
+            "..",
+            "saves"));
+        var store = new SqliteCareerHistoryStore(Path.Combine(savesRoot, "career.sqlite"));
+        return new CareerHistoryPersistence(store, session);
     }
 
     private void OpenWorkspace(IManagerWorld service, string clubId)

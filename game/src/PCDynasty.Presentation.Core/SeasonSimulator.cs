@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Contracts.Careers;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -129,21 +130,6 @@ public sealed record SeasonResult(
     string CompetitionDisplayName,
     ImmutableArray<StandingRow> Standings,
     ImmutableArray<SeasonFixture> Fixtures);
-
-public sealed record StandingRow(
-    string ClubExternalId,
-    string DisplayName,
-    string ShortName,
-    int Points,
-    int Played,
-    int Wins,
-    int Draws,
-    int Losses,
-    int GoalsFor,
-    int GoalsAgainst)
-{
-    public int GoalDifference => GoalsFor - GoalsAgainst;
-}
 
 public sealed record SeasonFixture(
     string HomeClubId,

@@ -1,9 +1,10 @@
-using PCDynasty.Presentation.Core;
+using PCDynasty.Contracts.Careers;
+using PCDynasty.Persistence.Sqlite;
 using Xunit;
 
-namespace PCDynasty.Presentation.Tests;
+namespace PCDynasty.Persistence.Sqlite.Tests;
 
-public sealed class CareerProfileStoreTests : IDisposable
+public sealed class SqliteCareerProfileStoreTests : IDisposable
 {
     private readonly string _databasePath = Path.Combine(
         Path.GetTempPath(),
@@ -25,7 +26,7 @@ public sealed class CareerProfileStoreTests : IDisposable
     [Fact]
     public void MissingDatabaseReturnsAnExplicitEmptyResult()
     {
-        var store = new CareerProfileStore(_databasePath);
+        var store = new SqliteCareerProfileStore(_databasePath);
 
         var found = store.TryLoad(out var profile);
 
@@ -42,8 +43,8 @@ public sealed class CareerProfileStoreTests : IDisposable
             startedAtUtc: new DateTimeOffset(2026, 8, 18, 8, 30, 0, TimeSpan.Zero),
             lastPlayedAtUtc: new DateTimeOffset(2026, 8, 18, 9, 45, 0, TimeSpan.Zero));
 
-        new CareerProfileStore(_databasePath).Save(expected);
-        var reopenedStore = new CareerProfileStore(_databasePath);
+        new SqliteCareerProfileStore(_databasePath).Save(expected);
+        var reopenedStore = new SqliteCareerProfileStore(_databasePath);
 
         Assert.True(reopenedStore.TryLoad(out var actual));
         Assert.Equal(expected, actual);
@@ -53,7 +54,7 @@ public sealed class CareerProfileStoreTests : IDisposable
     [Fact]
     public void SavingAgainReplacesTheSingleActiveProfile()
     {
-        var store = new CareerProfileStore(_databasePath);
+        var store = new SqliteCareerProfileStore(_databasePath);
         store.Save(NewProfile("club:first", "First Club"));
 
         var expected = NewProfile("club:second", "Second Club");
@@ -66,7 +67,7 @@ public sealed class CareerProfileStoreTests : IDisposable
     [Fact]
     public void RejectsInvalidPathsAndProfileIdentity()
     {
-        Assert.Throws<ArgumentException>(() => new CareerProfileStore(" "));
+        Assert.Throws<ArgumentException>(() => new SqliteCareerProfileStore(" "));
         Assert.Throws<ArgumentException>(() => NewProfile(" ", "Club"));
         Assert.Throws<ArgumentException>(() => NewProfile("club:test", " "));
     }

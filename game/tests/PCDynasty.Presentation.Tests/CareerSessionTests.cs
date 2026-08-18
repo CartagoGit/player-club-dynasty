@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using PCDynasty.Contracts.Careers;
 using PCDynasty.Presentation.Core;
 using Xunit;
 

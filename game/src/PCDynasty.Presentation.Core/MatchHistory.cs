@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using PCDynasty.Contracts.Careers;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -38,14 +39,3 @@ public sealed class MatchHistory
         }
     }
 }
-
-public sealed record HistoryEntry(
-    string CompetitionDisplayName,
-    string HomeDisplayName,
-    string AwayDisplayName,
-    string HomeClubId,
-    string AwayClubId,
-    int HomeGoals,
-    int AwayGoals,
-    long Seed,
-    DateTime PlayedAtUtc);
