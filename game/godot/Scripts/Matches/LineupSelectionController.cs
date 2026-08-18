@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Matches;
+using PCDynasty.Contracts.Careers;
 
 namespace PCDynasty.Presentation.Matches;
 
@@ -22,16 +23,26 @@ public partial class LineupSelectionController : Control
 
     public void Bind(
         LineupSelectionView view,
-        Action<SubmitLineupCommand> sendCommand)
+        Action<SubmitLineupCommand> sendCommand,
+        LineupPlan? savedPlan = null)
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _sendCommand = sendCommand ?? throw new ArgumentNullException(nameof(sendCommand));
         Title.Text = view.Title;
-        Status.Text = string.Empty;
+        Status.Text = savedPlan is null
+            ? "Propuesta inicial: los once primeros jugadores están seleccionados."
+            : $"Plan guardado · {savedPlan.SubmittedAtUtc:dd/MM/yyyy HH:mm} UTC";
+        OptionValue.Text = savedPlan?.Options.GetValueOrDefault("approach") ?? "balanced";
         ClearCandidates();
-        foreach (LineupCandidateView candidate in view.Candidates)
+        for (int index = 0; index < view.Candidates.Length; index++)
         {
-            CandidateControls controls = CreateCandidateControls(candidate);
+            LineupCandidateView candidate = view.Candidates[index];
+            LineupAssignment? savedAssignment = savedPlan?.Assignments.FirstOrDefault(item =>
+                string.Equals(item.ParticipantId, candidate.ParticipantId, StringComparison.Ordinal));
+            CandidateControls controls = CreateCandidateControls(
+                candidate,
+                savedAssignment,
+                preselected: savedPlan is null && index < 11);
             _candidateControls.Add(controls);
             CandidateRows.AddChild(controls.Row);
         }
@@ -74,19 +85,23 @@ public partial class LineupSelectionController : Control
         Status.Text = "Selección enviada.";
     }
 
-    private static CandidateControls CreateCandidateControls(LineupCandidateView candidate)
+    private static CandidateControls CreateCandidateControls(
+        LineupCandidateView candidate,
+        LineupAssignment? savedAssignment,
+        bool preselected)
     {
         var row = new HBoxContainer();
         var selected = new CheckBox
         {
             Text = candidate.DisplayName,
+            ButtonPressed = savedAssignment is not null || preselected,
             TooltipText = $"Incluir a {candidate.DisplayName}",
             FocusMode = FocusModeEnum.All,
             SizeFlagsHorizontal = SizeFlags.ExpandFill,
         };
         var assignment = new LineEdit
         {
-            Text = candidate.SuggestedAssignmentId,
+            Text = savedAssignment?.AssignmentId ?? candidate.SuggestedAssignmentId,
             PlaceholderText = "Asignación",
             TooltipText = $"Asignación para {candidate.DisplayName}",
             FocusMode = FocusModeEnum.All,

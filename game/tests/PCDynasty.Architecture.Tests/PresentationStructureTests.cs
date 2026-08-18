@@ -166,6 +166,22 @@ public sealed partial class PresentationStructureTests
         Assert.DoesNotContain("PCDynasty.Simulation", projectSource, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void WorkspaceDoesNotOwnSqliteCareerSchemas()
+    {
+        string workspaceRoot = Path.Combine(FindGameRoot(), "godot", "Scripts", "Workspace");
+        string[] forbidden = ["Microsoft.Data.Sqlite", "SqliteCareer", "CREATE TABLE"];
+
+        foreach (string path in Directory.EnumerateFiles(workspaceRoot, "*.cs", SearchOption.AllDirectories))
+        {
+            string source = File.ReadAllText(path);
+            foreach (string pattern in forbidden)
+            {
+                Assert.DoesNotContain(pattern, source, StringComparison.Ordinal);
+            }
+        }
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

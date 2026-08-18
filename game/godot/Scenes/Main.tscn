@@ -466,11 +466,8 @@ text = "  PLANTILLA"
 alignment = 0
 
 [node name="Tactics" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-disabled = true
-theme_override_styles/disabled = SubResource("Style_disabled_nav")
-tooltip_text = "La táctica se habilitará al completar el flujo de alineación."
 text = "  TÁCTICA"
 alignment = 0
 

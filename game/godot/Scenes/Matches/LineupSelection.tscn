@@ -33,12 +33,12 @@ theme_override_constants/separation = 16
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Selección"
+text = "PLAN DE PARTIDO"
 
 [node name="Hint" type="Label" parent="Margin/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
-text = "Selecciona participantes y completa su asignación. Las reglas se validan al ejecutar el comando."
+text = "Define el once, el rol de cada jugador y el enfoque. El plan se guarda en la carrera externa."
 
 [node name="CandidateScroll" type="ScrollContainer" parent="Margin/Content"]
 layout_mode = 2
@@ -56,14 +56,14 @@ theme_override_constants/separation = 12
 
 [node name="OptionLabel" type="Label" parent="Margin/Content/OptionRow"]
 layout_mode = 2
-text = "Enfoque opcional"
+text = "Enfoque"
 vertical_alignment = 1
 
 [node name="OptionValue" type="LineEdit" parent="Margin/Content/OptionRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 40)
 layout_mode = 2
-placeholder_text = "Identificador de enfoque"
+placeholder_text = "balanced / attacking / cautious"
 
 [node name="ActionRow" type="HBoxContainer" parent="Margin/Content"]
 layout_mode = 2
@@ -79,4 +79,4 @@ theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 44)
 layout_mode = 2
-text = "Enviar selección"
+text = "GUARDAR PLAN"

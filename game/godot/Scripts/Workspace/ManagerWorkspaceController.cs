@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Competitions.Simulation;
+using PCDynasty.Application.Matches;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
@@ -19,6 +20,7 @@ public partial class ManagerWorkspaceController : Control
     [Export] public NodePath StatusLabelPath { get; set; } = new();
     [Export] public NodePath OverviewButtonPath { get; set; } = new();
     [Export] public NodePath SquadButtonPath { get; set; } = new();
+    [Export] public NodePath TacticsButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
     [Export] public NodePath HistoryButtonPath { get; set; } = new();
     [Export] public NodePath WorldButtonPath { get; set; } = new();
@@ -31,6 +33,7 @@ public partial class ManagerWorkspaceController : Control
     private string? _selectedClubId;
     private ClubOverviewScreen? _overviewScreen;
     private SquadScreen? _squadScreen;
+    private TacticsScreen? _tacticsScreen;
     private CompetitionsScreen? _competitionsScreen;
     private HistoryScreen? _historyScreen;
     private WorldScreen? _worldScreen;
@@ -40,6 +43,7 @@ public partial class ManagerWorkspaceController : Control
         IManagerWorld world,
         string selectedClubId,
         ICompetitionSimulationService competitionSimulation,
+        ICareerLineupService lineupService,
         CareerSession careerSession,
         CareerHistoryPersistence historyPersistence)
     {
@@ -49,10 +53,12 @@ public partial class ManagerWorkspaceController : Control
             : selectedClubId;
         ArgumentNullException.ThrowIfNull(historyPersistence);
         ArgumentNullException.ThrowIfNull(competitionSimulation);
+        ArgumentNullException.ThrowIfNull(lineupService);
         ArgumentNullException.ThrowIfNull(careerSession);
 
         _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
         _squadScreen = new SquadScreen(world);
+        _tacticsScreen = new TacticsScreen(world, lineupService);
         _competitionsScreen = new CompetitionsScreen(
             world,
             competitionSimulation,
@@ -74,6 +80,7 @@ public partial class ManagerWorkspaceController : Control
 
         Wire(OverviewButtonPath, WorkspaceSection.Overview);
         Wire(SquadButtonPath, WorkspaceSection.Squad);
+        Wire(TacticsButtonPath, WorkspaceSection.Tactics);
         Wire(CompetitionsButtonPath, WorkspaceSection.Competitions);
         Wire(HistoryButtonPath, WorkspaceSection.History);
         Wire(WorldButtonPath, WorkspaceSection.World);
@@ -134,6 +141,10 @@ public partial class ManagerWorkspaceController : Control
             case WorkspaceSection.Competitions:
                 _competitionsScreen!.Render(root, club);
                 SetStatus($"● {club.DisplayName} · competiciones");
+                break;
+            case WorkspaceSection.Tactics:
+                _tacticsScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName} · plan de partido");
                 break;
             case WorkspaceSection.History:
                 _historyScreen!.Render(root);

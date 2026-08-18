@@ -4,6 +4,7 @@ internal enum WorkspaceSection
 {
     Overview,
     Squad,
+    Tactics,
     Competitions,
     History,
     World,

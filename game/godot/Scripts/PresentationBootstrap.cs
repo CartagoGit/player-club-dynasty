@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Competitions.Simulation;
+using PCDynasty.Application.Matches;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
@@ -22,6 +23,7 @@ public partial class PresentationBootstrap : Control
     private ManagerWorkspaceController? _workspaceController;
     private readonly ICompetitionSimulationService _competitionSimulation =
         new CompetitionSimulationService(TimeProvider.System);
+    private ICareerLineupService? _lineupService;
     private CareerSession? _careerSession;
     private CareerHistoryPersistence? _historyPersistence;
 
@@ -61,6 +63,9 @@ public partial class PresentationBootstrap : Control
     private void AttachMainMenu(IManagerWorld service)
     {
         _careerSession ??= new CareerSession();
+        _lineupService ??= new CareerLineupService(
+            new SqliteCareerLineupStore(CareerDatabasePath()),
+            TimeProvider.System);
         _historyPersistence ??= CreateHistoryPersistence(_careerSession);
         _historyPersistence.Load();
         _mainMenuController = new MainMenuController { Name = "MainMenuController" };
@@ -70,12 +75,18 @@ public partial class PresentationBootstrap : Control
 
     private static CareerHistoryPersistence CreateHistoryPersistence(CareerSession session)
     {
+        return new CareerHistoryPersistence(
+            new SqliteCareerHistoryStore(CareerDatabasePath()),
+            session);
+    }
+
+    private static string CareerDatabasePath()
+    {
         string savesRoot = Path.GetFullPath(Path.Combine(
             ProjectSettings.GlobalizePath("res://../"),
             "..",
             "saves"));
-        var store = new SqliteCareerHistoryStore(Path.Combine(savesRoot, "career.sqlite"));
-        return new CareerHistoryPersistence(store, session);
+        return Path.Combine(savesRoot, "career.sqlite");
     }
 
     private void OpenWorkspace(IManagerWorld service, string clubId)
@@ -91,6 +102,7 @@ public partial class PresentationBootstrap : Control
             StatusLabelPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Status"),
             OverviewButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview"),
             SquadButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
+            TacticsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics"),
             CompetitionsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
             HistoryButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/History"),
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
@@ -100,6 +112,7 @@ public partial class PresentationBootstrap : Control
             service,
             clubId,
             _competitionSimulation,
+            _lineupService!,
             _careerSession!,
             _historyPersistence!);
         _workspaceController.MainMenuRequested += CloseWorkspace;

@@ -44,6 +44,25 @@ func _run() -> void:
 	_expect(workspace.visible, "The manager workspace must become visible after starting a career.")
 	_expect(scene.has_node("WorkspaceController"), "The wired workspace controller is missing.")
 
+	var tactics := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
+	_expect(not tactics.disabled, "The tactics route must be enabled.")
+	tactics.emit_signal("pressed")
+	await process_frame
+
+	var lineup_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/LineupSelection"
+	if not await _wait_until(func() -> bool: return scene.has_node(lineup_path)):
+		_fail("The persisted lineup selector did not open.")
+		return
+
+	var lineup := scene.get_node(lineup_path) as Control
+	var candidates := lineup.get_node("Margin/Content/CandidateScroll/CandidateRows") as VBoxContainer
+	_expect(candidates.get_child_count() > 0, "The lineup selector must show the active squad.")
+	var submit := lineup.get_node("Margin/Content/ActionRow/Submit") as Button
+	submit.emit_signal("pressed")
+	await process_frame
+	var lineup_status := lineup.get_node("Margin/Content/ActionRow/Status") as Label
+	_expect(lineup_status.text == "Selección enviada.", "The lineup plan was not accepted and persisted.")
+
 	quit(1 if _failed else 0)
 
 
