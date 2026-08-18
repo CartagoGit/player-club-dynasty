@@ -19,3 +19,58 @@ msgstr "Changes the interface palette. The session re-paints instantly."
 
 msgid "LOCALE_COUNTRY_TOOLTIP"
 msgstr "%s"
+
+# Squad screen
+msgid "SQUAD_EYEBROW"
+msgstr "SQUAD MANAGEMENT"
+
+msgid "SQUAD_TITLE"
+msgstr "SQUAD"
+
+msgid "SQUAD_SUMMARY_OWNED"
+msgstr "Your club · {0} · {1} players in the active roster"
+
+msgid "SQUAD_SUMMARY_BROWSE"
+msgstr "Browsing · {0} · {1} players in this squad"
+
+msgid "SQUAD_ACTION_OPEN_MARKET"
+msgstr "OPEN MARKET"
+
+msgid "SQUAD_ACTION_OPEN_MARKET_TOOLTIP"
+msgstr "Go to the transfer market to sign a new player"
+
+msgid "SQUAD_EMPTY"
+msgstr "No players in this squad yet."
+
+msgid "SQUAD_COL_PLAYER"
+msgstr "PLAYER"
+
+msgid "SQUAD_COL_NATION"
+msgstr "NAT."
+
+msgid "SQUAD_COL_AGE"
+msgstr "AGE"
+
+msgid "SQUAD_COL_TEC"
+msgstr "TEC"
+
+msgid "SQUAD_COL_FOR"
+msgstr "FOR"
+
+msgid "SQUAD_COL_FIS"
+msgstr "PHY"
+
+msgid "SQUAD_COL_MEN"
+msgstr "MEN"
+
+msgid "SQUAD_COL_VAL"
+msgstr "OVR"
+
+msgid "SQUAD_COL_ACTION"
+msgstr "ACTION"
+
+msgid "SQUAD_ROW_INSPECT"
+msgstr "INSPECT"
+
+msgid "SQUAD_ROW_INSPECT_TOOLTIP"
+msgstr "Open the player dossier (coming in a future slice)"

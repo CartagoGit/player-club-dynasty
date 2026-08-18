@@ -19,3 +19,58 @@ msgstr "Changes the interface palette. The session re-paints instantly."
 
 msgid "LOCALE_COUNTRY_TOOLTIP"
 msgstr "%s"
+
+# Squad screen
+msgid "SQUAD_EYEBROW"
+msgstr ""
+
+msgid "SQUAD_TITLE"
+msgstr ""
+
+msgid "SQUAD_SUMMARY_OWNED"
+msgstr ""
+
+msgid "SQUAD_SUMMARY_BROWSE"
+msgstr ""
+
+msgid "SQUAD_ACTION_OPEN_MARKET"
+msgstr ""
+
+msgid "SQUAD_ACTION_OPEN_MARKET_TOOLTIP"
+msgstr ""
+
+msgid "SQUAD_EMPTY"
+msgstr ""
+
+msgid "SQUAD_COL_PLAYER"
+msgstr ""
+
+msgid "SQUAD_COL_NATION"
+msgstr ""
+
+msgid "SQUAD_COL_AGE"
+msgstr ""
+
+msgid "SQUAD_COL_TEC"
+msgstr ""
+
+msgid "SQUAD_COL_FOR"
+msgstr ""
+
+msgid "SQUAD_COL_FIS"
+msgstr ""
+
+msgid "SQUAD_COL_MEN"
+msgstr ""
+
+msgid "SQUAD_COL_VAL"
+msgstr ""
+
+msgid "SQUAD_COL_ACTION"
+msgstr ""
+
+msgid "SQUAD_ROW_INSPECT"
+msgstr ""
+
+msgid "SQUAD_ROW_INSPECT_TOOLTIP"
+msgstr ""

@@ -78,6 +78,23 @@ public sealed partial class HeaderPanel : PanelContainer
         _summary.Text = Tr(summary);
     }
 
+    /// <summary>Wires the three text fields and formats the summary with the given args.</summary>
+    public void SetTexts(string eyebrow, string title, string summaryKey, string[] summaryArgs)
+    {
+        if (_eyebrow is null || _title is null || _summary is null)
+        {
+            return;
+        }
+        _eyebrow.Visible = !string.IsNullOrEmpty(eyebrow);
+        _eyebrow.Text = Tr(eyebrow);
+        _title.Text = Tr(title);
+        _summary.Visible = !string.IsNullOrEmpty(summaryKey);
+        string translated = Tr(summaryKey);
+        _summary.Text = summaryArgs is { Length: > 0 }
+            ? string.Format(System.Globalization.CultureInfo.CurrentCulture, translated, summaryArgs)
+            : translated;
+    }
+
     /// <summary>
     /// Creates a single trailing action button. Pass <c>null</c> text to remove a
     /// previously configured action. The action's <c>Pressed</c> event is wired by

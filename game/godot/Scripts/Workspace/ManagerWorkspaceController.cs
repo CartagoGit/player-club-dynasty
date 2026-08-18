@@ -73,7 +73,12 @@ public partial class ManagerWorkspaceController : Control
         ArgumentNullException.ThrowIfNull(squadProjection);
 
         _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
-        _squadScreen = new SquadScreen(world, squadProjection, _managed, calendar);
+        _squadScreen = new SquadScreen(
+            world,
+            squadProjection,
+            _managed,
+            calendar,
+            () => SelectSection(WorkspaceSection.Market));
         _tacticsScreen = new TacticsScreen(world, lineupService, _managed);
         _competitionsScreen = new CompetitionsScreen(
             world,

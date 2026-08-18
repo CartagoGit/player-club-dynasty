@@ -19,3 +19,58 @@ msgstr "Cambia la paleta de la interfaz. La sesión se re-pinta al instante."
 
 msgid "LOCALE_COUNTRY_TOOLTIP"
 msgstr "%s"
+
+# Pantalla de plantilla
+msgid "SQUAD_EYEBROW"
+msgstr "GESTIÓN DE PLANTILLA"
+
+msgid "SQUAD_TITLE"
+msgstr "PLANTILLA"
+
+msgid "SQUAD_SUMMARY_OWNED"
+msgstr "Tu club · {0} · {1} jugadores en la plantilla activa"
+
+msgid "SQUAD_SUMMARY_BROWSE"
+msgstr "Explorando · {0} · {1} jugadores en esta plantilla"
+
+msgid "SQUAD_ACTION_OPEN_MARKET"
+msgstr "ABRIR MERCADO"
+
+msgid "SQUAD_ACTION_OPEN_MARKET_TOOLTIP"
+msgstr "Ir al mercado de fichajes para firmar un nuevo jugador"
+
+msgid "SQUAD_EMPTY"
+msgstr "Esta plantilla aún no tiene jugadores."
+
+msgid "SQUAD_COL_PLAYER"
+msgstr "JUGADOR"
+
+msgid "SQUAD_COL_NATION"
+msgstr "NAC."
+
+msgid "SQUAD_COL_AGE"
+msgstr "EDAD"
+
+msgid "SQUAD_COL_TEC"
+msgstr "TEC"
+
+msgid "SQUAD_COL_FOR"
+msgstr "FOR"
+
+msgid "SQUAD_COL_FIS"
+msgstr "FIS"
+
+msgid "SQUAD_COL_MEN"
+msgstr "MEN"
+
+msgid "SQUAD_COL_VAL"
+msgstr "MED"
+
+msgid "SQUAD_COL_ACTION"
+msgstr "ACCIÓN"
+
+msgid "SQUAD_ROW_INSPECT"
+msgstr "INSPECCIONAR"
+
+msgid "SQUAD_ROW_INSPECT_TOOLTIP"
+msgstr "Abrir la ficha del jugador (próximamente)"
