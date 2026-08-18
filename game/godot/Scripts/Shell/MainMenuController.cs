@@ -1,6 +1,7 @@
 using Godot;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Presentation.Core.Localization;
 
 namespace PCDynasty.Presentation.Shell;
 
@@ -42,13 +43,15 @@ public partial class MainMenuController : Node
     public void AttachPreferences(
         PCDynasty.Presentation.Core.PresentationPreferencesStore store,
         PCDynasty.Presentation.Core.ThemePaletteCatalog palettes,
-        PCDynasty.Presentation.Core.LocaleCatalog locales,
-        Godot.SceneTree tree)
+        Godot.SceneTree tree,
+        LocaleSession localeSession,
+        LocaleActivationService activationService)
     {
         ArgumentNullException.ThrowIfNull(store);
         ArgumentNullException.ThrowIfNull(palettes);
-        ArgumentNullException.ThrowIfNull(locales);
         ArgumentNullException.ThrowIfNull(tree);
+        ArgumentNullException.ThrowIfNull(localeSession);
+        ArgumentNullException.ThrowIfNull(activationService);
 
         if (_preferencesStore is not null)
         {
@@ -57,20 +60,18 @@ public partial class MainMenuController : Node
 
         _preferencesStore = store;
         _palettes = palettes;
-        _locales = locales;
         _tree = tree;
+        _localeSession = localeSession;
+        _activationService = activationService;
 
         VBoxContainer options = GetNode<VBoxContainer>("../MainMenu/OptionsPanel/OptionsContent");
         var preferences = _preferencesStore.Load();
 
-        var languageSection = new LocaleSection(
-            _locales,
-            _palettes,
-            preferences.LocaleId,
-            OnLocaleSelected)
+        var languageSection = new LocaleSection(_localeSession, _activationService)
         {
             Name = "LanguageSection",
         };
+        languageSection.LocaleSelected += OnLocaleSelected;
         var themeSection = new ThemeSection(
             _palettes,
             preferences.ThemeId,
@@ -100,25 +101,39 @@ public partial class MainMenuController : Node
         reducedMotion.Toggled += OnReducedMotionToggled;
         denseTables.Toggled += OnDenseTablesToggled;
 
-        // Apply the persisted preferences so the running scene matches the
-        // saved choice without the user touching the panel.
-        LocaleApplier.Apply(_locales.Resolve(preferences.LocaleId).GodotLocaleCode);
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(preferences.ThemeId));
     }
 
-    private void OnLocaleSelected(PCDynasty.Presentation.Core.LocaleId id)
+    private void OnLocaleSelected(LocaleSelectionResult result)
     {
-        if (_preferencesStore is null || _locales is null)
+        if (_preferencesStore is null || _localeSession is null)
         {
+            return;
+        }
+
+        if (!result.Succeeded || result.Failure is not null)
+        {
+            ShowPickerRejection(result.Failure);
             return;
         }
 
         PCDynasty.Presentation.Core.PresentationPreferences preferences = _preferencesStore
             .Load()
-            .WithLocale(id);
+            .WithLocale(new PCDynasty.Presentation.Core.LocaleId(result.Selected));
         _preferencesStore.Save(preferences);
-        LocaleApplier.Apply(_locales.Resolve(id).GodotLocaleCode);
         RefreshSceneTranslations();
+    }
+
+    private void ShowPickerRejection(TranslationErrorPanelShape? shape)
+    {
+        if (shape is null)
+        {
+            return;
+        }
+
+        var panel = new TranslationErrorPanel(shape);
+        GetTree().Root.AddChild(panel);
+        panel.PrimaryPressed += () => panel.QueueFree();
     }
 
     private void OnThemeSelected(PCDynasty.Presentation.Core.ThemePaletteId id)
@@ -191,7 +206,8 @@ public partial class MainMenuController : Node
 
     private PCDynasty.Presentation.Core.PresentationPreferencesStore? _preferencesStore;
     private PCDynasty.Presentation.Core.ThemePaletteCatalog? _palettes;
-    private PCDynasty.Presentation.Core.LocaleCatalog? _locales;
+    private LocaleSession? _localeSession;
+    private LocaleActivationService? _activationService;
     private Godot.SceneTree? _tree;
 
     /// <summary>

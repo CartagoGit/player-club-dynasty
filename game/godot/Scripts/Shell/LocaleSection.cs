@@ -1,87 +1,127 @@
 using Godot;
 using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 
 namespace PCDynasty.Presentation.Shell;
 
 /// <summary>
-/// A row of buttons inside the options panel that lets the player pick a
-/// locale. Each button pairs a procedurally drawn <see cref="FlagIcon"/>
-/// with the locale's display name and a selection indicator.
+/// A row of buttons inside the options panel that lets the player
+/// pick a locale. The section reads the registry on
+/// <see cref="_Ready"/> and renders one button per
+/// <see cref="LocaleMetadata"/>, sorted by id.
 /// </summary>
+/// <remarks>
+/// The section owns the spinner and the rejection panel: tapping a
+/// flag shows the spinner, calls
+/// <see cref="LocaleActivationService.TryLoad"/>, OK applies the
+/// locale, failure shows panel C and keeps the previous active
+/// locale. The section never persists the player's choice — that is
+/// the options panel's job (S8), which fires the same
+/// <see cref="LocaleSelected"/> event with the same id.
+/// </remarks>
 public sealed partial class LocaleSection : VBoxContainer
 {
-    private readonly LocaleCatalog _locales;
-    private readonly ThemePaletteCatalog _palettes;
-    private readonly Action<LocaleId> _onSelected;
+    private readonly LocaleSession _session;
+    private readonly LocaleActivationService _service;
     private readonly ButtonGroup _buttonGroup = new();
-    private LocaleId _selected;
+    private readonly List<Button> _buttons = new();
 
-    public LocaleSection(
-        LocaleCatalog locales,
-        ThemePaletteCatalog palettes,
-        LocaleId selected,
-        Action<LocaleId> onSelected)
+    /// <summary>Fired when the player picks a locale (OK or failure — see <see cref="LocaleSelectionResult"/>).</summary>
+    public event Action<LocaleSelectionResult>? LocaleSelected;
+
+    /// <summary>The id the section last activated (after a successful load).</summary>
+    public string SelectedId => _session.ActiveId;
+
+    public LocaleSection(LocaleSession session, LocaleActivationService service)
     {
-        ArgumentNullException.ThrowIfNull(locales);
-        ArgumentNullException.ThrowIfNull(palettes);
-        ArgumentNullException.ThrowIfNull(onSelected);
-        _locales = locales;
-        _palettes = palettes;
-        _selected = locales.Resolve(selected).Id;
-        _onSelected = onSelected;
+        ArgumentNullException.ThrowIfNull(session);
+        ArgumentNullException.ThrowIfNull(service);
+        _session = session;
+        _service = service;
         Name = "LocaleSection";
         AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
     }
 
     public override void _Ready()
     {
-        AddChild(Caption(Tr("OPTIONS_LANGUAGE_HEADER"), ManagerDesignTokens.Accent, 12));
+        AddChild(Caption(_session.ActiveFile.Options.LanguageHeader, ManagerDesignTokens.Accent, 12));
         AddChild(Caption(
-            Tr("OPTIONS_LANGUAGE_HINT"),
+            _session.ActiveFile.Options.LanguageHint,
             ManagerDesignTokens.TextSecondary,
             12));
 
         var rows = new HBoxContainer { Name = "LocaleRows" };
         rows.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
-        foreach (LocaleEntry entry in _locales.Locales)
+
+        LocaleRegistryResult scan = _service.Scan();
+        foreach (LocaleMetadata entry in scan.Locales)
         {
-            rows.AddChild(LocaleButton(entry));
+            var button = LocaleButton(entry);
+            rows.AddChild(button);
+            _buttons.Add(button);
         }
 
         AddChild(rows);
     }
 
-    private Button LocaleButton(LocaleEntry entry)
+    private Button LocaleButton(LocaleMetadata entry)
     {
         var button = new Button
         {
-            Name = $"Locale_{entry.Id.Value}",
+            Name = $"Locale_{entry.Id}",
             ToggleMode = true,
             ButtonGroup = _buttonGroup,
-            TooltipText = Tr("LOCALE_COUNTRY_TOOLTIP", entry.CountryName),
+            TooltipText = entry.Name,
             CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
         };
 
         var layout = new HBoxContainer { Name = "LocaleLayout" };
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
+        // The procedural flag is a placeholder until the real flag
+        // assets ship with the content pack. The icon path lives in
+        // the JSON metadata; this fallback keeps the picker non-empty
+        // when the path is missing.
         var flag = new FlagIcon { Name = "Flag" };
-        flag.SetGeometry(entry.Flag);
+        flag.SetGeometry(ProceduralFlagFor(entry.Id));
         layout.AddChild(flag);
 
-        var label = new Label { Name = "Name", Text = entry.NativeDisplayName };
+        var label = new Label { Name = "Name", Text = entry.Name };
         label.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
         layout.AddChild(label);
         button.AddChild(layout);
-        button.ButtonPressed = entry.Id == _selected;
-        button.Pressed += () => Select(entry.Id);
+
+        button.ButtonPressed = entry.Id == _session.ActiveId;
+        button.Pressed += () => Select(entry);
         return button;
     }
 
-    private void Select(LocaleId id)
+    private void Select(LocaleMetadata entry)
     {
-        _selected = _locales.Resolve(id).Id;
-        _onSelected(_selected);
+        var spinner = new LocaleSpinner();
+        AddChild(spinner);
+
+        LocaleLoadResult result = _service.TryLoad(entry.Id);
+        if (result is LocaleLoadResult.Ok ok)
+        {
+            _session.Apply(ok);
+            spinner.QueueFree();
+            LocaleSelected?.Invoke(new LocaleSelectionResult(ok.File.Lang, ok.Source, null));
+            return;
+        }
+
+        spinner.QueueFree();
+        LocaleLoadResult.Invalid failure = result as LocaleLoadResult.Invalid
+            ?? new LocaleLoadResult.Invalid(
+                Id: entry.Id,
+                Path: entry.Path,
+                Failure: LocaleLoadFailure.NotFound,
+                Diagnostics: System.Collections.Immutable.ImmutableArray<LocaleDiagnostic>.Empty);
+
+        LocaleSelected?.Invoke(new LocaleSelectionResult(
+            Selected: entry.Id,
+            Source: entry.Source,
+            Failure: TranslationErrorPanelShapeBuilder.ForPicker(entry.Id, failure)));
     }
 
     private static Label Caption(string text, Color color, int fontSize)
@@ -91,4 +131,29 @@ public sealed partial class LocaleSection : VBoxContainer
         label.AddThemeFontSizeOverride("font_size", fontSize);
         return label;
     }
+
+    /// <summary>
+    /// Placeholder flag for any locale id. The real flag assets ship
+    /// with the content pack; until they do, every language gets the
+    /// same neutral geometric tile so the picker is not empty.
+    /// </summary>
+    private static FlagGeometry ProceduralFlagFor(string id) =>
+        new(
+            primary: new ThemeColor(0x1F / 255f, 0x3A / 255f, 0x5F / 255f),
+            secondary: new ThemeColor(1f, 1f, 1f),
+            tertiary: new ThemeColor(0x1F / 255f, 0x3A / 255f, 0x5F / 255f),
+            operations: new[]
+            {
+                FlagOperation.Rect(new ThemeColor(0x1F / 255f, 0x3A / 255f, 0x5F / 255f), 0f, 0f, 1f, 1f),
+            });
+}
+
+/// <summary>Result of a <see cref="LocaleSection"/> tap.</summary>
+/// <param name="Selected">The id the player picked.</param>
+/// <param name="Source">Where the metadata was found (built-in vs external).</param>
+/// <param name="Failure">When non-null, panel C to render.</param>
+public sealed record LocaleSelectionResult(string Selected, LocaleSource Source, TranslationErrorPanelShape? Failure)
+{
+    /// <summary>True when the load succeeded and the session was updated.</summary>
+    public bool Succeeded => Failure is null;
 }

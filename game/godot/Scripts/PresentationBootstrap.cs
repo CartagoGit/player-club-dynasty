@@ -296,12 +296,20 @@ public partial class PresentationBootstrap : Control
                 LocaleCatalog.Shipped);
         }
 
-        LocaleApplier.RegisterTranslations(PresentationLocaleDirectory());
+        ILocaleFileSource source = new GodotLocaleFileSource(
+            rootFolder: "res://locale/langs/",
+            builtInFolder: "res://locale/langs/built/");
+        LocaleLoader loader = new(source);
+        LocaleRegistry registry = new(source, loader);
+        ISystemLocaleProbe probe = new SystemLocaleProbe(ReadGodotLocale);
+        LocaleActivationService activationService = new(registry, loader, probe);
+
         _mainMenuController!.AttachPreferences(
             _preferencesStore,
             ThemePaletteCatalog.Shipped,
-            LocaleCatalog.Shipped,
-            GetTree());
+            GetTree(),
+            _localeSession!,
+            activationService);
     }
 
     private static string PresentationPreferencesPath() =>
