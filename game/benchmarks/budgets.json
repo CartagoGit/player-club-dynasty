@@ -41,6 +41,27 @@
       "fixture": "atomic 1 MiB external SQLite checkpoint",
       "maxMedianMilliseconds": 100,
       "benchmark": "PCDynasty.Benchmarks.PersistenceBenchmarks.SaveCheckpointAsync"
+    },
+    {
+      "id": "world-compile-target-scale",
+      "operations": 1,
+      "fixture": "6,400 clubs and 160,000 people read, merged, validated, compiled and indexed from a cold process",
+      "maxMedianMilliseconds": 2000,
+      "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.CompileLargeWorld"
+    },
+    {
+      "id": "world-squad-query",
+      "operations": 1,
+      "fixture": "one club squad projected from an indexed 160,000-person world",
+      "maxMedianMilliseconds": 16,
+      "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.OpenSquadView"
+    },
+    {
+      "id": "world-club-lookup",
+      "operations": 1,
+      "fixture": "one club resolved by identifier from an indexed 6,400-club world",
+      "maxMedianMilliseconds": 16,
+      "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.FindClubById"
     }
   ]
 }

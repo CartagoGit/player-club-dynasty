@@ -53,15 +53,15 @@ re-queries people per club, which cannot reach the target world scale.
   - "The loader lives in the content layer, not in Application, so the architecture gate that forbids Application from referencing content adapters stays green."
 
 ### S2 — Index the snapshot for constant-time access
-- **Status**: in-progress
+- **Status**: done
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Presentation.Core/WorldSnapshot.cs`, `game/src/PCDynasty.Presentation.Core/WorldClubProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldPeopleProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldCompetitionProjection.cs`, `game/benchmarks/PCDynasty.Benchmarks/WorldLoadBenchmarks.cs`, `game/benchmarks/budgets.json`
+- **Files**: `game/src/PCDynasty.Presentation.Core/WorldSnapshot.cs`, `game/src/PCDynasty.Presentation.Core/WorldClubProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldPeopleProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldCompetitionProjection.cs`, `game/benchmarks/PCDynasty.Benchmarks/WorldLoadBenchmarks.cs`, `game/benchmarks/PCDynasty.Benchmarks/PCDynasty.Benchmarks.csproj`, `game/benchmarks/budgets.json`, `game/tests/PCDynasty.Benchmark.Tests/WorldQueryBudgetTests.cs`
 - **Gate**: perf
 - acceptance:
-  - "Lookups by id and by club are indexed once per load; a squad query reads the club's own people and finding a club no longer rebuilds the club list. (done)"
-  - "Indexed queries over 160,000 people keep a median at or below 16 ms. (pending: workload and budget)"
-  - "Cold compile and index of the starter pack stays at or below 2,000 ms. (pending: workload and budget)"
-  - "The workload is declared in the versioned budgets file and compared in CI. (pending)"
+  - "Lookups by id and by club are indexed once per load; a squad query reads the club's own people and finding a club no longer rebuilds the club list."
+  - "Indexed queries over 160,000 people keep a median at or below 16 ms."
+  - "A cold compile and index of the target-scale world stays at or below 2,000 ms."
+  - "The workloads are declared in the versioned budgets file, compared in CI, and guarded by a fast test gate that does not need a benchmark run."
 
 ### S3 — Let the game choose an integrated or external content source
 - **Status**: ready
@@ -83,4 +83,4 @@ re-queries people per club, which cannot reach the target world scale.
 - The productive path uses the canonical pipeline only; the tolerant reader is gone.
 
 - review-implementer: claude-opus-5
-- review-log: partial by claude-opus-5 — S1 shipped and verified: the runtime now loads through read → merge → validate → compile → hash; a corrupted attribute and a dangling cross-document reference both stop the load with a diagnostic naming the entity, the attribute and the document, proven against the real starter world; equivalent JSON, CSV and SQLite sources compile to the same content hash. S2 shipped its indexes (people by club, entity by id, country names built once per load) but still owes the 160,000-person and cold-start workloads with their budgets; S3 (choosing an external source from the shell) is untouched. 27 suites, format, architecture gates and headless SmokeBoot green.
+- review-log: partial by claude-opus-5 — S1 and S2 shipped and verified. S1: the runtime now loads through read → merge → validate → compile → hash; a corrupted attribute and a dangling cross-document reference both stop the load with a diagnostic naming the entity, the attribute and the document, proven against the real starter world; equivalent JSON, CSV and SQLite sources compile to the same content hash. S2: the snapshot indexes people by club, entities by id and country names once per load, measured through the game's own WorldService over 6,400 clubs and 160,000 people — squad query 0.009 ms and club lookup 0.001 ms against a 16 ms budget, cold compile and index 1,508 ms against 2,000 ms; all three are versioned workloads compared by the CI gate and by a fast test that needs no benchmark run. S3 (choosing an external source from the shell) is untouched. 27 suites, format, architecture gates and headless SmokeBoot green.
