@@ -251,3 +251,80 @@ msgstr ""
 
 msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
 msgstr ""
+
+# World screen
+msgid "WORLD_EYEBROW"
+msgstr ""
+
+msgid "WORLD_TITLE"
+msgstr ""
+
+msgid "WORLD_SUMMARY"
+msgstr ""
+
+msgid "WORLD_EMPTY"
+msgstr ""
+
+msgid "WORLD_COL_NAME"
+msgstr ""
+
+msgid "WORLD_COL_FORMAT"
+msgstr ""
+
+msgid "WORLD_COL_FREQUENCY"
+msgstr ""
+
+msgid "WORLD_COL_RIVALS"
+msgstr ""
+
+msgid "WORLD_COL_ACTION"
+msgstr ""
+
+msgid "WORLD_ROW_INSPECT"
+msgstr ""
+
+msgid "WORLD_ROW_INSPECT_TOOLTIP"
+msgstr ""
+
+# Club picker
+msgid "PICKER_EYEBROW"
+msgstr ""
+
+msgid "PICKER_TITLE"
+msgstr ""
+
+msgid "PICKER_SUMMARY"
+msgstr ""
+
+msgid "PICKER_EYEBROW_OWNED_BADGE"
+msgstr ""
+
+msgid "PICKER_EMPTY"
+msgstr ""
+
+msgid "PICKER_COL_CLUB"
+msgstr ""
+
+msgid "PICKER_COL_COUNTRY"
+msgstr ""
+
+msgid "PICKER_COL_FOUNDED"
+msgstr ""
+
+msgid "PICKER_COL_PRESTIGE"
+msgstr ""
+
+msgid "PICKER_COL_FANBASE"
+msgstr ""
+
+msgid "PICKER_COL_SQUAD"
+msgstr ""
+
+msgid "PICKER_COL_ACTION"
+msgstr ""
+
+msgid "PICKER_ROW_CHOOSE"
+msgstr ""
+
+msgid "PICKER_ROW_CHOOSE_TOOLTIP"
+msgstr ""

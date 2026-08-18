@@ -251,3 +251,80 @@ msgstr "JUGAR TEMPORADA COMPLETA"
 
 msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
 msgstr "Jugar temporada completa ({0} partidos)"
+
+# Pantalla mundial
+msgid "WORLD_EYEBROW"
+msgstr "MUNDIAL"
+
+msgid "WORLD_TITLE"
+msgstr "COMPETICIONES DEL MUNDO"
+
+msgid "WORLD_SUMMARY"
+msgstr "{0} competiciones · {1} clubes inscritos"
+
+msgid "WORLD_EMPTY"
+msgstr "No hay competiciones cargadas en este mundo."
+
+msgid "WORLD_COL_NAME"
+msgstr "COMPETICIÓN"
+
+msgid "WORLD_COL_FORMAT"
+msgstr "FORMATO"
+
+msgid "WORLD_COL_FREQUENCY"
+msgstr "FRECUENCIA"
+
+msgid "WORLD_COL_RIVALS"
+msgstr "RIVALES"
+
+msgid "WORLD_COL_ACTION"
+msgstr "ACCIÓN"
+
+msgid "WORLD_ROW_INSPECT"
+msgstr "INSPECCIONAR"
+
+msgid "WORLD_ROW_INSPECT_TOOLTIP"
+msgstr "Abrir el detalle de la competición (próximamente)"
+
+# Selector de club
+msgid "PICKER_EYEBROW"
+msgstr "EXPLORAR"
+
+msgid "PICKER_TITLE"
+msgstr "SELECCIONA UN CLUB"
+
+msgid "PICKER_SUMMARY"
+msgstr "{0} clubes disponibles en el mundo actual"
+
+msgid "PICKER_EYEBROW_OWNED_BADGE"
+msgstr "TU CLUB"
+
+msgid "PICKER_EMPTY"
+msgstr "No hay clubes disponibles."
+
+msgid "PICKER_COL_CLUB"
+msgstr "CLUB"
+
+msgid "PICKER_COL_COUNTRY"
+msgstr "PAÍS"
+
+msgid "PICKER_COL_FOUNDED"
+msgstr "FUND."
+
+msgid "PICKER_COL_PRESTIGE"
+msgstr "PRES."
+
+msgid "PICKER_COL_FANBASE"
+msgstr "AFIC."
+
+msgid "PICKER_COL_SQUAD"
+msgstr "PLANT."
+
+msgid "PICKER_COL_ACTION"
+msgstr "ACCIÓN"
+
+msgid "PICKER_ROW_CHOOSE"
+msgstr "ELEGIR"
+
+msgid "PICKER_ROW_CHOOSE_TOOLTIP"
+msgstr "Explorar este club desde el escritorio del manager"

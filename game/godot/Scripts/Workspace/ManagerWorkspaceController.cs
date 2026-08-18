@@ -99,8 +99,8 @@ public partial class ManagerWorkspaceController : Control
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent, key => Tr(key));
         _finances = financeService;
         _calendar = calendar;
-        _worldScreen = new WorldScreen(world);
-        _clubPickerScreen = new ClubPickerScreen(SelectClub);
+        _worldScreen = new WorldScreen(world, key => Tr(key));
+        _clubPickerScreen = new ClubPickerScreen(SelectClub, key => Tr(key));
     }
 
     public override void _Ready()
@@ -237,7 +237,7 @@ public partial class ManagerWorkspaceController : Control
                 SetStatus("● Mundial de competiciones");
                 break;
             case WorkspaceSection.ClubPicker:
-                _clubPickerScreen!.Render(root, clubs);
+                _clubPickerScreen!.Render(root, clubs, _managed.ClubExternalId);
                 SetStatus("● Selección de club");
                 break;
             default:

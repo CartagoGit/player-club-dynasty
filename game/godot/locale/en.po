@@ -251,3 +251,80 @@ msgstr "PLAY FULL SEASON"
 
 msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
 msgstr "Play full season ({0} matches)"
+
+# World screen
+msgid "WORLD_EYEBROW"
+msgstr "WORLD"
+
+msgid "WORLD_TITLE"
+msgstr "COMPETITIONS OF THE WORLD"
+
+msgid "WORLD_SUMMARY"
+msgstr "{0} competitions · {1} clubs enrolled"
+
+msgid "WORLD_EMPTY"
+msgstr "No competitions loaded in this world."
+
+msgid "WORLD_COL_NAME"
+msgstr "COMPETITION"
+
+msgid "WORLD_COL_FORMAT"
+msgstr "FORMAT"
+
+msgid "WORLD_COL_FREQUENCY"
+msgstr "FREQUENCY"
+
+msgid "WORLD_COL_RIVALS"
+msgstr "RIVALS"
+
+msgid "WORLD_COL_ACTION"
+msgstr "ACTION"
+
+msgid "WORLD_ROW_INSPECT"
+msgstr "INSPECT"
+
+msgid "WORLD_ROW_INSPECT_TOOLTIP"
+msgstr "Open the competition detail (coming in a future slice)"
+
+# Club picker
+msgid "PICKER_EYEBROW"
+msgstr "EXPLORE"
+
+msgid "PICKER_TITLE"
+msgstr "SELECT A CLUB"
+
+msgid "PICKER_SUMMARY"
+msgstr "{0} clubs available in the current world"
+
+msgid "PICKER_EYEBROW_OWNED_BADGE"
+msgstr "YOUR CLUB"
+
+msgid "PICKER_EMPTY"
+msgstr "No clubs available."
+
+msgid "PICKER_COL_CLUB"
+msgstr "CLUB"
+
+msgid "PICKER_COL_COUNTRY"
+msgstr "COUNTRY"
+
+msgid "PICKER_COL_FOUNDED"
+msgstr "FOUNDED"
+
+msgid "PICKER_COL_PRESTIGE"
+msgstr "PREST."
+
+msgid "PICKER_COL_FANBASE"
+msgstr "FANB."
+
+msgid "PICKER_COL_SQUAD"
+msgstr "SQUAD"
+
+msgid "PICKER_COL_ACTION"
+msgstr "ACTION"
+
+msgid "PICKER_ROW_CHOOSE"
+msgstr "CHOOSE"
+
+msgid "PICKER_ROW_CHOOSE_TOOLTIP"
+msgstr "Browse this club from the manager workspace"
