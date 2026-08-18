@@ -30,6 +30,8 @@
     "themeHint": "Swap the interface palette.",
     "languageHeader": "LANGUAGE",
     "languageHint": "Game interface language; content does not change.",
+    "displayHeader": "DISPLAY",
+    "dataHeader": "DATA",
     "actions": {
       "saveAndClose": "SAVE AND CLOSE",
       "revert": "REVERT"

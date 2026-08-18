@@ -30,6 +30,8 @@
     "themeHint": "Cambia la paleta de la interfaz.",
     "languageHeader": "IDIOMA",
     "languageHint": "La interfaz del juego; el contenido no cambia.",
+    "displayHeader": "PANTALLA",
+    "dataHeader": "DATOS",
     "actions": {
       "saveAndClose": "GUARDAR Y CERRAR",
       "revert": "RESTAURAR"

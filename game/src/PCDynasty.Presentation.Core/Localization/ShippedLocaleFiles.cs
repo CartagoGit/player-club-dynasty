@@ -44,6 +44,8 @@ public static class ShippedLocaleFiles
             ThemeHint: "Swap the interface palette.",
             LanguageHeader: "LANGUAGE",
             LanguageHint: "Game interface language; content does not change.",
+            DisplayHeader: "DISPLAY",
+            DataHeader: "DATA",
             Actions: new OptionsActionsSection(SaveAndClose: "SAVE AND CLOSE", Revert: "REVERT"),
             Hint: "Interface scaling and audio will land once the assets are final.",
             RejectionMessage: new OptionsRejectionMessage(
@@ -150,6 +152,8 @@ public static class ShippedLocaleFiles
             ThemeHint: "Cambia la paleta de la interfaz.",
             LanguageHeader: "IDIOMA",
             LanguageHint: "La interfaz del juego; el contenido no cambia.",
+            DisplayHeader: "PANTALLA",
+            DataHeader: "DATOS",
             Actions: new OptionsActionsSection(SaveAndClose: "GUARDAR Y CERRAR", Revert: "RESTAURAR"),
             Hint: "La escala de interfaz y el audio se añadirán cuando existan assets definitivos.",
             RejectionMessage: new OptionsRejectionMessage(

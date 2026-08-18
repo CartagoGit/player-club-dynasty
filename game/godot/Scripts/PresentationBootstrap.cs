@@ -285,8 +285,8 @@ public partial class PresentationBootstrap : Control
                 clubId => OpenCareer(service, clubId, CareerRuntimeMode.Continue));
         }
 
-        AttachContentSourceSection(service);
         AttachPreferences();
+        AttachContentSourceSection(service);
     }
 
     private void AttachPreferences()
@@ -326,8 +326,8 @@ public partial class PresentationBootstrap : Control
     /// </summary>
     private void AttachContentSourceSection(WorldService world)
     {
-        var options = GetNodeOrNull<Control>("MainMenu/OptionsPanel/OptionsContent");
-        if (options is null)
+        OptionsMenu? settings = _mainMenuController?.Settings;
+        if (settings is null)
         {
             return;
         }
@@ -345,9 +345,7 @@ public partial class PresentationBootstrap : Control
             SelectExternalWorld,
             RestoreIntegratedWorld);
         _contentSourceSection = section;
-        options.AddChild(section);
-        // Above the spacer and the Back button the scene already declares.
-        options.MoveChild(section, Math.Max(0, options.GetChildCount() - 3));
+        settings.AddSection(_localeSession!.ActiveFile.Options.DataHeader, section);
     }
 
     private void OpenCareer(WorldService service, string clubId, CareerRuntimeMode mode)

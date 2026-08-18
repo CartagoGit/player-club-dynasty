@@ -26,9 +26,28 @@ func _run() -> void:
 	var options_button := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/Options") as Button
 	options_button.emit_signal("pressed")
 	await process_frame
-	var source_path := "MainMenu/OptionsPanel/OptionsContent/ContentSource"
+	var settings := _find_node(scene, "OptionsMenu")
+	if settings == null:
+		_fail("Settings did not open as a menu of areas.")
+		return
+	var entries := _find_node(settings, "OptionsEntries")
+	_expect(entries.get_child_count() >= 3, "Settings must offer its areas as a menu, not one stacked panel.")
+	var data_entry: Button = null
+	for entry in entries.get_children():
+		if (entry as Button).text.strip_edges() == "DATOS":
+			data_entry = entry as Button
+	if data_entry == null:
+		var listed := ""
+		for entry in entries.get_children():
+			listed += "'" + (entry as Button).text.strip_edges() + "' "
+		_fail("The settings menu has no data area. Areas: " + listed)
+		return
+	data_entry.emit_signal("pressed")
+	await process_frame
+	_expect(not entries.visible, "Walking into an area must replace the list with that area.")
+	var source_path := "MainMenu/OptionsPanel/OptionsContent/OptionsMenu/OptionsSectionContent/ContentSource"
 	if not await _wait_until(func() -> bool: return scene.has_node(source_path)):
-		_fail("The data source section is missing from the options panel.")
+		_fail("The data area did not show the content source controls.")
 		return
 	var source_status := scene.get_node(source_path + "/ContentSourceStatus") as Label
 	_expect(source_status.text.begins_with("Integrado"), "The shipped world must be reported as the integrated source.")
@@ -46,7 +65,12 @@ func _run() -> void:
 		_fail("Restoring did not return to the integrated world.")
 		return
 	source_status = scene.get_node(source_path + "/ContentSourceStatus") as Label
-	(scene.get_node("MainMenu/OptionsPanel/OptionsContent/Back") as Button).emit_signal("pressed")
+	# One way back: first out of the area, then out of settings.
+	var settings_back := _find_node(settings, "Back") as Button
+	settings_back.emit_signal("pressed")
+	await process_frame
+	_expect(entries.visible, "Leaving an area must return to the settings menu.")
+	settings_back.emit_signal("pressed")
 	await process_frame
 
 	var new_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/NewCareer") as Button

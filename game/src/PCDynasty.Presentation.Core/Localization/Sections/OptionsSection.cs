@@ -1,8 +1,9 @@
 namespace PCDynasty.Presentation.Core.Localization;
 
 /// <summary>
-/// Strings for the options panel: the section title, the four toggles
-/// the player can flip, and the two action buttons the panel exposes
+/// Strings for the settings menu: the header, the name of each area the
+/// player can walk into (language, theme, display, data), the toggles inside
+/// the display area, and the two action buttons the panel exposes
 /// (<c>Save and close</c> and <c>Revert</c>).
 /// </summary>
 public sealed record OptionsSection(
@@ -14,6 +15,8 @@ public sealed record OptionsSection(
     string ThemeHint,
     string LanguageHeader,
     string LanguageHint,
+    string DisplayHeader,
+    string DataHeader,
     OptionsActionsSection Actions,
     string Hint,
     OptionsRejectionMessage RejectionMessage);

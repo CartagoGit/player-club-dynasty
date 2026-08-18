@@ -89,9 +89,9 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "Changing the language updates the workspace, not only the menu."
 
 ### S6 — Rebuild the settings screen as a classic options menu
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S5]
-- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/OptionsMenu.cs`
+- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/OptionsMenu.cs`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/OptionsSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/ShippedLocaleFiles.cs`, `game/godot/locale/langs/built/en.json`, `game/godot/locale/langs/built/es.json`, `game/godot/Tests/SmokeBoot.gd`
 - **Gate**: e2e
 - acceptance:
   - "Settings is a menu of named sections the player walks into, not one stacked panel of every control at once."

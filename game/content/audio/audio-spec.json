@@ -671,6 +671,74 @@
           "lastPrompt": "Trophy lift theme — variant 2 of 3. Retro 1990s football manager PC game (league title, cup final, manager of the month). EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead — soft brushed snare only. Triumphant but warm, contained celebration. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: Rhodes melody carries the lead, brass plays sustained harmony."
         }
       }
+    },
+    "sfx.workspace.section_change": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094127955": {
+          "variantId": "v_1787094127955",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:03:34.171Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.workspace/section_change/v_1787094127955.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 13042914,
+          "lastPrompt": "workspace sidebar section change — short sweeping whoosh with soft tap, ~400ms"
+        }
+      }
+    },
+    "sfx.editor.tile_place": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094226565": {
+          "variantId": "v_1787094226565",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:06:22.295Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.editor/tile_place/v_1787094226565.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 23336162,
+          "lastPrompt": "pack editor tile placed — chunky satisfying snap, like a stamp hitting paper, ~150ms"
+        }
+      }
+    },
+    "sfx.editor.tile_rotate": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094386564": {
+          "variantId": "v_1787094386564",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:08:29.173Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.editor/tile_rotate/v_1787094386564.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 15875298,
+          "lastPrompt": "pack editor tile rotated — quick wooden tick, very short, ~80ms"
+        }
+      }
+    },
+    "sfx.match_extended.match_start": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094513248": {
+          "variantId": "v_1787094513248",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:11:20.562Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.match_extended/match_start/v_1787094513248.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 28161250,
+          "lastPrompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second"
+        }
+      }
     }
   }
 }

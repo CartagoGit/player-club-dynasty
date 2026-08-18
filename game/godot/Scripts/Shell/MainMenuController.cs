@@ -1,6 +1,8 @@
 using Godot;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Core.Localization;
 
 namespace PCDynasty.Presentation.Shell;
@@ -66,6 +68,8 @@ public partial class MainMenuController : Node
 
         VBoxContainer options = GetNode<VBoxContainer>("../MainMenu/OptionsPanel/OptionsContent");
         var preferences = _preferencesStore.Load();
+        _optionsMenu = new OptionsMenu();
+        _optionsMenu.Closed += ShowMainMenu;
 
         var languageSection = new LocaleSection(_localeSession, _activationService)
         {
@@ -80,26 +84,12 @@ public partial class MainMenuController : Node
             Name = "ThemeSection",
         };
 
-        // The scene declares the order: Eyebrow, Title, [toggles], Hint, Spacer, Back.
-        // Insert the new sections right after the title so the preferences
-        // sit at the top of the panel.
-        options.AddChild(languageSection);
-        options.AddChild(themeSection);
-        options.MoveChild(languageSection, 2);
-        options.MoveChild(themeSection, 3);
-
-        // Mirror the persisted state into the existing toggles so the panel
-        // always shows what will be restored on the next launch.
-        var fullscreen = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/Fullscreen");
-        fullscreen.ButtonPressed = preferences.Fullscreen;
-        var reducedMotion = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/ReducedMotion");
-        reducedMotion.ButtonPressed = preferences.ReducedMotion;
-        var denseTables = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/DenseTables");
-        denseTables.ButtonPressed = preferences.DenseTables;
-
-        fullscreen.Toggled += OnFullscreenToggled;
-        reducedMotion.Toggled += OnReducedMotionToggled;
-        denseTables.Toggled += OnDenseTablesToggled;
+        // Settings is a menu of areas, not one stacked panel: the player picks
+        // language, look, display or data first and only then sees its controls.
+        options.AddChild(_optionsMenu);
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.LanguageHeader, languageSection);
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.ThemeHeader, themeSection);
+        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.DisplayHeader, BuildDisplaySection(preferences));
 
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(preferences.ThemeId));
     }
@@ -149,6 +139,37 @@ public partial class MainMenuController : Node
             .WithTheme(id);
         _preferencesStore.Save(preferences);
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(id));
+    }
+
+    /// <summary>
+    /// The display area: one row per preference, each mirroring what will be
+    /// restored on the next launch.
+    /// </summary>
+    private VBoxContainer BuildDisplaySection(PresentationPreferences preferences)
+    {
+        var section = new VBoxContainer { Name = "DisplaySection" };
+        section.AddThemeConstantOverride("separation", ManagerDesignTokens.Space4);
+        section.AddChild(Toggle("Fullscreen", _localeSession!.ActiveFile.Options.Fullscreen, preferences.Fullscreen, OnFullscreenToggled));
+        section.AddChild(Toggle("ReducedMotion", _localeSession.ActiveFile.Options.ReducedMotion, preferences.ReducedMotion, OnReducedMotionToggled));
+        section.AddChild(Toggle("DenseTables", _localeSession.ActiveFile.Options.DenseTables, preferences.DenseTables, OnDenseTablesToggled));
+        return section;
+    }
+
+    private static CheckButton Toggle(
+        string name,
+        string text,
+        bool pressed,
+        CheckButton.ToggledEventHandler onToggled)
+    {
+        var toggle = new CheckButton
+        {
+            Name = name,
+            Text = text,
+            ButtonPressed = pressed,
+            CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
+        };
+        toggle.Toggled += onToggled;
+        return toggle;
     }
 
     private void OnFullscreenToggled(bool pressed)
@@ -208,6 +229,10 @@ public partial class MainMenuController : Node
     private PCDynasty.Presentation.Core.PresentationPreferencesStore? _preferencesStore;
     private PCDynasty.Presentation.Core.ThemePaletteCatalog? _palettes;
     private LocaleSession? _localeSession;
+    private OptionsMenu? _optionsMenu;
+
+    /// <summary>The settings menu, so the composition root can add its own area.</summary>
+    public OptionsMenu? Settings => _optionsMenu;
     private LocaleActivationService? _activationService;
     private Godot.SceneTree? _tree;
 
@@ -249,11 +274,7 @@ public partial class MainMenuController : Node
         GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/Options").Pressed += OpenOptions;
         GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/Exit").Pressed += () => GetTree().Quit();
         GetNode<Button>("../MainMenu/CareerSetup/SetupContent/SetupActions/Back").Pressed += ShowMainMenu;
-        GetNode<Button>("../MainMenu/OptionsPanel/OptionsContent/Back").Pressed += ShowMainMenu;
         StartCareer.Pressed += ConfirmCareer;
-
-        var fullscreen = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/Fullscreen");
-        fullscreen.Toggled += ToggleFullscreen;
 
         RefreshCareerActions();
 

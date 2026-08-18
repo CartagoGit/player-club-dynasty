@@ -378,34 +378,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "OPCIONES DE PRESENTACIÓN"
 
-[node name="Fullscreen" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
-layout_mode = 2
-text = "Pantalla completa"
-
-[node name="ReducedMotion" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
-layout_mode = 2
-button_pressed = true
-text = "Transiciones reducidas y navegación inmediata"
-
-[node name="DenseTables" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
-layout_mode = 2
-button_pressed = true
-text = "Tablas compactas de alta densidad"
-
-[node name="OptionsHint" type="Label" parent="MainMenu/OptionsPanel/OptionsContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
-text = "La escala de interfaz y el audio se añadirán cuando existan assets definitivos."
-
-[node name="OptionsSpacer" type="Control" parent="MainMenu/OptionsPanel/OptionsContent"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Back" type="Button" parent="MainMenu/OptionsPanel/OptionsContent"]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "← GUARDAR Y VOLVER"
-
 [node name="Workspace" type="Control" parent="."]
 visible = false
 layout_mode = 1
