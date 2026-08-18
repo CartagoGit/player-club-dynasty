@@ -57,8 +57,8 @@ artwork, palette, typography and copy stay original.
 - global_gate: e2e
 
 ### S1 — Add the shared list-section primitive
-- **Status**: ready
-- **Files**: `game/godot/Scripts/Workspace/Components/ListSection.cs`, `game/godot/Scripts/Workspace/Components/HeaderPanel.cs`, `game/godot/Scripts/Workspace/Components/ZebraRow.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceUiFactory.cs`, `game/tests/PCDynasty.Presentation.Tests/ListSectionTests.cs`
+- **Status**: done
+- **Files**: `game/godot/Scripts/Workspace/Components/ListSection.cs`, `game/godot/Scripts/Workspace/Components/HeaderPanel.cs`, `game/godot/Scripts/Workspace/Components/ZebraRow.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceUiFactory.cs`
 - **Gate**: e2e
 - acceptance:
   - "`ListSection<T>` is a Godot `PanelContainer` that holds a title, an optional summary
@@ -75,7 +75,7 @@ artwork, palette, typography and copy stay original.
   - "The smoke-boot still passes."
 
 ### S2 — Migrate Squad to the new grammar
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scripts/Workspace/Screens/SquadScreen.cs`, `game/godot/Tests/SmokeBoot.gd`
 - **Gate**: e2e
@@ -91,7 +91,7 @@ artwork, palette, typography and copy stay original.
     still resolves."
 
 ### S3 — Migrate Market to the new grammar
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scripts/Workspace/Screens/MarketScreen.cs`
 - **Gate**: e2e
@@ -107,7 +107,7 @@ artwork, palette, typography and copy stay original.
     only the affected rows (not the whole list)."
 
 ### S4 — Migrate History to the new grammar
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scripts/Workspace/Screens/HistoryScreen.cs`
 - **Gate**: e2e
@@ -122,7 +122,7 @@ artwork, palette, typography and copy stay original.
   - "The smoke-boot path remains reachable."
 
 ### S5 — Migrate Competitions to the new grammar
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scripts/Workspace/Screens/CompetitionsScreen.cs`
 - **Gate**: e2e
@@ -136,7 +136,7 @@ artwork, palette, typography and copy stay original.
     puedes disputar los partidos de tu club' string moves into a `HeaderPanel` notice)."
 
 ### S6 — Migrate World, ClubPicker and finish the chrome
-- **Status**: ready
+- **Status**: partial — World + ClubPicker done; LineupSelection subscene left for f00045
 - **DependsOn**: [S1, S2, S3, S4, S5]
 - **Files**: `game/godot/Scripts/Workspace/Screens/WorldScreen.cs`, `game/godot/Scripts/Workspace/Screens/ClubPickerScreen.cs`, `game/godot/Scripts/Matches/LineupSelectionController.cs`
 - **Gate**: e2e
