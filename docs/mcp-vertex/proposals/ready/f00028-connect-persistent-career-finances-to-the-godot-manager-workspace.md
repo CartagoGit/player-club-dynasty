@@ -29,7 +29,7 @@ The finance navigation is still disabled even though the economy ledger exists. 
 - global_gate: e2e
 
 ### S1 — Define finance contracts and application service
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Contracts/Careers/CareerFinanceState.cs`, `game/src/PCDynasty.Contracts/Careers/ICareerFinanceStore.cs`, `game/src/PCDynasty.Application/Finances/ClubFinanceOverview.cs`, `game/src/PCDynasty.Application/Finances/ICareerFinanceService.cs`, `game/src/PCDynasty.Application/Finances/CareerFinanceService.cs`, `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/tests/PCDynasty.Contracts.Tests/CareerFinanceStateTests.cs`, `game/tests/PCDynasty.Application.Tests/Finances/CareerFinanceServiceTests.cs`
 - **Gate**: e2e
 - acceptance:
