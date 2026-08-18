@@ -37,8 +37,8 @@ The current scene serializes paths on PresentationBootstrap but creates MainCont
   - "Invalid transitions are rejected by tests."
 
 ### S2 — Build and wire the Godot main menu and manager workspace
-- **Status**: pending
-- **Files**: `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Presentation/MainController.cs`, `game/godot/Scenes/Main.tscn`, `game/godot/Tests/SmokeBoot.gd`
+- **Status**: done
+- **Files**: `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/MainMenuController.cs.uid`, `game/godot/Scripts/Presentation/MainController.cs`, `game/godot/Scripts/Presentation/MainController.cs.uid`, `game/godot/Scenes/Main.tscn`, `game/godot/Tests/SmokeBoot.gd`, `game/godot/Tests/SmokeBoot.gd.uid`
 - **Gate**: e2e
 - acceptance:
   - "Startup shows a polished original main menu rather than technical placeholder text."

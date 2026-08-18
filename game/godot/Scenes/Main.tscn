@@ -1,39 +1,73 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://Scripts/PresentationBootstrap.cs" id="1_main"]
+[ext_resource type="Theme" path="res://Theme/PCDynastyTheme.tres" id="2_theme"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
-bg_color = Color(0.035, 0.102, 0.157, 1)
-border_width_right = 2
-border_color = Color(0.831, 0.643, 0.2, 1)
+[sub_resource type="StyleBoxFlat" id="Style_topbar"]
+bg_color = Color(0.039, 0.122, 0.18, 1)
+border_width_bottom = 2
+border_color = Color(0.89, 0.702, 0.255, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.055, 0.118, 0.173, 1)
+[sub_resource type="StyleBoxFlat" id="Style_menu"]
+content_margin_left = 32.0
+content_margin_top = 28.0
+content_margin_right = 32.0
+content_margin_bottom = 28.0
+bg_color = Color(0.055, 0.149, 0.216, 0.98)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.122, 0.224, 0.302, 1)
+border_color = Color(0.192, 0.341, 0.42, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_value"]
-bg_color = Color(0.075, 0.169, 0.227, 1)
-border_width_left = 3
-border_color = Color(0.831, 0.643, 0.2, 1)
+[sub_resource type="StyleBoxFlat" id="Style_hero"]
+content_margin_left = 38.0
+content_margin_top = 34.0
+content_margin_right = 38.0
+content_margin_bottom = 34.0
+bg_color = Color(0.031, 0.09, 0.137, 0.96)
+border_width_left = 4
+border_color = Color(0.89, 0.702, 0.255, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Style_sidebar"]
+bg_color = Color(0.039, 0.122, 0.18, 1)
+border_width_right = 2
+border_color = Color(0.89, 0.702, 0.255, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_disabled_nav"]
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+bg_color = Color(0.051, 0.133, 0.188, 0.62)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nav"]
-bg_color = Color(0.055, 0.137, 0.2, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(0.89, 0.702, 0.255, 0.12)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.89, 0.702, 0.255, 0.55)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -42,15 +76,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_main")
-ContentRootPath = NodePath("Layout/ContentMargin/Content")
-SidebarPath = NodePath("")
-StatusLabelPath = NodePath("Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel/StatusLabel")
-OverviewButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Overview")
-SquadButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Squad")
-CompetitionsButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/Competitions")
-HistoryButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/History")
-WorldButtonPath = NodePath("Layout/Sidebar/SidebarMargin/SidebarContent/World")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -59,9 +86,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.025, 0.047, 0.075, 1)
+color = Color(0.022, 0.047, 0.071, 1)
 
-[node name="Layout" type="HBoxContainer" parent="."]
+[node name="MainMenu" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -69,172 +96,466 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Sidebar" type="PanelContainer" parent="Layout"]
-custom_minimum_size = Vector2(246, 0)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_sidebar")
+[node name="TopBar" type="PanelContainer" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 82.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("Style_topbar")
 
-[node name="SidebarMargin" type="MarginContainer" parent="Layout/Sidebar"]
+[node name="TopContent" type="HBoxContainer" parent="MainMenu/TopBar"]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 30
+theme_override_constants/separation = 16
 
-[node name="SidebarContent" type="VBoxContainer" parent="Layout/Sidebar/SidebarMargin"]
+[node name="LeftSpace" type="Control" parent="MainMenu/TopBar/TopContent"]
+custom_minimum_size = Vector2(34, 0)
 layout_mode = 2
-theme_override_constants/separation = 14
 
-[node name="Brand" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Brand" type="Label" parent="MainMenu/TopBar/TopContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.902, 0.741, 0.333, 1)
+theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
 theme_override_font_sizes/font_size = 25
 text = "PC DYNASTY"
+vertical_alignment = 1
 
-[node name="Season" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Divider" type="VSeparator" parent="MainMenu/TopBar/TopContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.561, 0.682, 0.757, 1)
+
+[node name="Tagline" type="Label" parent="MainMenu/TopBar/TopContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 theme_override_font_sizes/font_size = 13
-text = "TEMPORADA DE DEMOSTRACIÓN"
+text = "CONSTRUYE UN CLUB. DEJA UNA HISTORIA."
+vertical_alignment = 1
 
-[node name="Separator" type="HSeparator" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="TopSpacer" type="Control" parent="MainMenu/TopBar/TopContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Build" type="Label" parent="MainMenu/TopBar/TopContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.439, 0.78, 0.91, 1)
+theme_override_font_sizes/font_size = 12
+text = "MUNDO FICCIONAL · BUILD DE DESARROLLO"
+vertical_alignment = 1
+
+[node name="RightSpace" type="Control" parent="MainMenu/TopBar/TopContent"]
+custom_minimum_size = Vector2(34, 0)
 layout_mode = 2
 
-[node name="Overview" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="MenuFrame" type="PanelContainer" parent="MainMenu"]
+layout_mode = 1
+offset_left = 56.0
+offset_top = 116.0
+offset_right = 556.0
+offset_bottom = 676.0
+theme_override_styles/panel = SubResource("Style_menu")
+
+[node name="MenuContent" type="VBoxContainer" parent="MainMenu/MenuFrame"]
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
-text = "  RESUMEN"
+theme_override_constants/separation = 12
+
+[node name="Eyebrow" type="Label" parent="MainMenu/MenuFrame/MenuContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
+theme_override_font_sizes/font_size = 13
+text = "PC DYNASTY · DIRECCIÓN DEPORTIVA"
+
+[node name="Title" type="Label" parent="MainMenu/MenuFrame/MenuContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "TU CARRERA\nEMPIEZA AQUÍ"
+
+[node name="Description" type="Label" parent="MainMenu/MenuFrame/MenuContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+theme_override_font_sizes/font_size = 14
+text = "Gestiona plantilla, táctica, mercado y patrimonio.\nCada temporada conserva sus decisiones y consecuencias."
+
+[node name="Separator" type="HSeparator" parent="MainMenu/MenuFrame/MenuContent"]
+layout_mode = 2
+
+[node name="Actions" type="VBoxContainer" parent="MainMenu/MenuFrame/MenuContent"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="NewCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "  NUEVA CARRERA"
 alignment = 0
 
-[node name="Squad" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="ContinueCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
-text = "  PLANTILLA"
+text = "  CONTINUAR"
 alignment = 0
 
-[node name="Competitions" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="LoadCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
-text = "  COMPETICIONES"
+text = "  CARGAR CARRERA"
 alignment = 0
 
-[node name="History" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="DataEditor" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
-text = "  HISTORIAL"
+text = "  EDITOR DE DATOS"
 alignment = 0
 
-[node name="World" type="Button" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Options" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_nav")
-text = "  MUNDIAL"
+text = "  OPCIONES"
 alignment = 0
 
-[node name="Spacer" type="Control" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="Exit" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "  SALIR"
+alignment = 0
+
+[node name="MenuSpacer" type="Control" parent="MainMenu/MenuFrame/MenuContent"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Status" type="Label" parent="Layout/Sidebar/SidebarMargin/SidebarContent"]
+[node name="WorldStatus" type="Label" parent="MainMenu/MenuFrame/MenuContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.412, 0.733, 0.573, 1)
+theme_override_colors/font_color = Color(0.345, 0.776, 0.604, 1)
+theme_override_font_sizes/font_size = 12
+text = "CARGANDO MUNDO..."
+
+[node name="Hero" type="PanelContainer" parent="MainMenu"]
+layout_mode = 1
+offset_left = 604.0
+offset_top = 116.0
+offset_right = 1224.0
+offset_bottom = 676.0
+theme_override_styles/panel = SubResource("Style_hero")
+
+[node name="HeroContent" type="VBoxContainer" parent="MainMenu/Hero"]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="HeroEyebrow" type="Label" parent="MainMenu/Hero/HeroContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.439, 0.78, 0.91, 1)
 theme_override_font_sizes/font_size = 13
-text = "● PRESENTACIÓN DISPONIBLE"
+text = "UN MUNDO QUE RECUERDA"
 
-[node name="ContentMargin" type="MarginContainer" parent="Layout"]
+[node name="HeroTitle" type="Label" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 44
-theme_override_constants/margin_top = 34
-theme_override_constants/margin_right = 44
-theme_override_constants/margin_bottom = 34
-
-[node name="Content" type="VBoxContainer" parent="Layout/ContentMargin"]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="Header" type="HBoxContainer" parent="Layout/ContentMargin/Content"]
-layout_mode = 2
-
-[node name="TitleBlock" type="VBoxContainer" parent="Layout/ContentMargin/Content/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Title" type="Label" parent="Layout/ContentMargin/Content/Header/TitleBlock"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
 theme_override_font_sizes/font_size = 30
-text = "Panel del club"
+text = "DECISIONES DE DESPACHO.\nCONSECUENCIAS EN EL CAMPO."
 
-[node name="Subtitle" type="Label" parent="Layout/ContentMargin/Content/Header/TitleBlock"]
+[node name="HeroText" type="Label" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.561, 0.682, 0.757, 1)
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 theme_override_font_sizes/font_size = 15
-text = "Una base rápida para el futuro motor del manager"
+text = "Una experiencia de gestión original, densa y rápida:\nla información importante a un clic, el detalle cuando lo necesitas."
 
-[node name="Date" type="Label" parent="Layout/ContentMargin/Content/Header"]
+[node name="HeroSeparator" type="HSeparator" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.902, 0.741, 0.333, 1)
-theme_override_font_sizes/font_size = 16
-text = "PRETEMPORADA"
-vertical_alignment = 1
 
-[node name="CorePanel" type="PanelContainer" parent="Layout/ContentMargin/Content"]
-custom_minimum_size = Vector2(0, 190)
+[node name="Metric1" type="PanelContainer" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+theme_override_styles/panel = SubResource("Style_badge")
 
-[node name="PanelMargin" type="MarginContainer" parent="Layout/ContentMargin/Content/CorePanel"]
+[node name="Text" type="Label" parent="MainMenu/Hero/HeroContent/Metric1"]
 layout_mode = 2
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 24
+text = "CARGANDO CLUBES Y COMPETICIONES..."
 
-[node name="PanelContent" type="VBoxContainer" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin"]
+[node name="Metric2" type="PanelContainer" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_styles/panel = SubResource("Style_badge")
 
-[node name="PanelTitle" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+[node name="Text" type="Label" parent="MainMenu/Hero/HeroContent/Metric2"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
-theme_override_font_sizes/font_size = 20
-text = "Estado de la presentación"
+text = "PARTIDOS Y TEMPORADAS REPRODUCIBLES"
 
-[node name="PanelDescription" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+[node name="Metric3" type="PanelContainer" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.612, 0.722, 0.792, 1)
-theme_override_font_sizes/font_size = 14
-text = "El shell renderiza modelos de lectura sin apropiarse de reglas del dominio."
+theme_override_styles/panel = SubResource("Style_badge")
 
-[node name="ValuePanel" type="PanelContainer" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent"]
+[node name="Text" type="Label" parent="MainMenu/Hero/HeroContent/Metric3"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_value")
+text = "DATOS Y CARRERAS EXTERNOS · SQLITE"
 
-[node name="StatusLabel" type="Label" parent="Layout/ContentMargin/Content/CorePanel/PanelMargin/PanelContent/ValuePanel"]
-unique_name_in_owner = true
+[node name="HeroSpacer" type="Control" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.945, 0.965, 0.976, 1)
-theme_override_font_sizes/font_size = 18
-text = "Inicializando presentación…"
-horizontal_alignment = 1
+size_flags_vertical = 3
 
-[node name="Footer" type="Label" parent="Layout/ContentMargin/Content"]
+[node name="Legal" type="Label" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.365, 0.482, 0.561, 1)
+theme_override_font_sizes/font_size = 11
+text = "Universo, clubes y competiciones completamente ficticios."
+
+[node name="CareerSetup" type="PanelContainer" parent="MainMenu"]
+visible = false
+layout_mode = 1
+offset_left = 210.0
+offset_top = 116.0
+offset_right = 1070.0
+offset_bottom = 676.0
+theme_override_styles/panel = SubResource("Style_menu")
+
+[node name="SetupContent" type="VBoxContainer" parent="MainMenu/CareerSetup"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Eyebrow" type="Label" parent="MainMenu/CareerSetup/SetupContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
+text = "NUEVA CARRERA · PASO 1 DE 2"
+
+[node name="Title" type="Label" parent="MainMenu/CareerSetup/SetupContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "ELIGE TU PRIMER CLUB"
+
+[node name="Hint" type="Label" parent="MainMenu/CareerSetup/SetupContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+text = "Prestigio, país y plantilla condicionan el punto de partida; tu historia hará el resto."
+
+[node name="ClubScroll" type="ScrollContainer" parent="MainMenu/CareerSetup/SetupContent"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ClubList" type="VBoxContainer" parent="MainMenu/CareerSetup/SetupContent/ClubScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="SelectedClub" type="Label" parent="MainMenu/CareerSetup/SetupContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.439, 0.78, 0.91, 1)
+text = "Selecciona el club con el que quieres construir tu historia."
+
+[node name="SetupActions" type="HBoxContainer" parent="MainMenu/CareerSetup/SetupContent"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Back" type="Button" parent="MainMenu/CareerSetup/SetupContent/SetupActions"]
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+text = "← MENÚ PRINCIPAL"
+
+[node name="SetupSpacer" type="Control" parent="MainMenu/CareerSetup/SetupContent/SetupActions"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartCareer" type="Button" parent="MainMenu/CareerSetup/SetupContent/SetupActions"]
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+disabled = true
+text = "COMENZAR CARRERA →"
+
+[node name="OptionsPanel" type="PanelContainer" parent="MainMenu"]
+visible = false
+layout_mode = 1
+offset_left = 310.0
+offset_top = 146.0
+offset_right = 970.0
+offset_bottom = 646.0
+theme_override_styles/panel = SubResource("Style_menu")
+
+[node name="OptionsContent" type="VBoxContainer" parent="MainMenu/OptionsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Eyebrow" type="Label" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
+text = "CONFIGURACIÓN"
+
+[node name="Title" type="Label" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "OPCIONES DE PRESENTACIÓN"
+
+[node name="Fullscreen" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+text = "Pantalla completa"
+
+[node name="ReducedMotion" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+button_pressed = true
+text = "Transiciones reducidas y navegación inmediata"
+
+[node name="DenseTables" type="CheckButton" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+button_pressed = true
+text = "Tablas compactas de alta densidad"
+
+[node name="OptionsHint" type="Label" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+text = "La escala de interfaz y el audio se añadirán cuando existan assets definitivos."
+
+[node name="OptionsSpacer" type="Control" parent="MainMenu/OptionsPanel/OptionsContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Back" type="Button" parent="MainMenu/OptionsPanel/OptionsContent"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "← GUARDAR Y VOLVER"
+
+[node name="Workspace" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="HBoxContainer" parent="Workspace"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sidebar" type="PanelContainer" parent="Workspace/Layout"]
+custom_minimum_size = Vector2(254, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_sidebar")
+
+[node name="SidebarMargin" type="MarginContainer" parent="Workspace/Layout/Sidebar"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="SidebarContent" type="VBoxContainer" parent="Workspace/Layout/Sidebar/SidebarMargin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Brand" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89, 0.702, 0.255, 1)
+theme_override_font_sizes/font_size = 24
+text = "PC DYNASTY"
+
+[node name="Desk" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
 theme_override_font_sizes/font_size = 12
-text = "PC Dynasty · Presentación Godot independiente del dominio"
+text = "DESPACHO DEL MANAGER"
+
+[node name="Separator" type="HSeparator" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+
+[node name="Overview" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "  RESUMEN"
+alignment = 0
+
+[node name="Squad" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "  PLANTILLA"
+alignment = 0
+
+[node name="Tactics" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+disabled = true
+theme_override_styles/disabled = SubResource("Style_disabled_nav")
+tooltip_text = "La táctica se habilitará al completar el flujo de alineación."
+text = "  TÁCTICA"
+alignment = 0
+
+[node name="Competitions" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "  COMPETICIONES"
+alignment = 0
+
+[node name="Market" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+disabled = true
+theme_override_styles/disabled = SubResource("Style_disabled_nav")
+tooltip_text = "El mercado se conectará a los casos de uso de negociación."
+text = "  MERCADO"
+alignment = 0
+
+[node name="Scouting" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+disabled = true
+theme_override_styles/disabled = SubResource("Style_disabled_nav")
+tooltip_text = "La red de scouting se conectará en la siguiente fase."
+text = "  SCOUTING"
+alignment = 0
+
+[node name="Finances" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+disabled = true
+theme_override_styles/disabled = SubResource("Style_disabled_nav")
+tooltip_text = "Finanzas se habilitará cuando el ledger de carrera esté conectado."
+text = "  FINANZAS"
+alignment = 0
+
+[node name="History" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "  HISTORIAL"
+alignment = 0
+
+[node name="World" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "  MUNDO"
+alignment = 0
+
+[node name="MainMenu" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+text = "  MENÚ PRINCIPAL"
+alignment = 0
+
+[node name="SidebarSpacer" type="Control" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Status" type="Label" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.345, 0.776, 0.604, 1)
+theme_override_font_sizes/font_size = 12
+text = "● PREPARANDO DESPACHO"
+autowrap_mode = 2
+
+[node name="ContentMargin" type="MarginContainer" parent="Workspace/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 28
+
+[node name="ContentScroll" type="ScrollContainer" parent="Workspace/Layout/ContentMargin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="Workspace/Layout/ContentMargin/ContentScroll"]
+custom_minimum_size = Vector2(900, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="Loading" type="Label" parent="Workspace/Layout/ContentMargin/ContentScroll/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.659, 0.753, 0.804, 1)
+theme_override_font_sizes/font_size = 18
+text = "Preparando el despacho del manager..."

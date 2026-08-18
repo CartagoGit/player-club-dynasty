@@ -27,6 +27,9 @@ public partial class MainController : Control
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
     [Export] public NodePath HistoryButtonPath { get; set; } = new();
     [Export] public NodePath WorldButtonPath { get; set; } = new();
+    [Export] public NodePath MainMenuButtonPath { get; set; } = new();
+
+    public event Action? MainMenuRequested;
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
@@ -36,9 +39,17 @@ public partial class MainController : Control
 
     private static MainController? _current;
 
+    public void Configure(WorldService service, string selectedClubId)
+    {
+        _service = service ?? throw new ArgumentNullException(nameof(service));
+        _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
+            ? throw new ArgumentException("Selected club id cannot be empty.", nameof(selectedClubId))
+            : selectedClubId;
+    }
+
     public override void _Ready()
     {
-        _service = WorldService.Instance;
+        _service ??= WorldService.Instance;
         _current = this;
         if (_service is null)
         {
@@ -48,6 +59,7 @@ public partial class MainController : Control
 
         LoadCareerFromDisk();
         BindSidebar();
+        BindMainMenuAction();
         RenderCurrent();
     }
 
@@ -113,6 +125,15 @@ public partial class MainController : Control
         Wire(CompetitionsButtonPath, "competiciones");
         Wire(HistoryButtonPath, "historial");
         Wire(WorldButtonPath, "mundial");
+    }
+
+    private void BindMainMenuAction()
+    {
+        var button = GetNodeOrNull<Button>(MainMenuButtonPath);
+        if (button is not null)
+        {
+            button.Pressed += () => MainMenuRequested?.Invoke();
+        }
     }
 
     private void Wire(NodePath path, string sectionId)
@@ -559,7 +580,7 @@ public partial class MainController : Control
         long seed = unchecked((long)(DateTime.UtcNow.Ticks & 0x7FFFFFFFFFFFFFFF));
         var result = MatchSimulator.Simulate(club, rival, seed);
 
-AppendMatchAndPersist(new HistoryEntry(
+        AppendMatchAndPersist(new HistoryEntry(
             CompetitionDisplayName: competition.DisplayName,
             HomeDisplayName: club.DisplayName,
             AwayDisplayName: rival.DisplayName,

@@ -1,13 +1,21 @@
 using Godot;
+using PCDynasty.Application.Shell;
 using PCDynasty.Content.Importers;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Presentation;
+using PCDynasty.Presentation.Shell;
 
 namespace PCDynasty.Presentation;
 
 public partial class PresentationBootstrap : Control
 {
-    private Label StatusLabel => GetNode<Label>("%StatusLabel");
+    private Label WorldStatus => GetNode<Label>("MainMenu/MenuFrame/MenuContent/WorldStatus");
+    private Label WorldMetric => GetNode<Label>("MainMenu/Hero/HeroContent/Metric1/Text");
+    private Control MainMenu => GetNode<Control>("MainMenu");
+    private Control Workspace => GetNode<Control>("Workspace");
+
+    private MainMenuController? _mainMenuController;
+    private MainController? _workspaceController;
 
     public override void _Ready()
     {
@@ -21,31 +29,63 @@ public partial class PresentationBootstrap : Control
             // Content root: parent of godot/ is game/, content/ is at game/content/.
             // Resolved through Godot's ProjectSettings so a packaged build keeps working.
             string gameRoot = ProjectSettings.GlobalizePath("res://../");
-            string contentRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(gameRoot, "content"));
+            string contentRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(
+                gameRoot,
+                "content",
+                "starter-world"));
 
             var reader = new JsonContentReader();
             var service = WorldService.Initialize(reader, contentRoot);
             await service.ReloadAsync();
 
             int clubCount = service.ListClubs().Count;
-            StatusLabel.Text = $"Mundo cargado: {clubCount} clubs listos para la temporada 1";
-
-            // Boot the main controller now that the domain is available.
-            AttachMainController();
+            WorldStatus.Text = $"MUNDO LISTO · {clubCount} CLUBES · SIMULACIÓN DETERMINISTA";
+            WorldMetric.Text = $"{clubCount} CLUBES · MUNDO FICCIONAL · IDENTIDAD PROPIA";
+            AttachMainMenu(service);
         }
         catch (System.Exception exception)
         {
-            StatusLabel.Text = $"Error cargando contenido: {exception.Message}";
+            WorldStatus.Text = $"NO SE PUDO CARGAR EL MUNDO · {exception.Message}";
             GD.PushError($"[WorldService] {exception}");
         }
     }
 
-    private void AttachMainController()
+    private void AttachMainMenu(WorldService service)
     {
-        var controller = new MainController
+        _mainMenuController = new MainMenuController { Name = "MainMenuController" };
+        _mainMenuController.Configure(service, new ManagerShell(), clubId => OpenWorkspace(service, clubId));
+        AddChild(_mainMenuController);
+    }
+
+    private void OpenWorkspace(WorldService service, string clubId)
+    {
+        MainMenu.Visible = false;
+        Workspace.Visible = true;
+
+        _workspaceController?.QueueFree();
+        _workspaceController = new MainController
         {
-            Name = "MainController",
+            Name = "WorkspaceController",
+            ContentRootPath = new NodePath("../Workspace/Layout/ContentMargin/ContentScroll/Content"),
+            StatusLabelPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Status"),
+            OverviewButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview"),
+            SquadButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
+            CompetitionsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
+            HistoryButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/History"),
+            WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
+            MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
         };
-        AddChild(controller);
+        _workspaceController.Configure(service, clubId);
+        _workspaceController.MainMenuRequested += CloseWorkspace;
+        AddChild(_workspaceController);
+    }
+
+    private void CloseWorkspace()
+    {
+        _workspaceController?.QueueFree();
+        _workspaceController = null;
+        Workspace.Visible = false;
+        MainMenu.Visible = true;
+        _mainMenuController?.ShowMainMenu();
     }
 }
