@@ -31,4 +31,4 @@ export const GODOT_MONO_FLAVOUR_MARKER = 'mono' as const;
 export const GODOT_VERSION = '4.7.1-stable' as const;
 
 /** Pattern that catches `SCRIPT ERROR`, `ERROR:`, `USER ERROR` in smoke logs. */
-export const GODOT_SMOKE_ERROR_REGEX = /(SCRIPT ERROR|ERROR:|USER ERROR)/ as const;
+export const GODOT_SMOKE_ERROR_REGEX: RegExp = /(SCRIPT ERROR|ERROR:|USER ERROR)/;

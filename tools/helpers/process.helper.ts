@@ -83,5 +83,5 @@ export const runSync = (cmd: string, args: readonly string[], options: IRunOptio
 export const teeAndCapture = (fd: number, chunk: Buffer | string): void => {
 	const text = typeof chunk === 'string' ? chunk : chunk.toString();
 	process.stdout.write(text);
-	Bun.write(fd, text);
+	Bun.write(fd as unknown as string, text);
 };

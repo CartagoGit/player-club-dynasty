@@ -6,7 +6,7 @@
  * project root, tools dir. Centralised so renames never cascade.
  */
 
-import { dirname, isAbsolute, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, parse, resolve } from 'node:path';
 
 import { HOME_ENV_VAR, PATH_ENV_VAR, PATH_LIST_SEPARATOR } from '../contracts/constants/env.constants.ts';
 import {

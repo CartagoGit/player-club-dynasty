@@ -75,7 +75,7 @@ export const locateGodot = (input: IGodotLocatorInput): IGodotBinary | null => {
 		return makeBinary(envOverride, 'env');
 	}
 	const toolsDir = input.toolsDir ?? resolveToolsDir(input.workspaceRoot);
-	const symlinkPath = join(toolsDir, GODOT_CURRENT_SYMLINK);
+	const symlinkPath = join(toolsDir, 'godot', GODOT_CURRENT_SYMLINK);
 	const target = readSymlinkTarget(symlinkPath);
 	if (target && isExecutable(target)) {
 		return makeBinary(target, 'symlink');

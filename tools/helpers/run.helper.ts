@@ -19,9 +19,7 @@ import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 
 import type { IRunResult } from '../contracts/interfaces/run.interface.ts';
-import { process as processHelper } from './process.helper.ts';
-
-const { run, teeAndCapture } = processHelper;
+import { run, teeAndCapture } from './process.helper.ts';
 
 /** Run a child whose stdio is forwarded to the parent TTY. */
 export const runInherit = async (cmd: string, args: readonly string[], opts: { cwd?: string; env?: Readonly<Record<string, string>> } = {}): Promise<number> => {

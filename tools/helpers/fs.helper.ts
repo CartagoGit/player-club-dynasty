@@ -9,6 +9,7 @@
 
 import {
 	existsSync,
+	lstatSync,
 	mkdirSync,
 	readFileSync,
 	realpathSync,
@@ -33,8 +34,8 @@ export const isExecutable = (path: string): boolean => {
 /** Returns the target of a symlink or `undefined` when the link is broken. */
 export const readSymlinkTarget = (path: string): string | undefined => {
 	try {
-		const stat = statSync(path);
-		if (!stat.isSymbolicLink()) return undefined;
+		const lstat = lstatSync(path);
+		if (!lstat.isSymbolicLink()) return undefined;
 		return realpathSync(path);
 	} catch {
 		return undefined;
