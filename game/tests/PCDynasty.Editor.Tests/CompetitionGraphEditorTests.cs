@@ -78,4 +78,70 @@ public sealed class CompetitionGraphEditorTests
         Assert.Single(original.Stages);
         Assert.Equal(2, edited.Stages.Length);
     }
+
+    [Fact]
+    public void ConstructorSnapshotsMutableInputs()
+    {
+        var stages = new List<EditableCompetitionStage>
+        {
+            new("stage:start", 4),
+        };
+        var transitions = new List<EditableCompetitionTransition>();
+        var editor = new CompetitionGraphEditor(
+            "competition:cup",
+            "stage:start",
+            stages,
+            transitions);
+
+        stages.Add(new("stage:late", 2));
+        transitions.Add(new("transition:late", "stage:start", "stage:late", "outcome:advance"));
+
+        Assert.Single(editor.Stages);
+        Assert.Empty(editor.Transitions);
+    }
+
+    [Fact]
+    public void CompetitionEditorProductionFilesStayFocused()
+    {
+        string root = FindCompetitionSourceRoot();
+        string[] files =
+        [
+            "CompetitionGraphEditor.cs",
+            "EditableCompetitionStage.cs",
+            "EditableCompetitionTransition.cs",
+            "CompetitionGraphValidator.cs",
+            "CompetitionPackBuilder.cs",
+        ];
+
+        foreach (string file in files)
+        {
+            int lines = File.ReadLines(Path.Combine(root, file)).Count();
+            Assert.True(lines <= 180, $"{file} has {lines} lines.");
+        }
+
+        string editorSource = File.ReadAllText(Path.Combine(root, "CompetitionGraphEditor.cs"));
+        Assert.DoesNotContain("new PackEntityDocument", editorSource, StringComparison.Ordinal);
+        Assert.DoesNotContain("editor.competition.cycle", editorSource, StringComparison.Ordinal);
+    }
+
+    private static string FindCompetitionSourceRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null)
+        {
+            string candidate = Path.Combine(
+                current.FullName,
+                "src",
+                "PCDynasty.Editor",
+                "Competitions");
+            if (Directory.Exists(candidate))
+            {
+                return candidate;
+            }
+
+            current = current.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate competition editor sources.");
+    }
 }

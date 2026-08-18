@@ -65,7 +65,7 @@ The current architecture gates protect dependency direction, but several legacy 
   - "Public API and double-entry results do not change."
 
 ### S5 — Separate competition graph editing, validation and pack building
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Editor/Competitions/CompetitionGraphEditor.cs`, `game/src/PCDynasty.Editor/Competitions/EditableCompetitionStage.cs`, `game/src/PCDynasty.Editor/Competitions/EditableCompetitionTransition.cs`, `game/src/PCDynasty.Editor/Competitions/CompetitionGraphValidator.cs`, `game/src/PCDynasty.Editor/Competitions/CompetitionPackBuilder.cs`, `game/tests/PCDynasty.Editor.Tests/CompetitionGraphEditorTests.cs`
 - **Gate**: e2e
 - acceptance:
