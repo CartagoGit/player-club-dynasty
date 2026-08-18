@@ -2,7 +2,7 @@
 id: r00003
 title: "Invert the manager world boundary through Application contracts"
 kind: refactor
-status: review
+status: done
 type: proposal
 track: architecture
 date: 2026-08-18
@@ -39,7 +39,11 @@ WorldService is currently a process-global singleton and its concrete type plus 
   - "Presentation.Core no longer references the concrete Content.Importers assembly."
   - "Architecture and behavior tests prove the dependency direction and independent WorldService instances."
   - "The complete .NET suite and Godot smoke journey remain green."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: fresh-delivery-verifier
+- review-log: requested_changes by delivery-verifier — CompetitionRow retains the caller IReadOnlyList<string> without a defensive copy, so its Rivals can mutate after construction. Add an aliasing test and store an immutable copy.
+- review-log: approved by fresh-delivery-verifier — Fresh independent re-review approved: defensive immutable snapshot and aliasing regression are correct; Application and Presentation tests, Godot Debug build, API compatibility and diff check pass.
 ## acceptance
 
 - IManagerWorld and its immutable rows live in Application and reference no presentation, Godot, content-format or persistence assembly.

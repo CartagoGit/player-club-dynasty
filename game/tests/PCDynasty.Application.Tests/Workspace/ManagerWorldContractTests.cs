@@ -54,4 +54,20 @@ public sealed class ManagerWorldContractTests
         Assert.DoesNotContain(methods, method => method.Name.StartsWith("Save", StringComparison.Ordinal));
         Assert.DoesNotContain(methods, method => method.Name.StartsWith("Update", StringComparison.Ordinal));
     }
+
+    [Fact]
+    public void CompetitionRowDefensivelyCopiesRivals()
+    {
+        var source = new List<string> { "Northglass" };
+        var row = new CompetitionRow(
+            "competition:boreal-series",
+            "Boreal Series",
+            "round-robin",
+            "annual",
+            source);
+
+        source.Add("Cinder Valley");
+
+        Assert.Equal(["Northglass"], row.Rivals.ToArray());
+    }
 }

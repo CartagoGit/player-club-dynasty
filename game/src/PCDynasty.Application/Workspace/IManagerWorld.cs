@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace PCDynasty.Application.Workspace;
 
 /// <summary>
@@ -37,9 +39,30 @@ public sealed record PlayerRow(
     int Mental,
     int Overall);
 
-public sealed record CompetitionRow(
-    string ExternalId,
-    string DisplayName,
-    string Format,
-    string Frequency,
-    IReadOnlyList<string> Rivals);
+public sealed record CompetitionRow
+{
+    public CompetitionRow(
+        string ExternalId,
+        string DisplayName,
+        string Format,
+        string Frequency,
+        IReadOnlyList<string> Rivals)
+    {
+        ArgumentNullException.ThrowIfNull(Rivals);
+        this.ExternalId = ExternalId;
+        this.DisplayName = DisplayName;
+        this.Format = Format;
+        this.Frequency = Frequency;
+        this.Rivals = Rivals.ToImmutableArray();
+    }
+
+    public string ExternalId { get; }
+
+    public string DisplayName { get; }
+
+    public string Format { get; }
+
+    public string Frequency { get; }
+
+    public IReadOnlyList<string> Rivals { get; }
+}
