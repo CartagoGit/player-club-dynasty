@@ -17,8 +17,9 @@ internal static class SqliteCareerFinanceWriter
                 (club_external_id, season_year, currency, cash, revenue, costs, debt,
                  transfer_budget, wage_budget, updated_at_utc)
             VALUES
-                ($clubId, $year, $currency, $cash, $revenue, $costs, $debt,
-                 $transferBudget, $wageBudget, $updatedAt)
+                ($valueClubId, $valueYear, $valueCurrency, $valueCash, $valueRevenue,
+                 $valueCosts, $valueDebt, $valueTransferBudget, $valueWageBudget,
+                 $valueUpdatedAt)
             ON CONFLICT(club_external_id) DO UPDATE SET
                 season_year = excluded.season_year,
                 currency = excluded.currency,
@@ -30,19 +31,49 @@ internal static class SqliteCareerFinanceWriter
                 wage_budget = excluded.wage_budget,
                 updated_at_utc = excluded.updated_at_utc;
             """;
-        command.Parameters.AddWithValue("$clubId", state.ClubExternalId);
-        command.Parameters.AddWithValue("$year", state.SeasonYear);
-        command.Parameters.AddWithValue("$currency", state.Currency);
-        command.Parameters.AddWithValue("$cash", state.Cash);
-        command.Parameters.AddWithValue("$revenue", state.Revenue);
-        command.Parameters.AddWithValue("$costs", state.Costs);
-        command.Parameters.AddWithValue("$debt", state.Debt);
-        command.Parameters.AddWithValue("$transferBudget", state.TransferBudget);
-        command.Parameters.AddWithValue("$wageBudget", state.WageBudget);
-        command.Parameters.AddWithValue(
-            "$updatedAt",
-            state.UpdatedAtUtc.ToString("O", CultureInfo.InvariantCulture));
+        AddStateParameters(command, "value", state);
         command.ExecuteNonQuery();
+    }
+
+    internal static bool TryReplaceExpected(
+        SqliteConnection connection,
+        SqliteTransaction transaction,
+        CareerFinanceState expected,
+        CareerFinanceState updated)
+    {
+        ArgumentNullException.ThrowIfNull(expected);
+        ArgumentNullException.ThrowIfNull(updated);
+        if (!string.Equals(expected.ClubExternalId, updated.ClubExternalId, StringComparison.Ordinal))
+        {
+            throw new ArgumentException("Expected and updated finance must belong to the same club.", nameof(updated));
+        }
+
+        using SqliteCommand command = CreateCommand(connection, transaction);
+        command.CommandText = """
+            UPDATE career_finance
+            SET season_year = $updatedYear,
+                currency = $updatedCurrency,
+                cash = $updatedCash,
+                revenue = $updatedRevenue,
+                costs = $updatedCosts,
+                debt = $updatedDebt,
+                transfer_budget = $updatedTransferBudget,
+                wage_budget = $updatedWageBudget,
+                updated_at_utc = $updatedUpdatedAt
+            WHERE club_external_id = $expectedClubId
+              AND season_year = $expectedYear
+              AND currency = $expectedCurrency
+              AND cash = $expectedCash
+              AND revenue = $expectedRevenue
+              AND costs = $expectedCosts
+              AND debt = $expectedDebt
+              AND transfer_budget = $expectedTransferBudget
+              AND wage_budget = $expectedWageBudget
+              AND updated_at_utc = $expectedUpdatedAt;
+            """;
+        AddStateParameters(command, "expected", expected);
+        AddStateParameters(command, "updated", updated);
+        return command.ExecuteNonQuery() == 1;
     }
 
     internal static void Clear(
@@ -61,5 +92,24 @@ internal static class SqliteCareerFinanceWriter
         SqliteCommand command = connection.CreateCommand();
         command.Transaction = transaction;
         return command;
+    }
+
+    private static void AddStateParameters(
+        SqliteCommand command,
+        string prefix,
+        CareerFinanceState state)
+    {
+        command.Parameters.AddWithValue($"${prefix}ClubId", state.ClubExternalId);
+        command.Parameters.AddWithValue($"${prefix}Year", state.SeasonYear);
+        command.Parameters.AddWithValue($"${prefix}Currency", state.Currency);
+        command.Parameters.AddWithValue($"${prefix}Cash", state.Cash);
+        command.Parameters.AddWithValue($"${prefix}Revenue", state.Revenue);
+        command.Parameters.AddWithValue($"${prefix}Costs", state.Costs);
+        command.Parameters.AddWithValue($"${prefix}Debt", state.Debt);
+        command.Parameters.AddWithValue($"${prefix}TransferBudget", state.TransferBudget);
+        command.Parameters.AddWithValue($"${prefix}WageBudget", state.WageBudget);
+        command.Parameters.AddWithValue(
+            $"${prefix}UpdatedAt",
+            state.UpdatedAtUtc.ToString("O", CultureInfo.InvariantCulture));
     }
 }

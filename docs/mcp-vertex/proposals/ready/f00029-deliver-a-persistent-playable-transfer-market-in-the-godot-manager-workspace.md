@@ -46,9 +46,9 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - review-log: requested_changes by review_tactics — Determinism needs a total tie-break; affordability must also respect cash; public market records must reject impossible states; tests must exercise real duplicate and stale snapshots; split squad projection into a narrow read port.
 - review-log: approved by review_world_fix_fresh — Fresh re-review approved: total deterministic ordering, cash-bounded affordability, validated immutable public models, real duplicate and optimistic stale tests, segregated squad projection; focused contracts/application/market/architecture and Release build green.
 ### S2 — Persist transfers and finance settlement atomically in external SQLite
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferSchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteCareerTransferStoreTests.cs`
+- **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferSchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerTransferWriter.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerFinanceWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteCareerTransferStoreTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "The store receives the database path from the caller and never assumes a project-local database."
@@ -56,7 +56,11 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
   - "Optimistic snapshot mismatch and duplicate player settlement return false without partial writes."
   - "Clear removes only career transfer rows and never unrelated external tables."
   - "Roundtrip, rollback, duplicate, clear and external-table preservation tests pass."
-
+  - "Optimistic finance replacement is centralized in the existing finance writer rather than duplicated in transfer persistence."
+- review-state: done
+- review-implementer: root
+- review-reviewer: review_tactics
+- review-log: approved by review_tactics — Approved: caller-owned path, SRP persistence collaborators, immutable ordered reads, full-snapshot CAS plus unique insert in one transaction, stale/duplicate rollback, exact debit validation, isolated clear, centralized finance writer; SQLite 26/26 and Release build green.
 ### S3 — Connect the playable market and acquired squad to Godot
 - **Status**: pending
 - **DependsOn**: [S1, S2]
@@ -84,6 +88,7 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - Optimistic snapshot mismatch and duplicate player settlement return false without partial writes.
 - Clear removes only career transfer rows and never unrelated external tables.
 - Roundtrip, rollback, duplicate, clear and external-table preservation tests pass.
+- Optimistic finance replacement is centralized in the existing finance writer rather than duplicated in transfer persistence.
 - Mercado is enabled and navigable from the sidebar with an original dense classic-manager layout consistent with existing design tokens.
 - The screen lists candidates and supports an affordable one-click signing with explicit success or rejection feedback.
 - After signing, transfer budget and cash decrease, the candidate disappears, and the player appears in the managed squad.
