@@ -2,7 +2,7 @@
 id: x00042
 title: "Restore the gates and the registry left broken by parallel work"
 kind: fix
-status: in-progress
+status: review
 type: proposal
 track: product
 date: 2026-08-18
@@ -57,12 +57,12 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "`bun run check:visible-routes` passes."
 
 ### S4 — Bring the new plugin sources back under the file conventions
-- **Status**: retired
+- **Status**: done
 - **Files**: `plugins/mcp-vertex_player-club-dynasty/src/lib/architecture-conventions.ts`, `plugins/mcp-vertex_player-club-dynasty/src/lib/file-assistant.ts`
 - **Gate**: lint
 - acceptance:
   - "`bun run mcp-vertex:validate` reports no unmatched files."
-  - "Retired: the parallel agent restructured the plugin into `conventions/` and `domain/` while this slice was open, so the two offending files no longer exist in the shape this slice described. The remaining suffix violation belongs to that agent's lane."
+  - "Closed by the parallel agent in `650a4b9`, which renamed the plugin sources under the file conventions after restructuring them into `conventions/` and `domain/`."
 
 ## acceptance
 
@@ -99,3 +99,5 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "The language, theme, content-source and display settings each live in their own section."
   - "SmokeBoot opens settings, enters a section, changes a setting and returns to the menu."
 
+- review-implementer: claude-opus-5
+- review-log: verified by claude-opus-5 — GitHub Actions run 32197836217 is green on all three jobs for the first time since the parallel work began: build, architecture and tests; Godot build and SmokeBoot; benchmark comparison. Each finding was reproduced before it was fixed and re-checked after. The first-launch fault was reproduced in a pristine clone with no `.godot`, no `saves` and no locale preference — the condition CI runs under — and SmokeBoot now passes there and locally. One lesson is recorded in the history: staging everything under `game/` while another agent edits re-broke the formatting gate in `1671833`, fixed in `61166f1`; only explicit paths are staged now.
