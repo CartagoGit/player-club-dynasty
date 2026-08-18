@@ -38,6 +38,7 @@ public partial class ManagerWorkspaceController : Control
     internal void Configure(
         IManagerWorld world,
         string selectedClubId,
+        CareerSession careerSession,
         CareerHistoryPersistence historyPersistence)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
@@ -45,11 +46,12 @@ public partial class ManagerWorkspaceController : Control
             ? throw new ArgumentException("Selected club id cannot be empty.", nameof(selectedClubId))
             : selectedClubId;
         ArgumentNullException.ThrowIfNull(historyPersistence);
+        ArgumentNullException.ThrowIfNull(careerSession);
 
-        _overviewScreen = new ClubOverviewScreen(world, () => SelectSection(WorkspaceSection.ClubPicker));
+        _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
         _squadScreen = new SquadScreen(world);
         _competitionsScreen = new CompetitionsScreen(world, historyPersistence, RenderCurrent, SetStatus);
-        _historyScreen = new HistoryScreen(world, RenderCurrent);
+        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
         _worldScreen = new WorldScreen(world);
         _clubPickerScreen = new ClubPickerScreen(SelectClub);
     }

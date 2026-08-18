@@ -69,6 +69,22 @@ public sealed partial class PresentationStructureTests
         Assert.Empty(offenders);
     }
 
+    [Fact]
+    public void WorkspaceDoesNotUseHistoryServiceLocators()
+    {
+        string workspaceRoot = Path.Combine(FindGameRoot(), "godot", "Scripts", "Workspace");
+        string[] forbiddenAccess = ["MatchHistory.Instance", "SeasonHistory.Instance", "WorldService.Instance"];
+
+        foreach (string path in Directory.EnumerateFiles(workspaceRoot, "*.cs", SearchOption.AllDirectories))
+        {
+            string source = File.ReadAllText(path);
+            foreach (string forbidden in forbiddenAccess)
+            {
+                Assert.DoesNotContain(forbidden, source, StringComparison.Ordinal);
+            }
+        }
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

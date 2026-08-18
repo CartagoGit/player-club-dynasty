@@ -9,11 +9,16 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class ClubOverviewScreen
 {
     private readonly IManagerWorld _world;
+    private readonly CareerSession _careerSession;
     private readonly Action _openClubPicker;
 
-    internal ClubOverviewScreen(IManagerWorld world, Action openClubPicker)
+    internal ClubOverviewScreen(
+        IManagerWorld world,
+        CareerSession careerSession,
+        Action openClubPicker)
     {
         _world = world;
+        _careerSession = careerSession;
         _openClubPicker = openClubPicker;
     }
 
@@ -106,9 +111,9 @@ internal sealed class ClubOverviewScreen
         return band;
     }
 
-    private static PanelContainer BuildCareerPanel(ClubRow club)
+    private PanelContainer BuildCareerPanel(ClubRow club)
     {
-        IReadOnlyList<SeasonHistoryEntry> seasons = SeasonHistory.Instance.SeasonsFor(club.ExternalId);
+        IReadOnlyList<SeasonHistoryEntry> seasons = _careerSession.SeasonsFor(club.ExternalId);
         var lines = new List<string>();
         if (seasons.Count == 0)
         {
@@ -131,7 +136,7 @@ internal sealed class ClubOverviewScreen
     private PanelContainer BuildUpcomingFixturesPanel(ClubRow club)
     {
         var played = new HashSet<string>(StringComparer.Ordinal);
-        foreach (HistoryEntry entry in MatchHistory.Instance.Snapshot())
+        foreach (HistoryEntry entry in _careerSession.MatchSnapshot())
         {
             if (string.Equals(entry.HomeClubId, club.ExternalId, StringComparison.Ordinal)) played.Add(entry.AwayClubId);
             else if (string.Equals(entry.AwayClubId, club.ExternalId, StringComparison.Ordinal)) played.Add(entry.HomeClubId);

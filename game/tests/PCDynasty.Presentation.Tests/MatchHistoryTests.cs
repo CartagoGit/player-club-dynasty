@@ -8,7 +8,7 @@ public sealed class MatchHistoryTests
     [Fact]
     public void AppendAddsEntryToSnapshot()
     {
-        var history = MatchHistory.CreateForTesting();
+        var history = new MatchHistory();
         var entry = NewEntry(homeGoals: 2, awayGoals: 1);
 
         history.Append(entry);
@@ -19,7 +19,7 @@ public sealed class MatchHistoryTests
     [Fact]
     public void AppendPreservesInsertionOrder()
     {
-        var history = MatchHistory.CreateForTesting();
+        var history = new MatchHistory();
         var first = NewEntry(seed: 1);
         var second = NewEntry(seed: 2);
         var third = NewEntry(seed: 3);
@@ -38,7 +38,7 @@ public sealed class MatchHistoryTests
     [Fact]
     public void SnapshotIsImmutableForCaller()
     {
-        var history = MatchHistory.CreateForTesting();
+        var history = new MatchHistory();
         history.Append(NewEntry(seed: 1));
 
         var snapshot = history.Snapshot();
@@ -52,7 +52,7 @@ public sealed class MatchHistoryTests
     [Fact]
     public void ClearEmptiesTheHistory()
     {
-        var history = MatchHistory.CreateForTesting();
+        var history = new MatchHistory();
         history.Append(NewEntry(seed: 1));
         history.Append(NewEntry(seed: 2));
 
@@ -64,14 +64,20 @@ public sealed class MatchHistoryTests
     [Fact]
     public void AppendRejectsNullEntry()
     {
-        var history = MatchHistory.CreateForTesting();
+        var history = new MatchHistory();
         Assert.Throws<ArgumentNullException>(() => history.Append(null!));
     }
 
     [Fact]
-    public void SingletonInstanceIsStable()
+    public void NewHistoriesAreIndependent()
     {
-        Assert.Same(MatchHistory.Instance, MatchHistory.Instance);
+        var first = new MatchHistory();
+        var second = new MatchHistory();
+
+        first.Append(NewEntry(seed: 1));
+
+        Assert.Single(first.Snapshot());
+        Assert.Empty(second.Snapshot());
     }
 
     private static HistoryEntry NewEntry(int homeGoals = 0, int awayGoals = 0, long seed = 0) =>

@@ -8,7 +8,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void AppendAddsEntryToSnapshot()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         var entry = NewEntry(position: 1, points: 9);
 
         history.Append(entry);
@@ -19,7 +19,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void AppendPreservesInsertionOrder()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         var first = NewEntry(position: 1, points: 9);
         var second = NewEntry(position: 2, points: 6);
 
@@ -35,7 +35,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void SnapshotIsImmutableForCaller()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         history.Append(NewEntry(position: 1, points: 9));
 
         var snapshot = history.Snapshot();
@@ -48,7 +48,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void ClearEmptiesTheHistory()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         history.Append(NewEntry(position: 1, points: 9));
         history.Append(NewEntry(position: 2, points: 6));
 
@@ -60,20 +60,26 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void AppendRejectsNullEntry()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         Assert.Throws<ArgumentNullException>(() => history.Append(null!));
     }
 
     [Fact]
-    public void SingletonInstanceIsStable()
+    public void NewHistoriesAreIndependent()
     {
-        Assert.Same(SeasonHistory.Instance, SeasonHistory.Instance);
+        var first = new SeasonHistory();
+        var second = new SeasonHistory();
+
+        first.Append(NewEntry(position: 1, points: 9));
+
+        Assert.Single(first.Snapshot());
+        Assert.Empty(second.Snapshot());
     }
 
     [Fact]
     public void LatestSeasonForReturnsMostRecentForClub()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         history.Append(NewEntryFor("club:a", "Alpha", position: 3, points: 6));
         history.Append(NewEntryFor("club:b", "Bravo", position: 1, points: 9));
         history.Append(NewEntryFor("club:a", "Alpha", position: 2, points: 7));
@@ -89,7 +95,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void LatestSeasonForReturnsNullForUnknownClub()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         history.Append(NewEntryFor("club:a", "Alpha", position: 1, points: 9));
 
         Assert.Null(history.LatestSeasonFor("club:unknown"));
@@ -98,7 +104,7 @@ public sealed class SeasonHistoryTests
     [Fact]
     public void SeasonsForFiltersByClubIdAndPreservesOrder()
     {
-        var history = SeasonHistory.CreateForTesting();
+        var history = new SeasonHistory();
         history.Append(NewEntryFor("club:a", "Alpha", position: 3, points: 6));
         history.Append(NewEntryFor("club:b", "Bravo", position: 1, points: 9));
         history.Append(NewEntryFor("club:a", "Alpha", position: 1, points: 9));

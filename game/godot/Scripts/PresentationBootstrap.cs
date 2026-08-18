@@ -18,6 +18,7 @@ public partial class PresentationBootstrap : Control
 
     private MainMenuController? _mainMenuController;
     private ManagerWorkspaceController? _workspaceController;
+    private CareerSession? _careerSession;
     private CareerHistoryPersistence? _historyPersistence;
 
     public override void _Ready()
@@ -55,7 +56,8 @@ public partial class PresentationBootstrap : Control
 
     private void AttachMainMenu(IManagerWorld service)
     {
-        _historyPersistence ??= CareerHistoryPersistence.CreateDefault();
+        _careerSession ??= new CareerSession();
+        _historyPersistence ??= CareerHistoryPersistence.CreateDefault(_careerSession);
         _historyPersistence.Load();
         _mainMenuController = new MainMenuController { Name = "MainMenuController" };
         _mainMenuController.Configure(service, new ManagerShell(), clubId => OpenWorkspace(service, clubId));
@@ -80,7 +82,7 @@ public partial class PresentationBootstrap : Control
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
             MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
         };
-        _workspaceController.Configure(service, clubId, _historyPersistence!);
+        _workspaceController.Configure(service, clubId, _careerSession!, _historyPersistence!);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

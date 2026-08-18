@@ -3,21 +3,13 @@ using System.Collections.Immutable;
 namespace PCDynasty.Presentation.Core;
 
 /// <summary>
-/// Process-local log of seasons completed in the current session. Each entry
+/// Career-local log of seasons completed in the current session. Each entry
 /// captures the final standings so the UI can show a progression table.
 /// </summary>
 public sealed class SeasonHistory
 {
     private readonly object _gate = new();
     private ImmutableArray<SeasonHistoryEntry> _entries = ImmutableArray<SeasonHistoryEntry>.Empty;
-
-    public static SeasonHistory Instance { get; } = new();
-
-    private SeasonHistory()
-    {
-    }
-
-    public static SeasonHistory CreateForTesting() => new();
 
     public void Append(SeasonHistoryEntry entry)
     {

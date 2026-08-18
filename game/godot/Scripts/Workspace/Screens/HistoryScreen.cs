@@ -9,14 +9,16 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class HistoryScreen
 {
     private readonly IManagerWorld _world;
+    private readonly CareerSession _careerSession;
     private readonly Action _refresh;
     private string _competitionFilter = "(todas)";
     private string _clubFilter = "(todos)";
     private HistoryOrder _order = HistoryOrder.Date;
 
-    internal HistoryScreen(IManagerWorld world, Action refresh)
+    internal HistoryScreen(IManagerWorld world, CareerSession careerSession, Action refresh)
     {
         _world = world;
+        _careerSession = careerSession;
         _refresh = refresh;
     }
 
@@ -24,7 +26,7 @@ internal sealed class HistoryScreen
     {
         var layout = new VBoxContainer();
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
-        IReadOnlyList<HistoryEntry> entries = MatchHistory.Instance.Snapshot();
+        IReadOnlyList<HistoryEntry> entries = _careerSession.MatchSnapshot();
         string[] competitions = entries
             .Select(entry => entry.CompetitionDisplayName)
             .Distinct(StringComparer.Ordinal)
