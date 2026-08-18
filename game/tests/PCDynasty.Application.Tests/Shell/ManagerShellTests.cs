@@ -68,6 +68,39 @@ public sealed class ManagerShellTests
         Assert.Equal("club-cinder-valley", result.State.SelectedClubId);
     }
 
+    [Fact]
+    public void ClubSelectionAndConfirmationRejectTheMainMenuRouteWithoutMutation()
+    {
+        var shell = new ManagerShell("club:saved");
+        ManagerShellState before = shell.State;
+
+        ShellTransitionResult selection = shell.SelectClub("club:other");
+        ShellTransitionResult confirmation = shell.ConfirmCareer();
+
+        AssertInvalidRoute(selection, before);
+        AssertInvalidRoute(confirmation, before);
+        Assert.Same(before, shell.State);
+    }
+
+    [Fact]
+    public void MainMenuOnlyTransitionsRejectCareerSetupWithoutMutation()
+    {
+        var shell = new ManagerShell("club:saved");
+        shell.BeginNewCareer();
+        ManagerShellState before = shell.State;
+
+        ShellTransitionResult[] rejected =
+        [
+            shell.BeginNewCareer(),
+            shell.ContinueCareer(),
+            shell.OpenSettings(),
+            shell.OpenDataEditor(),
+        ];
+
+        Assert.All(rejected, result => AssertInvalidRoute(result, before));
+        Assert.Same(before, shell.State);
+    }
+
     [Theory]
     [InlineData(ShellRoute.Settings)]
     [InlineData(ShellRoute.DataEditor)]
@@ -83,5 +116,14 @@ public sealed class ManagerShellTests
         Assert.Equal(route, opened.State.Route);
         Assert.True(shell.ReturnToMainMenu().Accepted);
         Assert.Equal(ShellRoute.MainMenu, shell.State.Route);
+    }
+
+    private static void AssertInvalidRoute(
+        ShellTransitionResult result,
+        ManagerShellState expectedState)
+    {
+        Assert.False(result.Accepted);
+        Assert.Equal(ShellTransitionFailure.InvalidRoute, result.Failure);
+        Assert.Same(expectedState, result.State);
     }
 }
