@@ -33,6 +33,8 @@ public sealed class CareerLineupServiceTests
 
         public void Save(LineupPlan plan) => Saved = plan;
 
+        public void Clear() => Saved = null;
+
         public bool TryLoad(string clubExternalId, out LineupPlan? plan)
         {
             plan = Saved?.ClubExternalId == clubExternalId ? Saved : null;

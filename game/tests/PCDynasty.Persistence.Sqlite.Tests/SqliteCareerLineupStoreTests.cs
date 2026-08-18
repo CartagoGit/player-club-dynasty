@@ -35,6 +35,18 @@ public sealed class SqliteCareerLineupStoreTests : IDisposable
         Assert.Equal(["person:a", "person:b"], loaded.Assignments.Select(item => item.ParticipantId));
     }
 
+    [Fact]
+    public void ClearRemovesEveryPersistedPlan()
+    {
+        var store = Store();
+        store.Save(Plan("contest:first", "balanced"));
+
+        store.Clear();
+
+        Assert.False(Store().TryLoad("club:test", out LineupPlan? loaded));
+        Assert.Null(loaded);
+    }
+
     public void Dispose()
     {
         if (Directory.Exists(temporaryDirectory))

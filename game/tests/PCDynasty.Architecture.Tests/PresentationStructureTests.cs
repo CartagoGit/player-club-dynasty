@@ -86,6 +86,21 @@ public sealed partial class PresentationStructureTests
     }
 
     [Fact]
+    public void BootstrapCreatesCareerScopedRuntimeForEveryOpening()
+    {
+        string source = File.ReadAllText(Path.Combine(
+            FindGameRoot(),
+            "godot",
+            "Scripts",
+            "PresentationBootstrap.cs"));
+
+        Assert.Contains("CareerRuntimeFactory", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("_careerSession", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("_historyPersistence", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("_lineupService", source, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void PresentationCoreDoesNotOwnSqliteInfrastructure()
     {
         string presentationRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Presentation.Core");

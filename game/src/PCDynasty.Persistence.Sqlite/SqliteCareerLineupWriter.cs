@@ -6,6 +6,23 @@ namespace PCDynasty.Persistence.Sqlite;
 
 internal static class SqliteCareerLineupWriter
 {
+    internal static void Clear(
+        SqliteConnection connection,
+        SqliteTransaction transaction)
+    {
+        foreach (string table in new[]
+        {
+            "career_lineup_assignment",
+            "career_lineup_option",
+            "career_lineup",
+        })
+        {
+            using SqliteCommand command = CreateCommand(connection, transaction);
+            command.CommandText = $"DELETE FROM {table};";
+            command.ExecuteNonQuery();
+        }
+    }
+
     internal static void Save(
         SqliteConnection connection,
         SqliteTransaction transaction,

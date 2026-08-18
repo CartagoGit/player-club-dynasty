@@ -1,14 +1,14 @@
 using Godot;
 using PCDynasty.Application.Competitions.Simulation;
-using PCDynasty.Application.Matches;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
+using PCDynasty.Contracts.Careers;
 using PCDynasty.Persistence.Sqlite;
+using PCDynasty.Presentation.Careers;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Shell;
 using PCDynasty.Presentation.Workspace;
-using PCDynasty.Presentation.Workspace.Persistence;
 
 namespace PCDynasty.Presentation;
 
@@ -23,9 +23,8 @@ public partial class PresentationBootstrap : Control
     private ManagerWorkspaceController? _workspaceController;
     private readonly ICompetitionSimulationService _competitionSimulation =
         new CompetitionSimulationService(TimeProvider.System);
-    private ICareerLineupService? _lineupService;
-    private CareerSession? _careerSession;
-    private CareerHistoryPersistence? _historyPersistence;
+    private SqliteCareerProfileStore? _careerProfileStore;
+    private CareerRuntimeFactory? _careerRuntimeFactory;
 
     public override void _Ready()
     {
@@ -62,22 +61,40 @@ public partial class PresentationBootstrap : Control
 
     private void AttachMainMenu(IManagerWorld service)
     {
-        _careerSession ??= new CareerSession();
-        _lineupService ??= new CareerLineupService(
-            new SqliteCareerLineupStore(CareerDatabasePath()),
-            TimeProvider.System);
-        _historyPersistence ??= CreateHistoryPersistence(_careerSession);
-        _historyPersistence.Load();
+        string databasePath = CareerDatabasePath();
+        _careerProfileStore = new SqliteCareerProfileStore(databasePath);
+        _careerRuntimeFactory = new CareerRuntimeFactory(databasePath, TimeProvider.System);
+        string? savedClubId = _careerProfileStore.TryLoad(out CareerProfile? profile)
+            ? profile!.ClubExternalId
+            : null;
         _mainMenuController = new MainMenuController { Name = "MainMenuController" };
-        _mainMenuController.Configure(service, new ManagerShell(), clubId => OpenWorkspace(service, clubId));
+        _mainMenuController.Configure(
+            service,
+            new ManagerShell(savedClubId),
+            clubId => OpenCareer(service, clubId, CareerRuntimeMode.New),
+            clubId => OpenCareer(service, clubId, CareerRuntimeMode.Continue));
         AddChild(_mainMenuController);
     }
 
-    private static CareerHistoryPersistence CreateHistoryPersistence(CareerSession session)
+    private void OpenCareer(IManagerWorld service, string clubId, CareerRuntimeMode mode)
     {
-        return new CareerHistoryPersistence(
-            new SqliteCareerHistoryStore(CareerDatabasePath()),
-            session);
+        CareerRuntime runtime = _careerRuntimeFactory!.Create(mode);
+        SaveCareerProfile(service, clubId, mode);
+        OpenWorkspace(service, clubId, runtime);
+    }
+
+    private void SaveCareerProfile(IManagerWorld service, string clubId, CareerRuntimeMode mode)
+    {
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
+        DateTimeOffset startedAt = now;
+        if (mode == CareerRuntimeMode.Continue &&
+            _careerProfileStore!.TryLoad(out CareerProfile? existing))
+        {
+            startedAt = existing!.StartedAtUtc;
+        }
+
+        string clubName = service.FindClub(clubId)?.DisplayName ?? clubId;
+        _careerProfileStore!.Save(new CareerProfile(clubId, clubName, startedAt, now));
     }
 
     private static string CareerDatabasePath()
@@ -89,7 +106,7 @@ public partial class PresentationBootstrap : Control
         return Path.Combine(savesRoot, "career.sqlite");
     }
 
-    private void OpenWorkspace(IManagerWorld service, string clubId)
+    private void OpenWorkspace(IManagerWorld service, string clubId, CareerRuntime runtime)
     {
         MainMenu.Visible = false;
         Workspace.Visible = true;
@@ -112,9 +129,9 @@ public partial class PresentationBootstrap : Control
             service,
             clubId,
             _competitionSimulation,
-            _lineupService!,
-            _careerSession!,
-            _historyPersistence!);
+            runtime.Lineups,
+            runtime.Session,
+            runtime.History);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

@@ -8,7 +8,8 @@ public partial class MainMenuController : Node
 {
     private IManagerWorld? _world;
     private ManagerShell? _shell;
-    private Action<string>? _openWorkspace;
+    private Action<string>? _startNewCareer;
+    private Action<string>? _continueCareer;
     private readonly ButtonGroup _clubButtons = new();
 
     private Control MenuFrame => GetNode<Control>("../MainMenu/MenuFrame");
@@ -24,16 +25,18 @@ public partial class MainMenuController : Node
     public void Configure(
         IManagerWorld world,
         ManagerShell shell,
-        Action<string> openWorkspace)
+        Action<string> startNewCareer,
+        Action<string> continueCareer)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _shell = shell ?? throw new ArgumentNullException(nameof(shell));
-        _openWorkspace = openWorkspace ?? throw new ArgumentNullException(nameof(openWorkspace));
+        _startNewCareer = startNewCareer ?? throw new ArgumentNullException(nameof(startNewCareer));
+        _continueCareer = continueCareer ?? throw new ArgumentNullException(nameof(continueCareer));
     }
 
     public override void _Ready()
     {
-        if (_world is null || _shell is null || _openWorkspace is null)
+        if (_world is null || _shell is null || _startNewCareer is null || _continueCareer is null)
         {
             GD.PushError("[MainMenu] Configure must run before the controller enters the tree.");
             return;
@@ -56,10 +59,7 @@ public partial class MainMenuController : Node
         var fullscreen = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/Fullscreen");
         fullscreen.Toggled += ToggleFullscreen;
 
-        ContinueCareer.Disabled = !_shell!.State.CanContinue;
-        ContinueCareer.TooltipText = ContinueCareer.Disabled
-            ? "No existe todavía una carrera guardada."
-            : "Continuar la última carrera.";
+        RefreshCareerActions();
 
         LoadCareer.Disabled = true;
         LoadCareer.TooltipText = "La gestión de múltiples carreras llegará con el selector de guardados.";
@@ -126,7 +126,7 @@ public partial class MainMenuController : Node
             return;
         }
 
-        _openWorkspace!(result.State.SelectedClubId);
+        _startNewCareer!(result.State.SelectedClubId);
     }
 
     private void ContinueSavedCareer()
@@ -134,7 +134,7 @@ public partial class MainMenuController : Node
         ShellTransitionResult result = _shell!.ContinueCareer();
         if (result.Accepted && result.State.SelectedClubId is not null)
         {
-            _openWorkspace!(result.State.SelectedClubId);
+            _continueCareer!(result.State.SelectedClubId);
         }
     }
 
@@ -153,9 +153,18 @@ public partial class MainMenuController : Node
     public void ShowMainMenu()
     {
         _shell!.ReturnToMainMenu();
+        RefreshCareerActions();
         MenuFrame.Visible = true;
         CareerSetup.Visible = false;
         OptionsPanel.Visible = false;
+    }
+
+    private void RefreshCareerActions()
+    {
+        ContinueCareer.Disabled = !_shell!.State.CanContinue;
+        ContinueCareer.TooltipText = ContinueCareer.Disabled
+            ? "No existe todavía una carrera guardada."
+            : "Continuar la última carrera.";
     }
 
     private static void ToggleFullscreen(bool enabled)

@@ -51,6 +51,23 @@ public sealed class SqliteCareerLineupStore : ICareerLineupStore
         }
     }
 
+    public void Clear()
+    {
+        lock (_gate)
+        {
+            if (!File.Exists(DatabasePath))
+            {
+                return;
+            }
+
+            using SqliteConnection connection = Open();
+            EnsureSchema(connection);
+            using SqliteTransaction transaction = connection.BeginTransaction();
+            SqliteCareerLineupWriter.Clear(connection, transaction);
+            transaction.Commit();
+        }
+    }
+
     private void EnsureSchema(SqliteConnection connection)
     {
         if (_schemaInitialized)

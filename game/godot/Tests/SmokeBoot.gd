@@ -63,6 +63,19 @@ func _run() -> void:
 	var lineup_status := lineup.get_node("Margin/Content/ActionRow/Status") as Label
 	_expect(lineup_status.text == "Selección enviada.", "The lineup plan was not accepted and persisted.")
 
+	var main_menu_button := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
+	main_menu_button.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
+		_fail("Returning from a career did not restore the main menu cleanly.")
+		return
+
+	var continue_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer") as Button
+	_expect(not continue_career.disabled, "The career created in this session must be immediately resumable.")
+	continue_career.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return workspace.visible and scene.has_node("WorkspaceController")):
+		_fail("Continuing a career did not create a fresh manager workspace.")
+		return
+
 	quit(1 if _failed else 0)
 
 

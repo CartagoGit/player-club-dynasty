@@ -8,7 +8,6 @@ internal sealed class CareerHistoryPersistence
 {
     private readonly ICareerHistoryStore _store;
     private readonly CareerSession _session;
-    private bool _loaded;
 
     internal CareerHistoryPersistence(ICareerHistoryStore store, CareerSession session)
     {
@@ -16,29 +15,6 @@ internal sealed class CareerHistoryPersistence
         ArgumentNullException.ThrowIfNull(session);
         _store = store;
         _session = session;
-    }
-
-    internal void Load()
-    {
-        if (_loaded)
-        {
-            return;
-        }
-
-        TryRun(() =>
-        {
-            foreach (HistoryEntry match in _store.LoadMatches())
-            {
-                _session.Record(match);
-            }
-
-            foreach (SeasonHistoryEntry season in _store.LoadSeasons())
-            {
-                _session.Record(season);
-            }
-
-            _loaded = true;
-        }, "load career");
     }
 
     internal void Save(HistoryEntry entry)

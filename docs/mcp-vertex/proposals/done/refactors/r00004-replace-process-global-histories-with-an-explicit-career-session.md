@@ -2,7 +2,7 @@
 id: r00004
 title: "Replace process-global histories with an explicit career session"
 kind: refactor
-status: review
+status: done
 type: proposal
 track: architecture
 date: 2026-08-18
@@ -39,7 +39,11 @@ MatchHistory.Instance and SeasonHistory.Instance are service locators. They hide
   - "No Godot workspace source accesses mutable global history state."
   - "Independent session tests prove histories cannot leak between careers."
   - "The complete .NET suite and Godot smoke journey remain green."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: fresh-delivery-verifier
+- review-log: requested_changes by delivery-verifier — PresentationBootstrap reuses CareerSession and CareerHistoryPersistence across sequential career openings via ??=, so returning to the menu and starting another career leaks prior history. Compose a fresh isolated context per new career, distinguish restore semantics, and add a sequential-opening regression test.
+- review-log: approved by fresh-delivery-verifier — Fresh independent re-review approved: new and continue compose isolated runtime/session lifecycles, new clears history and lineups, continue restores external SQLite state, profile enables restart resume, sequential Godot smoke and duplicate-safe .NET launcher pass.
 ## acceptance
 
 - CareerSession is the single owner of match and season histories for one active career.
