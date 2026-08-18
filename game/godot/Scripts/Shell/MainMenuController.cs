@@ -124,14 +124,15 @@ public partial class MainMenuController : Node
         RefreshSceneTranslations();
     }
 
-    private void ShowPickerRejection(TranslationErrorPanelShape? shape)
+    private void ShowPickerRejection(
+        PCDynasty.Presentation.Core.Diagnostics.ApplicationError? error)
     {
-        if (shape is null)
+        if (error is null)
         {
             return;
         }
 
-        var panel = new TranslationErrorPanel(shape);
+        var panel = new ApplicationErrorPanel(error);
         GetTree().Root.AddChild(panel);
         panel.PrimaryPressed += () => panel.QueueFree();
     }

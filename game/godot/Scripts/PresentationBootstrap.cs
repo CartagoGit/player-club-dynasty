@@ -97,10 +97,12 @@ public partial class PresentationBootstrap : Control
         switch (outcome)
         {
             case LocaleActivationOutcome.Recovered recovered:
-                await ShowAndAwaitPanelAsync(TranslationErrorPanelShapeBuilder.ForActivation(recovered));
+                await ShowAndAwaitPanelAsync(
+                    PCDynasty.Presentation.Core.Diagnostics.ApplicationErrorBuilder.FromActivationOutcome(recovered));
                 break;
             case LocaleActivationOutcome.Fatal fatal:
-                await ShowAndAwaitPanelAsync(TranslationErrorPanelShapeBuilder.ForActivation(fatal));
+                await ShowAndAwaitPanelAsync(
+                    PCDynasty.Presentation.Core.Diagnostics.ApplicationErrorBuilder.FromActivationOutcome(fatal));
                 GetTree().Quit();
                 return outcome;
         }
@@ -139,9 +141,10 @@ public partial class PresentationBootstrap : Control
         }
     }
 
-    private async Task ShowAndAwaitPanelAsync(TranslationErrorPanelShape shape)
+    private async Task ShowAndAwaitPanelAsync(
+        PCDynasty.Presentation.Core.Diagnostics.ApplicationError error)
     {
-        var panel = new TranslationErrorPanel(shape);
+        var panel = new ApplicationErrorPanel(error);
         AddChild(panel);
 
         var tcs = new TaskCompletionSource();

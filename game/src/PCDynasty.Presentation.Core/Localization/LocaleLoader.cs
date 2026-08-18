@@ -53,15 +53,20 @@ public sealed class LocaleLoader
                     LocaleDiagnostic.Invalid("id", "Locale id is empty.")));
         }
 
-        string path = _source.ResolvePath(id);
-        if (!_source.FileExists(path))
+        // ResolvePath returns the external-mod path; built-in files
+        // live in the built/ subfolder so the activation has to consult
+        // both. Peek already uses TryResolvePath; Load must do the
+        // same so the production layout (root = langs/, built-in =
+        // langs/built/) actually loads the shipped files.
+        if (!_source.TryResolvePath(id, out string path))
         {
+            string attempted = _source.ResolvePath(id);
             return new LocaleLoadResult.Invalid(
                 Id: id,
-                Path: path,
+                Path: attempted,
                 Failure: LocaleLoadFailure.NotFound,
                 Diagnostics: ImmutableArray.Create(
-                    LocaleDiagnostic.Missing(id, $"Locale file '{id}.json' was not found at '{path}'.")));
+                    LocaleDiagnostic.Missing(id, $"Locale file '{id}.json' was not found at '{attempted}'.")));
         }
 
         string raw = _source.ReadAllText(path);

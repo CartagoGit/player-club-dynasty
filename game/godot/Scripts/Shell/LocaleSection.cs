@@ -121,7 +121,7 @@ public sealed partial class LocaleSection : VBoxContainer
         LocaleSelected?.Invoke(new LocaleSelectionResult(
             Selected: entry.Id,
             Source: entry.Source,
-            Failure: TranslationErrorPanelShapeBuilder.ForPicker(entry.Id, failure)));
+            Failure: PCDynasty.Presentation.Core.Diagnostics.ApplicationErrorBuilder.FromPickerRejection(entry.Id, failure)));
     }
 
     private static Label Caption(string text, Color color, int fontSize)
@@ -152,7 +152,7 @@ public sealed partial class LocaleSection : VBoxContainer
 /// <param name="Selected">The id the player picked.</param>
 /// <param name="Source">Where the metadata was found (built-in vs external).</param>
 /// <param name="Failure">When non-null, panel C to render.</param>
-public sealed record LocaleSelectionResult(string Selected, LocaleSource Source, TranslationErrorPanelShape? Failure)
+public sealed record LocaleSelectionResult(string Selected, LocaleSource Source, PCDynasty.Presentation.Core.Diagnostics.ApplicationError? Failure)
 {
     /// <summary>True when the load succeeded and the session was updated.</summary>
     public bool Succeeded => Failure is null;
