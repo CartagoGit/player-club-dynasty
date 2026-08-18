@@ -9,6 +9,7 @@ namespace PCDynasty.Application.Market;
 public sealed class CareerTransferMarketService : ICareerTransferMarketService, ICareerSquadProjection
 {
     private const string Currency = "EUR";
+    private const long MinimumAskingPrice = 250_000L;
     private readonly IManagerWorld _world;
     private readonly ICareerTransferStore _transferStore;
     private readonly ICareerFinanceStore _financeStore;
@@ -124,20 +125,27 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
             : TransferOfferResult.Rejected("stale-or-duplicate", finance.TransferBudget);
     }
 
-    private static TransferCandidate ToCandidate(ClubRow club, PlayerRow player) =>
-        new(
+    private static TransferCandidate ToCandidate(ClubRow club, PlayerRow player)
+    {
+        int technique = NormalizeRating(player.Technique);
+        int form = NormalizeRating(player.Form);
+        int physical = NormalizeRating(player.Physical);
+        int mental = NormalizeRating(player.Mental);
+        int overall = NormalizeRating(player.Overall);
+        return new(
             player.ExternalId,
             player.DisplayName,
             club.ExternalId,
             club.DisplayName,
             player.BirthYear,
-            player.Technique,
-            player.Form,
-            player.Physical,
-            player.Mental,
-            player.Overall,
-            AskingPrice(player),
+            technique,
+            form,
+            physical,
+            mental,
+            overall,
+            AskingPrice(technique, form, physical, mental, overall),
             Currency);
+    }
 
     private PlayerValuation CreateValuation(TransferCandidate candidate, long offeredMinorUnits)
     {
@@ -152,9 +160,18 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
             new TransferPrice(Eur(offeredMinorUnits)));
     }
 
-    private static long AskingPrice(PlayerRow player) => checked(
-        (player.Overall * 45_000L) +
-        ((player.Technique + player.Form + player.Physical + player.Mental) * 5_000L));
+    private static long AskingPrice(
+        int technique,
+        int form,
+        int physical,
+        int mental,
+        int overall) => Math.Max(
+        MinimumAskingPrice,
+        checked(
+            ((long)overall * 45_000L) +
+            (((long)technique + form + physical + mental) * 5_000L)));
+
+    private static int NormalizeRating(int rating) => Math.Clamp(rating, 0, 100);
 
     private static MoneyAmount Eur(long amount) => new(amount, Currency);
 

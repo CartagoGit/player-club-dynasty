@@ -150,6 +150,29 @@ public sealed class CareerTransferMarketServiceTests
         Assert.Throws<ArgumentNullException>(() => TransferOfferResult.Success(null!, 0));
     }
 
+    [Fact]
+    public void SparseWorldPlayerUsesPositiveDeterministicMinimumPrice()
+    {
+        var service = Service(world: new FakeManagerWorld(sparseOnly: true));
+
+        TransferCandidate candidate = Assert.Single(service.ListCandidates("club:managed"));
+
+        Assert.Equal("person:sparse", candidate.PlayerExternalId);
+        Assert.Equal(250_000, candidate.AskingPrice);
+    }
+
+    [Fact]
+    public void ExtremeImportedRatingsAreNormalizedBeforeLongValuationArithmetic()
+    {
+        var service = Service(world: new FakeManagerWorld(extremeOnly: true));
+
+        TransferCandidate candidate = Assert.Single(service.ListCandidates("club:managed"));
+
+        Assert.Equal(100, candidate.Overall);
+        Assert.Equal(100, candidate.Technique);
+        Assert.Equal(6_500_000, candidate.AskingPrice);
+    }
+
     private static CareerTransferMarketService Service(
         InMemoryTransferStore? transfers = null,
         InMemoryFinanceStore? finances = null,
@@ -228,7 +251,10 @@ public sealed class CareerTransferMarketServiceTests
         internal void Seed(CareerTransferRecord transfer) => _records.Add(transfer);
     }
 
-    private sealed class FakeManagerWorld(bool reverse = false) : IManagerWorld
+    private sealed class FakeManagerWorld(
+        bool reverse = false,
+        bool sparseOnly = false,
+        bool extremeOnly = false) : IManagerWorld
     {
         private static readonly ClubRow Managed = Club("club:managed", "Managed Athletic");
         private static readonly ClubRow Seller = Club("club:seller", "Selling Town");
@@ -236,12 +262,18 @@ public sealed class CareerTransferMarketServiceTests
         private static readonly PlayerRow BestPlayer = Player("person:best", "Best Player", 80);
         private static readonly PlayerRow AvailablePlayer = Player("person:available", "Available Player", 70);
         private static readonly PlayerRow AvailableTwin = Player("person:available-z", "Available Player", 70);
+        private static readonly PlayerRow SparsePlayer = Player("person:sparse", "Sparse Player", 0);
+        private static readonly PlayerRow ExtremePlayer = Player("person:extreme", "Extreme Player", int.MaxValue);
 
         public IReadOnlyList<ClubRow> ListClubs() => reverse ? [Seller, Managed] : [Managed, Seller];
 
         public IReadOnlyList<PlayerRow> ListPlayers(string clubExternalId) =>
             clubExternalId == Managed.ExternalId
                 ? [ManagedPlayer]
+                : extremeOnly
+                    ? [ExtremePlayer]
+                : sparseOnly
+                    ? [SparsePlayer]
                 : reverse
                     ? [AvailableTwin, AvailablePlayer, BestPlayer]
                     : [BestPlayer, AvailablePlayer, AvailableTwin];
