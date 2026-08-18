@@ -2,6 +2,7 @@ using Godot;
 using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Finances;
 using PCDynasty.Application.Matches;
+using PCDynasty.Application.Market;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
@@ -20,6 +21,7 @@ public partial class ManagerWorkspaceController : Control
     [Export] public NodePath SquadButtonPath { get; set; } = new();
     [Export] public NodePath TacticsButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
+    [Export] public NodePath MarketButtonPath { get; set; } = new();
     [Export] public NodePath FinancesButtonPath { get; set; } = new();
     [Export] public NodePath HistoryButtonPath { get; set; } = new();
     [Export] public NodePath WorldButtonPath { get; set; } = new();
@@ -35,6 +37,7 @@ public partial class ManagerWorkspaceController : Control
     private SquadScreen? _squadScreen;
     private TacticsScreen? _tacticsScreen;
     private CompetitionsScreen? _competitionsScreen;
+    private MarketScreen? _marketScreen;
     private FinancesScreen? _financesScreen;
     private HistoryScreen? _historyScreen;
     private WorldScreen? _worldScreen;
@@ -47,7 +50,9 @@ public partial class ManagerWorkspaceController : Control
         ICareerLineupService lineupService,
         CareerSession careerSession,
         CareerHistoryPersistence historyPersistence,
-        ICareerFinanceService financeService)
+        ICareerFinanceService financeService,
+        ICareerTransferMarketService transferMarket,
+        ICareerSquadProjection squadProjection)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _managedClubId = _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
@@ -58,9 +63,11 @@ public partial class ManagerWorkspaceController : Control
         ArgumentNullException.ThrowIfNull(lineupService);
         ArgumentNullException.ThrowIfNull(careerSession);
         ArgumentNullException.ThrowIfNull(financeService);
+        ArgumentNullException.ThrowIfNull(transferMarket);
+        ArgumentNullException.ThrowIfNull(squadProjection);
 
         _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
-        _squadScreen = new SquadScreen(world);
+        _squadScreen = new SquadScreen(world, squadProjection, _managedClubId);
         _tacticsScreen = new TacticsScreen(world, lineupService);
         _competitionsScreen = new CompetitionsScreen(
             world,
@@ -68,6 +75,7 @@ public partial class ManagerWorkspaceController : Control
             historyPersistence,
             RenderCurrent,
             SetStatus);
+        _marketScreen = new MarketScreen(transferMarket, RenderCurrent);
         _financesScreen = new FinancesScreen(financeService);
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
         _worldScreen = new WorldScreen(world);
@@ -86,6 +94,7 @@ public partial class ManagerWorkspaceController : Control
         Wire(SquadButtonPath, WorkspaceSection.Squad);
         Wire(TacticsButtonPath, WorkspaceSection.Tactics);
         Wire(CompetitionsButtonPath, WorkspaceSection.Competitions);
+        Wire(MarketButtonPath, WorkspaceSection.Market);
         Wire(FinancesButtonPath, WorkspaceSection.Finances);
         Wire(HistoryButtonPath, WorkspaceSection.History);
         Wire(WorldButtonPath, WorkspaceSection.World);
@@ -171,6 +180,11 @@ public partial class ManagerWorkspaceController : Control
                 ClubRow managedClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
                 _financesScreen!.Render(root, managedClub);
                 SetStatus($"● {managedClub.DisplayName} · finanzas");
+                break;
+            case WorkspaceSection.Market:
+                ClubRow marketClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                _marketScreen!.Render(root, marketClub);
+                SetStatus($"● {marketClub.DisplayName} · mercado de fichajes");
                 break;
             case WorkspaceSection.History:
                 _historyScreen!.Render(root);

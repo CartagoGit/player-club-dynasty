@@ -1,5 +1,6 @@
 using PCDynasty.Application.Finances;
 using PCDynasty.Application.Matches;
+using PCDynasty.Application.Market;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Persistence.Sqlite;
 using PCDynasty.Presentation.Core;
@@ -33,18 +34,21 @@ internal sealed class CareerRuntimeFactory
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    internal CareerRuntime Create(CareerRuntimeMode mode, ClubRow club)
+    internal CareerRuntime Create(CareerRuntimeMode mode, ClubRow club, IManagerWorld world)
     {
         ArgumentNullException.ThrowIfNull(club);
+        ArgumentNullException.ThrowIfNull(world);
         var historyStore = new SqliteCareerHistoryStore(_databasePath);
         var lineupStore = new SqliteCareerLineupStore(_databasePath);
         var financeStore = new SqliteCareerFinanceStore(_databasePath);
+        var transferStore = new SqliteCareerTransferStore(_databasePath);
         var sessionFactory = new CareerSessionFactory(historyStore);
 
         CareerSession session;
         if (mode == CareerRuntimeMode.New)
         {
             lineupStore.Clear();
+            transferStore.Clear();
             session = sessionFactory.CreateNew();
         }
         else
@@ -58,11 +62,18 @@ internal sealed class CareerRuntimeFactory
             mode == CareerRuntimeMode.New
                 ? CareerFinanceMode.New
                 : CareerFinanceMode.Continue);
+        var transferMarket = new CareerTransferMarketService(
+            world,
+            transferStore,
+            financeStore,
+            _timeProvider);
 
         return new CareerRuntime(
             session,
             new CareerLineupService(lineupStore, _timeProvider),
             new CareerHistoryPersistence(historyStore, session),
-            finances);
+            finances,
+            transferMarket,
+            transferMarket);
     }
 }

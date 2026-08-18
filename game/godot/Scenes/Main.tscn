@@ -480,9 +480,7 @@ alignment = 0
 [node name="Market" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-disabled = true
-theme_override_styles/disabled = SubResource("Style_disabled_nav")
-tooltip_text = "El mercado se conectará a los casos de uso de negociación."
+tooltip_text = "Negocia fichajes con cargo inmediato al presupuesto de la carrera."
 text = "  MERCADO"
 alignment = 0
 

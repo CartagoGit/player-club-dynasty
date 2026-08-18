@@ -244,6 +244,26 @@ public sealed partial class PresentationStructureTests
         Assert.DoesNotContain("Microsoft.Data.Sqlite", source, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void MarketAndSquadScreensUseNarrowApplicationPorts()
+    {
+        string screensRoot = Path.Combine(
+            FindGameRoot(),
+            "godot",
+            "Scripts",
+            "Workspace",
+            "Screens");
+        string market = File.ReadAllText(Path.Combine(screensRoot, "MarketScreen.cs"));
+        string squad = File.ReadAllText(Path.Combine(screensRoot, "SquadScreen.cs"));
+
+        Assert.Contains("ICareerTransferMarketService", market, StringComparison.Ordinal);
+        Assert.DoesNotContain("SqliteCareerTransferStore", market, StringComparison.Ordinal);
+        Assert.Contains("ICareerSquadProjection", squad, StringComparison.Ordinal);
+        Assert.DoesNotContain("ICareerTransferMarketService", squad, StringComparison.Ordinal);
+        Assert.DoesNotContain("PCDynasty.Persistence", market, StringComparison.Ordinal);
+        Assert.DoesNotContain("PCDynasty.Persistence", squad, StringComparison.Ordinal);
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

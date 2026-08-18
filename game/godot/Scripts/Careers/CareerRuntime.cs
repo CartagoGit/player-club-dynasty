@@ -1,5 +1,6 @@
 using PCDynasty.Application.Finances;
 using PCDynasty.Application.Matches;
+using PCDynasty.Application.Market;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Workspace.Persistence;
 
@@ -9,4 +10,6 @@ internal sealed record CareerRuntime(
     CareerSession Session,
     ICareerLineupService Lineups,
     CareerHistoryPersistence History,
-    ICareerFinanceService Finances);
+    ICareerFinanceService Finances,
+    ICareerTransferMarketService TransferMarket,
+    ICareerSquadProjection Squad);

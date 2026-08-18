@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Application.Market;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -8,17 +9,36 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class SquadScreen
 {
     private readonly IManagerWorld _world;
+    private readonly ICareerSquadProjection _careerSquad;
+    private readonly string _managedClubId;
 
-    internal SquadScreen(IManagerWorld world)
+    internal SquadScreen(
+        IManagerWorld world,
+        ICareerSquadProjection careerSquad,
+        string managedClubId)
     {
-        _world = world;
+        _world = world ?? throw new ArgumentNullException(nameof(world));
+        _careerSquad = careerSquad ?? throw new ArgumentNullException(nameof(careerSquad));
+        _managedClubId = string.IsNullOrWhiteSpace(managedClubId)
+            ? throw new ArgumentException("Managed club id cannot be empty.", nameof(managedClubId))
+            : managedClubId;
     }
 
     internal void Render(Control root, ClubRow club)
     {
-        var layout = new VBoxContainer();
+        IReadOnlyList<PlayerRow> players = string.Equals(
+            club.ExternalId,
+            _managedClubId,
+            StringComparison.Ordinal)
+            ? _careerSquad.ListManagedSquad(_managedClubId)
+            : _world.ListPlayers(club.ExternalId);
+        var layout = new VBoxContainer { Name = "SquadList" };
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
-        var header = new Label { Text = $"{club.DisplayName.ToUpperInvariant()} · PLANTILLA · {club.SquadSize} JUGADORES" };
+        var header = new Label
+        {
+            Name = "SquadHeader",
+            Text = $"{club.DisplayName.ToUpperInvariant()} · PLANTILLA · {players.Count} JUGADORES",
+        };
         header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
         header.AddThemeFontSizeOverride("font_size", 18);
         layout.AddChild(header);
@@ -36,7 +56,6 @@ internal sealed class SquadScreen
         layout.AddChild(headerRow);
         layout.AddChild(new HSeparator());
 
-        IReadOnlyList<PlayerRow> players = _world.ListPlayers(club.ExternalId);
         if (players.Count == 0)
         {
             layout.AddChild(WorkspaceUiFactory.CreateText("(sin jugadores inscritos)", ManagerDesignTokens.TextSecondary));

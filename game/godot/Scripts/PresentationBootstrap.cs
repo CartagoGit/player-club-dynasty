@@ -80,7 +80,7 @@ public partial class PresentationBootstrap : Control
     {
         ClubRow club = service.FindClub(clubId)
             ?? throw new InvalidOperationException($"Club '{clubId}' does not exist in the loaded world.");
-        CareerRuntime runtime = _careerRuntimeFactory!.Create(mode, club);
+        CareerRuntime runtime = _careerRuntimeFactory!.Create(mode, club, service);
         SaveCareerProfile(service, clubId, mode);
         OpenWorkspace(service, clubId, runtime);
     }
@@ -106,6 +106,12 @@ public partial class PresentationBootstrap : Control
 
     private static string CareerDatabasePath()
     {
+        string? externalPath = System.Environment.GetEnvironmentVariable("PCDYNASTY_CAREER_DB");
+        if (!string.IsNullOrWhiteSpace(externalPath))
+        {
+            return Path.GetFullPath(externalPath);
+        }
+
         string savesRoot = Path.GetFullPath(Path.Combine(
             ProjectSettings.GlobalizePath("res://../"),
             "..",
@@ -128,6 +134,7 @@ public partial class PresentationBootstrap : Control
             SquadButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
             TacticsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics"),
             CompetitionsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
+            MarketButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Market"),
             FinancesButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances"),
             HistoryButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/History"),
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
@@ -140,7 +147,9 @@ public partial class PresentationBootstrap : Control
             runtime.Lineups,
             runtime.Session,
             runtime.History,
-            runtime.Finances);
+            runtime.Finances,
+            runtime.TransferMarket,
+            runtime.Squad);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

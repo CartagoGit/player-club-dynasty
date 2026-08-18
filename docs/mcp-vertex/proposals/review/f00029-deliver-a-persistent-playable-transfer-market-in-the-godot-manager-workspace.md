@@ -2,7 +2,7 @@
 id: f00029
 title: "Deliver a persistent playable transfer market in the Godot manager workspace"
 kind: feat
-status: ready
+status: review
 type: proposal
 track: product
 date: 2026-08-18
@@ -62,7 +62,7 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - review-reviewer: review_tactics
 - review-log: approved by review_tactics — Approved: caller-owned path, SRP persistence collaborators, immutable ordered reads, full-snapshot CAS plus unique insert in one transaction, stale/duplicate rollback, exact debit validation, isolated clear, centralized finance writer; SQLite 26/26 and Release build green.
 ### S3 — Connect the playable market and acquired squad to Godot
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/godot/PCDynasty.Presentation.csproj`, `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Careers/CareerRuntime.cs`, `game/godot/Scripts/Careers/CareerRuntimeFactory.cs`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/WorkspaceSection.cs`, `game/godot/Scripts/Workspace/Screens/MarketScreen.cs`, `game/godot/Scripts/Workspace/Screens/MarketScreen.cs.uid`, `game/godot/Scripts/Workspace/Screens/SquadScreen.cs`, `game/godot/Tests/SmokeBoot.gd`, `game/tests/PCDynasty.Presentation.Tests/CareerRuntimeFactoryTests.cs`, `game/tests/PCDynasty.Architecture.Tests/PresentationStructureTests.cs`
 - **Gate**: e2e
@@ -74,7 +74,11 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
   - "Presentation depends on the application port, concrete SQLite construction remains only in the composition root, and no mutable static state or service locator is introduced."
   - "Godot smoke exercises New career, Mercado signing, Finanzas and Plantilla, then Continue and verifies the same persisted result without runtime errors."
   - "Release build, focused tests, architecture tests, repository hygiene and full Godot smoke pass."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: review_world_fix_fresh
+- review-log: requested_changes by review_tactics — Squad header uses original club.SquadSize after acquisitions; smoke must prove Market stays scoped after club browsing, Continue keeps acquired player out of candidates, and a subsequent New career clears prior transfers rather than only starting from an empty DB.
+- review-log: approved by review_world_fix_fresh — Independent re-review approved: projected squad header is correct; managed-club market scope survives browsing; Continue preserves transfer exclusion; second New resets transfers, finances and squad. Application 9/9, SQLite 6/6, Presentation 49/49, Architecture 19/19, Godot Release 0/0, isolated SmokeBoot and diff-check green.
 ## acceptance
 
 - Contracts are immutable, validate all external values and live outside engine and persistence assemblies.
