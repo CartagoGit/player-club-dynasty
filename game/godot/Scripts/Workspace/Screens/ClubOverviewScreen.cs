@@ -25,7 +25,7 @@ internal sealed class ClubOverviewScreen
 
     internal void Render(Control root, ClubRow club)
     {
-        var layout = new VBoxContainer();
+        var layout = new VBoxContainer { Name = "ClubOverview" };
         layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
         layout.AddChild(BuildHeader(club));
 
@@ -59,7 +59,7 @@ internal sealed class ClubOverviewScreen
 
     private HBoxContainer BuildHeader(ClubRow club)
     {
-        var band = new HBoxContainer();
+        var band = new HBoxContainer { Name = "ClubHeader" };
         band.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
 
         var crest = new PanelContainer { CustomMinimumSize = new Vector2(72, 72) };
@@ -105,7 +105,7 @@ internal sealed class ClubOverviewScreen
         phase.AddThemeFontSizeOverride("font_size", 16);
         band.AddChild(phase);
 
-        var picker = new Button { Text = "Cambiar club" };
+        var picker = new Button { Name = "ChangeClub", Text = "Cambiar club" };
         picker.AddThemeFontSizeOverride("font_size", 12);
         picker.Pressed += _openClubPicker;
         band.AddChild(picker);

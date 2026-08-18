@@ -55,6 +55,27 @@ func _run() -> void:
 	var opening_cash := _label_text(scene, cash_path)
 	_expect(opening_cash.contains("EUR"), "The finance office must render meaningful currency values.")
 
+	var overview := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview") as Button
+	overview.emit_signal("pressed")
+	await process_frame
+	var change_club_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/ClubOverview/ClubHeader/ChangeClub"
+	var change_club := scene.get_node(change_club_path) as Button
+	change_club.emit_signal("pressed")
+	await process_frame
+	var content := scene.get_node("Workspace/Layout/ContentMargin/ContentScroll/Content") as Control
+	var picker_layout := content.get_child(0) as VBoxContainer
+	_expect(picker_layout.get_child_count() > 4, "The club browser must expose another fictional club.")
+	var second_club_row := picker_layout.get_child(4) as HBoxContainer
+	var second_club_action := second_club_row.get_child(6) as HBoxContainer
+	var choose_second_club := second_club_action.get_child(0) as Button
+	choose_second_club.emit_signal("pressed")
+	await process_frame
+	finances.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
+		_fail("Finances failed after browsing a non-managed club.")
+		return
+	_expect(_label_text(scene, cash_path) == opening_cash, "Finances must remain scoped to the managed career club.")
+
 	var tactics := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
 	_expect(not tactics.disabled, "The tactics route must be enabled.")
 	tactics.emit_signal("pressed")

@@ -29,6 +29,7 @@ public partial class ManagerWorkspaceController : Control
 
     private IManagerWorld? _world;
     private WorkspaceSection _selectedSection = WorkspaceSection.Overview;
+    private string? _managedClubId;
     private string? _selectedClubId;
     private ClubOverviewScreen? _overviewScreen;
     private SquadScreen? _squadScreen;
@@ -49,7 +50,7 @@ public partial class ManagerWorkspaceController : Control
         ICareerFinanceService financeService)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
-        _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
+        _managedClubId = _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
             ? throw new ArgumentException("Selected club id cannot be empty.", nameof(selectedClubId))
             : selectedClubId;
         ArgumentNullException.ThrowIfNull(historyPersistence);
@@ -167,8 +168,9 @@ public partial class ManagerWorkspaceController : Control
                 SetStatus($"● {club.DisplayName} · plan de partido");
                 break;
             case WorkspaceSection.Finances:
-                _financesScreen!.Render(root, club);
-                SetStatus($"● {club.DisplayName} · finanzas");
+                ClubRow managedClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                _financesScreen!.Render(root, managedClub);
+                SetStatus($"● {managedClub.DisplayName} · finanzas");
                 break;
             case WorkspaceSection.History:
                 _historyScreen!.Render(root);
