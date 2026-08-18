@@ -8,9 +8,16 @@ namespace PCDynasty.Content.Worlds;
 
 /// <summary>
 /// Hashes normalized content so a world is identified by what it says, not by
-/// the format it arrived in. Equivalent JSON, CSV and SQLite sources therefore
+/// where it came from. Equivalent JSON, CSV and SQLite sources — and the same
+/// pack read as the integrated world or as an external directory — therefore
 /// produce the same hash, and a save can bind to it.
 /// </summary>
+/// <remarks>
+/// The provider label is deliberately excluded: it names the source, not the
+/// content, and including it would stop a save from opening against the same
+/// data offered under a different name. The schema version stays in, because
+/// it changes how the values are interpreted.
+/// </remarks>
 public static class WorldContentHash
 {
     public static string Compute(NormalizedContentModel model)
@@ -18,7 +25,6 @@ public static class WorldContentHash
         ArgumentNullException.ThrowIfNull(model);
 
         var canonical = new StringBuilder();
-        canonical.Append(model.ProviderId).Append('\n');
         canonical.Append(model.SchemaVersion.ToString(CultureInfo.InvariantCulture)).Append('\n');
 
         foreach (NormalizedContentEntity entity in model.Entities

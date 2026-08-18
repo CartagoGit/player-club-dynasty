@@ -1,5 +1,6 @@
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Abstractions;
+using PCDynasty.Content.Worlds;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -11,10 +12,20 @@ public sealed class WorldService : IManagerWorld
 {
     private readonly WorldContentCatalog _catalog;
 
+    /// <summary>Reads the world shipped with the game.</summary>
     public WorldService(IContentReader reader, string contentRoot)
+        : this(reader, ContentSourceDescriptor.Integrated(contentRoot))
     {
-        _catalog = new WorldContentCatalog(reader, contentRoot);
     }
+
+    /// <summary>Reads whichever world the player selected.</summary>
+    public WorldService(IContentReader reader, ContentSourceDescriptor source)
+    {
+        _catalog = new WorldContentCatalog(reader, source);
+    }
+
+    /// <summary>The source this world was read from.</summary>
+    public ContentSourceDescriptor Source => _catalog.Source;
 
     public Task ReloadAsync(CancellationToken cancellationToken = default) =>
         _catalog.ReloadAsync(cancellationToken);

@@ -9,17 +9,6 @@ namespace PCDynasty.Presentation.Core;
 /// </summary>
 internal sealed class WorldContentCatalog
 {
-    private const int SchemaVersion = 1;
-
-    private static readonly string[] DocumentNames =
-    [
-        "clubs.json",
-        "people.json",
-        "competitions.json",
-        "countries.json",
-        "rules.json",
-    ];
-
     /// <summary>
     /// Attribute keys the world declares as integers. Unparsable values fail
     /// the load with a diagnostic instead of silently becoming zero.
@@ -37,36 +26,29 @@ internal sealed class WorldContentCatalog
     ];
 
     private readonly WorldPackLoader _loader;
-    private readonly string _contentRoot;
-    private readonly string _providerId;
+    private readonly ContentSourceDescriptor _source;
     private WorldSnapshot? _snapshot;
 
-    internal WorldContentCatalog(IContentReader reader, string contentRoot, string providerId = "starter-world")
+    internal WorldContentCatalog(IContentReader reader, ContentSourceDescriptor source)
     {
         ArgumentNullException.ThrowIfNull(reader);
-        ArgumentException.ThrowIfNullOrWhiteSpace(contentRoot);
-        ArgumentException.ThrowIfNullOrWhiteSpace(providerId);
+        ArgumentNullException.ThrowIfNull(source);
 
         _loader = new WorldPackLoader(reader);
-        _contentRoot = contentRoot;
-        _providerId = providerId;
+        _source = source;
     }
+
+    internal ContentSourceDescriptor Source => _source;
 
     internal async Task ReloadAsync(CancellationToken cancellationToken)
     {
-        var source = new WorldPackSource(
-            _providerId,
-            SchemaVersion,
-            DocumentNames.Select(name => Path.Combine(_contentRoot, "data", name)),
-            NumericValueKeys);
-
         WorldPackLoadResult result = await _loader
-            .LoadAsync(source, cancellationToken)
+            .LoadAsync(_source.ToPackSource(NumericValueKeys), cancellationToken)
             .ConfigureAwait(false);
         if (!result.IsSuccess)
         {
             throw new InvalidOperationException(
-                $"Failed to load the world from '{_contentRoot}': {result.DescribeErrors()}");
+                $"Failed to load the world from '{_source.Path}': {result.DescribeErrors()}");
         }
 
         Interlocked.Exchange(ref _snapshot, new WorldSnapshot(result.Pack!, result.ContentHash));

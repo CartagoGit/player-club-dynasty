@@ -34,6 +34,25 @@ public partial class MainMenuController : Node
         _continueCareer = continueCareer ?? throw new ArgumentNullException(nameof(continueCareer));
     }
 
+    /// <summary>
+    /// Points the menu at a different world without rebuilding the controller.
+    /// Re-creating it would connect the scene's buttons a second time, which
+    /// Godot rejects, so a world swap replaces dependencies in place.
+    /// </summary>
+    public void ReplaceWorld(
+        IManagerWorld world,
+        ManagerShell shell,
+        Action<string> startNewCareer,
+        Action<string> continueCareer)
+    {
+        Configure(world, shell, startNewCareer, continueCareer);
+        RefreshCareerActions();
+        if (CareerSetup.Visible)
+        {
+            PopulateClubs();
+        }
+    }
+
     public override void _Ready()
     {
         if (_world is null || _shell is null || _startNewCareer is null || _continueCareer is null)

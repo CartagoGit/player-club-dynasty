@@ -118,8 +118,21 @@ ln -sfn "${godot_bin}" "${tools_dir}/godot/current"
 # Godot loads the Debug assembly when it runs the project itself, and the
 # export uses Release, so both have to be current: building only Release made
 # the smoke run whatever Debug build happened to be lying around.
-dotnet build "${project_dir}/PCDynasty.Presentation.csproj" -c Debug --nologo >/dev/null
-dotnet build "${project_dir}/PCDynasty.Presentation.csproj" -c Release --nologo >/dev/null
+build_presentation() {
+    local configuration="$1"
+    local log
+    log="$(mktemp)"
+    if ! dotnet build "${project_dir}/PCDynasty.Presentation.csproj" -c "${configuration}" --nologo >"${log}" 2>&1; then
+        printf 'run-godot-smoke: the %s build of the presentation failed.\n' "${configuration}" >&2
+        cat "${log}" >&2
+        rm -f "${log}"
+        return 1
+    fi
+    rm -f "${log}"
+}
+
+build_presentation Debug
+build_presentation Release
 
 smoke_log="$(mktemp)"
 trap 'rm -f "${smoke_log}"' EXIT

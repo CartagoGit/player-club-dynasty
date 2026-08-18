@@ -22,6 +22,33 @@ func _run() -> void:
 	_expect(not workspace.visible, "The manager workspace must stay hidden before career selection.")
 	_expect(_label_text(scene, "MainMenu/MenuFrame/MenuContent/Eyebrow") == "PC DYNASTY · DIRECCIÓN DEPORTIVA", "The original PC Dynasty identity is missing.")
 
+	# Data source: load the shipped world through the external path and put it back.
+	var options_button := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/Options") as Button
+	options_button.emit_signal("pressed")
+	await process_frame
+	var source_path := "MainMenu/OptionsPanel/OptionsContent/ContentSource"
+	if not await _wait_until(func() -> bool: return scene.has_node(source_path)):
+		_fail("The data source section is missing from the options panel.")
+		return
+	var source_status := scene.get_node(source_path + "/ContentSourceStatus") as Label
+	_expect(source_status.text.begins_with("Integrado"), "The shipped world must be reported as the integrated source.")
+	var integrated_hash := source_status.text
+	var external_path := scene.get_node(source_path + "/ExternalPath") as LineEdit
+	external_path.text = ProjectSettings.globalize_path("res://../content/starter-world")
+	(scene.get_node(source_path + "/ContentSourceActions/LoadExternalSource") as Button).emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return scene.has_node(source_path) and (scene.get_node(source_path + "/ContentSourceStatus") as Label).text.begins_with("Externo")):
+		_fail("The external world was not loaded.")
+		return
+	source_status = scene.get_node(source_path + "/ContentSourceStatus") as Label
+	_expect(source_status.text.split(" · ")[-1] == integrated_hash.split(" · ")[-1], "The same content read as an external source must keep its hash.")
+	(scene.get_node(source_path + "/ContentSourceActions/RestoreIntegratedSource") as Button).emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return (scene.get_node(source_path + "/ContentSourceStatus") as Label).text.begins_with("Integrado")):
+		_fail("Restoring did not return to the integrated world.")
+		return
+	source_status = scene.get_node(source_path + "/ContentSourceStatus") as Label
+	(scene.get_node("MainMenu/OptionsPanel/OptionsContent/Back") as Button).emit_signal("pressed")
+	await process_frame
+
 	var new_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/NewCareer") as Button
 	new_career.emit_signal("pressed")
 	await process_frame

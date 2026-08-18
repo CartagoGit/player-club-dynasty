@@ -2,7 +2,7 @@
 id: f00030
 title: "Establish the canonical indexed world loader"
 kind: feat
-status: in-progress
+status: review
 type: proposal
 track: product
 date: 2026-08-18
@@ -64,15 +64,16 @@ re-queries people per club, which cannot reach the target world scale.
   - "The workloads are declared in the versioned budgets file, compared in CI, and guarded by a fast test gate that does not need a benchmark run."
 
 ### S3 — Let the game choose an integrated or external content source
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
-- **Files**: `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Shell/ContentSourcePicker.cs`, `game/src/PCDynasty.Application/Content/ContentSourceDescriptor.cs`, `game/tests/PCDynasty.Content.Integration.Tests/EquivalentSourceHashTests.cs`
+- **Files**: `game/src/PCDynasty.Content/Worlds/ContentSourceDescriptor.cs`, `game/src/PCDynasty.Content.Importers/ContentReaderFactory.cs`, `game/src/PCDynasty.Presentation.Core/ContentSourcePreference.cs`, `game/src/PCDynasty.Presentation.Core/WorldService.cs`, `game/src/PCDynasty.Presentation.Core/WorldContentCatalog.cs`, `game/godot/Scripts/Shell/ContentSourceSection.cs`, `game/godot/Scripts/Shell/ContentSourceSection.cs.uid`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Tests/SmokeBoot.gd`, `game/tests/PCDynasty.Presentation.Tests/ContentSourceSelectionTests.cs`, `game/tests/PCDynasty.Content.Integration.Tests/EquivalentSourceHashTests.cs`
 - **Gate**: e2e
 - acceptance:
-  - "The bootstrap no longer hard-codes a directory or a reader; it resolves a described source."
-  - "Equivalent JSON, CSV and SQLite fixtures produce the same content hash."
-  - "The player can pick an external source from the shell and the choice survives a restart."
-  - "SmokeBoot loads the integrated source and an external source without runtime errors."
+  - "The bootstrap no longer hard-codes a directory or a reader; it resolves a described source and picks the reader from its format."
+  - "Equivalent JSON, CSV and SQLite sources produce the same content hash, which excludes the provider label so the same data keeps its identity under any source name."
+  - "The player can pick an external source from the options panel and the choice survives a restart; a stale or unsupported choice falls back to the integrated world instead of blocking the game."
+  - "Swapping worlds never blocks the frame and never reconnects the menu's signals."
+  - "SmokeBoot loads the integrated source, the same world as an external source and back, then plays a full career without runtime errors."
 
 ## acceptance
 
@@ -83,4 +84,4 @@ re-queries people per club, which cannot reach the target world scale.
 - The productive path uses the canonical pipeline only; the tolerant reader is gone.
 
 - review-implementer: claude-opus-5
-- review-log: partial by claude-opus-5 — S1 and S2 shipped and verified. S1: the runtime now loads through read → merge → validate → compile → hash; a corrupted attribute and a dangling cross-document reference both stop the load with a diagnostic naming the entity, the attribute and the document, proven against the real starter world; equivalent JSON, CSV and SQLite sources compile to the same content hash. S2: the snapshot indexes people by club, entities by id and country names once per load, measured through the game's own WorldService over 6,400 clubs and 160,000 people — squad query 0.009 ms and club lookup 0.001 ms against a 16 ms budget, cold compile and index 1,508 ms against 2,000 ms; all three are versioned workloads compared by the CI gate and by a fast test that needs no benchmark run. S3 (choosing an external source from the shell) is untouched. 27 suites, format, architecture gates and headless SmokeBoot green.
+- review-log: partial by claude-opus-5 — S1 and S2 shipped and verified. S1: the runtime now loads through read → merge → validate → compile → hash; a corrupted attribute and a dangling cross-document reference both stop the load with a diagnostic naming the entity, the attribute and the document, proven against the real starter world; equivalent JSON, CSV and SQLite sources compile to the same content hash. S2: the snapshot indexes people by club, entities by id and country names once per load, measured through the game's own WorldService over 6,400 clubs and 160,000 people — squad query 0.009 ms and club lookup 0.001 ms against a 16 ms budget, cold compile and index 1,508 ms against 2,000 ms; all three are versioned workloads compared by the CI gate and by a fast test that needs no benchmark run. S3: the options panel now loads an external world and restores the integrated one, remembering the choice across restarts, and SmokeBoot walks that path. Two real defects surfaced while wiring it and are fixed: awaiting the load on the Godot main thread deadlocked the game, and rebuilding the menu controller made Godot reject the second signal connection, so the world is swapped in place. The smoke gate also stopped silencing build output, which had hidden a Debug-only analyzer failure. 27 suites, format, architecture gates and headless SmokeBoot green.
