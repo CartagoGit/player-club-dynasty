@@ -20,7 +20,11 @@ public static class ApplicationErrorReport
         builder.Append('[').Append(error.Severity).Append("] ").AppendLine(error.Title);
         builder.AppendLine(error.Body);
 
-        if (!string.IsNullOrEmpty(error.FilePath))
+        if (!string.IsNullOrEmpty(error.PhysicalPath))
+        {
+            builder.Append("Path: ").AppendLine(error.PhysicalPath);
+        }
+        else if (!string.IsNullOrEmpty(error.FilePath))
         {
             builder.Append("Path: ").AppendLine(error.FilePath);
         }

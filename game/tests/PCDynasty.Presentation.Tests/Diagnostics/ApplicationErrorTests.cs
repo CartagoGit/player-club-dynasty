@@ -181,6 +181,7 @@ public sealed class ApplicationErrorTests
             Title: "Title",
             Body: "Body",
             FilePath: null,
+            PhysicalPath: null,
             ErrorCode: null,
             Items: ImmutableArray<ApplicationErrorItem>.Empty,
             PrimaryButtonLabel: "OK",

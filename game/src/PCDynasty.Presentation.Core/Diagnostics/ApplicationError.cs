@@ -32,15 +32,73 @@ public sealed record ApplicationErrorItem(string Label, string Detail);
 /// renderer reads it; tests assert on it; any caller anywhere in the
 /// game can build one and surface the same friendly modal.
 /// </summary>
+/// <param name="FilePath">Godot resource path (e.g. <c>res://locale/langs/en.json</c>); null when there is no file.</param>
+/// <param name="PhysicalPath">Absolute filesystem path the player can open in their file browser; null when unknown.</param>
 public sealed record ApplicationError(
     ApplicationErrorSeverity Severity,
     string Title,
     string Body,
     string? FilePath,
+    string? PhysicalPath,
     string? ErrorCode,
     ImmutableArray<ApplicationErrorItem> Items,
     string PrimaryButtonLabel,
-    string? SecondaryButtonLabel);
+    string? SecondaryButtonLabel)
+{
+    /// <summary>
+    /// Returns a new error with <see cref="PhysicalPath"/> populated.
+    /// Use this when the platform layer can translate
+    /// <c>res://...</c> paths into real filesystem locations so the
+    /// player can find the file the error refers to.
+    /// </summary>
+    public ApplicationError WithPhysicalPath(string physicalPath) =>
+        this with { PhysicalPath = physicalPath };
+}
+
+/// <summary>
+/// Translates Godot resource paths to filesystem paths. The default
+/// implementation delegates to <c>ProjectSettings.GlobalizePath</c>;
+/// tests can swap in a virtual resolver so the panel rendering
+/// stays platform-free.
+/// </summary>
+public static class ResPath
+{
+    /// <summary>
+    /// Returns the filesystem path for <paramref name="resourcePath"/>,
+    /// or the input itself when it is not a Godot resource path. The
+    /// resolver swallows platform errors so a malformed res:// path
+    /// never throws inside the panel. Core projects pass in a fake
+    /// resolver; the Godot presenter passes one that delegates to
+    /// <c>ProjectSettings.GlobalizePath</c>.
+    /// </summary>
+    public static string Globalize(string resourcePath, Func<string, string>? resolver = null)
+    {
+        if (string.IsNullOrWhiteSpace(resourcePath))
+        {
+            return resourcePath ?? string.Empty;
+        }
+
+        if (!resourcePath.StartsWith("res://", StringComparison.Ordinal))
+        {
+            return resourcePath;
+        }
+
+        if (resolver is null)
+        {
+            return resourcePath;
+        }
+
+        try
+        {
+            string resolved = resolver(resourcePath);
+            return string.IsNullOrEmpty(resolved) ? resourcePath : resolved;
+        }
+        catch (Exception)
+        {
+            return resourcePath;
+        }
+    }
+}
 
 /// <summary>Builders that turn a typed source into an <see cref="ApplicationError"/>.</summary>
 public static class ApplicationErrorBuilder
@@ -77,6 +135,7 @@ public static class ApplicationErrorBuilder
             Body: "The game hit an unrecoverable problem. The details below describe what happened; "
                 + "please copy them and send them to the team when you report the bug.",
             FilePath: filePath,
+            PhysicalPath: null,
             ErrorCode: errorCode,
             Items: items.ToImmutable(),
             PrimaryButtonLabel: primaryButtonLabel,
@@ -120,6 +179,7 @@ public static class ApplicationErrorBuilder
             Title: shape.Title,
             Body: shape.Body,
             FilePath: string.IsNullOrEmpty(shape.FilePath) ? null : shape.FilePath,
+            PhysicalPath: null,
             ErrorCode: $"translation.{shape.Kind}",
             Items: items.ToImmutable(),
             PrimaryButtonLabel: shape.PrimaryButtonLabel,
