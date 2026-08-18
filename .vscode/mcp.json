@@ -4,7 +4,8 @@
 			"type": "stdio",
 			"command": "bun",
 			"args": [
-				"/home/cartago/_projects/mcp-vertex/tools/scripts/host/host-server.script.ts",
+				"${workspaceFolder}/scripts/mcp-vertex-run.script.ts",
+				"tools/scripts/host/host-server.script.ts",
 				"--workspace=${workspaceFolder}",
 				"--config=${workspaceFolder}/mcp-vertex.config.json",
 				"--preset=swarm",
@@ -19,7 +20,7 @@
 				"@coding-solo/godot-mcp"
 			],
 			"env": {
-				"GODOT_PATH": "/tmp/pcdynasty-godot/Godot_v4.7.1-stable_mono_linux_x86_64/Godot_v4.7.1-stable_mono_linux.x86_64",
+				"GODOT_PATH": "${env:GODOT_BIN}",
 				"DEBUG": "false"
 			},
 			"autoApprove": [

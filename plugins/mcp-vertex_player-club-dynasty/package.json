@@ -35,7 +35,6 @@
 		"build": "bun ../../scripts/build-plugin.script.ts mcp-vertex_player-club-dynasty"
 	},
 	"dependencies": {
-		"@mcp-vertex/core": "link:/home/cartago/_projects/mcp-vertex/packages/core",
 		"@modelcontextprotocol/sdk": "^1.29.0",
 		"zod": "^4.4.3"
 	},

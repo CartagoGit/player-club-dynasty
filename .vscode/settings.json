@@ -27,7 +27,7 @@
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"yaml.schemas": {
-		"/home/cartago/_projects/mcp-vertex/packages/core/schema/mcp-vertex.config.schema.json": [
+		"./node_modules/@mcp-vertex/core/schema/mcp-vertex.config.schema.json": [
 			"mcp-vertex.config.json"
 		]
 	},

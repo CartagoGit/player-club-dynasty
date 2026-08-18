@@ -13,8 +13,10 @@ A **football-manager game** scaffolded for AI-assisted development with
 project's own MCP plugin lives under `plugins/player-club/`. The
 mcp-vertex core + every first-party plugin we use (proposals, memory,
 search, git, docs, deps, rules, quality, notification, status-marker,
-test-convention) come from the **local checkout** at
-`/home/cartago/_projects/mcp-vertex` — no npm publish required.
+test-convention) come from the **local checkout** resolved by
+`scripts/mcp-vertex-root.script.ts` (env var, `.mcp-vertex-root` pointer,
+linked package, or a `mcp-vertex` sibling directory) — no npm publish
+required and no machine-specific path is committed.
 
 ## Layout
 
@@ -30,7 +32,7 @@ test-convention) come from the **local checkout** at
 | `plugins/player-club/` | The project's own MCP plugin (`@player-club/plugin`). |
 | `scripts/` | Workspace-local helpers (build, dev, sync-bootstrap, root resolver). |
 | `.cache/mcp-vertex/` | Scratch root, per-plugin subdirectories created on first boot. |
-| `.mcp-vertex-root` | Pointer file consumed by `scripts/mcp-vertex-root.script.ts`. Overridable via `MCP_VERTEX_ROOT`. |
+| `.mcp-vertex-root` | Pointer file consumed by `scripts/mcp-vertex-root.script.ts`. Holds a path relative to the workspace; overridable via `MCP_VERTEX_ROOT`. |
 
 ## Commands (the only ones you need)
 
@@ -76,8 +78,8 @@ open proposals — the orchestrator will assign the first ID on the next
 ## When the local checkout moves
 
 ```bash
-# 1. Update the pointer
-echo "/new/path/to/mcp-vertex" > .mcp-vertex-root
+# 1. Update the pointer (relative to this workspace, or absolute)
+echo "../../mcp-vertex" > .mcp-vertex-root
 
 # 2. Confirm
 bun scripts/mcp-vertex-root.script.ts --check

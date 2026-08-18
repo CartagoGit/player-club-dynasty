@@ -5,7 +5,7 @@ A football-manager simulation scaffolded for AI-assisted development with
 
 > **Local-only mode.** This workspace does **not** publish to npm. The
 > mcp-vertex core + every first-party plugin we use is loaded from a
-> **local checkout** at `/home/cartago/_projects/mcp-vertex`, not from
+> **local checkout** discovered by `scripts/mcp-vertex-root.script.ts`, not from
 > the npm registry. The pointer file is `.mcp-vertex-root` (override
 > with `MCP_VERTEX_ROOT`).
 
@@ -49,7 +49,7 @@ player-club-dynasty/
 ├─ package.json                         bun workspaces + npm scripts
 ├─ bunfig.toml                          bun install scopes → local mcp-vertex packages
 ├─ tsconfig.json                        @mcp-vertex/core/* via absolute paths
-├─ .mcp-vertex-root                     pointer file → /home/cartago/_projects/mcp-vertex
+├─ .mcp-vertex-root                     pointer file → the mcp-vertex checkout (relative)
 ├─ .gitignore                           excludes .cache/, node_modules/, dist/, data/, saves/
 ├─ docs/mcp-vertex/
 │  ├─ AGENT-BOOTSTRAP.md                vendored from local mcp-vertex checkout
@@ -125,5 +125,5 @@ rm .mcp-vertex-root
 - [`docs/mcp-vertex/REPO-RULES.md`](docs/mcp-vertex/REPO-RULES.md) —
   the workspace-specific repo rules (commands, hard rules, plugin
   prefixes).
-- [Local mcp-vertex README](file:///home/cartago/_projects/mcp-vertex/README.md)
+- Local mcp-vertex README — `$(bun run mcp-vertex:resolve-root)/README.md`
   — the upstream monorepo layout.
