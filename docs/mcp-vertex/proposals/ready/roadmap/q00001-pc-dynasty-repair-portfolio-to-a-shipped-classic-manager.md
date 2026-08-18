@@ -91,7 +91,7 @@ at a time.
   - "Invalid content fails with a diagnostic and is never coerced to zero."
 
 ### S4 — Ship playable content and round-trip authoring
-- **Status**: ready
+- **Status**: in-progress
 - **DependsOn**: [S3]
 - **Owner**: `f00031`
 - **Files**: `docs/mcp-vertex/proposals/ready/f00031-ship-playable-league-content-and-round-trip-authoring.md`

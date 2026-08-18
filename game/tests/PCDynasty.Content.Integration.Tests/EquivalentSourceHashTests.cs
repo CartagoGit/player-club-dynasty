@@ -152,6 +152,10 @@ public sealed class EquivalentSourceHashTests
         await using var connection = new SqliteConnection($"Data Source={databasePath}");
         await connection.OpenAsync();
 
+        // One transaction for the whole world: a per-row commit turned a
+        // thousand-entity fixture into minutes.
+        await using SqliteTransaction transaction = (SqliteTransaction)await connection.BeginTransactionAsync();
+
         await ExecuteAsync(connection, """
             CREATE TABLE content_metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
             CREATE TABLE content_entities (external_id TEXT PRIMARY KEY, kind_id TEXT NOT NULL);
@@ -203,6 +207,8 @@ public sealed class EquivalentSourceHashTests
                     ("$ordinal", ordinal.ToString(System.Globalization.CultureInfo.InvariantCulture)));
             }
         }
+
+        await transaction.CommitAsync();
     }
 
     private static async Task ExecuteAsync(

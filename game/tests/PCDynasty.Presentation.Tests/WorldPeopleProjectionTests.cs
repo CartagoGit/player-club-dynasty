@@ -7,10 +7,10 @@ using Xunit;
 namespace PCDynasty.Presentation.Tests;
 
 /// <summary>
-/// The shipped starter world holds eleven players and seven managers, so it is
-/// the natural fixture for the rule audit a00001 found broken: the squad used
-/// to be every person referencing the club, which put managers on the pitch
-/// with zero-valued attributes.
+/// The shipped world fields full squads plus managers and support staff, so it
+/// is the natural fixture for the rule audit a00001 found broken: the squad
+/// used to be every person referencing the club, which put managers on the
+/// pitch with zero-valued attributes.
 /// </summary>
 public sealed class WorldPeopleProjectionTests
 {
@@ -35,15 +35,21 @@ public sealed class WorldPeopleProjectionTests
     }
 
     [Fact]
-    public async Task SquadsHoldEveryPlayerAndNoManager()
+    public async Task EveryClubFieldsASquadWithoutItsManager()
     {
         WorldService world = await LoadAsync();
 
-        int players = Clubs.Sum(club => world.ListPlayers(club).Count);
-        int managers = Clubs.Sum(club => world.ListManagers(club).Count);
-
-        Assert.Equal(11, players);
-        Assert.Equal(7, managers);
+        foreach (string club in Clubs)
+        {
+            IReadOnlyList<PlayerRow> squad = world.ListPlayers(club);
+            IReadOnlyList<ManagerRow> managers = world.ListManagers(club);
+            Assert.True(squad.Count >= 22, $"{club} fields only {squad.Count} players.");
+            Assert.NotEmpty(managers);
+            Assert.All(squad, player => Assert.True(player.Overall > 0));
+            Assert.DoesNotContain(
+                squad,
+                player => managers.Any(manager => manager.ExternalId == player.ExternalId));
+        }
     }
 
     [Fact]
@@ -53,9 +59,8 @@ public sealed class WorldPeopleProjectionTests
 
         IReadOnlyList<PlayerRow> squad = world.ListPlayers("club:aurora-quay");
 
-        Assert.Equal(2, squad.Count);
         Assert.DoesNotContain(squad, player => player.ExternalId == "person:maela-dorn");
-        Assert.All(squad, player => Assert.True(player.Overall > 0));
+        Assert.Contains(squad, player => player.ExternalId == "person:alven-roake");
     }
 
     [Fact]
@@ -84,11 +89,17 @@ public sealed class WorldPeopleProjectionTests
     }
 
     [Fact]
-    public async Task StaffIsEmptyUntilTheContentDeclaresOtherOccupations()
+    public async Task StaffIsProjectedByItsDeclaredRole()
     {
         WorldService world = await LoadAsync();
 
-        Assert.All(Clubs, club => Assert.Empty(world.ListStaff(club)));
+        IReadOnlyList<StaffRow> staff = world.ListStaff("club:aurora-quay");
+
+        Assert.Equal(2, staff.Count);
+        Assert.Contains(staff, member => member.Role == "scout");
+        Assert.Contains(staff, member => member.Role == "physio");
+        Assert.DoesNotContain(world.ListPlayers("club:aurora-quay"), player =>
+            staff.Any(member => member.ExternalId == player.ExternalId));
     }
 
     [Fact]
@@ -99,7 +110,8 @@ public sealed class WorldPeopleProjectionTests
         ClubRow? club = world.FindClub("club:cinder-valley");
 
         Assert.NotNull(club);
-        Assert.Equal(1, club!.SquadSize);
+        Assert.Equal(world.ListPlayers("club:cinder-valley").Count, club!.SquadSize);
+        // Cinder Valley is the one club the shipped world gives two managers.
         Assert.Equal(2, world.ListManagers("club:cinder-valley").Count);
     }
 }

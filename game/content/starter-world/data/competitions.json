@@ -4,48 +4,351 @@
     {
       "externalId": "competition:boreal-series",
       "kindId": "competition",
-      "values": { "display-name": "Boreal Series", "format": "round-robin", "edition-frequency": "annual" },
+      "values": {
+        "display-name": "Boreal Series",
+        "format": "round-robin",
+        "edition-frequency": "annual"
+      },
       "references": [
-        { "relationId": "country", "targetExternalId": "country:norvane", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:aurora-quay", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:northglass-rovers", "required": true },
-        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+        {
+          "relationId": "country",
+          "targetExternalId": "country:norvane",
+          "required": true
+        },
+        {
+          "relationId": "rule-set",
+          "targetExternalId": "rules:domestic-league",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:aurora-quay",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:northglass-rovers",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:aldervane-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:bruneport-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:calderwick-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:drossmere-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:elmgate-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:fennhollow-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:glasmoor-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:halbrook-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:irenfell-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:jarrowmoor-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:kelderhaven-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:lansford-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:merrowgate-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:norhelm-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:ostrey-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:pellworth-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:quarrowden-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:ravenmoor-athletic",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "competition:cinder-tier",
+      "kindId": "competition",
+      "values": {
+        "display-name": "Cinder Tier",
+        "format": "round-robin",
+        "edition-frequency": "annual"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:norvane",
+          "required": true
+        },
+        {
+          "relationId": "rule-set",
+          "targetExternalId": "rules:domestic-league",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:silverdown-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:thornbeck-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:umberlee-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:valdreth-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:westmarch-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:ythwell-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:zennorbay-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:ashenlock-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:brightmere-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:coldhaven-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:dunhollow-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:eastreach-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:farrowden-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:grimsdale-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:highmarsh-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:ironvale-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:larkspire-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:marrowford-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:northgale-athletic",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:oakensea-athletic",
+          "required": true
+        }
       ]
     },
     {
       "externalId": "competition:ember-league",
       "kindId": "competition",
-      "values": { "display-name": "Ember League", "format": "round-robin", "edition-frequency": "annual" },
+      "values": {
+        "display-name": "Ember League",
+        "format": "round-robin",
+        "edition-frequency": "annual"
+      },
       "references": [
-        { "relationId": "country", "targetExternalId": "country:velmora", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:cinder-valley", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:forge-lantern", "required": true },
-        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+        {
+          "relationId": "country",
+          "targetExternalId": "country:velmora",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:cinder-valley",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:forge-lantern",
+          "required": true
+        },
+        {
+          "relationId": "rule-set",
+          "targetExternalId": "rules:domestic-league",
+          "required": true
+        }
       ]
     },
     {
       "externalId": "competition:horizon-cup",
       "kindId": "competition",
-      "values": { "display-name": "Horizon Cup", "format": "elimination", "edition-frequency": "annual" },
+      "values": {
+        "display-name": "Horizon Cup",
+        "format": "elimination",
+        "edition-frequency": "annual"
+      },
       "references": [
-        { "relationId": "participant", "targetExternalId": "club:aurora-quay", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:cinder-valley", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:forge-lantern", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:maris-cobalt", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:northglass-rovers", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:solspire-azul", "required": true },
-        { "relationId": "rule-set", "targetExternalId": "rules:continental-cup", "required": true }
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:aurora-quay",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:cinder-valley",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:forge-lantern",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:maris-cobalt",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:northglass-rovers",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:solspire-azul",
+          "required": true
+        },
+        {
+          "relationId": "rule-set",
+          "targetExternalId": "rules:continental-cup",
+          "required": true
+        }
       ]
     },
     {
       "externalId": "competition:solar-premiership",
       "kindId": "competition",
-      "values": { "display-name": "Solar Premiership", "format": "round-robin", "edition-frequency": "annual" },
+      "values": {
+        "display-name": "Solar Premiership",
+        "format": "round-robin",
+        "edition-frequency": "annual"
+      },
       "references": [
-        { "relationId": "country", "targetExternalId": "country:soldara", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:maris-cobalt", "required": true },
-        { "relationId": "participant", "targetExternalId": "club:solspire-azul", "required": true },
-        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+        {
+          "relationId": "country",
+          "targetExternalId": "country:soldara",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:maris-cobalt",
+          "required": true
+        },
+        {
+          "relationId": "participant",
+          "targetExternalId": "club:solspire-azul",
+          "required": true
+        },
+        {
+          "relationId": "rule-set",
+          "targetExternalId": "rules:domestic-league",
+          "required": true
+        }
       ]
     }
   ]

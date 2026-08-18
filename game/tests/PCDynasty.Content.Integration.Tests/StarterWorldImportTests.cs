@@ -15,6 +15,12 @@ public sealed class StarterWorldImportTests
         PropertyNameCaseInsensitive = true,
     };
 
+    private static readonly JsonSerializerOptions GoldenWriteOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
+
     private static readonly string[] DocumentNames =
     [
         "countries.json",
@@ -27,9 +33,14 @@ public sealed class StarterWorldImportTests
     [Fact]
     public async Task ImportsToAnImmutableReproduciblePack()
     {
-        ExpectedSnapshot expected = await ReadExpectedAsync();
         CompiledContentPack forward = await ImportAsync(DocumentNames);
         CompiledContentPack reversed = await ImportAsync(DocumentNames.Reverse());
+        if (Environment.GetEnvironmentVariable("PCDYNASTY_UPDATE_GOLDEN") == "1")
+        {
+            await WriteExpectedAsync(forward);
+        }
+
+        ExpectedSnapshot expected = await ReadExpectedAsync();
 
         Assert.Equal(expected.ProviderId, forward.ProviderId);
         Assert.Equal(expected.SchemaVersion, forward.SchemaVersion);
@@ -103,7 +114,7 @@ public sealed class StarterWorldImportTests
     private static string CanonicalHash(CompiledContentPack pack)
     {
         var canonical = new StringBuilder();
-        canonical.Append(pack.ProviderId).Append('|').Append(pack.SchemaVersion).AppendLine();
+        canonical.Append(pack.ProviderId).Append('|').Append(pack.SchemaVersion).Append('\n');
         foreach (NormalizedContentEntity entity in pack.Entities.Values.OrderBy(
                      item => item.ExternalId,
                      StringComparer.Ordinal))
@@ -130,11 +141,44 @@ public sealed class StarterWorldImportTests
                     .Append(reference.Required ? '1' : '0');
             }
 
-            canonical.AppendLine();
+            canonical.Append('\n');
         }
 
         return Convert.ToHexString(SHA256.HashData(
             Encoding.UTF8.GetBytes(canonical.ToString()))).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Rewrites the golden snapshot from the current pack. Guarded by
+    /// PCDYNASTY_UPDATE_GOLDEN=1 so it never runs in CI: content grows on
+    /// purpose, and hand-editing a hash is how a golden file stops meaning
+    /// anything.
+    /// </summary>
+    private static async Task WriteExpectedAsync(CompiledContentPack pack)
+    {
+        var snapshot = new ExpectedSnapshot
+        {
+            ProviderId = pack.ProviderId,
+            SchemaVersion = pack.SchemaVersion,
+            EntityCount = pack.Entities.Count,
+            CountsByKind = pack.EntitiesByKind.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value.Length),
+            CanonicalSha256 = CanonicalHash(pack),
+            DependencyOrderTail = pack.DependencyOrder.TakeLast(3)
+                .Select(entity => entity.ExternalId)
+                .ToArray(),
+        };
+        string path = Path.Combine(
+            AppContext.BaseDirectory,
+            "..",
+            "..",
+            "..",
+            "Fixtures",
+            "StarterWorldExpected.json");
+        await File.WriteAllTextAsync(
+            Path.GetFullPath(path),
+            JsonSerializer.Serialize(snapshot, GoldenWriteOptions) + "\n");
     }
 
     private static async Task<ExpectedSnapshot> ReadExpectedAsync()
