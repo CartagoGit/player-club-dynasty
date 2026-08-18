@@ -2,7 +2,7 @@
 id: f00043
 title: "Extend the options panel with language and theme preferences"
 kind: feat
-status: ready
+status: review
 type: proposal
 track: product
 date: 2026-08-18
@@ -128,3 +128,6 @@ domain exposes an immutable catalog; the presentation applies it.
   rebuild.
 - The visual grammar stays original: every string, palette, icon and flag is
   produced by this project, never lifted from a commercial product.
+
+- review-implementer: parallel agent
+- review-log: reconciled by claude-opus-5 — Five slices are done and S5 was retired when `f00046` replaced the `.po` pipeline with the typed locale file; the proposal had stayed in ready/ regardless. The palette and locale sections it added do reach the options panel, but the panel itself still shows every control at once, which `x00042` S6 rebuilds as a menu of sections.

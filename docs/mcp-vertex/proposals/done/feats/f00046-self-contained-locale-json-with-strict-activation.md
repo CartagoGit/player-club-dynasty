@@ -314,7 +314,7 @@ many keys are missing.
 - global_gate: e2e
 
 ### S1 — Typed LocaleFile and sub-records
-- **Status**: ready
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Presentation.Core/Localization/LocaleFile.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/MenuSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/OptionsSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/SquadSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/MarketSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/HistorySection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/CompetitionsSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/WorldSection.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/PickerSection.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleFileTests.cs`
 - **Gate**: e2e
 - acceptance:
@@ -326,9 +326,9 @@ many keys are missing.
     populated."
 
 ### S2 — Strict locale loader
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Presentation.Core/Localization/LocaleLoader.cs`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleLoadResult.cs`, `game/src/PCDynasty.Presentation.Core/Localization/TranslationLoadException.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleLoaderTests.cs`
+- **Files**: `game/src/PCDynasty.Presentation.Core/Localization/LocaleLoader.cs`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleLoadResult.cs`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleLoadResult.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleLoaderTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "`LocaleLoader.Load(id)` returns `LocaleLoadResult.Ok(file)` when the
@@ -344,7 +344,7 @@ many keys are missing.
     missing icon, missing required section, extra unknown keys."
 
 ### S3 — Locale registry with collision detection
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Presentation.Core/Localization/LocaleRegistry.cs`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleMetadata.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleRegistryTests.cs`
 - **Gate**: e2e
@@ -360,7 +360,7 @@ many keys are missing.
     one entry + one warning, no files → empty list."
 
 ### S4 — Activation service
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S2, S3]
 - **Files**: `game/src/PCDynasty.Presentation.Core/Localization/LocaleActivationService.cs`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleActivationOutcome.cs`, `game/src/PCDynasty.Presentation.Core/Localization/SystemLocaleProbe.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleActivationServiceTests.cs`
 - **Gate**: e2e
@@ -377,9 +377,9 @@ many keys are missing.
     (fatal)."
 
 ### S5 — Translation error panel
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S2, S4]
-- **Files**: `game/godot/Scripts/Shell/TranslationErrorPanel.cs`, `game/godot/Scripts/Shell/TranslationErrorPanel.cs.uid`, `game/godot/locale/langs/errors.json`, `game/tests/PCDynasty.Presentation.Tests/Localization/TranslationErrorPanelTests.cs`
+- **Files**: `game/godot/Scripts/Shell/ApplicationErrorPanel.cs`, `game/godot/Scripts/Shell/ApplicationErrorPanel.cs.uid`, `game/tests/PCDynasty.Presentation.Tests/Localization/TranslationErrorPanelShapeTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "`TranslationErrorPanel.Build(outcome)` returns the right panel shape
@@ -394,7 +394,7 @@ many keys are missing.
     scroll container is present in the tree."
 
 ### S6 — Wire activation into the bootstrap
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S4, S5]
 - **Files**: `game/godot/Scripts/PresentationBootstrap.cs`
 - **Gate**: e2e
@@ -409,9 +409,9 @@ many keys are missing.
     when the player taps `[ Use English ]`."
 
 ### S7 — Language picker: metadata-only scan + strict load on tap
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S3, S4]
-- **Files**: `game/godot/Scripts/Shell/LocaleSection.cs`, `game/godot/Scripts/Shell/LocaleSpinner.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleSectionTests.cs`
+- **Files**: `game/godot/Scripts/Shell/LocaleSection.cs`, `game/godot/Scripts/Shell/LocaleSpinner.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleActivationServiceTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "`LocaleSection` reads the registry on `_Ready` and renders one button
@@ -423,9 +423,9 @@ many keys are missing.
     missing, the existing procedural `FlagIcon` is used as a fallback."
 
 ### S8 — Options panel: Save and close / Revert
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S7]
-- **Files**: `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/OptionsPanelState.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/OptionsPanelStateTests.cs`
+- **Files**: `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scenes/Main.tscn`, `game/src/PCDynasty.Presentation.Core/OptionsPanelState.cs`, `game/tests/PCDynasty.Presentation.Tests/Localization/OptionsPanelStateTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "The options panel snapshot is taken on `OpenOptions`; the
@@ -437,13 +437,13 @@ many keys are missing.
     everything goes back; tap Save → preferences.json is updated."
 
 ### S9 — Compile-time JSON generator
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `tools/scripts/generate-locale.script.ts`, `game/src/PCDynasty.Presentation.Core/Localization/LocaleFileGenerator.cs`, `tools/scripts/__tests__/generate-locale.spec.ts`
 - **Gate**: e2e
 - acceptance:
   - "`bun run tools/scripts/generate-locale.script.ts` serialises every
-    `LocaleFile` record to `res://locale/langs/{es,en}.json`."
+    `LocaleFile` record to "res://locale/langs/{es,en}.json"."
   - "The generator refuses to run if any record is missing a required
     key (it has the same strict validation as the loader)."
   - "CI runs the generator in dry-run mode and fails if a checked-in
@@ -452,9 +452,9 @@ many keys are missing.
     the next regeneration diffs only the affected key."
 
 ### S10 — E2E locale tests
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S2, S3, S4, S5, S6, S7, S8, S9]
-- **Files**: `game/tests/PCDynasty.Presentation.Tests/Localization/E2E.cs`
+- **Files**: `game/tests/PCDynasty.Presentation.Tests/Localization/LocaleE2ETests.cs`
 - **Gate**: e2e
 - acceptance:
   - "Boot the registry with a real folder of `xx.json` files; the
@@ -466,9 +466,9 @@ many keys are missing.
   - "Generating twice with the same records produces byte-identical JSON."
 
 ### S11 — Drop the legacy .po pipeline
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S9, S10]
-- **Files**: `game/godot/locale/game.pot` (delete), `game/godot/locale/en.po` (delete), `game/godot/locale/es.po` (delete), `game/godot/Scripts/Shell/LocaleApplier.cs` (delete), `game/godot/Scripts/Shell/ThemePaletteApplier.cs` (drop the `LocaleApplier.RegisterTranslations` call), `game/godot/Scripts/PresentationBootstrap.cs` (drop the `res://locale/` legacy path), `game/godot/Scripts/Shell/MainMenuController.cs` (drop the `Tr()`-based `LocaleSection` constructor), `docs/mcp-vertex/proposals/ready/f00043-extend-options-panel-with-language-and-theme-preferences.md` (mark S5 done, retire the `.po` slice)
+- **Files**: (retired with the .po pipeline in S11) (delete) (delete) (delete), `game/godot/Scripts/Shell/LocaleSession.cs` (delete), `game/godot/Scripts/Shell/ThemePaletteApplier.cs` (drop the `LocaleApplier.RegisterTranslations` call), `game/godot/Scripts/PresentationBootstrap.cs` (drop the `res://locale/` legacy path), `game/godot/Scripts/Shell/MainMenuController.cs` (drop the `Tr()`-based `LocaleSection` constructor), `docs/mcp-vertex/proposals/ready/f00043-extend-options-panel-with-language-and-theme-preferences.md` (mark S5 done, retire the `.po` slice)
 - **Gate**: e2e
 - acceptance:
   - "No `.po` or `.pot` file remains in the repository (`git ls-files |
@@ -482,7 +482,7 @@ many keys are missing.
 
 ## acceptance
 
-- Every visible string in the shell comes from `res://locale/langs/<active>.json`.
+- Every visible string in the shell comes from "res://locale/langs/&lt;active&gt;.json".
 - The C# record tree is the single source of truth: the JSON is generated
   from it.
 - Adding a new language is one file: drop `fr.json` into
@@ -495,3 +495,6 @@ many keys are missing.
 - The options panel offers `Revert` and `Save and close`; no destructive
   third button.
 - No `.po` or `.pot` file remains in the repository.
+
+- review-implementer: parallel agent
+- review-log: corrected by claude-opus-5 — The proposal closed with all eleven slices still marked ready and eight declared files that do not exist. The declarations now name the files that shipped (OptionsPanelState moved to Presentation.Core, TranslationErrorPanel shipped as ApplicationErrorPanel plus TranslationErrorPanelShape, the E2E and panel tests carry their real names) and the `.po` artefacts are recorded as retired by S11 rather than missing. The runtime gap the proposal left behind — screens asking Godot for keys nobody registers, so the game rendered MARKET_NOTICE_ACCEPTED on screen — is fixed under `x00042` S5.

@@ -2,7 +2,7 @@
 id: f00042
 title: "Adopt the classic manager interface grammar in the shell"
 kind: feat
-status: ready
+status: review
 type: proposal
 track: product
 date: 2026-08-18
@@ -48,7 +48,7 @@ material enters the repository.
 - global_gate: e2e
 
 ### S1 — Give the main menu a classic title plate and action stack
-- **Status**: ready
+- **Status**: done
 - **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Theme/ManagerDesignTokens.cs`, `game/godot/Scripts/Shell/ShellChrome.cs`, `docs/design/manager-ui-style-guide.md`
 - **Gate**: e2e
 - acceptance:
@@ -58,7 +58,7 @@ material enters the repository.
   - "SmokeBoot still starts a career from the menu."
 
 ### S2 — Give the club workspace a persistent header, area rail and status bar
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceHeader.cs`, `game/godot/Scripts/Workspace/WorkspaceSection.cs`, `game/godot/Tests/SmokeBoot.gd`
 - **Gate**: e2e
@@ -69,7 +69,7 @@ material enters the repository.
   - "SmokeBoot walks every area and reads the header and the status strip."
 
 ### S3 — Make the options panel a settings list that is applied and remembered
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/src/PCDynasty.Presentation.Core/PresentationPreferences.cs`, `game/tests/PCDynasty.Presentation.Tests/PresentationPreferencesTests.cs`
 - **Gate**: e2e
@@ -86,3 +86,6 @@ material enters the repository.
 - Navigation is seven areas or fewer with no disabled placeholder.
 - Preferences are applied and survive a restart.
 - Every asset, name and string in the shell is original to this project.
+
+- review-implementer: parallel agent
+- review-log: reconciled by claude-opus-5 — The three slices shipped in `fcde4a5` (title plate and action stack, persistent header with the area rail and status strip, options panel) but the proposal stayed in ready/ with every slice open. Two defects the slices introduced are fixed under `x00042`: the smoke still resolved the pre-Frame node paths, and HeaderPanel built its labels in `_Ready` while every screen configures it before it enters the tree, which is why the header bands rendered blank. The settings surface is not finished: S6 of `x00042` carries the owner's requirement that it becomes a menu of sections rather than one stacked panel.

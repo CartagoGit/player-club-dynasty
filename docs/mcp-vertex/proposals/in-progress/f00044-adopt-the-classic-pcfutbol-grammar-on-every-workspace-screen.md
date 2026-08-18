@@ -2,7 +2,7 @@
 id: f00044
 title: "Adopt the classic PCFútbol grammar on every workspace screen"
 kind: feat
-status: ready
+status: in-progress
 type: proposal
 track: product
 date: 2026-08-18
@@ -161,3 +161,6 @@ artwork, palette, typography and copy stay original.
   switch re-skins the new chrome for free.
 - The smoke-boot still passes; the path layout under `Workspace/Layout/...` is preserved.
 - No asset, name, copy or screenshot from PCFútbol enters the repository.
+
+- review-implementer: parallel agent
+- review-log: reconciled by claude-opus-5 — Five screens carry the HeaderPanel/ListSection/ZebraRow grammar and one slice is honestly marked partial. Two consequences of the migration were left behind and are fixed under `x00042`: every migrated screen passed translation keys to components that no consumer ever resolved, so the game rendered raw keys, and the smoke still addressed rows by their pre-migration paths. What remains here is the partial slice itself, tracked in this document rather than closed early.

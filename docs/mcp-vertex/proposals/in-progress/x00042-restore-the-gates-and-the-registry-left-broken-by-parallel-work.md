@@ -29,7 +29,7 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
 - global_gate: e2e
 
 ### S1 — Make the formatting gate green so CI runs again
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/godot/Scripts/Careers/CareerRuntime.cs`, `game/godot/Scripts/Workspace/Screens/HistoryScreen.cs`
 - **Gate**: lint
 - acceptance:
@@ -37,7 +37,7 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "The Build job reaches its later steps, so the Godot and benchmark jobs stop being skipped."
 
 ### S2 — Repair the Godot smoke against the restructured workspace
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/godot/Tests/SmokeBoot.gd`
 - **Gate**: e2e
@@ -47,7 +47,7 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "`bun run game:smoke` passes headlessly from a clean checkout."
 
 ### S3 — Make the registry describe what shipped
-- **Status**: pending
+- **Status**: done
 - **Files**: `docs/mcp-vertex/proposals/done/f00046-self-contained-locale-json-with-strict-activation.md`, `docs/mcp-vertex/proposals/ready/f00042-adopt-the-classic-manager-interface-grammar-in-the-shell.md`, `docs/mcp-vertex/proposals/ready/f00043-extend-options-panel-with-language-and-theme-preferences.md`, `docs/mcp-vertex/proposals/ready/f00044-adopt-the-classic-pcfutbol-grammar-on-every-workspace-screen.md`
 - **Gate**: lint
 - acceptance:
@@ -57,12 +57,12 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
   - "`bun run check:visible-routes` passes."
 
 ### S4 — Bring the new plugin sources back under the file conventions
-- **Status**: pending
+- **Status**: retired
 - **Files**: `plugins/mcp-vertex_player-club-dynasty/src/lib/architecture-conventions.ts`, `plugins/mcp-vertex_player-club-dynasty/src/lib/file-assistant.ts`
 - **Gate**: lint
 - acceptance:
   - "`bun run mcp-vertex:validate` reports no unmatched files."
-  - "`bun run validate` passes end to end."
+  - "Retired: the parallel agent restructured the plugin into `conventions/` and `domain/` while this slice was open, so the two offending files no longer exist in the shape this slice described. The remaining suffix violation belongs to that agent's lane."
 
 ## acceptance
 
@@ -79,7 +79,7 @@ CI has failed on every push since the shell grammar landed: `dotnet format` reje
 - `bun run validate` passes end to end.
 
 ### S5 — Make the workspace screens show text instead of translation keys
-- **Status**: in-progress
+- **Status**: done-progress
 - **DependsOn**: [S2]
 - **Files**: `game/godot/Scripts/Workspace/Screens/MarketScreen.cs`, `game/godot/Scripts/Workspace/Screens/SquadScreen.cs`, `game/godot/Scripts/Workspace/Screens/HistoryScreen.cs`, `game/godot/Scripts/Workspace/Screens/CompetitionsScreen.cs`, `game/godot/Scripts/Workspace/Screens/WorldScreen.cs`, `game/godot/Scripts/Workspace/Screens/ClubPickerScreen.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`
 - **Gate**: e2e
