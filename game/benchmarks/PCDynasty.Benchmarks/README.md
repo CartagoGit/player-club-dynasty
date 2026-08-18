@@ -23,6 +23,17 @@ PATH=/tmp/pcdynasty-dotnet:$PATH dotnet run -c Release \
   --project game/benchmarks/PCDynasty.Benchmarks -- --filter '*Contest*'
 ```
 
+Measure the manager interaction boundary specifically:
+
+```shell
+PATH=/tmp/pcdynasty-dotnet:$PATH dotnet run -c Release \
+  --project game/benchmarks/PCDynasty.Benchmarks -- --filter '*ManagerInteraction*'
+```
+
+The fast regression gate protects an 8 ms median for a played match and a
+50 ms median for a complete 20-club, 190-match season. Both workloads include
+the application-level timeline and persistence projections used by Godot.
+
 Do not compare absolute timings from different machines. The committed budgets
 are fast regression gates for a stable CI runner; BenchmarkDotNet reports are the
 source for profiling and for intentionally recalibrating those budgets.

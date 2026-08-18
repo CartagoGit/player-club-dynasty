@@ -32,6 +32,16 @@ public sealed class InteractionBudgetTests(ITestOutputHelper output)
         AssertWithin("materialize-club", workload.MaterializeClub, budgets);
     }
 
+    [Fact]
+    public async Task ManagerSimulationStaysInsideInteractionBudgets()
+    {
+        IReadOnlyDictionary<string, TimeSpan> budgets = await LoadBudgetsAsync();
+        var workload = new ManagerInteractionBenchmarks();
+
+        AssertWithin("play-manager-match", workload.PlayManagerMatch, budgets);
+        AssertWithin("simulate-manager-season", workload.SimulateManagerSeason, budgets);
+    }
+
     private void AssertWithin(
         string budgetId,
         Func<long> workload,

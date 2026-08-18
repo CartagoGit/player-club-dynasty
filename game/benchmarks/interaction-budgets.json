@@ -22,6 +22,20 @@
       "policy": "Complete inside one frame without I/O or world simulation."
     },
     {
+      "id": "play-manager-match",
+      "class": "ui-interaction",
+      "maxMilliseconds": 8,
+      "fixture": "one deterministic manager match with projected timeline and persistence record",
+      "policy": "Complete inside one interaction frame without visible loading."
+    },
+    {
+      "id": "simulate-manager-season",
+      "class": "explicit-advance",
+      "maxMilliseconds": 50,
+      "fixture": "20-club single round-robin season; 190 matches and persistence projections",
+      "policy": "Complete without a visible loading interruption on reference hardware."
+    },
+    {
       "id": "open-player-view",
       "class": "ui-interaction",
       "maxMilliseconds": 16,
