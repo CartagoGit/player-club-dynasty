@@ -78,7 +78,9 @@ public partial class PresentationBootstrap : Control
 
     private void OpenCareer(IManagerWorld service, string clubId, CareerRuntimeMode mode)
     {
-        CareerRuntime runtime = _careerRuntimeFactory!.Create(mode);
+        ClubRow club = service.FindClub(clubId)
+            ?? throw new InvalidOperationException($"Club '{clubId}' does not exist in the loaded world.");
+        CareerRuntime runtime = _careerRuntimeFactory!.Create(mode, club);
         SaveCareerProfile(service, clubId, mode);
         OpenWorkspace(service, clubId, runtime);
     }
@@ -87,14 +89,19 @@ public partial class PresentationBootstrap : Control
     {
         DateTimeOffset now = TimeProvider.System.GetUtcNow();
         DateTimeOffset startedAt = now;
+        DateTimeOffset lastPlayedAt = now;
         if (mode == CareerRuntimeMode.Continue &&
             _careerProfileStore!.TryLoad(out CareerProfile? existing))
         {
             startedAt = existing!.StartedAtUtc;
+            if (lastPlayedAt < startedAt)
+            {
+                lastPlayedAt = startedAt;
+            }
         }
 
         string clubName = service.FindClub(clubId)?.DisplayName ?? clubId;
-        _careerProfileStore!.Save(new CareerProfile(clubId, clubName, startedAt, now));
+        _careerProfileStore!.Save(new CareerProfile(clubId, clubName, startedAt, lastPlayedAt));
     }
 
     private static string CareerDatabasePath()
@@ -121,6 +128,7 @@ public partial class PresentationBootstrap : Control
             SquadButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad"),
             TacticsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics"),
             CompetitionsButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Competitions"),
+            FinancesButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances"),
             HistoryButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/History"),
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
             MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
@@ -131,7 +139,8 @@ public partial class PresentationBootstrap : Control
             _competitionSimulation,
             runtime.Lineups,
             runtime.Session,
-            runtime.History);
+            runtime.History,
+            runtime.Finances);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

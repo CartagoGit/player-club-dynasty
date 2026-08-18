@@ -44,6 +44,17 @@ func _run() -> void:
 	_expect(workspace.visible, "The manager workspace must become visible after starting a career.")
 	_expect(scene.has_node("WorkspaceController"), "The wired workspace controller is missing.")
 
+	var finances := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
+	_expect(not finances.disabled, "The finance office must be enabled.")
+	finances.emit_signal("pressed")
+	await process_frame
+	var cash_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/FinancesOffice/FinanceMetrics/Cash/Content/Value"
+	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
+		_fail("The persistent finance office did not open.")
+		return
+	var opening_cash := _label_text(scene, cash_path)
+	_expect(opening_cash.contains("EUR"), "The finance office must render meaningful currency values.")
+
 	var tactics := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
 	_expect(not tactics.disabled, "The tactics route must be enabled.")
 	tactics.emit_signal("pressed")
@@ -75,6 +86,13 @@ func _run() -> void:
 	if not await _wait_until(func() -> bool: return workspace.visible and scene.has_node("WorkspaceController")):
 		_fail("Continuing a career did not create a fresh manager workspace.")
 		return
+
+	finances = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
+	finances.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
+		_fail("The finance office did not reopen after continuing the career.")
+		return
+	_expect(_label_text(scene, cash_path) == opening_cash, "Continuing a career must restore its persisted finance state.")
 
 	quit(1 if _failed else 0)
 

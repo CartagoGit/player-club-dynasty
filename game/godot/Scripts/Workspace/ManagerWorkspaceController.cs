@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Competitions.Simulation;
+using PCDynasty.Application.Finances;
 using PCDynasty.Application.Matches;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
@@ -10,10 +11,7 @@ using PCDynasty.Presentation.Workspace.Screens;
 
 namespace PCDynasty.Presentation.Workspace;
 
-/// <summary>
-/// Coordinates workspace navigation and selected-club state. Rendering,
-/// simulation and persistence are delegated to focused collaborators.
-/// </summary>
+/// <summary>Coordinates navigation and club state through focused screens.</summary>
 public partial class ManagerWorkspaceController : Control
 {
     [Export] public NodePath ContentRootPath { get; set; } = new();
@@ -22,6 +20,7 @@ public partial class ManagerWorkspaceController : Control
     [Export] public NodePath SquadButtonPath { get; set; } = new();
     [Export] public NodePath TacticsButtonPath { get; set; } = new();
     [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
+    [Export] public NodePath FinancesButtonPath { get; set; } = new();
     [Export] public NodePath HistoryButtonPath { get; set; } = new();
     [Export] public NodePath WorldButtonPath { get; set; } = new();
     [Export] public NodePath MainMenuButtonPath { get; set; } = new();
@@ -35,17 +34,19 @@ public partial class ManagerWorkspaceController : Control
     private SquadScreen? _squadScreen;
     private TacticsScreen? _tacticsScreen;
     private CompetitionsScreen? _competitionsScreen;
+    private FinancesScreen? _financesScreen;
     private HistoryScreen? _historyScreen;
     private WorldScreen? _worldScreen;
     private ClubPickerScreen? _clubPickerScreen;
-
+    private readonly List<(Button Button, Action Handler)> _buttonBindings = [];
     internal void Configure(
         IManagerWorld world,
         string selectedClubId,
         ICompetitionSimulationService competitionSimulation,
         ICareerLineupService lineupService,
         CareerSession careerSession,
-        CareerHistoryPersistence historyPersistence)
+        CareerHistoryPersistence historyPersistence,
+        ICareerFinanceService financeService)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
@@ -55,6 +56,7 @@ public partial class ManagerWorkspaceController : Control
         ArgumentNullException.ThrowIfNull(competitionSimulation);
         ArgumentNullException.ThrowIfNull(lineupService);
         ArgumentNullException.ThrowIfNull(careerSession);
+        ArgumentNullException.ThrowIfNull(financeService);
 
         _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
         _squadScreen = new SquadScreen(world);
@@ -65,6 +67,7 @@ public partial class ManagerWorkspaceController : Control
             historyPersistence,
             RenderCurrent,
             SetStatus);
+        _financesScreen = new FinancesScreen(financeService);
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
         _worldScreen = new WorldScreen(world);
         _clubPickerScreen = new ClubPickerScreen(SelectClub);
@@ -82,18 +85,35 @@ public partial class ManagerWorkspaceController : Control
         Wire(SquadButtonPath, WorkspaceSection.Squad);
         Wire(TacticsButtonPath, WorkspaceSection.Tactics);
         Wire(CompetitionsButtonPath, WorkspaceSection.Competitions);
+        Wire(FinancesButtonPath, WorkspaceSection.Finances);
         Wire(HistoryButtonPath, WorkspaceSection.History);
         Wire(WorldButtonPath, WorkspaceSection.World);
 
         Button? mainMenu = GetNodeOrNull<Button>(MainMenuButtonPath);
-        if (mainMenu is not null) mainMenu.Pressed += () => MainMenuRequested?.Invoke();
+        if (mainMenu is not null) Bind(mainMenu, () => MainMenuRequested?.Invoke());
         RenderCurrent();
+    }
+
+    public override void _ExitTree()
+    {
+        foreach ((Button button, Action handler) in _buttonBindings)
+        {
+            button.Pressed -= handler;
+        }
+
+        _buttonBindings.Clear();
     }
 
     private void Wire(NodePath path, WorkspaceSection section)
     {
         Button? button = GetNodeOrNull<Button>(path);
-        if (button is not null) button.Pressed += () => SelectSection(section);
+        if (button is not null) Bind(button, () => SelectSection(section));
+    }
+
+    private void Bind(Button button, Action handler)
+    {
+        button.Pressed += handler;
+        _buttonBindings.Add((button, handler));
     }
 
     private void SelectSection(WorkspaceSection section)
@@ -145,6 +165,10 @@ public partial class ManagerWorkspaceController : Control
             case WorkspaceSection.Tactics:
                 _tacticsScreen!.Render(root, club);
                 SetStatus($"● {club.DisplayName} · plan de partido");
+                break;
+            case WorkspaceSection.Finances:
+                _financesScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName} · finanzas");
                 break;
             case WorkspaceSection.History:
                 _historyScreen!.Render(root);

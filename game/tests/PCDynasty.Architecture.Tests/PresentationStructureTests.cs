@@ -227,6 +227,23 @@ public sealed partial class PresentationStructureTests
         }
     }
 
+    [Fact]
+    public void FinanceScreenDependsOnApplicationPortNotSqlite()
+    {
+        string source = File.ReadAllText(Path.Combine(
+            FindGameRoot(),
+            "godot",
+            "Scripts",
+            "Workspace",
+            "Screens",
+            "FinancesScreen.cs"));
+
+        Assert.Contains("ICareerFinanceService", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("SqliteCareerFinanceStore", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("PCDynasty.Economy", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("Microsoft.Data.Sqlite", source, StringComparison.Ordinal);
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

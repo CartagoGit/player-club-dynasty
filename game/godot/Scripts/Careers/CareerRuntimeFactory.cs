@@ -1,4 +1,6 @@
+using PCDynasty.Application.Finances;
 using PCDynasty.Application.Matches;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Persistence.Sqlite;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Workspace.Persistence;
@@ -31,10 +33,12 @@ internal sealed class CareerRuntimeFactory
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
-    internal CareerRuntime Create(CareerRuntimeMode mode)
+    internal CareerRuntime Create(CareerRuntimeMode mode, ClubRow club)
     {
+        ArgumentNullException.ThrowIfNull(club);
         var historyStore = new SqliteCareerHistoryStore(_databasePath);
         var lineupStore = new SqliteCareerLineupStore(_databasePath);
+        var financeStore = new SqliteCareerFinanceStore(_databasePath);
         var sessionFactory = new CareerSessionFactory(historyStore);
 
         CareerSession session;
@@ -48,9 +52,17 @@ internal sealed class CareerRuntimeFactory
             session = sessionFactory.Restore();
         }
 
+        var finances = new CareerFinanceService(financeStore, _timeProvider);
+        finances.Open(
+            club,
+            mode == CareerRuntimeMode.New
+                ? CareerFinanceMode.New
+                : CareerFinanceMode.Continue);
+
         return new CareerRuntime(
             session,
             new CareerLineupService(lineupStore, _timeProvider),
-            new CareerHistoryPersistence(historyStore, session));
+            new CareerHistoryPersistence(historyStore, session),
+            finances);
     }
 }

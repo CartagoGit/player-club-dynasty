@@ -48,9 +48,9 @@ The finance navigation is still disabled even though the economy ledger exists. 
   - "Round-trip, replace and clear semantics are tested against temporary external SQLite databases."
 
 ### S3 — Enable and render the finance office in Godot
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1, S2]
-- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Careers/CareerRuntime.cs`, `game/godot/Scripts/Careers/CareerRuntimeFactory.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/WorkspaceSection.cs`, `game/godot/Scripts/Workspace/Screens/FinancesScreen.cs`, `game/godot/Scripts/Workspace/Screens/FinancesScreen.cs.uid`, `game/godot/Tests/SmokeBoot.gd`, `game/tests/PCDynasty.Presentation.Tests/CareerRuntimeFactoryTests.cs`, `game/tests/PCDynasty.Architecture.Tests/PresentationStructureTests.cs`
+- **Files**: `game/godot/PCDynasty.Presentation.csproj`, `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Scripts/Careers/CareerRuntime.cs`, `game/godot/Scripts/Careers/CareerRuntimeFactory.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/WorkspaceSection.cs`, `game/godot/Scripts/Workspace/Screens/FinancesScreen.cs`, `game/godot/Scripts/Workspace/Screens/FinancesScreen.cs.uid`, `game/godot/Tests/SmokeBoot.gd`, `game/tests/PCDynasty.Presentation.Tests/CareerRuntimeFactoryTests.cs`, `game/tests/PCDynasty.Architecture.Tests/PresentationStructureTests.cs`
 - **Gate**: e2e
 - acceptance:
   - "FINANZAS is enabled and navigates to an original classic-manager office showing cash, transfer budget, revenue, costs and debt for the selected club."

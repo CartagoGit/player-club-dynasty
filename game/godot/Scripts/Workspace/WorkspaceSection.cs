@@ -6,6 +6,7 @@ internal enum WorkspaceSection
     Squad,
     Tactics,
     Competitions,
+    Finances,
     History,
     World,
     ClubPicker,

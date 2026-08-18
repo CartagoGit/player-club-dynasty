@@ -498,9 +498,7 @@ alignment = 0
 [node name="Finances" type="Button" parent="Workspace/Layout/Sidebar/SidebarMargin/SidebarContent"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-disabled = true
-theme_override_styles/disabled = SubResource("Style_disabled_nav")
-tooltip_text = "Finanzas se habilitará cuando el ledger de carrera esté conectado."
+tooltip_text = "Control presupuestario, tesorería y balance de la carrera."
 text = "  FINANZAS"
 alignment = 0
 

@@ -9,6 +9,7 @@
     <ProjectReference Include="../src/PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../src/PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj" />
     <ProjectReference Include="../src/PCDynasty.Editor/PCDynasty.Editor.csproj" />
+    <ProjectReference Include="../src/PCDynasty.Economy/PCDynasty.Economy.csproj" />
     <ProjectReference Include="../src/PCDynasty.Persistence.Sqlite/PCDynasty.Persistence.Sqlite.csproj" />
     <ProjectReference Include="../src/PCDynasty.Presentation.Core/PCDynasty.Presentation.Core.csproj" />
   </ItemGroup>
