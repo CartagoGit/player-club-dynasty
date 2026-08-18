@@ -2,7 +2,7 @@
 id: r00002
 title: "Decompose the Godot manager workspace into single-responsibility screens"
 kind: refactor
-status: review
+status: done
 type: proposal
 track: architecture
 date: 2026-08-18
@@ -40,7 +40,10 @@ The current MainController mixes navigation, layout construction, filtering, sim
   - "No mutable static UI state is required for history filtering."
   - "Every authored C# file under game/godot/Scripts stays below 500 lines and the architecture test enforces that limit."
   - "The existing Godot smoke journey and the complete .NET suite remain green."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: delivery-verifier
+- review-log: approved by delivery-verifier — Independent review verified thin workspace orchestration, focused renderers, shared UI factory, contract-based history persistence, instance filtering, file limits, architecture tests and Godot smoke.
 ## acceptance
 
 - The active Godot workspace controller only owns composition, navigation and selected-club state.
