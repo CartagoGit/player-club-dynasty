@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Market</AssemblyName>
+    <RootNamespace>PCDynasty.Market</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Economy/PCDynasty.Economy.csproj" />
+  </ItemGroup>
+</Project>

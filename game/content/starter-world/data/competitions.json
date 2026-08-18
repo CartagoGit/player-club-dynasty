@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "entities": [
+    {
+      "externalId": "competition:boreal-series",
+      "kindId": "competition",
+      "values": { "display-name": "Boreal Series", "format": "round-robin", "edition-frequency": "annual" },
+      "references": [
+        { "relationId": "country", "targetExternalId": "country:norvane", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:aurora-quay", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:northglass-rovers", "required": true },
+        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+      ]
+    },
+    {
+      "externalId": "competition:ember-league",
+      "kindId": "competition",
+      "values": { "display-name": "Ember League", "format": "round-robin", "edition-frequency": "annual" },
+      "references": [
+        { "relationId": "country", "targetExternalId": "country:velmora", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:cinder-valley", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:forge-lantern", "required": true },
+        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+      ]
+    },
+    {
+      "externalId": "competition:horizon-cup",
+      "kindId": "competition",
+      "values": { "display-name": "Horizon Cup", "format": "elimination", "edition-frequency": "annual" },
+      "references": [
+        { "relationId": "participant", "targetExternalId": "club:aurora-quay", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:cinder-valley", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:forge-lantern", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:maris-cobalt", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:northglass-rovers", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:solspire-azul", "required": true },
+        { "relationId": "rule-set", "targetExternalId": "rules:continental-cup", "required": true }
+      ]
+    },
+    {
+      "externalId": "competition:solar-premiership",
+      "kindId": "competition",
+      "values": { "display-name": "Solar Premiership", "format": "round-robin", "edition-frequency": "annual" },
+      "references": [
+        { "relationId": "country", "targetExternalId": "country:soldara", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:maris-cobalt", "required": true },
+        { "relationId": "participant", "targetExternalId": "club:solspire-azul", "required": true },
+        { "relationId": "rule-set", "targetExternalId": "rules:domestic-league", "required": true }
+      ]
+    }
+  ]
+}

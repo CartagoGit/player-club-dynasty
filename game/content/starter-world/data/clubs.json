@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "entities": [
+    {
+      "externalId": "club:aurora-quay",
+      "kindId": "club",
+      "values": {
+        "display-name": "Aurora Quay Athletic",
+        "short-name": "Aurora Quay",
+        "founded-year": "1938",
+        "city": "Myrglass",
+        "prestige": "54",
+        "fanbase": "48"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:norvane",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "club:cinder-valley",
+      "kindId": "club",
+      "values": {
+        "display-name": "Cinder Valley Union",
+        "short-name": "Cinder Valley",
+        "founded-year": "1946",
+        "city": "Ordel",
+        "prestige": "51",
+        "fanbase": "44"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:velmora",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "club:forge-lantern",
+      "kindId": "club",
+      "values": {
+        "display-name": "Forge Lantern Sporting",
+        "short-name": "Forge Lantern",
+        "founded-year": "1929",
+        "city": "Kest Vale",
+        "prestige": "58",
+        "fanbase": "52"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:velmora",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "club:maris-cobalt",
+      "kindId": "club",
+      "values": {
+        "display-name": "Maris Cobalt Club",
+        "short-name": "Maris Cobalt",
+        "founded-year": "1952",
+        "city": "Porto Serein",
+        "prestige": "56",
+        "fanbase": "49"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:soldara",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "club:northglass-rovers",
+      "kindId": "club",
+      "values": {
+        "display-name": "Northglass Rovers",
+        "short-name": "Northglass",
+        "founded-year": "1917",
+        "city": "Eidrim",
+        "prestige": "60",
+        "fanbase": "57"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:norvane",
+          "required": true
+        }
+      ]
+    },
+    {
+      "externalId": "club:solspire-azul",
+      "kindId": "club",
+      "values": {
+        "display-name": "Solspire Azul",
+        "short-name": "Solspire",
+        "founded-year": "1933",
+        "city": "Lunara",
+        "prestige": "62",
+        "fanbase": "59"
+      },
+      "references": [
+        {
+          "relationId": "country",
+          "targetExternalId": "country:soldara",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

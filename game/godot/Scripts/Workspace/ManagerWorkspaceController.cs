@@ -1,0 +1,213 @@
+using Godot;
+using PCDynasty.Application.Competitions.Simulation;
+using PCDynasty.Application.Finances;
+using PCDynasty.Application.Matches;
+using PCDynasty.Application.Market;
+using PCDynasty.Application.Workspace;
+using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Theme;
+using PCDynasty.Presentation.Workspace.Components;
+using PCDynasty.Presentation.Workspace.Persistence;
+using PCDynasty.Presentation.Workspace.Screens;
+
+namespace PCDynasty.Presentation.Workspace;
+
+/// <summary>Coordinates navigation and club state through focused screens.</summary>
+public partial class ManagerWorkspaceController : Control
+{
+    [Export] public NodePath ContentRootPath { get; set; } = new();
+    [Export] public NodePath StatusLabelPath { get; set; } = new();
+    [Export] public NodePath OverviewButtonPath { get; set; } = new();
+    [Export] public NodePath SquadButtonPath { get; set; } = new();
+    [Export] public NodePath TacticsButtonPath { get; set; } = new();
+    [Export] public NodePath CompetitionsButtonPath { get; set; } = new();
+    [Export] public NodePath MarketButtonPath { get; set; } = new();
+    [Export] public NodePath FinancesButtonPath { get; set; } = new();
+    [Export] public NodePath HistoryButtonPath { get; set; } = new();
+    [Export] public NodePath WorldButtonPath { get; set; } = new();
+    [Export] public NodePath MainMenuButtonPath { get; set; } = new();
+
+    public event Action? MainMenuRequested;
+
+    private IManagerWorld? _world;
+    private WorkspaceSection _selectedSection = WorkspaceSection.Overview;
+    private string? _managedClubId;
+    private string? _selectedClubId;
+    private ClubOverviewScreen? _overviewScreen;
+    private SquadScreen? _squadScreen;
+    private TacticsScreen? _tacticsScreen;
+    private CompetitionsScreen? _competitionsScreen;
+    private MarketScreen? _marketScreen;
+    private FinancesScreen? _financesScreen;
+    private HistoryScreen? _historyScreen;
+    private WorldScreen? _worldScreen;
+    private ClubPickerScreen? _clubPickerScreen;
+    private readonly List<(Button Button, Action Handler)> _buttonBindings = [];
+    internal void Configure(
+        IManagerWorld world,
+        string selectedClubId,
+        ICompetitionSimulationService competitionSimulation,
+        ICareerLineupService lineupService,
+        CareerSession careerSession,
+        CareerHistoryPersistence historyPersistence,
+        ICareerFinanceService financeService,
+        ICareerTransferMarketService transferMarket,
+        ICareerSquadProjection squadProjection)
+    {
+        _world = world ?? throw new ArgumentNullException(nameof(world));
+        _managedClubId = _selectedClubId = string.IsNullOrWhiteSpace(selectedClubId)
+            ? throw new ArgumentException("Selected club id cannot be empty.", nameof(selectedClubId))
+            : selectedClubId;
+        ArgumentNullException.ThrowIfNull(historyPersistence);
+        ArgumentNullException.ThrowIfNull(competitionSimulation);
+        ArgumentNullException.ThrowIfNull(lineupService);
+        ArgumentNullException.ThrowIfNull(careerSession);
+        ArgumentNullException.ThrowIfNull(financeService);
+        ArgumentNullException.ThrowIfNull(transferMarket);
+        ArgumentNullException.ThrowIfNull(squadProjection);
+
+        _overviewScreen = new ClubOverviewScreen(world, careerSession, () => SelectSection(WorkspaceSection.ClubPicker));
+        _squadScreen = new SquadScreen(world, squadProjection, _managedClubId);
+        _tacticsScreen = new TacticsScreen(world, lineupService);
+        _competitionsScreen = new CompetitionsScreen(
+            world,
+            competitionSimulation,
+            historyPersistence,
+            RenderCurrent,
+            SetStatus);
+        _marketScreen = new MarketScreen(transferMarket, RenderCurrent);
+        _financesScreen = new FinancesScreen(financeService);
+        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
+        _worldScreen = new WorldScreen(world);
+        _clubPickerScreen = new ClubPickerScreen(SelectClub);
+    }
+
+    public override void _Ready()
+    {
+        if (_world is null || _overviewScreen is null)
+        {
+            GD.PushError("[ManagerWorkspaceController] Configure must run before the node enters the tree.");
+            return;
+        }
+
+        Wire(OverviewButtonPath, WorkspaceSection.Overview);
+        Wire(SquadButtonPath, WorkspaceSection.Squad);
+        Wire(TacticsButtonPath, WorkspaceSection.Tactics);
+        Wire(CompetitionsButtonPath, WorkspaceSection.Competitions);
+        Wire(MarketButtonPath, WorkspaceSection.Market);
+        Wire(FinancesButtonPath, WorkspaceSection.Finances);
+        Wire(HistoryButtonPath, WorkspaceSection.History);
+        Wire(WorldButtonPath, WorkspaceSection.World);
+
+        Button? mainMenu = GetNodeOrNull<Button>(MainMenuButtonPath);
+        if (mainMenu is not null) Bind(mainMenu, () => MainMenuRequested?.Invoke());
+        RenderCurrent();
+    }
+
+    public override void _ExitTree()
+    {
+        foreach ((Button button, Action handler) in _buttonBindings)
+        {
+            button.Pressed -= handler;
+        }
+
+        _buttonBindings.Clear();
+    }
+
+    private void Wire(NodePath path, WorkspaceSection section)
+    {
+        Button? button = GetNodeOrNull<Button>(path);
+        if (button is not null) Bind(button, () => SelectSection(section));
+    }
+
+    private void Bind(Button button, Action handler)
+    {
+        button.Pressed += handler;
+        _buttonBindings.Add((button, handler));
+    }
+
+    private void SelectSection(WorkspaceSection section)
+    {
+        _selectedSection = section;
+        RenderCurrent();
+    }
+
+    private void SelectClub(string clubExternalId)
+    {
+        _selectedClubId = clubExternalId;
+        SelectSection(WorkspaceSection.Overview);
+    }
+
+    private void RenderCurrent()
+    {
+        Control? root = GetNodeOrNull<Control>(ContentRootPath);
+        if (root is null || _world is null)
+        {
+            return;
+        }
+
+        WorkspaceUiFactory.Clear(root);
+        IReadOnlyList<ClubRow> clubs = _world.ListClubs();
+        _selectedClubId ??= clubs.Count > 0 ? clubs[0].ExternalId : null;
+        if (_selectedClubId is null)
+        {
+            root.AddChild(WorkspaceUiFactory.CreateText("No hay clubs cargados.", ManagerDesignTokens.TextSecondary));
+            return;
+        }
+
+        ClubRow? club = clubs.FirstOrDefault(candidate => candidate.ExternalId == _selectedClubId);
+        if (club is null)
+        {
+            SetStatus("● Club no encontrado");
+            return;
+        }
+
+        switch (_selectedSection)
+        {
+            case WorkspaceSection.Squad:
+                _squadScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName} · plantilla");
+                break;
+            case WorkspaceSection.Competitions:
+                _competitionsScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName} · competiciones");
+                break;
+            case WorkspaceSection.Tactics:
+                _tacticsScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName} · plan de partido");
+                break;
+            case WorkspaceSection.Finances:
+                ClubRow managedClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                _financesScreen!.Render(root, managedClub);
+                SetStatus($"● {managedClub.DisplayName} · finanzas");
+                break;
+            case WorkspaceSection.Market:
+                ClubRow marketClub = clubs.First(candidate => candidate.ExternalId == _managedClubId);
+                _marketScreen!.Render(root, marketClub);
+                SetStatus($"● {marketClub.DisplayName} · mercado de fichajes");
+                break;
+            case WorkspaceSection.History:
+                _historyScreen!.Render(root);
+                SetStatus("● Historial de partidos");
+                break;
+            case WorkspaceSection.World:
+                _worldScreen!.Render(root);
+                SetStatus("● Mundial de competiciones");
+                break;
+            case WorkspaceSection.ClubPicker:
+                _clubPickerScreen!.Render(root, clubs);
+                SetStatus("● Selección de club");
+                break;
+            default:
+                _overviewScreen!.Render(root, club);
+                SetStatus($"● {club.DisplayName}");
+                break;
+        }
+    }
+
+    private void SetStatus(string text)
+    {
+        Label? status = GetNodeOrNull<Label>(StatusLabelPath);
+        if (status is not null) status.Text = text;
+    }
+}

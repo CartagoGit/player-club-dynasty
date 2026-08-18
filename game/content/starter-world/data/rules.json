@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "entities": [
+    {
+      "externalId": "rules:continental-cup",
+      "kindId": "competition-rule-set",
+      "values": {
+        "rule-version": "1",
+        "scoring-rule": "rules:football-standard-scoring",
+        "draw-resolution": "extra-time-then-tiebreak",
+        "seeding": "deterministic-ranked"
+      },
+      "references": [
+        { "relationId": "dependency:scoring", "targetExternalId": "rules:football-standard-scoring", "required": true }
+      ]
+    },
+    {
+      "externalId": "rules:domestic-league",
+      "kindId": "competition-rule-set",
+      "values": {
+        "rule-version": "1",
+        "scoring-rule": "rules:football-standard-scoring",
+        "win-points": "3",
+        "draw-points": "1",
+        "loss-points": "0",
+        "ranking-order": "points,score-difference,score-for,stable-id"
+      },
+      "references": [
+        { "relationId": "dependency:scoring", "targetExternalId": "rules:football-standard-scoring", "required": true }
+      ]
+    },
+    {
+      "externalId": "rules:football-standard-scoring",
+      "kindId": "sport-rule-set",
+      "values": {
+        "rule-version": "1",
+        "sport-id": "sport:football",
+        "participants-per-team": "11",
+        "regulation-duration-minutes": "90",
+        "score-event-id": "football:goal"
+      },
+      "references": []
+    }
+  ]
+}

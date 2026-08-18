@@ -1,0 +1,10 @@
+{
+  "protocolVersion": 1,
+  "rootSeed": 1234,
+  "scopes": ["season:5", "contest:9"],
+  "expectedFacts": [
+    "seed:11926236389362648463",
+    "fixed:one-third-times-three:999999",
+    "fixed:one-and-half-divided-by-two:750000"
+  ]
+}

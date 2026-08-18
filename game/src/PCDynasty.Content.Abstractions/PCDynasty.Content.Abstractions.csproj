@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Content.Abstractions</AssemblyName>
+    <RootNamespace>PCDynasty.Content.Abstractions</RootNamespace>
+  </PropertyGroup>
+</Project>

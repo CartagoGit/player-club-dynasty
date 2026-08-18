@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "referenceHardware": {
+    "cpu": "x86-64, 4 physical cores at 2.9 GHz or faster",
+    "memoryGiB": 16,
+    "storage": "local SSD",
+    "runtime": ".NET 8 x64, Release, server or workstation GC reported with results",
+    "operatingSystems": ["Windows 11", "Ubuntu 22.04 or newer"]
+  },
+  "measurementPolicy": {
+    "statistic": "median",
+    "warmupExecutions": 1,
+    "measuredExecutions": 5,
+    "maximumNoiseRatio": 0.2,
+    "coldStartIncludesProcessLaunch": true
+  },
+  "budgets": [
+    {
+      "id": "ui-frame-command",
+      "class": "ui-interaction",
+      "maxMilliseconds": 8,
+      "policy": "Complete inside one frame without I/O or world simulation."
+    },
+    {
+      "id": "play-manager-match",
+      "class": "ui-interaction",
+      "maxMilliseconds": 8,
+      "fixture": "one deterministic manager match with projected timeline and persistence record",
+      "policy": "Complete inside one interaction frame without visible loading."
+    },
+    {
+      "id": "simulate-manager-season",
+      "class": "explicit-advance",
+      "maxMilliseconds": 50,
+      "fixture": "20-club single round-robin season; 190 matches and persistence projections",
+      "policy": "Complete without a visible loading interruption on reference hardware."
+    },
+    {
+      "id": "open-player-view",
+      "class": "ui-interaction",
+      "maxMilliseconds": 16,
+      "fixture": "10,000 indexed people; one materialized player read model"
+    },
+    {
+      "id": "open-club-view",
+      "class": "ui-interaction",
+      "maxMilliseconds": 16,
+      "fixture": "1,000 indexed clubs; 30-person active squad"
+    },
+    {
+      "id": "open-competition-view",
+      "class": "ui-interaction",
+      "maxMilliseconds": 16,
+      "fixture": "64 participants and a 20-stage declarative competition graph"
+    },
+    {
+      "id": "materialize-club",
+      "class": "deferred-short",
+      "maxMilliseconds": 50,
+      "fixture": "one club from a 512-club checkpoint and 1,000 commitments"
+    },
+    {
+      "id": "background-work-slice",
+      "class": "background-work",
+      "maxMilliseconds": 8,
+      "policy": "Yield after the slice and publish progress from an atomic checkpoint."
+    },
+    {
+      "id": "advance-season",
+      "class": "explicit-advance",
+      "maxMilliseconds": 250,
+      "fixture": "512 clubs across 16 competitions",
+      "policy": "Show progress if the operation cannot complete within the budget."
+    },
+    {
+      "id": "load-existing-save",
+      "class": "load-save",
+      "maxMilliseconds": 500,
+      "fixture": "16 MiB snapshot and 10,000 facts on local SSD",
+      "policy": "Never block navigation once a consistent checkpoint is available."
+    },
+    {
+      "id": "first-world-load",
+      "class": "first-load",
+      "maxMilliseconds": 2000,
+      "fixture": "validate, compile and index the starter pack from a cold process",
+      "policy": "Display honest staged progress and keep the operation cancel-safe."
+    }
+  ]
+}

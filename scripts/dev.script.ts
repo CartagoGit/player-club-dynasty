@@ -16,6 +16,7 @@ import { resolve } from 'node:path';
 
 const args = process.argv.slice(2);
 const isDoctor = args.includes('--doctor');
+const passthroughArgs = args.filter((arg) => arg !== '--doctor');
 
 const workspaceRoot = resolve(import.meta.dirname, '..');
 const rootScript = resolve(import.meta.dirname, 'mcp-vertex-root.script.ts');
@@ -24,19 +25,21 @@ if (rootResult.status !== 0) {
 	process.stderr.write(rootResult.stderr);
 	process.exit(rootResult.status ?? 1);
 }
-const hostScript = `${rootResult.stdout.trim()}/tools/scripts/host/host-server.script.ts`;
+const mcpVertexRoot = rootResult.stdout.trim();
+const entryScript = isDoctor
+	? `${mcpVertexRoot}/packages/cli/src/index.ts`
+	: `${mcpVertexRoot}/tools/scripts/host/host-server.script.ts`;
 
 const cmdArgs = [
-	hostScript,
+	entryScript,
 	`--workspace=${workspaceRoot}`,
 	`--config=${workspaceRoot}/mcp-vertex.config.json`,
 	'--preset=swarm',
-	'--plugins=player-club',
 	'--exclude-plugins=issues,web-fetch,external-mcps',
-	...args,
+	...passthroughArgs,
 ];
 
-if (isDoctor) cmdArgs.push('--check');
+if (isDoctor) cmdArgs.push('doctor');
 
 const result = spawnSync('bun', cmdArgs, { stdio: 'inherit', cwd: workspaceRoot });
 process.exit(result.status ?? 0);

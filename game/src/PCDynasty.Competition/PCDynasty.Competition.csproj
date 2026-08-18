@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Competition</AssemblyName>
+    <RootNamespace>PCDynasty.Competition</RootNamespace>
+  </PropertyGroup>
+</Project>

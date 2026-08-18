@@ -1,0 +1,19 @@
+{
+  "providerId": "pcdynasty.starter-world",
+  "schemaVersion": 1,
+  "entityCount": 34,
+  "countsByKind": {
+    "club": 6,
+    "competition": 4,
+    "competition-rule-set": 2,
+    "country": 3,
+    "person": 18,
+    "sport-rule-set": 1
+  },
+  "canonicalSha256": "20ac08efa5556715de3e3ac4d6d5c1cabe9f9f986c48143087486f64de1122bd",
+  "dependencyOrderTail": [
+    "rules:football-standard-scoring",
+    "rules:continental-cup",
+    "rules:domestic-league"
+  ]
+}

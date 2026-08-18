@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Packs.Abstractions</AssemblyName>
+    <RootNamespace>PCDynasty.Packs.Abstractions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
+  </ItemGroup>
+</Project>

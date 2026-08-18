@@ -1,0 +1,105 @@
+name: Game quality
+
+on:
+  pull_request:
+    paths:
+      - "game/**"
+      - ".gitignore"
+      - ".github/workflows/game-quality.yml"
+  push:
+    branches: [main]
+    paths:
+      - "game/**"
+      - ".gitignore"
+      - ".github/workflows/game-quality.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: game-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Build, architecture and tests
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: game
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Reject tracked generated artifacts
+        run: ./scripts/check-repository-hygiene.sh
+
+      - name: Select pinned .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: game/global.json
+
+      - name: Restore
+        run: dotnet restore PCDynasty.sln
+
+      - name: Verify formatting
+        run: dotnet format PCDynasty.sln --verify-no-changes --no-restore
+
+      - name: Build with analyzers
+        run: dotnet build PCDynasty.sln -c Release --no-restore
+
+      - name: Check forbidden dependencies
+        run: >-
+          ./scripts/check-architecture.sh --no-restore
+          --logger "trx;LogFileName=architecture.trx"
+          --results-directory TestResults/architecture
+
+      - name: Run all tests and latency gates
+        run: >-
+          ./scripts/test-all.sh --no-restore --no-build
+          --logger "trx;LogFilePrefix=all-tests"
+          --results-directory TestResults/all
+
+      - name: Publish test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: game-test-results-${{ github.run_id }}
+          path: game/TestResults/**
+          if-no-files-found: error
+          retention-days: 14
+
+  benchmarks:
+    name: Benchmark comparison report
+    needs: quality
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: game
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Select pinned .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: game/global.json
+
+      - name: Restore benchmark graph
+        run: dotnet restore benchmarks/PCDynasty.Benchmarks/PCDynasty.Benchmarks.csproj
+
+      - name: Run reproducible benchmarks
+        run: ./scripts/run-benchmarks.sh
+
+      - name: Publish benchmark comparison inputs and reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: benchmark-comparison-${{ github.run_id }}
+          path: game/BenchmarkDotNet.Artifacts/**
+          if-no-files-found: error
+          retention-days: 30

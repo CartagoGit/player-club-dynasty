@@ -1,0 +1,12 @@
+{
+  "majorVersion": 1,
+  "properties": [
+    { "name": "causationId", "type": "String", "required": false, "deprecated": false },
+    { "name": "commandId", "type": "String", "required": true, "deprecated": false },
+    { "name": "commandType", "type": "String", "required": true, "deprecated": false },
+    { "name": "correlationId", "type": "String", "required": true, "deprecated": false },
+    { "name": "issuedAtTick", "type": "Int64", "required": true, "deprecated": false },
+    { "name": "payload", "type": "ImmutableArray<Byte>", "required": true, "deprecated": false },
+    { "name": "version", "type": "ContractVersion", "required": true, "deprecated": false }
+  ]
+}

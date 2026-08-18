@@ -1,0 +1,68 @@
+using System.Collections.Immutable;
+
+namespace PCDynasty.Application.Workspace;
+
+/// <summary>
+/// Read-only manager world needed by presentation adapters.
+/// </summary>
+public interface IManagerWorld
+{
+    IReadOnlyList<ClubRow> ListClubs();
+
+    IReadOnlyList<PlayerRow> ListPlayers(string clubExternalId);
+
+    IReadOnlyList<CompetitionRow> ListCompetitionsForClub(string clubExternalId);
+
+    IReadOnlyList<CompetitionRow> ListAllCompetitions();
+
+    ClubRow? FindClub(string clubExternalId);
+}
+
+public sealed record ClubRow(
+    string ExternalId,
+    string DisplayName,
+    string ShortName,
+    string City,
+    string CountryShortName,
+    string FoundedYear,
+    int Prestige,
+    int Fanbase,
+    int SquadSize);
+
+public sealed record PlayerRow(
+    string ExternalId,
+    string DisplayName,
+    int BirthYear,
+    int Technique,
+    int Form,
+    int Physical,
+    int Mental,
+    int Overall);
+
+public sealed record CompetitionRow
+{
+    public CompetitionRow(
+        string ExternalId,
+        string DisplayName,
+        string Format,
+        string Frequency,
+        IReadOnlyList<string> Rivals)
+    {
+        ArgumentNullException.ThrowIfNull(Rivals);
+        this.ExternalId = ExternalId;
+        this.DisplayName = DisplayName;
+        this.Format = Format;
+        this.Frequency = Frequency;
+        this.Rivals = Rivals.ToImmutableArray();
+    }
+
+    public string ExternalId { get; }
+
+    public string DisplayName { get; }
+
+    public string Format { get; }
+
+    public string Frequency { get; }
+
+    public IReadOnlyList<string> Rivals { get; }
+}

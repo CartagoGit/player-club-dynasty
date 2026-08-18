@@ -13,6 +13,5 @@ args = [
   "--workspace=/home/cartago/_projects/games/player-club-dynasty",
   "--config=/home/cartago/_projects/games/player-club-dynasty/mcp-vertex.config.json",
   "--preset=swarm",
-  "--plugins=player-club",
   "--exclude-plugins=issues,web-fetch,external-mcps",
 ]

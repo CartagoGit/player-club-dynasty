@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Careers</AssemblyName>
+    <RootNamespace>PCDynasty.Careers</RootNamespace>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "commitmentId": "commitment:contest-9",
+  "subjectId": "contest:9",
+  "outcomeId": "outcome:completed",
+  "committedAtTick": 100,
+  "effectiveAtTick": 120,
+  "promotionTick": 200,
+  "winnerId": "club:7",
+  "score": "2-1",
+  "detailedEventCount": 18
+}

@@ -5,4 +5,4 @@
  */
 export { default } from '../index';
 
-export type { IPlayer, IClub, IDataFile } from '../lib/types';
+export type { IPlayer, IClub, IDataFile } from '../lib/game-data.types';

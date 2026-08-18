@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import z from 'zod';
 
-import type { IDataFile, IPlayer } from './lib/types';
+import type { IDataFile, IPlayer } from './lib/game-data.types';
 
 const OptionsSchema = z
 	.object({
@@ -17,23 +17,33 @@ const DEFAULT_OPTIONS = {
 	savesDir: 'saves',
 } as const;
 
-interface ISquadEntry {
-	id: string;
-	name: string;
-	number: number;
-	position: IPlayer['position'];
-	rating: number;
-	fitness: number;
-}
+const PlayerPositionSchema = z.enum(['GK', 'DEF', 'MID', 'FWD']);
+const SquadEntrySchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	number: z.number().int(),
+	position: PlayerPositionSchema,
+	rating: z.number(),
+	fitness: z.number(),
+});
+const ClubEntrySchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	stadium: z.string(),
+	founded: z.number().int(),
+	squadSize: z.number().int().nonnegative(),
+	averageRating: z.number(),
+});
+const ListClubsOutputSchema = z.object({ clubs: z.array(ClubEntrySchema) });
+const GetSquadInputSchema = z.object({ clubId: z.string().min(1) }).strict();
+const GetSquadOutputSchema = z.object({ players: z.array(SquadEntrySchema) });
+const CurrentSeasonOutputSchema = z.object({
+	season: z.number().int(),
+	clubCount: z.number().int().nonnegative(),
+});
 
-interface IClubEntry {
-	id: string;
-	name: string;
-	stadium: string;
-	founded: number;
-	squadSize: number;
-	averageRating: number;
-}
+type SquadEntry = z.infer<typeof SquadEntrySchema>;
+type ClubEntry = z.infer<typeof ClubEntrySchema>;
 
 const ensureFile = (path: string, defaultValue: IDataFile): void => {
 	if (existsSync(path)) return;
@@ -75,10 +85,11 @@ export default definePlugin({
 						description:
 							'Return every club in the saved dataset with stadium, founded year, squad size and average rating.',
 						inputSchema: z.object({}).strict(),
+						outputSchema: ListClubsOutputSchema,
 					},
 					async () => {
 						const data = readData(dataFileAbs);
-						const clubs: IClubEntry[] = data.clubs.map((c) => ({
+						const clubs: ClubEntry[] = data.clubs.map((c) => ({
 							id: c.id,
 							name: c.name,
 							stadium: c.stadium,
@@ -105,9 +116,10 @@ export default definePlugin({
 					{
 						description:
 							'Return every player in a given club, ordered by shirt number.',
-						inputSchema: z.object({ clubId: z.string().min(1) }).strict(),
+						inputSchema: GetSquadInputSchema,
+						outputSchema: GetSquadOutputSchema,
 					},
-					async ({ clubId }: { clubId: string }) => {
+					async ({ clubId }: z.infer<typeof GetSquadInputSchema>) => {
 						const data = readData(dataFileAbs);
 						const club = data.clubs.find((c) => c.id === clubId);
 						if (!club) {
@@ -121,7 +133,7 @@ export default definePlugin({
 								isError: true,
 							};
 						}
-						const players: ISquadEntry[] = [...club.squad]
+						const players: SquadEntry[] = [...club.squad]
 							.sort((a, b) => a.number - b.number)
 							.map((p) => ({
 								id: p.id,
@@ -151,6 +163,7 @@ export default definePlugin({
 						description:
 							'Return the in-progress season number and the count of clubs known to the dataset.',
 						inputSchema: z.object({}).strict(),
+						outputSchema: CurrentSeasonOutputSchema,
 					},
 					async () => {
 						const data = readData(dataFileAbs);

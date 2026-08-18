@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PCDynasty.Presentation.Core</AssemblyName>
+    <RootNamespace>PCDynasty.Presentation.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Application/PCDynasty.Application.csproj" />
+    <ProjectReference Include="../PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj" />
+    <ProjectReference Include="../PCDynasty.Contracts/PCDynasty.Contracts.csproj" />
+    <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
+  </ItemGroup>
+</Project>
