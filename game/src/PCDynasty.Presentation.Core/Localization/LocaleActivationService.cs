@@ -57,18 +57,15 @@ public sealed class LocaleActivationService
             return new LocaleActivationOutcome.Activated(ok.File, ok.Source);
         }
 
-        string reason = DescribeFailure(candidateId, requested);
-
+        LocaleLoadResult.Invalid savedFailure = ToInvalid(requested, candidateId);
         LocaleLoadResult fallback = TryLoad(FallbackLocaleId);
         if (fallback is LocaleLoadResult.Ok fallbackOk)
         {
-            return new LocaleActivationOutcome.Recovered(fallbackOk.File, fallbackOk.Source, reason);
+            return new LocaleActivationOutcome.Recovered(fallbackOk.File, fallbackOk.Source, savedFailure);
         }
 
-        string fallbackReason = DescribeFailure(FallbackLocaleId, fallback);
-        return new LocaleActivationOutcome.Fatal(
-            $"Neither the saved locale nor the fallback '{FallbackLocaleId}' could be loaded. " +
-            $"Saved: {reason}. Fallback: {fallbackReason}.");
+        LocaleLoadResult.Invalid fallbackFailure = ToInvalid(fallback, FallbackLocaleId);
+        return new LocaleActivationOutcome.Fatal(savedFailure, fallbackFailure);
     }
 
     /// <summary>
@@ -99,21 +96,8 @@ public sealed class LocaleActivationService
             Failure: LocaleLoadFailure.NotFound,
             Diagnostics: System.Collections.Immutable.ImmutableArray<LocaleDiagnostic>.Empty);
 
-    private static string DescribeFailure(string? localeId, LocaleLoadResult result) =>
-        result switch
-        {
-            LocaleLoadResult.Invalid invalid => BuildFailureMessage(localeId ?? invalid.Id, invalid),
-            _ => $"locale '{localeId}' could not be activated.",
-        };
-
-    private static string BuildFailureMessage(string id, LocaleLoadResult.Invalid invalid)
-    {
-        if (invalid.Diagnostics.IsDefaultOrEmpty)
-        {
-            return $"locale '{id}' failed: {invalid.Failure}.";
-        }
-
-        LocaleDiagnostic first = invalid.Diagnostics[0];
-        return $"locale '{id}' failed: {invalid.Failure} at {first.Path}: {first.Message}";
-    }
+    private static LocaleLoadResult.Invalid ToInvalid(LocaleLoadResult result, string? fallbackId) =>
+        result is LocaleLoadResult.Invalid invalid
+            ? invalid
+            : LocaleLoadFailureResult(fallbackId ?? string.Empty);
 }

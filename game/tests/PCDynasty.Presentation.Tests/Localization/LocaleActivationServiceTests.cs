@@ -118,7 +118,8 @@ public sealed class LocaleActivationServiceTests
 
         LocaleActivationOutcome.Recovered recovered = Assert.IsType<LocaleActivationOutcome.Recovered>(outcome);
         Assert.Equal("en", recovered.File.Lang);
-        Assert.Contains("fr", recovered.Reason);
+        Assert.Equal("fr", recovered.OriginalFailure.Id);
+        Assert.Equal(LocaleLoadFailure.NotFound, recovered.OriginalFailure.Failure);
     }
 
     [Fact]
@@ -144,7 +145,7 @@ public sealed class LocaleActivationServiceTests
 
         LocaleActivationOutcome.Recovered recovered = Assert.IsType<LocaleActivationOutcome.Recovered>(outcome);
         Assert.Equal("en", recovered.File.Lang);
-        Assert.Contains("ko", recovered.Reason);
+        Assert.Equal("ko", recovered.OriginalFailure.Id);
     }
 
     [Fact]
@@ -156,8 +157,8 @@ public sealed class LocaleActivationServiceTests
         LocaleActivationOutcome outcome = service.Activate("fr");
 
         LocaleActivationOutcome.Fatal fatal = Assert.IsType<LocaleActivationOutcome.Fatal>(outcome);
-        Assert.Contains("fr", fatal.Reason);
-        Assert.Contains("en", fatal.Reason);
+        Assert.Equal("fr", fatal.SavedFailure.Id);
+        Assert.Equal("en", fatal.FallbackFailure.Id);
     }
 
     [Fact]

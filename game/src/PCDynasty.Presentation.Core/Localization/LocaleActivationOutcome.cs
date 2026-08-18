@@ -15,15 +15,21 @@ public abstract record LocaleActivationOutcome
 
     /// <summary>
     /// The active locale is a fallback (typically English) because the
-    /// requested locale could not be loaded. <see cref="Reason"/>
-    /// carries the short description the error panel renders.
+    /// requested locale could not be loaded. <see cref="OriginalFailure"/>
+    /// carries the typed <see cref="LocaleLoadResult"/> so the error
+    /// panel can render the concrete list of missing keys.
     /// </summary>
-    public sealed record Recovered(LocaleFile File, LocaleSource Source, string Reason) : LocaleActivationOutcome;
+    public sealed record Recovered(
+        LocaleFile File,
+        LocaleSource Source,
+        LocaleLoadResult.Invalid OriginalFailure) : LocaleActivationOutcome;
 
     /// <summary>
     /// The game cannot run because every candidate locale (the
     /// requested one and the English fallback) failed to load. The
     /// bootstrap shows the fatal panel and quits on user input.
     /// </summary>
-    public sealed record Fatal(string Reason) : LocaleActivationOutcome;
+    public sealed record Fatal(
+        LocaleLoadResult.Invalid SavedFailure,
+        LocaleLoadResult.Invalid FallbackFailure) : LocaleActivationOutcome;
 }
