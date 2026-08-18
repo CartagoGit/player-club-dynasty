@@ -57,6 +57,42 @@ public sealed class CompetitionSimulationServiceTests
         Assert.InRange(execution.SeasonHistory.ManagedPosition, 1, 3);
     }
 
+    [Fact]
+    public void MatchAfterSeasonDoesNotReuseAFixtureSeed()
+    {
+        var service = Service();
+        SeasonExecution season = service.PlaySeason(
+            "competition:test",
+            "Test Cup",
+            Home,
+            [Home, Away, Third]);
+
+        MatchExecution nextMatch = service.PlayMatch("Test Cup", Home, Away);
+
+        Assert.DoesNotContain(nextMatch.Result.Seed, season.MatchHistory.Select(match => match.Seed));
+        Assert.True(nextMatch.Result.Seed > season.MatchHistory.Max(match => match.Seed));
+    }
+
+    [Fact]
+    public async Task ParallelExecutionsReserveDisjointSeedRanges()
+    {
+        var service = Service();
+        Task<long[]>[] operations = Enumerable.Range(0, 12)
+            .Select(index => Task.Run(() => index % 2 == 0
+                ? service.PlaySeason(
+                    $"competition:{index}",
+                    "Test Cup",
+                    Home,
+                    [Home, Away, Third]).MatchHistory.Select(match => match.Seed).ToArray()
+                : [service.PlayMatch("Test Cup", Home, Away).Result.Seed]))
+            .ToArray();
+
+        long[][] ranges = await Task.WhenAll(operations);
+        long[] seeds = ranges.SelectMany(range => range).ToArray();
+
+        Assert.Equal(seeds.Length, seeds.Distinct().Count());
+    }
+
     private static CompetitionSimulationService Service() => new(new FixedTimeProvider(FixedNow));
 
     private static ClubRow Club(string id, string name, int prestige) =>

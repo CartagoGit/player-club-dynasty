@@ -2,7 +2,7 @@
 id: r00006
 title: "Move competition orchestration out of Godot"
 kind: refactor
-status: review
+status: done
 type: proposal
 track: architecture
 date: 2026-08-18
@@ -40,7 +40,11 @@ CompetitionsScreen currently selects seeds, reads the system clock, calls simula
   - "The composition root injects the application service into the competition screen."
   - "Application tests cover deterministic replay, timestamps, unique seeds and season history projection."
   - "The complete .NET suite and Godot smoke journey remain green."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: fresh-delivery-verifier
+- review-log: requested_changes by delivery-verifier — PlaySeason reserves only seed S while SeasonSimulator consumes S..S+n-1; the next operation receives S+1 and collides with persisted fixture history. Snapshot participants, atomically reserve the full fixture range with overflow handling, and test season-to-match plus parallel disjoint ranges.
+- review-log: approved by fresh-delivery-verifier — Fresh independent re-review approved: immutable participant snapshot, checked n*(n-1)/2 fixture count and atomic full-range reservation eliminate sequential and concurrent seed collisions while replay and Godot consumers remain unchanged; all focused gates pass.
 ## acceptance
 
 - Godot workspace code does not read DateTime, generate seeds or call MatchSimulator or SeasonSimulator.

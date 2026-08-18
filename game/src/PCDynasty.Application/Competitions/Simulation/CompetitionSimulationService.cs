@@ -18,7 +18,7 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
     public MatchExecution PlayMatch(string competitionDisplayName, ClubRow home, ClubRow away)
     {
         string competition = Required(competitionDisplayName, nameof(competitionDisplayName));
-        MatchResult result = MatchSimulator.Simulate(home, away, NextSeed());
+        MatchResult result = MatchSimulator.Simulate(home, away, ReserveSeedRange(1));
         var history = new HistoryEntry(
             CompetitionDisplayName: competition,
             HomeClubId: home.ExternalId,
@@ -46,7 +46,8 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
     {
         ArgumentNullException.ThrowIfNull(managedClub);
         ArgumentNullException.ThrowIfNull(participants);
-        if (!participants.Any(club => string.Equals(
+        ImmutableArray<ClubRow> participantSnapshot = participants.ToImmutableArray();
+        if (!participantSnapshot.Any(club => string.Equals(
                 club.ExternalId,
                 managedClub.ExternalId,
                 StringComparison.Ordinal)))
@@ -54,11 +55,12 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
             throw new ArgumentException("Participants must contain the managed club.", nameof(participants));
         }
 
+        int fixtureCount = SeasonSimulator.CalculateFixtureCount(participantSnapshot.Length);
         SeasonResult result = SeasonSimulator.Simulate(
             competitionExternalId,
             competitionDisplayName,
-            participants,
-            NextSeed());
+            participantSnapshot,
+            ReserveSeedRange(fixtureCount));
         DateTime playedAtUtc = UtcNow();
         ImmutableArray<HistoryEntry> matches = result.Fixtures
             .Select(fixture => new HistoryEntry(
@@ -110,13 +112,22 @@ public sealed class CompetitionSimulationService : ICompetitionSimulationService
         return -1;
     }
 
-    private long NextSeed()
+    private long ReserveSeedRange(int count)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
         long clockSeed = _timeProvider.GetUtcNow().UtcTicks & long.MaxValue;
         lock (_seedGate)
         {
-            _lastSeed = Math.Max(clockSeed, _lastSeed + 1);
-            return _lastSeed;
+            try
+            {
+                long firstSeed = Math.Max(clockSeed, checked(_lastSeed + 1));
+                _lastSeed = checked(firstSeed + count - 1L);
+                return firstSeed;
+            }
+            catch (OverflowException exception)
+            {
+                throw new InvalidOperationException("The simulation seed range is exhausted.", exception);
+            }
         }
     }
 

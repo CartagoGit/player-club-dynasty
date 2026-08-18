@@ -26,12 +26,7 @@ public static class SeasonSimulator
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(competitionExternalId);
         ArgumentNullException.ThrowIfNull(participants);
-        if (participants.Count < 2)
-        {
-            throw new ArgumentException(
-                "A competition needs at least two participants to play a season.",
-                nameof(participants));
-        }
+        _ = CalculateFixtureCount(participants.Count);
 
         var standings = new Dictionary<string, StandingRow>(StringComparer.Ordinal);
         foreach (var club in participants)
@@ -88,6 +83,19 @@ public static class SeasonSimulator
             CompetitionDisplayName: competitionDisplayName,
             Standings: ordered,
             Fixtures: fixtures.ToImmutable());
+    }
+
+    internal static int CalculateFixtureCount(int participantCount)
+    {
+        if (participantCount < 2)
+        {
+            throw new ArgumentException(
+                "A competition needs at least two participants to play a season.",
+                nameof(participantCount));
+        }
+
+        long fixtureCount = checked((long)participantCount * (participantCount - 1) / 2);
+        return checked((int)fixtureCount);
     }
 
     private static void ApplyResult(
