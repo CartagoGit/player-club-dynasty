@@ -47,7 +47,7 @@ The current scene serializes paths on PresentationBootstrap but creates MainCont
   - "A Godot smoke script proves the workspace controller receives valid paths."
 
 ### S3 — Persist and restore the selected career profile
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Presentation.Core/CareerProfileStore.cs`, `game/tests/PCDynasty.Presentation.Tests/CareerProfileStoreTests.cs`
 - **Gate**: type
 - acceptance:
