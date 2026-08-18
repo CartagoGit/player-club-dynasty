@@ -2,8 +2,9 @@ using Godot;
 using PCDynasty.Application.Shell;
 using PCDynasty.Content.Importers;
 using PCDynasty.Presentation.Core;
-using PCDynasty.Presentation.Presentation;
 using PCDynasty.Presentation.Shell;
+using PCDynasty.Presentation.Workspace;
+using PCDynasty.Presentation.Workspace.Persistence;
 
 namespace PCDynasty.Presentation;
 
@@ -15,7 +16,8 @@ public partial class PresentationBootstrap : Control
     private Control Workspace => GetNode<Control>("Workspace");
 
     private MainMenuController? _mainMenuController;
-    private MainController? _workspaceController;
+    private ManagerWorkspaceController? _workspaceController;
+    private CareerHistoryPersistence? _historyPersistence;
 
     public override void _Ready()
     {
@@ -52,6 +54,8 @@ public partial class PresentationBootstrap : Control
 
     private void AttachMainMenu(WorldService service)
     {
+        _historyPersistence ??= CareerHistoryPersistence.CreateDefault();
+        _historyPersistence.Load();
         _mainMenuController = new MainMenuController { Name = "MainMenuController" };
         _mainMenuController.Configure(service, new ManagerShell(), clubId => OpenWorkspace(service, clubId));
         AddChild(_mainMenuController);
@@ -63,7 +67,7 @@ public partial class PresentationBootstrap : Control
         Workspace.Visible = true;
 
         _workspaceController?.QueueFree();
-        _workspaceController = new MainController
+        _workspaceController = new ManagerWorkspaceController
         {
             Name = "WorkspaceController",
             ContentRootPath = new NodePath("../Workspace/Layout/ContentMargin/ContentScroll/Content"),
@@ -75,7 +79,7 @@ public partial class PresentationBootstrap : Control
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
             MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
         };
-        _workspaceController.Configure(service, clubId);
+        _workspaceController.Configure(service, clubId, _historyPersistence!);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }
