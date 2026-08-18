@@ -2,7 +2,7 @@
 id: f00046
 title: "Self-contained locale JSON files with strict activation"
 kind: feat
-status: ready
+status: done
 type: proposal
 track: product
 date: 2026-08-18

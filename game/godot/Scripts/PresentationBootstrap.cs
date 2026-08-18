@@ -317,8 +317,6 @@ public partial class PresentationBootstrap : Control
             System.IO.Path.GetDirectoryName(CareerDatabasePath()) ?? ".",
             "presentation-preferences.json");
 
-    private static string PresentationLocaleDirectory() => "res://locale";
-
     /// <summary>
     /// The source picker lives in the options panel and survives a world swap,
     /// so it is built once and refreshed afterwards.

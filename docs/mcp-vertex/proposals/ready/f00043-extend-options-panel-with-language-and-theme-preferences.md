@@ -97,7 +97,8 @@ domain exposes an immutable catalog; the presentation applies it.
   - "The ClassicDark palette is byte-identical to the palette the shell uses before the change."
 
 ### S5 — Apply the locale with Godot's TranslationServer and ship `en` + `es`
-- **Status**: done
+- **Status**: retired
+- **Retired by**: f00046 S11 (self-contained locale JSON supersedes the .po pipeline)
 - **DependsOn**: [S3]
 - **Files**: `game/godot/locale/game.pot`, `game/godot/locale/en.po`, `game/godot/locale/es.po`, `game/godot/Scripts/Shell/LocaleApplier.cs`, `game/godot/project.godot`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceHeader.cs`
 - **Gate**: e2e
