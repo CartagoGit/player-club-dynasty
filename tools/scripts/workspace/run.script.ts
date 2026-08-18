@@ -1,12 +1,12 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/run.script.ts
+ * tools/scripts/workspace/run.script.ts
  *
  * Run a script that lives inside the local mcp-vertex checkout, without
  * any workspace file naming a machine-specific absolute path.
  *
  * Usage:
- *   bun tools/scripts/mcp-vertex/run.script.ts tools/scripts/lint/proposals.script.ts [args...]
+ *   bun tools/scripts/workspace/run.script.ts tools/scripts/lint/proposals.script.ts [args...]
  */
 
 import { spawnSync } from 'node:child_process';

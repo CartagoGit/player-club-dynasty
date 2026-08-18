@@ -1,13 +1,13 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/sync-bootstrap.script.ts
+ * tools/scripts/workspace/sync-bootstrap.script.ts
  *
  * Sync the workspace's vendored AGENT-BOOTSTRAP.md from the local
  * mcp-vertex checkout. Re-run after upgrading the upstream.
  *
  * Usage:
- *   bun tools/scripts/mcp-vertex/sync-bootstrap.script.ts
- *   bun tools/scripts/mcp-vertex/sync-bootstrap.script.ts --check
+ *   bun tools/scripts/workspace/sync-bootstrap.script.ts
+ *   bun tools/scripts/workspace/sync-bootstrap.script.ts --check
  */
 
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -42,7 +42,7 @@ if (upstreamText === localText) {
 }
 
 if (wantCheck) {
-	process.stderr.write('AGENT-BOOTSTRAP.md is drifted from upstream. Run `bun tools/scripts/mcp-vertex/sync-bootstrap.script.ts`.\n');
+	process.stderr.write('AGENT-BOOTSTRAP.md is drifted from upstream. Run `bun tools/scripts/workspace/sync-bootstrap.script.ts`.\n');
 	process.exit(1);
 }
 
@@ -51,7 +51,7 @@ const preamble = `# Universal agent bootstrap — Player Club Dynasty
 > **Source of truth:** this file is a vendored copy of the canonical
 > \`docs/mcp-vertex/AGENT-BOOTSTRAP.md\` shipped by the local mcp-vertex
 > checkout at \`${mcpVertexRoot}\`. When that file changes upstream, re-run
-> \`bun tools/scripts/mcp-vertex/sync-bootstrap.script.ts\` to refresh this
+> \`bun tools/scripts/workspace/sync-bootstrap.script.ts\` to refresh this
 > copy. Until then, treat this copy as authoritative — it is what host
 > instruction files (\`AGENTS.md\`, \`CLAUDE.md\`,
 > \`.github/copilot-instructions.md\`, \`.cursor/rules/mcp-vertex.md\`,

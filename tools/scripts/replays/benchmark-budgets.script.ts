@@ -15,7 +15,7 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { workspaceRoot } from '../mcp-vertex/root.script.ts';
+import { workspaceRoot } from '../workspace/root.script.ts';
 
 const NANOSECONDS_PER_MILLISECOND = 1_000_000;
 

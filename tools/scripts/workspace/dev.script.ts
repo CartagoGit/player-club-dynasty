@@ -1,13 +1,13 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/dev.script.ts
+ * tools/scripts/workspace/dev.script.ts
  *
  * Dev entrypoint — runs the local mcp-vertex host in stdio mode with the
  * workspace's plugin set. Pass `--doctor` to validate without serving.
  *
  * Usage:
- *   bun tools/scripts/mcp-vertex/dev.script.ts
- *   bun tools/scripts/mcp-vertex/dev.script.ts --doctor
+ *   bun tools/scripts/workspace/dev.script.ts
+ *   bun tools/scripts/workspace/dev.script.ts --doctor
  */
 
 import { spawnSync } from 'node:child_process';

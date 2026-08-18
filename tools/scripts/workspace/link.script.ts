@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/link.script.ts
+ * tools/scripts/workspace/link.script.ts
  *
  * Symlink the local mcp-vertex checkout into `node_modules/@mcp-vertex`.
  * Runs from `postinstall`; safe to invoke any time.

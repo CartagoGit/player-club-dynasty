@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { workspaceRoot } from '../mcp-vertex/root.script.ts';
+import { workspaceRoot } from '../workspace/root.script.ts';
 
 const DATA_DIR = join(workspaceRoot, 'game', 'content', 'starter-world', 'data');
 

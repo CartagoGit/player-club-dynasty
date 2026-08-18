@@ -15,7 +15,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { workspaceRoot } from '../mcp-vertex/root.script.ts';
+import { workspaceRoot } from '../workspace/root.script.ts';
 
 export const PRESENTATION_ROOT = 'game/godot/';
 export const MAIN_SCENE = 'game/godot/Scenes/Main.tscn';

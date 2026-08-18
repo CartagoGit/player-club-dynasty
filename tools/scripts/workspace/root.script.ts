@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/root.script.ts
+ * tools/scripts/workspace/root.script.ts
  *
  * Resolve the local mcp-vertex checkout this workspace bootstraps against.
  * Moved from `scripts/mcp-vertex-root.script.ts` so the workspace follows
@@ -14,10 +14,10 @@
  *   5. `$HOME/mcp-vertex` and `$HOME/_projects/mcp-vertex`
  *
  * Usage:
- *   bun tools/scripts/mcp-vertex/root.script.ts                  # absolute path
- *   bun tools/scripts/mcp-vertex/root.script.ts --check          # exit 1 if missing
- *   bun tools/scripts/mcp-vertex/root.script.ts --host-script    # path of host-server.script.ts
- *   bun tools/scripts/mcp-vertex/root.script.ts --verbose
+ *   bun tools/scripts/workspace/root.script.ts                  # absolute path
+ *   bun tools/scripts/workspace/root.script.ts --check          # exit 1 if missing
+ *   bun tools/scripts/workspace/root.script.ts --host-script    # path of host-server.script.ts
+ *   bun tools/scripts/workspace/root.script.ts --verbose
  */
 
 import { existsSync, readFileSync, realpathSync } from 'node:fs';

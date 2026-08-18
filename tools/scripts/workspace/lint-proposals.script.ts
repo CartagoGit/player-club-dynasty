@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * tools/scripts/mcp-vertex/lint-proposals.script.ts
+ * tools/scripts/workspace/lint-proposals.script.ts
  *
  * Lint **this workspace's** proposal store with the canonical
  * mcp-vertex scaffold linter. The canonical linter resolves its
@@ -11,7 +11,7 @@
  * Migrated from `scripts/lint-proposals.script.ts`.
  *
  * Usage:
- *   bun tools/scripts/mcp-vertex/lint-proposals.script.ts
+ *   bun tools/scripts/workspace/lint-proposals.script.ts
  */
 
 import { join } from 'node:path';
