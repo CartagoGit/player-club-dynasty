@@ -2,7 +2,7 @@
 id: f00027
 title: "Persist and play lineup tactics in Godot"
 kind: feat
-status: ready
+status: review
 type: proposal
 track: gameplay
 date: 2026-08-18
