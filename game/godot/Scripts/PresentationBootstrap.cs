@@ -30,6 +30,7 @@ public partial class PresentationBootstrap : Control
     private CareerRuntimeFactory? _careerRuntimeFactory;
     private ContentSourcePreference? _contentSourcePreference;
     private ContentSourceSection? _contentSourceSection;
+    private PresentationPreferencesStore? _preferencesStore;
     private string _integratedContentRoot = string.Empty;
 
     public override void _Ready()
@@ -178,7 +179,33 @@ public partial class PresentationBootstrap : Control
         }
 
         AttachContentSourceSection(service);
+        AttachPreferences();
     }
+
+    private void AttachPreferences()
+    {
+        if (_preferencesStore is null)
+        {
+            _preferencesStore = new PresentationPreferencesStore(
+                PresentationPreferencesPath(),
+                ThemePaletteCatalog.Shipped,
+                LocaleCatalog.Shipped);
+        }
+
+        LocaleApplier.RegisterTranslations(PresentationLocaleDirectory());
+        _mainMenuController!.AttachPreferences(
+            _preferencesStore,
+            ThemePaletteCatalog.Shipped,
+            LocaleCatalog.Shipped,
+            GetTree());
+    }
+
+    private static string PresentationPreferencesPath() =>
+        System.IO.Path.Combine(
+            System.IO.Path.GetDirectoryName(CareerDatabasePath()) ?? ".",
+            "presentation-preferences.json");
+
+    private static string PresentationLocaleDirectory() => "res://locale";
 
     /// <summary>
     /// The source picker lives in the options panel and survives a world swap,

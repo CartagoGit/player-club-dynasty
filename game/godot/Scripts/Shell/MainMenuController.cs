@@ -35,6 +35,166 @@ public partial class MainMenuController : Node
     }
 
     /// <summary>
+    /// Attaches the preferences UI (language + theme) to the options panel.
+    /// The first call builds the sections; subsequent calls are no-ops so a
+    /// world swap does not duplicate the controls.
+    /// </summary>
+    public void AttachPreferences(
+        PCDynasty.Presentation.Core.PresentationPreferencesStore store,
+        PCDynasty.Presentation.Core.ThemePaletteCatalog palettes,
+        PCDynasty.Presentation.Core.LocaleCatalog locales,
+        Godot.SceneTree tree)
+    {
+        ArgumentNullException.ThrowIfNull(store);
+        ArgumentNullException.ThrowIfNull(palettes);
+        ArgumentNullException.ThrowIfNull(locales);
+        ArgumentNullException.ThrowIfNull(tree);
+
+        if (_preferencesStore is not null)
+        {
+            return;
+        }
+
+        _preferencesStore = store;
+        _palettes = palettes;
+        _locales = locales;
+        _tree = tree;
+
+        VBoxContainer options = GetNode<VBoxContainer>("../MainMenu/OptionsPanel/OptionsContent");
+        var preferences = _preferencesStore.Load();
+
+        var languageSection = new LocaleSection(
+            _locales,
+            _palettes,
+            preferences.LocaleId,
+            OnLocaleSelected)
+        {
+            Name = "LanguageSection",
+        };
+        var themeSection = new ThemeSection(
+            _palettes,
+            preferences.ThemeId,
+            OnThemeSelected)
+        {
+            Name = "ThemeSection",
+        };
+
+        // The scene declares the order: Eyebrow, Title, [toggles], Hint, Spacer, Back.
+        // Insert the new sections right after the title so the preferences
+        // sit at the top of the panel.
+        options.AddChild(languageSection);
+        options.AddChild(themeSection);
+        options.MoveChild(languageSection, 2);
+        options.MoveChild(themeSection, 3);
+
+        // Mirror the persisted state into the existing toggles so the panel
+        // always shows what will be restored on the next launch.
+        var fullscreen = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/Fullscreen");
+        fullscreen.ButtonPressed = preferences.Fullscreen;
+        var reducedMotion = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/ReducedMotion");
+        reducedMotion.ButtonPressed = preferences.ReducedMotion;
+        var denseTables = GetNode<CheckButton>("../MainMenu/OptionsPanel/OptionsContent/DenseTables");
+        denseTables.ButtonPressed = preferences.DenseTables;
+
+        fullscreen.Toggled += OnFullscreenToggled;
+        reducedMotion.Toggled += OnReducedMotionToggled;
+        denseTables.Toggled += OnDenseTablesToggled;
+
+        // Apply the persisted preferences so the running scene matches the
+        // saved choice without the user touching the panel.
+        LocaleApplier.Apply(_locales.Resolve(preferences.LocaleId).GodotLocaleCode);
+        ThemePaletteApplier.Apply(_tree, _palettes.Resolve(preferences.ThemeId));
+    }
+
+    private void OnLocaleSelected(PCDynasty.Presentation.Core.LocaleId id)
+    {
+        if (_preferencesStore is null || _locales is null)
+        {
+            return;
+        }
+
+        PCDynasty.Presentation.Core.PresentationPreferences preferences = _preferencesStore
+            .Load()
+            .WithLocale(id);
+        _preferencesStore.Save(preferences);
+        LocaleApplier.Apply(_locales.Resolve(id).GodotLocaleCode);
+        RefreshSceneTranslations();
+    }
+
+    private void OnThemeSelected(PCDynasty.Presentation.Core.ThemePaletteId id)
+    {
+        if (_preferencesStore is null || _palettes is null || _tree is null)
+        {
+            return;
+        }
+
+        PCDynasty.Presentation.Core.PresentationPreferences preferences = _preferencesStore
+            .Load()
+            .WithTheme(id);
+        _preferencesStore.Save(preferences);
+        ThemePaletteApplier.Apply(_tree, _palettes.Resolve(id));
+    }
+
+    private void OnFullscreenToggled(bool pressed)
+    {
+        if (_preferencesStore is null)
+        {
+            return;
+        }
+        _preferencesStore.Save(_preferencesStore.Load().WithFullscreen(pressed));
+    }
+
+    private void OnReducedMotionToggled(bool pressed)
+    {
+        if (_preferencesStore is null)
+        {
+            return;
+        }
+        _preferencesStore.Save(_preferencesStore.Load().WithReducedMotion(pressed));
+    }
+
+    private void OnDenseTablesToggled(bool pressed)
+    {
+        if (_preferencesStore is null)
+        {
+            return;
+        }
+        _preferencesStore.Save(_preferencesStore.Load().WithDenseTables(pressed));
+    }
+
+    /// <summary>
+    /// Marks every <see cref="CanvasItem"/> in the tree for redraw so the
+    /// new locale's <c>tr()</c> lookups replace the old strings without
+    /// rebuilding the scene.
+    /// </summary>
+    private void RefreshSceneTranslations()
+    {
+        if (_tree?.Root is null)
+        {
+            return;
+        }
+
+        RedrawForLocale(_tree.Root);
+    }
+
+    private static void RedrawForLocale(Node node)
+    {
+        if (node is CanvasItem canvasItem)
+        {
+            canvasItem.QueueRedraw();
+        }
+        foreach (Node child in node.GetChildren())
+        {
+            RedrawForLocale(child);
+        }
+    }
+
+    private PCDynasty.Presentation.Core.PresentationPreferencesStore? _preferencesStore;
+    private PCDynasty.Presentation.Core.ThemePaletteCatalog? _palettes;
+    private PCDynasty.Presentation.Core.LocaleCatalog? _locales;
+    private Godot.SceneTree? _tree;
+
+    /// <summary>
     /// Points the menu at a different world without rebuilding the controller.
     /// Re-creating it would connect the scene's buttons a second time, which
     /// Godot rejects, so a world swap replaces dependencies in place.
