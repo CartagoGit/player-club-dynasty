@@ -8,6 +8,5 @@
     <ProjectReference Include="../PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj" />
     <ProjectReference Include="../PCDynasty.Contracts/PCDynasty.Contracts.csproj" />
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
-    <ProjectReference Include="../PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>
 </Project>

@@ -124,6 +124,48 @@ public sealed partial class PresentationStructureTests
         Assert.DoesNotContain("ProjectSettings", source, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void WorkspaceDoesNotOwnCompetitionEnginePolicy()
+    {
+        string workspaceRoot = Path.Combine(FindGameRoot(), "godot", "Scripts", "Workspace");
+        string[] forbidden =
+        [
+            "DateTime.UtcNow",
+            "CreateSeed",
+            "MatchSimulator.",
+            "SeasonSimulator.",
+            "new CompetitionSimulationService",
+        ];
+
+        foreach (string path in Directory.EnumerateFiles(workspaceRoot, "*.cs", SearchOption.AllDirectories))
+        {
+            string source = File.ReadAllText(path);
+            foreach (string pattern in forbidden)
+            {
+                Assert.DoesNotContain(pattern, source, StringComparison.Ordinal);
+            }
+        }
+
+        string competitionScreen = File.ReadAllText(Path.Combine(
+            workspaceRoot,
+            "Screens",
+            "CompetitionsScreen.cs"));
+        Assert.Contains("ICompetitionSimulationService", competitionScreen, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PresentationCoreDoesNotOwnCompetitionEngines()
+    {
+        string presentationRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Presentation.Core");
+        string projectSource = File.ReadAllText(Path.Combine(
+            presentationRoot,
+            "PCDynasty.Presentation.Core.csproj"));
+
+        Assert.False(File.Exists(Path.Combine(presentationRoot, "MatchSimulator.cs")));
+        Assert.False(File.Exists(Path.Combine(presentationRoot, "SeasonSimulator.cs")));
+        Assert.DoesNotContain("PCDynasty.Simulation", projectSource, StringComparison.Ordinal);
+    }
+
     private static string FindGameRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

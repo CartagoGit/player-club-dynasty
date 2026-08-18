@@ -2,12 +2,12 @@ using System.Collections.Immutable;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
 
-namespace PCDynasty.Presentation.Core;
+namespace PCDynasty.Application.Competitions.Simulation;
 
 /// <summary>
 /// Plays a full round-robin tournament over the participants of a single
 /// competition and returns the standings plus the per-fixture results.
-/// One win = 3 points, one draw = 1, one loss = 0 (PCF6 / UEFA convention).
+/// One win = 3 points, one draw = 1, one loss = 0.
 /// </summary>
 /// <remarks>
 /// Pure helper: takes the snapshot already loaded by
@@ -58,7 +58,8 @@ public static class SeasonSimulator
             {
                 var home = participants[i];
                 var away = participants[j];
-                var result = MatchSimulator.Simulate(home, away, nextSeed, options);
+                long fixtureSeed = nextSeed;
+                var result = MatchSimulator.Simulate(home, away, fixtureSeed, options);
                 nextSeed++;
 
                 fixtures.Add(new SeasonFixture(
@@ -68,6 +69,7 @@ public static class SeasonSimulator
                     AwayDisplayName: away.DisplayName,
                     HomeGoals: result.HomeGoals,
                     AwayGoals: result.AwayGoals,
+                    Seed: fixtureSeed,
                     GoalEvents: result.Events.ToImmutableArray()));
 
                 ApplyResult(standings, result);
@@ -138,4 +140,5 @@ public sealed record SeasonFixture(
     string AwayDisplayName,
     int HomeGoals,
     int AwayGoals,
+    long Seed,
     ImmutableArray<MatchEvent> GoalEvents);

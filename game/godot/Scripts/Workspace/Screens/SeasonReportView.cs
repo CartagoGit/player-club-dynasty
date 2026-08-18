@@ -1,7 +1,7 @@
 using Godot;
+using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
-using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -45,19 +45,6 @@ internal static class SeasonReportView
         }
 
         return layout;
-    }
-
-    internal static int PositionOf(SeasonResult season, string clubExternalId)
-    {
-        for (int index = 0; index < season.Standings.Length; index++)
-        {
-            if (string.Equals(season.Standings[index].ClubExternalId, clubExternalId, StringComparison.Ordinal))
-            {
-                return index + 1;
-            }
-        }
-
-        return 0;
     }
 
     private static HBoxContainer BuildStandingsHeader()

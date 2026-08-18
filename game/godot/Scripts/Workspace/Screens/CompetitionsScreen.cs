@@ -1,7 +1,7 @@
 using Godot;
+using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
-using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 using PCDynasty.Presentation.Workspace.Persistence;
@@ -11,17 +11,20 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 internal sealed class CompetitionsScreen
 {
     private readonly IManagerWorld _world;
+    private readonly ICompetitionSimulationService _simulation;
     private readonly CareerHistoryPersistence _history;
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
 
     internal CompetitionsScreen(
         IManagerWorld world,
+        ICompetitionSimulationService simulation,
         CareerHistoryPersistence history,
         Action refresh,
         Action<string> setStatus)
     {
         _world = world;
+        _simulation = simulation;
         _history = history;
         _refresh = refresh;
         _setStatus = setStatus;
@@ -97,18 +100,9 @@ internal sealed class CompetitionsScreen
             return;
         }
 
-        long seed = CreateSeed();
-        MatchResult result = MatchSimulator.Simulate(club, rival, seed);
-        _history.Save(new HistoryEntry(
-            CompetitionDisplayName: competition.DisplayName,
-            HomeDisplayName: club.DisplayName,
-            AwayDisplayName: rival.DisplayName,
-            HomeClubId: club.ExternalId,
-            AwayClubId: rival.ExternalId,
-            HomeGoals: result.HomeGoals,
-            AwayGoals: result.AwayGoals,
-            Seed: result.Seed,
-            PlayedAtUtc: DateTime.UtcNow));
+        MatchExecution execution = _simulation.PlayMatch(competition.DisplayName, club, rival);
+        MatchResult result = execution.Result;
+        _history.Save(execution.History);
         ShowMatch(root, result, competition.DisplayName);
 
         string winner = result.HomeGoals > result.AwayGoals
@@ -137,7 +131,7 @@ internal sealed class CompetitionsScreen
 
     private void Replay(Control root, MatchResult previous, string competitionDisplayName)
     {
-        MatchResult replay = MatchSimulator.Simulate(previous.HomeClub, previous.AwayClub, previous.Seed);
+        MatchResult replay = _simulation.Replay(previous);
         ShowMatch(root, replay, competitionDisplayName);
         bool identical = replay.HomeGoals == previous.HomeGoals && replay.AwayGoals == previous.AwayGoals;
         _setStatus(identical
@@ -153,49 +147,22 @@ internal sealed class CompetitionsScreen
             return;
         }
 
-        SeasonResult season = SeasonSimulator.Simulate(
+        SeasonExecution execution = _simulation.PlaySeason(
             competition.ExternalId,
             competition.DisplayName,
-            participants,
-            CreateSeed());
-        DateTime playedAtUtc = DateTime.UtcNow;
-        foreach (SeasonFixture fixture in season.Fixtures)
+            club,
+            participants);
+        foreach (HistoryEntry match in execution.MatchHistory)
         {
-            _history.Save(new HistoryEntry(
-                CompetitionDisplayName: competition.DisplayName,
-                HomeDisplayName: fixture.HomeDisplayName,
-                AwayDisplayName: fixture.AwayDisplayName,
-                HomeClubId: fixture.HomeClubId,
-                AwayClubId: fixture.AwayClubId,
-                HomeGoals: fixture.HomeGoals,
-                AwayGoals: fixture.AwayGoals,
-                Seed: 0,
-                PlayedAtUtc: playedAtUtc));
+            _history.Save(match);
         }
 
-        StandingRow? managedStanding = season.Standings.FirstOrDefault(standing => standing.ClubExternalId == club.ExternalId);
-        if (managedStanding is not null)
-        {
-            _history.Save(new SeasonHistoryEntry(
-                CompetitionDisplayName: competition.DisplayName,
-                ManagedClubId: club.ExternalId,
-                ManagedClubDisplayName: club.DisplayName,
-                ManagedPosition: SeasonReportView.PositionOf(season, club.ExternalId),
-                ManagedPoints: managedStanding.Points,
-                ManagedGoalsFor: managedStanding.GoalsFor,
-                ManagedGoalsAgainst: managedStanding.GoalsAgainst,
-                TotalClubs: season.Standings.Length,
-                TotalFixtures: season.Fixtures.Length,
-                PlayedAtUtc: playedAtUtc,
-                FinalStandings: season.Standings));
-        }
+        _history.Save(execution.SeasonHistory);
 
+        SeasonResult season = execution.Result;
         WorkspaceUiFactory.Clear(root);
         root.AddChild(SeasonReportView.Build(club, season));
-        if (managedStanding is not null)
-        {
-            _setStatus($"● {competition.DisplayName} · puesto {SeasonReportView.PositionOf(season, club.ExternalId)} · {managedStanding.Points} pts");
-        }
+        _setStatus($"● {competition.DisplayName} · puesto {execution.SeasonHistory.ManagedPosition} · {execution.SeasonHistory.ManagedPoints} pts");
     }
 
     private ClubRow[] ResolveParticipants(ClubRow managedClub, CompetitionRow competition)
@@ -211,6 +178,4 @@ internal sealed class CompetitionsScreen
             .Cast<ClubRow>()
             .ToArray();
     }
-
-    private static long CreateSeed() => unchecked((long)(DateTime.UtcNow.Ticks & 0x7FFFFFFFFFFFFFFF));
 }

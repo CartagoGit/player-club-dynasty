@@ -1,8 +1,8 @@
+using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Workspace;
-using PCDynasty.Presentation.Core;
 using Xunit;
 
-namespace PCDynasty.Presentation.Tests;
+namespace PCDynasty.Application.Tests.Competitions;
 
 public sealed class SeasonSimulatorTests
 {

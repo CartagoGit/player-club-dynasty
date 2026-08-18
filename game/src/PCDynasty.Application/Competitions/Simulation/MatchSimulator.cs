@@ -3,12 +3,11 @@ using PCDynasty.Application.Workspace;
 using PCDynasty.Core.Contests;
 using PCDynasty.Simulation.Contests;
 
-namespace PCDynasty.Presentation.Core;
+namespace PCDynasty.Application.Competitions.Simulation;
 
 /// <summary>
 /// Stateless helper that turns two <see cref="ClubRow"/>s into a deterministic
-/// match. It reuses the engine-neutral <see cref="ContestSimulator"/> so the
-/// presentation never bypasses the simulation layer.
+/// match by projecting the engine-neutral <see cref="ContestSimulator"/>.
 ///
 /// The match is reduced to a sequence of <see cref="MatchEvent"/>s the UI can
 /// render (goals, attempts, key moments) plus a final score split by club.
@@ -16,9 +15,8 @@ namespace PCDynasty.Presentation.Core;
 public static class MatchSimulator
 {
     /// <summary>
-    /// Football matches run for 90 minutes = 5400 seconds. The simulator uses
-    /// 5.400 ticks so each tick = one minute, which makes event ordering
-    /// human-readable in the UI.
+    /// Football matches run for 90 logical minute ticks, which keeps event
+    /// ordering human-readable for every presentation adapter.
     /// </summary>
     public const int MatchDurationMinutes = 90;
 

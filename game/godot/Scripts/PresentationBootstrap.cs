@@ -1,4 +1,5 @@
 using Godot;
+using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Shell;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
@@ -19,6 +20,8 @@ public partial class PresentationBootstrap : Control
 
     private MainMenuController? _mainMenuController;
     private ManagerWorkspaceController? _workspaceController;
+    private readonly ICompetitionSimulationService _competitionSimulation =
+        new CompetitionSimulationService(TimeProvider.System);
     private CareerSession? _careerSession;
     private CareerHistoryPersistence? _historyPersistence;
 
@@ -93,7 +96,12 @@ public partial class PresentationBootstrap : Control
             WorldButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
             MainMenuButtonPath = new NodePath("../Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
         };
-        _workspaceController.Configure(service, clubId, _careerSession!, _historyPersistence!);
+        _workspaceController.Configure(
+            service,
+            clubId,
+            _competitionSimulation,
+            _careerSession!,
+            _historyPersistence!);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

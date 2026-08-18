@@ -1,0 +1,69 @@
+using PCDynasty.Application.Competitions.Simulation;
+using PCDynasty.Application.Workspace;
+using Xunit;
+
+namespace PCDynasty.Application.Tests.Competitions;
+
+public sealed class CompetitionSimulationServiceTests
+{
+    private static readonly DateTimeOffset FixedNow = new(2026, 8, 18, 12, 30, 0, TimeSpan.Zero);
+    private static readonly ClubRow Home = Club("club:home", "Home FC", 72);
+    private static readonly ClubRow Away = Club("club:away", "Away FC", 58);
+    private static readonly ClubRow Third = Club("club:third", "Third FC", 64);
+
+    [Fact]
+    public void PlayedMatchIncludesClockedPersistenceRecordAndUniqueSeed()
+    {
+        var service = Service();
+
+        MatchExecution first = service.PlayMatch("Test Cup", Home, Away);
+        MatchExecution second = service.PlayMatch("Test Cup", Home, Away);
+
+        Assert.Equal(FixedNow.UtcDateTime, first.History.PlayedAtUtc);
+        Assert.Equal(first.Result.Seed, first.History.Seed);
+        Assert.NotEqual(first.Result.Seed, second.Result.Seed);
+    }
+
+    [Fact]
+    public void ReplayUsesTheOriginalSeedAndProducesTheSameTimeline()
+    {
+        var service = Service();
+        MatchResult original = service.PlayMatch("Test Cup", Home, Away).Result;
+
+        MatchResult replay = service.Replay(original);
+
+        Assert.Equal(original.HomeGoals, replay.HomeGoals);
+        Assert.Equal(original.AwayGoals, replay.AwayGoals);
+        Assert.Equal(original.Seed, replay.Seed);
+        Assert.Equal(original.Events, replay.Events);
+    }
+
+    [Fact]
+    public void PlayedSeasonProjectsEveryFixtureAndManagedStanding()
+    {
+        var service = Service();
+
+        SeasonExecution execution = service.PlaySeason(
+            "competition:test",
+            "Test Cup",
+            Home,
+            [Home, Away, Third]);
+
+        Assert.Equal(execution.Result.Fixtures.Length, execution.MatchHistory.Length);
+        Assert.All(execution.MatchHistory, match => Assert.Equal(FixedNow.UtcDateTime, match.PlayedAtUtc));
+        Assert.All(execution.MatchHistory, match => Assert.NotEqual(0, match.Seed));
+        Assert.Equal(Home.ExternalId, execution.SeasonHistory.ManagedClubId);
+        Assert.Equal(execution.Result.Standings, execution.SeasonHistory.FinalStandings);
+        Assert.InRange(execution.SeasonHistory.ManagedPosition, 1, 3);
+    }
+
+    private static CompetitionSimulationService Service() => new(new FixedTimeProvider(FixedNow));
+
+    private static ClubRow Club(string id, string name, int prestige) =>
+        new(id, name, name, "Test City", "TST", "1900", prestige, 50, 22);
+
+    private sealed class FixedTimeProvider(DateTimeOffset value) : TimeProvider
+    {
+        public override DateTimeOffset GetUtcNow() => value;
+    }
+}
