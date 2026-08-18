@@ -1,8 +1,11 @@
-# PC Dynasty — Audio asset workflow
+# PC Dynasty — Audio asset workflow (runtime side)
 
 > Source of truth for every audio asset the game ships.
 > This document is for humans. Agents and scripts read
-> [`audio-spec.json`](./audio-spec.json) and never this file.
+> [`audio-spec.json`](../../content/audio/audio-spec.json) and never this file.
+>
+> Full documentation (manual for humans, mcp-vertex guide for agents,
+> mmx reference, spec format) lives in [`docs/audios/`](../../../docs/audios/).
 
 ## Goal
 
@@ -86,7 +89,7 @@ the human is reviewing. Once approved, the encoded `ogg` lands in git and
 the wav can be deleted with:
 
 ```bash
-bun scripts/generate-audio.script.ts deprecate <slot> --variant <id>
+bun tools/scripts/content/generate-audio.script.ts deprecate <slot> --variant <id>
 ```
 
 …which moves it into the deprecation dir rather than just `rm`'ing it, so

@@ -68,6 +68,7 @@ export const startProgressIndicator = (label: ProgressLabel): IProgressIndicator
 		// Only emit the first tick; afterwards stay quiet so logs aren't spammed.
 		if (frame === 'first') {
 			process.stderr.write(`[..] ${currentLabel} …\n`);
+			lastRenderMs = Date.now();
 		}
 	};
 

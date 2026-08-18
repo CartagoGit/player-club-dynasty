@@ -23,7 +23,7 @@ import {
 	type IResolvedAudioSlot,
 } from '../contracts/interfaces/audio-spec.interface.ts';
 
-export const SPEC_RELATIVE = join('game', 'godot', 'Audio', 'audio-spec.json');
+export const SPEC_RELATIVE = join('game', 'content', 'audio', 'audio-spec.json');
 export const DEFAULT_STAGING_RELATIVE = '.audio-staging';
 export const DEFAULT_DEPRECATED_RELATIVE = '.deprecated/assets/sounds';
 

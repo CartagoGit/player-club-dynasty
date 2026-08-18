@@ -23,9 +23,9 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-import { workspaceRoot } from './mcp-vertex-root.script';
+import { workspaceRoot } from '../../../scripts/mcp-vertex-root.script';
 
-const SPEC_RELATIVE = join('game', 'godot', 'Audio', 'audio-spec.json');
+const SPEC_RELATIVE = join('game', 'content', 'audio', 'audio-spec.json');
 const SPEC_FULL = join(workspaceRoot, SPEC_RELATIVE);
 
 interface IRunResult {
@@ -35,7 +35,7 @@ interface IRunResult {
 }
 
 const runCli = (args: readonly string[]): IRunResult => {
-	const result = spawnSync('bun', ['scripts/generate-audio.script.ts', ...args], {
+	const result = spawnSync('bun', ['tools/scripts/content/generate-audio.script.ts', ...args], {
 		cwd: workspaceRoot,
 		encoding: 'utf8',
 	});

@@ -195,7 +195,7 @@ export default definePlugin({
 		): { ok: boolean; stdout: string; stderr: string } => {
 			const result = spawnSync(
 				'bun',
-				[join(ctx.workspace.root, 'scripts', 'generate-audio.script.ts'), ...args],
+				[join(ctx.workspace.root, 'tools', 'scripts', 'content', 'generate-audio.script.ts'), ...args],
 				{ encoding: 'utf8', cwd: ctx.workspace.root },
 			);
 			return {
@@ -259,7 +259,7 @@ export default definePlugin({
 						}
 						const variantIdMatch = result.stdout.match(/variant (v_\d+)/);
 						const wavMatch = result.stdout.match(/stage \S+ → (\S+)/);
-						const listenCommand = `bun scripts/generate-audio.script.ts listen ${fullKey} --variant ${variantIdMatch?.[1] ?? '?'}`;
+						const listenCommand = `bun tools/scripts/content/generate-audio.script.ts listen ${fullKey} --variant ${variantIdMatch?.[1] ?? '?'}`;
 						const payload = {
 							fullKey,
 							variantId: variantIdMatch?.[1] ?? '?',

@@ -32,9 +32,9 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 
-import { workspaceRoot } from './mcp-vertex-root.script.ts';
+import { workspaceRoot } from '../../../scripts/mcp-vertex-root.script.ts';
 
-const SPEC_RELATIVE = join('game', 'godot', 'Audio', 'audio-spec.json');
+const SPEC_RELATIVE = join('game', 'content', 'audio', 'audio-spec.json');
 const SPEC_PATH = resolve(workspaceRoot, SPEC_RELATIVE);
 const SPEC_DIR = dirname(SPEC_PATH);
 const STAGING_RELATIVE = '.audio-staging';

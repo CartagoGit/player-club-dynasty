@@ -55,7 +55,7 @@ const splitLastDot = (value: string): [string, string] => {
 };
 
 export const loadAudioManifest = (workspaceRoot: string): IResolvedAudioManifest => {
-	const specPath = join(workspaceRoot, 'game', 'godot', 'Audio', 'audio-spec.json');
+	const specPath = join(workspaceRoot, 'game', 'content', 'audio', 'audio-spec.json');
 	if (!existsSync(specPath)) {
 		throw STALE_ERROR(`audio spec missing at ${specPath}`);
 	}
