@@ -13,7 +13,8 @@ external content and save files enter through public contracts.
 
 Run commands from this `game` directory so SDK selection is enforced. Generated
 `.godot`, `bin`, `obj`, test-result and benchmark-artifact directories are local
-outputs and are ignored by Git.
+outputs and are ignored by Git. Godot `.uid` files beside authored scripts and
+scenes are source metadata, so they remain versioned.
 
 ## Quality gates
 
@@ -28,6 +29,15 @@ Run only the fast forbidden-dependency gate:
 ```shell
 ./scripts/check-architecture.sh
 ```
+
+Verify that no ignored build, editor, test, benchmark, local-data or save
+artifact has been forced into the Git index:
+
+```shell
+./scripts/check-repository-hygiene.sh
+```
+
+The game CI runs this check before restore, build and tests.
 
 Both scripts accept extra `dotnet test` arguments. For example,
 `./scripts/test-all.sh --no-restore` reuses an existing restore in CI.

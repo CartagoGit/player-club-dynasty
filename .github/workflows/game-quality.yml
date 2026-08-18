@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - "game/**"
+      - ".gitignore"
       - ".github/workflows/game-quality.yml"
   push:
     branches: [main]
     paths:
       - "game/**"
+      - ".gitignore"
       - ".github/workflows/game-quality.yml"
 
 permissions:
@@ -30,6 +32,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+
+      - name: Reject tracked generated artifacts
+        run: ./scripts/check-repository-hygiene.sh
 
       - name: Select pinned .NET SDK
         uses: actions/setup-dotnet@v6

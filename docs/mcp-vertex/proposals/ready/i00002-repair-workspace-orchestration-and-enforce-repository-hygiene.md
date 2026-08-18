@@ -29,7 +29,7 @@ The live host requests a deprecated duplicate plugin id, the documented root val
 
 ### S1 — Align the local plugin bootstrap and validation entrypoint
 - **Status**: done
-- **Files**: `.codex/config.toml`, `scripts/dev.script.ts`, `package.json`, `plugins/mcp-vertex_player-club-dynasty/src/lib/types.ts`, `plugins/mcp-vertex_player-club-dynasty/src/lib/game-data.types.ts`, `plugins/mcp-vertex_player-club-dynasty/src/index.ts`, `plugins/mcp-vertex_player-club-dynasty/src/public/index.ts`
+- **Files**: `.codex/config.toml`, `scripts/dev.script.ts`, `package.json`, `plugins/mcp-vertex_player-club-dynasty/src/lib/game-data.types.ts`, `plugins/mcp-vertex_player-club-dynasty/src/index.ts`, `plugins/mcp-vertex_player-club-dynasty/src/public/index.ts`
 - **Gate**: type
 - acceptance:
   - "The local plugin loads once through the configured path without a deprecated duplicate request."
@@ -37,8 +37,8 @@ The live host requests a deprecated duplicate plugin id, the documented root val
   - "Plugin contracts follow the repository's explicit type-file naming convention."
 
 ### S2 — Turn generated-artifact hygiene into a CI gate
-- **Status**: pending
-- **Files**: `.gitignore`, `game/scripts/check-repository-hygiene.sh`, `.github/workflows/game-quality.yml`, `game/README.md`
+- **Status**: done
+- **Files**: `.gitignore`, `game/scripts/check-repository-hygiene.sh`, `.github/workflows/game-quality.yml`, `game/README.md`, `game/godot/Scripts/Presentation/ClubOverviewProjector.cs.uid`
 - **Gate**: e2e
 - acceptance:
   - "No tracked path matches .NET, Godot, test, benchmark, Node or MCP cache outputs."
