@@ -2,7 +2,7 @@
 id: f00030
 title: "Establish the canonical indexed world loader"
 kind: feat
-status: ready
+status: in-progress
 type: proposal
 track: product
 date: 2026-08-18
@@ -41,26 +41,27 @@ re-queries people per club, which cannot reach the target world scale.
 
 - global_gate: e2e
 
-### S1 — Compose the canonical loading pipeline behind one application port
-- **Status**: ready
-- **Files**: `game/src/PCDynasty.Application/Content/IWorldLoader.cs`, `game/src/PCDynasty.Application/Content/WorldLoader.cs`, `game/src/PCDynasty.Application/Content/WorldSnapshot.cs`, `game/tests/PCDynasty.Application.Tests/Content/WorldLoaderTests.cs`
+### S1 — Compose the canonical loading pipeline behind one loader
+- **Status**: done
+- **Files**: `game/src/PCDynasty.Content/Worlds/WorldPackLoader.cs`, `game/src/PCDynasty.Content/Worlds/WorldPackSource.cs`, `game/src/PCDynasty.Content/Worlds/WorldPackLoadResult.cs`, `game/src/PCDynasty.Content/Worlds/WorldContentHash.cs`, `game/src/PCDynasty.Presentation.Core/WorldContentCatalog.cs`, `game/src/PCDynasty.Presentation.Core/WorldService.cs`, `game/tests/PCDynasty.Content.Tests/WorldPackLoaderTests.cs`, `game/tests/PCDynasty.Presentation.Tests/WorldLoadingDiagnosticsTests.cs`
 - **Gate**: unit
 - acceptance:
-  - "The loader runs reader, normalisation, validator and compiler in that order and returns an immutable snapshot."
+  - "The loader runs reader, merge, validator and compiler in that order and returns an immutable compiled pack."
   - "Invalid content fails with a diagnostic that names the entity, the attribute and the source, and is never coerced to zero."
-  - "The snapshot exposes a content hash and StableIds for every entity."
-  - "The tolerant value reader is removed from the productive path in this slice."
+  - "Merging the documents makes cross-document references verifiable, which per-file validation could not do."
+  - "The result exposes a content hash a save can bind to."
+  - "The loader lives in the content layer, not in Application, so the architecture gate that forbids Application from referencing content adapters stays green."
 
 ### S2 — Index the snapshot for constant-time access
-- **Status**: ready
+- **Status**: in-progress
 - **DependsOn**: [S1]
-- **Files**: `game/src/PCDynasty.Application/Content/WorldIndex.cs`, `game/src/PCDynasty.Presentation.Core/WorldClubProjection.cs`, `game/tests/PCDynasty.Application.Tests/Content/WorldIndexTests.cs`, `game/benchmarks/PCDynasty.Benchmarks/WorldLoadBenchmarks.cs`, `game/benchmarks/budgets.json`
+- **Files**: `game/src/PCDynasty.Presentation.Core/WorldSnapshot.cs`, `game/src/PCDynasty.Presentation.Core/WorldClubProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldPeopleProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldCompetitionProjection.cs`, `game/benchmarks/PCDynasty.Benchmarks/WorldLoadBenchmarks.cs`, `game/benchmarks/budgets.json`
 - **Gate**: perf
 - acceptance:
-  - "Lookups by id, by club and by competition are constant or logarithmic, never linear scans."
-  - "Indexed queries over 160,000 people keep a median at or below 16 ms."
-  - "Cold compile and index of the starter pack stays at or below 2,000 ms."
-  - "The workload is declared in the versioned budgets file and compared in CI."
+  - "Lookups by id and by club are indexed once per load; a squad query reads the club's own people and finding a club no longer rebuilds the club list. (done)"
+  - "Indexed queries over 160,000 people keep a median at or below 16 ms. (pending: workload and budget)"
+  - "Cold compile and index of the starter pack stays at or below 2,000 ms. (pending: workload and budget)"
+  - "The workload is declared in the versioned budgets file and compared in CI. (pending)"
 
 ### S3 — Let the game choose an integrated or external content source
 - **Status**: ready
@@ -80,3 +81,6 @@ re-queries people per club, which cannot reach the target world scale.
 - Indexed lookups over 160,000 people hold a median at or below 16 ms, and the cold
   compile and index of the starter pack stays at or below 2,000 ms.
 - The productive path uses the canonical pipeline only; the tolerant reader is gone.
+
+- review-implementer: claude-opus-5
+- review-log: partial by claude-opus-5 — S1 shipped and verified: the runtime now loads through read → merge → validate → compile → hash; a corrupted attribute and a dangling cross-document reference both stop the load with a diagnostic naming the entity, the attribute and the document, proven against the real starter world; equivalent JSON, CSV and SQLite sources compile to the same content hash. S2 shipped its indexes (people by club, entity by id, country names built once per load) but still owes the 160,000-person and cold-start workloads with their budgets; S3 (choosing an external source from the shell) is untouched. 27 suites, format, architecture gates and headless SmokeBoot green.

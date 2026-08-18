@@ -7,21 +7,20 @@ namespace PCDynasty.Presentation.Core;
 internal static class WorldCompetitionProjection
 {
     internal static IReadOnlyList<CompetitionRow> ListForClub(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId) =>
         Project(world, clubExternalId, filterByClub: true);
 
-    internal static IReadOnlyList<CompetitionRow> ListAll(WorldContentSnapshot world) =>
+    internal static IReadOnlyList<CompetitionRow> ListAll(WorldSnapshot world) =>
         Project(world, string.Empty, filterByClub: false);
 
     private static IReadOnlyList<CompetitionRow> Project(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId,
         bool filterByClub)
     {
-        Dictionary<string, string> clubNames = BuildClubNames(world.Clubs);
-        return world.Competitions.Entities
-            .Where(entity => entity.KindId == "competition")
+        ImmutableDictionary<string, string> clubNames = BuildClubNames(world.Clubs);
+        return world.Competitions
             .Where(entity => !filterByClub || IncludesClub(entity, clubExternalId))
             .Select(entity => ProjectCompetition(entity, clubExternalId, clubNames))
             .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
@@ -55,10 +54,10 @@ internal static class WorldCompetitionProjection
             reference.RelationId == "participant"
             && reference.TargetExternalId == clubExternalId);
 
-    private static Dictionary<string, string> BuildClubNames(NormalizedContentModel clubs) =>
-        clubs.Entities
-            .Where(entity => entity.KindId == "club")
-            .ToDictionary(
+    private static ImmutableDictionary<string, string> BuildClubNames(
+        ImmutableArray<NormalizedContentEntity> clubs) =>
+        clubs
+            .ToImmutableDictionary(
                 entity => entity.ExternalId,
                 entity => WorldContentValueReader.Read(
                     entity,

@@ -81,7 +81,7 @@ at a time.
   - "Commands accept the managed club context only; browsing a rival mutates nothing."
 
 ### S3 — Establish the canonical, indexed world loader
-- **Status**: ready
+- **Status**: in-progress
 - **DependsOn**: [S2]
 - **Owner**: `f00030`
 - **Files**: `docs/mcp-vertex/proposals/ready/f00030-establish-the-canonical-indexed-world-loader.md`

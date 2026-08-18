@@ -7,36 +7,30 @@ namespace PCDynasty.Presentation.Core;
 /// <summary>Projects clubs. People belong to <see cref="WorldPeopleProjection"/>.</summary>
 internal static class WorldClubProjection
 {
-    internal static IReadOnlyList<ClubRow> ListClubs(WorldContentSnapshot world)
-    {
-        Dictionary<string, string> countryNames = WorldCountryNames.Build(world.Countries);
-        Dictionary<string, int> playersPerClub = CountPlayers(world.People);
-
-        return world.Clubs.Entities
-            .Where(entity => entity.KindId == "club")
-            .Select(entity => ProjectClub(entity, countryNames, playersPerClub))
+    internal static IReadOnlyList<ClubRow> ListClubs(WorldSnapshot world) =>
+        world.Clubs
+            .Select(entity => ProjectClub(entity, world))
             .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
             .ToImmutableArray();
+
+    /// <summary>Indexed lookup: finding a club no longer rebuilds the list.</summary>
+    internal static ClubRow? FindClub(WorldSnapshot world, string clubExternalId)
+    {
+        NormalizedContentEntity? entity = world.Entity(clubExternalId);
+        return entity is null || entity.KindId != "club" ? null : ProjectClub(entity, world);
     }
 
-    internal static ClubRow? FindClub(WorldContentSnapshot world, string clubExternalId) =>
-        ListClubs(world).FirstOrDefault(club =>
-            string.Equals(club.ExternalId, clubExternalId, StringComparison.Ordinal));
-
-    private static ClubRow ProjectClub(
-        NormalizedContentEntity entity,
-        Dictionary<string, string> countryNames,
-        Dictionary<string, int> playersPerClub)
+    private static ClubRow ProjectClub(NormalizedContentEntity entity, WorldSnapshot world)
     {
         string displayName = WorldContentValueReader.Read(entity, "display-name", entity.ExternalId);
-        playersPerClub.TryGetValue(entity.ExternalId, out int squadSize);
+        int squadSize = CountPlayers(world, entity.ExternalId);
 
         return new ClubRow(
             entity.ExternalId,
             displayName,
             WorldContentValueReader.Read(entity, "short-name", displayName),
             WorldContentValueReader.Read(entity, "city", WorldCountryNames.Unknown),
-            WorldCountryNames.Of(entity, countryNames),
+            WorldCountryNames.Of(entity, world.CountryNames),
             WorldContentValueReader.Read(entity, "founded-year", WorldCountryNames.Unknown),
             WorldContentValueReader.ReadInt(entity, "prestige"),
             WorldContentValueReader.ReadInt(entity, "fanbase"),
@@ -44,12 +38,8 @@ internal static class WorldClubProjection
     }
 
     /// <summary>Squad size counts players only, never managers or staff.</summary>
-    private static Dictionary<string, int> CountPlayers(NormalizedContentModel people) =>
-        people.Entities
-            .Where(entity => entity.KindId == "person"
-                && WorldPeopleProjection.Occupation(entity) == WorldPeopleProjection.PlayerOccupation)
-            .SelectMany(entity => entity.References)
-            .Where(reference => reference.RelationId == "club")
-            .GroupBy(reference => reference.TargetExternalId, StringComparer.Ordinal)
-            .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
+    private static int CountPlayers(WorldSnapshot world, string clubExternalId) =>
+        world.PeopleOf(clubExternalId)
+            .Count(person =>
+                WorldPeopleProjection.Occupation(person) == WorldPeopleProjection.PlayerOccupation);
 }

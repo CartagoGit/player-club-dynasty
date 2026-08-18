@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../PCDynasty.Application/PCDynasty.Application.csproj" />
+    <ProjectReference Include="../PCDynasty.Content/PCDynasty.Content.csproj" />
     <ProjectReference Include="../PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj" />
     <ProjectReference Include="../PCDynasty.Contracts/PCDynasty.Contracts.csproj" />
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />

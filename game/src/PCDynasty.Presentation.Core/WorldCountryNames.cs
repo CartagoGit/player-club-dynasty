@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using PCDynasty.Content.Abstractions;
 
 namespace PCDynasty.Presentation.Core;
@@ -10,10 +11,10 @@ internal static class WorldCountryNames
 {
     internal const string Unknown = "—";
 
-    internal static Dictionary<string, string> Build(NormalizedContentModel countries) =>
-        countries.Entities
-            .Where(entity => entity.KindId == "country")
-            .ToDictionary(
+    internal static ImmutableDictionary<string, string> Build(
+        ImmutableArray<NormalizedContentEntity> countries) =>
+        countries
+            .ToImmutableDictionary(
                 entity => entity.ExternalId,
                 entity => WorldContentValueReader.Read(
                     entity,
@@ -24,7 +25,7 @@ internal static class WorldCountryNames
     /// <summary>Country an entity references, or the unknown marker.</summary>
     internal static string Of(
         NormalizedContentEntity entity,
-        Dictionary<string, string> countryNames) =>
+        ImmutableDictionary<string, string> countryNames) =>
         entity.References
             .Where(reference => reference.RelationId == "country")
             .Select(reference => countryNames.GetValueOrDefault(reference.TargetExternalId))

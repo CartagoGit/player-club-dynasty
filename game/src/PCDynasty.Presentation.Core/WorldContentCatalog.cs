@@ -1,10 +1,17 @@
 using PCDynasty.Content.Abstractions;
+using PCDynasty.Content.Worlds;
 
 namespace PCDynasty.Presentation.Core;
 
+/// <summary>
+/// Loads one world through the canonical pipeline and keeps the indexed
+/// snapshot the projections read from.
+/// </summary>
 internal sealed class WorldContentCatalog
 {
-    private static readonly string[] FileNames =
+    private const int SchemaVersion = 1;
+
+    private static readonly string[] DocumentNames =
     [
         "clubs.json",
         "people.json",
@@ -13,72 +20,63 @@ internal sealed class WorldContentCatalog
         "rules.json",
     ];
 
-    private readonly IContentReader _reader;
+    /// <summary>
+    /// Attribute keys the world declares as integers. Unparsable values fail
+    /// the load with a diagnostic instead of silently becoming zero.
+    /// </summary>
+    private static readonly string[] NumericValueKeys =
+    [
+        "prestige",
+        "fanbase",
+        "birth-year",
+        "technique",
+        "form",
+        "physical",
+        "mental",
+        "reputation",
+    ];
+
+    private readonly WorldPackLoader _loader;
     private readonly string _contentRoot;
-    private WorldContentSnapshot? _snapshot;
+    private readonly string _providerId;
+    private WorldSnapshot? _snapshot;
 
-    internal WorldContentCatalog(IContentReader reader, string contentRoot)
+    internal WorldContentCatalog(IContentReader reader, string contentRoot, string providerId = "starter-world")
     {
-        _reader = reader ?? throw new ArgumentNullException(nameof(reader));
-        if (string.IsNullOrWhiteSpace(contentRoot))
-        {
-            throw new ArgumentException("Content root cannot be empty.", nameof(contentRoot));
-        }
+        ArgumentNullException.ThrowIfNull(reader);
+        ArgumentException.ThrowIfNullOrWhiteSpace(contentRoot);
+        ArgumentException.ThrowIfNullOrWhiteSpace(providerId);
 
+        _loader = new WorldPackLoader(reader);
         _contentRoot = contentRoot;
+        _providerId = providerId;
     }
 
     internal async Task ReloadAsync(CancellationToken cancellationToken)
     {
-        var models = new Dictionary<string, NormalizedContentModel>(StringComparer.Ordinal);
-        foreach (string fileName in FileNames)
+        var source = new WorldPackSource(
+            _providerId,
+            SchemaVersion,
+            DocumentNames.Select(name => Path.Combine(_contentRoot, "data", name)),
+            NumericValueKeys);
+
+        WorldPackLoadResult result = await _loader
+            .LoadAsync(source, cancellationToken)
+            .ConfigureAwait(false);
+        if (!result.IsSuccess)
         {
-            ContentReadResult result = await ReadFileAsync(fileName, cancellationToken).ConfigureAwait(false);
-            EnsureSuccess(result, fileName);
-            models.Add(fileName, result.Model!);
+            throw new InvalidOperationException(
+                $"Failed to load the world from '{_contentRoot}': {result.DescribeErrors()}");
         }
 
-        var snapshot = new WorldContentSnapshot(
-            models["clubs.json"],
-            models["people.json"],
-            models["competitions.json"],
-            models["countries.json"],
-            models["rules.json"]);
-        Interlocked.Exchange(ref _snapshot, snapshot);
+        Interlocked.Exchange(ref _snapshot, new WorldSnapshot(result.Pack!, result.ContentHash));
     }
 
-    internal WorldContentSnapshot GetSnapshot() =>
+    internal WorldSnapshot GetSnapshot() =>
         Volatile.Read(ref _snapshot)
         ?? throw new InvalidOperationException(
             "WorldService has not loaded its content. Call ReloadAsync() first.");
-
-    private ValueTask<ContentReadResult> ReadFileAsync(string fileName, CancellationToken cancellationToken)
-    {
-        string path = Path.Combine(_contentRoot, "data", fileName);
-        var request = new ContentReadRequest(path, "starter-world", expectedSchemaVersion: 1);
-        return _reader.ReadAsync(request, cancellationToken);
-    }
-
-    private static void EnsureSuccess(ContentReadResult result, string fileName)
-    {
-        if (result.IsSuccess)
-        {
-            return;
-        }
-
-        string errors = string.Join("; ", result.Diagnostics
-            .Where(diagnostic => diagnostic.Severity == ContentDiagnosticSeverity.Error)
-            .Select(diagnostic => $"[{diagnostic.Code}] {diagnostic.Message}"));
-        throw new InvalidOperationException($"Failed to load {fileName}: {errors}");
-    }
 }
-
-internal sealed record WorldContentSnapshot(
-    NormalizedContentModel Clubs,
-    NormalizedContentModel People,
-    NormalizedContentModel Competitions,
-    NormalizedContentModel Countries,
-    NormalizedContentModel Rules);
 
 internal static class WorldContentValueReader
 {
@@ -90,6 +88,10 @@ internal static class WorldContentValueReader
             ? value
             : fallback;
 
+    /// <summary>
+    /// Reads a declared integer. The loader has already rejected unparsable
+    /// numbers, so the fallback only covers an attribute the pack omits.
+    /// </summary>
     internal static int ReadInt(NormalizedContentEntity entity, string key)
     {
         string value = Read(entity, key, "0");

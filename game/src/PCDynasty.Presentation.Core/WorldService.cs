@@ -19,6 +19,12 @@ public sealed class WorldService : IManagerWorld
     public Task ReloadAsync(CancellationToken cancellationToken = default) =>
         _catalog.ReloadAsync(cancellationToken);
 
+    /// <summary>
+    /// Hash of the compiled content, independent of the format it came from.
+    /// A save can bind to it and refuse to open against different data.
+    /// </summary>
+    public string ContentHash => _catalog.GetSnapshot().ContentHash;
+
     public IReadOnlyList<ClubRow> ListClubs() =>
         WorldClubProjection.ListClubs(_catalog.GetSnapshot());
 

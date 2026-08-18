@@ -17,37 +17,34 @@ internal static class WorldPeopleProjection
     private const string ManagerOccupation = "manager";
 
     internal static IReadOnlyList<PlayerRow> ListPlayers(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId)
     {
-        Dictionary<string, string> countryNames = WorldCountryNames.Build(world.Countries);
         return People(world, clubExternalId, occupation => occupation == PlayerOccupation)
-            .Select(entity => ProjectPlayer(entity, countryNames))
+            .Select(entity => ProjectPlayer(entity, world.CountryNames))
             .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
             .ToImmutableArray();
     }
 
     internal static IReadOnlyList<ManagerRow> ListManagers(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId)
     {
-        Dictionary<string, string> countryNames = WorldCountryNames.Build(world.Countries);
         return People(world, clubExternalId, occupation => occupation == ManagerOccupation)
-            .Select(entity => ProjectManager(entity, countryNames))
+            .Select(entity => ProjectManager(entity, world.CountryNames))
             .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
             .ToImmutableArray();
     }
 
     internal static IReadOnlyList<StaffRow> ListStaff(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId)
     {
-        Dictionary<string, string> countryNames = WorldCountryNames.Build(world.Countries);
         return People(
                 world,
                 clubExternalId,
                 occupation => occupation != PlayerOccupation && occupation != ManagerOccupation)
-            .Select(entity => ProjectStaff(entity, countryNames))
+            .Select(entity => ProjectStaff(entity, world.CountryNames))
             .OrderBy(row => row.DisplayName, StringComparer.Ordinal)
             .ToImmutableArray();
     }
@@ -55,23 +52,16 @@ internal static class WorldPeopleProjection
     internal static string Occupation(NormalizedContentEntity entity) =>
         WorldContentValueReader.Read(entity, "occupation", string.Empty);
 
-    internal static bool BelongsToClub(NormalizedContentEntity person, string clubExternalId) =>
-        person.References.Any(reference =>
-            reference.RelationId == "club"
-            && reference.TargetExternalId == clubExternalId);
-
+    /// <summary>Indexed: the club's own people, not every person in the world.</summary>
     private static IEnumerable<NormalizedContentEntity> People(
-        WorldContentSnapshot world,
+        WorldSnapshot world,
         string clubExternalId,
         Func<string, bool> occupationFilter) =>
-        world.People.Entities
-            .Where(entity => entity.KindId == "person"
-                && BelongsToClub(entity, clubExternalId)
-                && occupationFilter(Occupation(entity)));
+        world.PeopleOf(clubExternalId).Where(entity => occupationFilter(Occupation(entity)));
 
     private static PlayerRow ProjectPlayer(
         NormalizedContentEntity entity,
-        Dictionary<string, string> countryNames)
+        ImmutableDictionary<string, string> countryNames)
     {
         int technique = WorldContentValueReader.ReadInt(entity, "technique");
         int form = WorldContentValueReader.ReadInt(entity, "form");
@@ -94,7 +84,7 @@ internal static class WorldPeopleProjection
 
     private static ManagerRow ProjectManager(
         NormalizedContentEntity entity,
-        Dictionary<string, string> countryNames) =>
+        ImmutableDictionary<string, string> countryNames) =>
         new(
             entity.ExternalId,
             WorldContentValueReader.Read(entity, "display-name", entity.ExternalId),
@@ -104,7 +94,7 @@ internal static class WorldPeopleProjection
 
     private static StaffRow ProjectStaff(
         NormalizedContentEntity entity,
-        Dictionary<string, string> countryNames) =>
+        ImmutableDictionary<string, string> countryNames) =>
         new(
             entity.ExternalId,
             WorldContentValueReader.Read(entity, "display-name", entity.ExternalId),
