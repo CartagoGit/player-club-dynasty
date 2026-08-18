@@ -1,0 +1,207 @@
+{
+  "lang": "en",
+  "icon": "flags/en.svg",
+  "name": "English",
+  "menu": {
+    "header": {
+      "eyebrow": "PC DYNASTY · SPORTING DIRECTOR",
+      "title": "YOUR CAREER STARTS HERE",
+      "summary": "Run the squad, the tactics, the market and the books."
+    },
+    "actions": {
+      "newCareer": "NEW CAREER",
+      "continue": "CONTINUE",
+      "load": "LOAD CAREER",
+      "dataEditor": "DATA EDITOR",
+      "options": "OPTIONS",
+      "exit": "EXIT"
+    }
+  },
+  "options": {
+    "header": {
+      "eyebrow": "SETTINGS",
+      "title": "PRESENTATION OPTIONS",
+      "summary": ""
+    },
+    "fullscreen": "Fullscreen",
+    "reducedMotion": "Reduced motion and immediate navigation",
+    "denseTables": "High-density compact tables",
+    "themeHeader": "THEME",
+    "themeHint": "Swap the interface palette.",
+    "languageHeader": "LANGUAGE",
+    "languageHint": "Game interface language; content does not change.",
+    "actions": {
+      "saveAndClose": "SAVE AND CLOSE",
+      "revert": "REVERT"
+    },
+    "hint": "Interface scaling and audio will land once the assets are final.",
+    "rejectionMessage": {
+      "title": "Change not applied",
+      "body": "The selected value could not be applied."
+    }
+  },
+  "squad": {
+    "header": {
+      "eyebrow": "SQUAD MANAGEMENT",
+      "title": "SQUAD",
+      "summary": ""
+    },
+    "summaryOwnedFormat": "Your club · {0} · {1} players",
+    "summaryBrowseFormat": "Browsing · {0} · {1} players",
+    "actionOpenMarket": "OPEN MARKET",
+    "actionOpenMarketTooltip": "Go to the transfer market",
+    "empty": "This squad has no players yet.",
+    "columns": {
+      "player": "PLAYER",
+      "nation": "NAT.",
+      "age": "AGE",
+      "tec": "TEC",
+      "for": "FOR",
+      "fis": "PHY",
+      "men": "MEN",
+      "val": "RAT",
+      "action": "ACTION"
+    },
+    "actions": {
+      "inspect": "INSPECT",
+      "inspectTooltip": "Open the player dossier"
+    }
+  },
+  "market": {
+    "header": {
+      "eyebrow": "TRANSFER MARKET",
+      "title": "MARKET",
+      "summary": ""
+    },
+    "summaryFormat": "{0} · {1} candidates · {2} with a price",
+    "noticeIdle": "Select a candidate.",
+    "noticeAcceptedFormat": "DEAL CLOSED · {0} · {1}",
+    "noticeRejectedFormat": "OFFER REJECTED · {0}",
+    "empty": "No players available.",
+    "columns": {
+      "player": "PLAYER",
+      "sellingClub": "SELLING CLUB",
+      "age": "AGE",
+      "tec": "TEC",
+      "val": "RAT",
+      "price": "PRICE",
+      "action": "ACTION"
+    },
+    "actions": {
+      "sign": "SIGN",
+      "signTooltipFormat": "Submit {0} for {1}"
+    },
+    "reasons": {
+      "budget": "cash or budget insufficient",
+      "price": "the offer does not meet the asking price",
+      "unavailable": "the player is no longer available",
+      "stale": "the deal changed",
+      "finance": "the finances are not available",
+      "generic": "the offer was rejected"
+    }
+  },
+  "history": {
+    "header": {
+      "eyebrow": "ARCHIVE",
+      "title": "HISTORY",
+      "summary": ""
+    },
+    "summaryFormat": "{0} matches · {1} goals · {2} competitions",
+    "empty": "No matches played yet.",
+    "filterEmpty": "No matches match the filters.",
+    "filters": {
+      "competitionLabel": "Competition:",
+      "clubLabel": "Club:",
+      "orderLabel": "Order:",
+      "allOption": "(all)",
+      "orderOptions": {
+        "date": "Date",
+        "competition": "Competition",
+        "goals": "Total goals"
+      }
+    },
+    "aggregate": {
+      "title": "ALL-TIME TABLE",
+      "empty": "No data."
+    },
+    "columns": {
+      "when": "WHEN",
+      "competition": "COMPETITION",
+      "home": "HOME",
+      "score": "RES",
+      "away": "AWAY",
+      "seed": "SEED",
+      "action": "ACTION"
+    },
+    "actions": {
+      "view": "REPLAY",
+      "viewTooltip": "Open the match replay"
+    }
+  },
+  "competitions": {
+    "header": {
+      "eyebrow": "CALENDAR",
+      "title": "COMPETITIONS",
+      "summary": ""
+    },
+    "summaryFormat": "{0} leagues · {1} cups · {2} season",
+    "empty": "This club is not yet entered in any competition.",
+    "readOnly": {
+      "title": "READ-ONLY VIEW",
+      "body": "You can only play with your own club."
+    },
+    "entry": {
+      "eyebrow": "COMPETITION",
+      "summaryFormat": "Frequency: {0} · {1} rivals",
+      "rivalsPrefix": "Rivals:"
+    },
+    "actions": {
+      "playNext": "PLAY NEXT RIVAL",
+      "playNextTooltip": "Play the next match",
+      "playSeasonFormat": "Play full season ({0} matches)"
+    }
+  },
+  "world": {
+    "header": {
+      "eyebrow": "WORLD",
+      "title": "WORLD COMPETITIONS",
+      "summary": ""
+    },
+    "summaryFormat": "{0} competitions · {1} clubs entered",
+    "empty": "No competitions are loaded in this world.",
+    "columns": {
+      "name": "COMPETITION",
+      "format": "FORMAT",
+      "frequency": "FREQUENCY",
+      "rivals": "RIVALS",
+      "action": "ACTION"
+    },
+    "actions": {
+      "inspect": "INSPECT",
+      "inspectTooltip": "Open the detail"
+    }
+  },
+  "picker": {
+    "header": {
+      "eyebrow": "BROWSE",
+      "title": "PICK A CLUB",
+      "summary": ""
+    },
+    "summaryFormat": "{0} clubs available in the current world",
+    "ownedBadge": "YOUR CLUB",
+    "empty": "No clubs available.",
+    "columns": {
+      "club": "CLUB",
+      "country": "COUNTRY",
+      "founded": "FD.",
+      "prestige": "PRE.",
+      "fanbase": "FAN",
+      "squad": "SQUAD",
+      "action": "ACTION"
+    },
+    "actions": {
+      "choose": "CHOOSE",
+      "chooseTooltip": "Explore this club"
+    }
+  }
+}
