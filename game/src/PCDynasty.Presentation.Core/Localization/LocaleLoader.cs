@@ -109,8 +109,7 @@ public sealed class LocaleLoader
             return null;
         }
 
-        string path = _source.ResolvePath(id);
-        if (!_source.FileExists(path))
+        if (!_source.TryResolvePath(id, out string path))
         {
             return null;
         }
@@ -226,6 +225,13 @@ public interface ILocaleFileSource
     /// <summary>Resolves the on-disk (or virtual) path for a locale id.</summary>
     string ResolvePath(string id);
 
+    /// <summary>
+    /// Resolves the actual path for an id, returning true when the
+    /// file exists regardless of which folder it lives in. The
+    /// registry uses this to peek metadata without knowing the source.
+    /// </summary>
+    bool TryResolvePath(string id, out string path);
+
     /// <summary>True when the file exists at the resolved path.</summary>
     bool FileExists(string path);
 
@@ -237,4 +243,17 @@ public interface ILocaleFileSource
 
     /// <summary>The folder the registry walks to discover every <c>xx.json</c>.</summary>
     string RootFolder { get; }
+
+    /// <summary>
+    /// Every locale id the source knows about, built-in and external.
+    /// The registry uses this to enumerate the language picker.
+    /// </summary>
+    IEnumerable<LocaleSourceListing> ListIds();
 }
+
+/// <summary>
+/// A locale id with the folder it was found in. The registry uses the
+/// <see cref="Source"/> field to decide precedence (built-in wins)
+/// without re-querying the filesystem.
+/// </summary>
+public sealed record LocaleSourceListing(string Id, LocaleSource Source);
