@@ -88,7 +88,12 @@ public partial class ManagerWorkspaceController : Control
             RenderCurrent,
             SetStatus,
             () => SelectSection(WorkspaceSection.History));
-        _marketScreen = new MarketScreen(transferMarket, _managed, calendar, RenderCurrent);
+        _marketScreen = new MarketScreen(
+            transferMarket,
+            _managed,
+            calendar,
+            RenderCurrent,
+            key => Tr(key));
         _financesScreen = new FinancesScreen(financeService, _managed);
         _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
         _finances = financeService;

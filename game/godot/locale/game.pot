@@ -74,3 +74,73 @@ msgstr ""
 
 msgid "SQUAD_ROW_INSPECT_TOOLTIP"
 msgstr ""
+
+# Market screen
+msgid "MARKET_EYEBROW"
+msgstr ""
+
+msgid "MARKET_TITLE"
+msgstr ""
+
+msgid "MARKET_SUMMARY"
+msgstr ""
+
+msgid "MARKET_NOTICE_IDLE"
+msgstr ""
+
+msgid "MARKET_NOTICE_ACCEPTED"
+msgstr ""
+
+msgid "MARKET_NOTICE_REJECTED"
+msgstr ""
+
+msgid "MARKET_EMPTY"
+msgstr ""
+
+msgid "MARKET_COL_PLAYER"
+msgstr ""
+
+msgid "MARKET_COL_SELLING_CLUB"
+msgstr ""
+
+msgid "MARKET_COL_AGE"
+msgstr ""
+
+msgid "MARKET_COL_TEC"
+msgstr ""
+
+msgid "MARKET_COL_VAL"
+msgstr ""
+
+msgid "MARKET_COL_PRICE"
+msgstr ""
+
+msgid "MARKET_COL_ACTION"
+msgstr ""
+
+msgid "MARKET_ROW_SIGN"
+msgstr ""
+
+msgid "MARKET_ROW_SIGN_TOOLTIP"
+msgstr ""
+
+msgid "MARKET_ROW_SIGN_TOOLTIP_FMT"
+msgstr ""
+
+msgid "MARKET_REJECT_BUDGET"
+msgstr ""
+
+msgid "MARKET_REJECT_PRICE"
+msgstr ""
+
+msgid "MARKET_REJECT_UNAVAILABLE"
+msgstr ""
+
+msgid "MARKET_REJECT_STALE"
+msgstr ""
+
+msgid "MARKET_REJECT_FINANCE"
+msgstr ""
+
+msgid "MARKET_REJECT_GENERIC"
+msgstr ""

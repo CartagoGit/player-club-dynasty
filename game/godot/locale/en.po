@@ -74,3 +74,73 @@ msgstr "INSPECT"
 
 msgid "SQUAD_ROW_INSPECT_TOOLTIP"
 msgstr "Open the player dossier (coming in a future slice)"
+
+# Market screen
+msgid "MARKET_EYEBROW"
+msgstr "TRANSFER MARKET"
+
+msgid "MARKET_TITLE"
+msgstr "MARKET"
+
+msgid "MARKET_SUMMARY"
+msgstr "{0} · {1} candidates available · {2} with a price"
+
+msgid "MARKET_NOTICE_IDLE"
+msgstr "Select a candidate to present an offer at their asking price."
+
+msgid "MARKET_NOTICE_ACCEPTED"
+msgstr "TRANSFER CLOSED · {0} · remaining budget {1}"
+
+msgid "MARKET_NOTICE_REJECTED"
+msgstr "OFFER REJECTED · {0}"
+
+msgid "MARKET_EMPTY"
+msgstr "No players are available in this window."
+
+msgid "MARKET_COL_PLAYER"
+msgstr "PLAYER"
+
+msgid "MARKET_COL_SELLING_CLUB"
+msgstr "SELLING CLUB"
+
+msgid "MARKET_COL_AGE"
+msgstr "AGE"
+
+msgid "MARKET_COL_TEC"
+msgstr "TEC"
+
+msgid "MARKET_COL_VAL"
+msgstr "OVR"
+
+msgid "MARKET_COL_PRICE"
+msgstr "PRICE"
+
+msgid "MARKET_COL_ACTION"
+msgstr "ACTION"
+
+msgid "MARKET_ROW_SIGN"
+msgstr "SIGN"
+
+msgid "MARKET_ROW_SIGN_TOOLTIP"
+msgstr "Present {0} for {1}"
+
+msgid "MARKET_ROW_SIGN_TOOLTIP_FMT"
+msgstr "Present {0} for {1}"
+
+msgid "MARKET_REJECT_BUDGET"
+msgstr "cash or budget is insufficient"
+
+msgid "MARKET_REJECT_PRICE"
+msgstr "the offer does not reach the asking price"
+
+msgid "MARKET_REJECT_UNAVAILABLE"
+msgstr "the player is no longer available"
+
+msgid "MARKET_REJECT_STALE"
+msgstr "the deal changed; refresh the market"
+
+msgid "MARKET_REJECT_FINANCE"
+msgstr "the career finance is not initialised"
+
+msgid "MARKET_REJECT_GENERIC"
+msgstr "the offer was refused"

@@ -74,3 +74,73 @@ msgstr "INSPECCIONAR"
 
 msgid "SQUAD_ROW_INSPECT_TOOLTIP"
 msgstr "Abrir la ficha del jugador (próximamente)"
+
+# Pantalla de mercado
+msgid "MARKET_EYEBROW"
+msgstr "MERCADO DE FICHAJES"
+
+msgid "MARKET_TITLE"
+msgstr "MERCADO"
+
+msgid "MARKET_SUMMARY"
+msgstr "{0} · {1} candidatos disponibles · {2} con precio"
+
+msgid "MARKET_NOTICE_IDLE"
+msgstr "Selecciona un candidato para presentar una oferta por su precio solicitado."
+
+msgid "MARKET_NOTICE_ACCEPTED"
+msgstr "FICHAJE CERRADO · {0} · presupuesto restante {1}"
+
+msgid "MARKET_NOTICE_REJECTED"
+msgstr "OFERTA RECHAZADA · {0}"
+
+msgid "MARKET_EMPTY"
+msgstr "No hay jugadores disponibles en esta ventana."
+
+msgid "MARKET_COL_PLAYER"
+msgstr "JUGADOR"
+
+msgid "MARKET_COL_SELLING_CLUB"
+msgstr "CLUB VENDEDOR"
+
+msgid "MARKET_COL_AGE"
+msgstr "EDAD"
+
+msgid "MARKET_COL_TEC"
+msgstr "TEC"
+
+msgid "MARKET_COL_VAL"
+msgstr "MED"
+
+msgid "MARKET_COL_PRICE"
+msgstr "PRECIO"
+
+msgid "MARKET_COL_ACTION"
+msgstr "ACCIÓN"
+
+msgid "MARKET_ROW_SIGN"
+msgstr "FICHAR"
+
+msgid "MARKET_ROW_SIGN_TOOLTIP"
+msgstr "Presentar {0} por {1}"
+
+msgid "MARKET_ROW_SIGN_TOOLTIP_FMT"
+msgstr "Presentar {0} por {1}"
+
+msgid "MARKET_REJECT_BUDGET"
+msgstr "caja o presupuesto insuficiente"
+
+msgid "MARKET_REJECT_PRICE"
+msgstr "la oferta no alcanza el precio solicitado"
+
+msgid "MARKET_REJECT_UNAVAILABLE"
+msgstr "el jugador ya no está disponible"
+
+msgid "MARKET_REJECT_STALE"
+msgstr "la operación cambió; revisa el mercado"
+
+msgid "MARKET_REJECT_FINANCE"
+msgstr "las finanzas de la carrera no están disponibles"
+
+msgid "MARKET_REJECT_GENERIC"
+msgstr "la oferta fue rechazada"
