@@ -6,6 +6,32 @@ namespace PCDynasty.Economy.Tests;
 public sealed class ClubLedgerTests
 {
     [Fact]
+    public void PublicLedgerContractsUseCanonicallyNamedFiles()
+    {
+        string ledgerRoot = Path.Combine(FindGameRoot(), "src", "PCDynasty.Economy", "Ledgers");
+        string[] contractNames =
+        [
+            nameof(LedgerAccountKind),
+            nameof(LedgerAccount),
+            nameof(LedgerTransaction),
+            nameof(AnnualClubFinancialState),
+        ];
+
+        foreach (string contractName in contractNames)
+        {
+            Assert.True(
+                File.Exists(Path.Combine(ledgerRoot, $"{contractName}.cs")),
+                $"Ledger contract '{contractName}' must use its canonical file.");
+        }
+
+        string aggregateSource = File.ReadAllText(Path.Combine(ledgerRoot, "ClubLedger.cs"));
+        Assert.DoesNotContain("public enum LedgerAccountKind", aggregateSource, StringComparison.Ordinal);
+        Assert.DoesNotContain("public sealed class LedgerAccount", aggregateSource, StringComparison.Ordinal);
+        Assert.DoesNotContain("public sealed class LedgerTransaction", aggregateSource, StringComparison.Ordinal);
+        Assert.DoesNotContain("public sealed record AnnualClubFinancialState", aggregateSource, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void DoubleEntryPostingConservesMoneyAndPreservesOwnership()
     {
         var ledger = new ClubLedger(
@@ -57,5 +83,21 @@ public sealed class ClubLedgerTests
             new LedgerTransaction("tx:same", 1, "cash", "cash", 100, "EUR")));
         Assert.Throws<ArgumentException>(() => ledger.Post(
             new LedgerTransaction("tx:currency", 1, "cash", "revenue", 100, "USD")));
+    }
+
+    private static string FindGameRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null)
+        {
+            if (Directory.Exists(Path.Combine(current.FullName, "src", "PCDynasty.Economy")))
+            {
+                return current.FullName;
+            }
+
+            current = current.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the game source root.");
     }
 }
