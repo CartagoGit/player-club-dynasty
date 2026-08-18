@@ -2,7 +2,7 @@
 id: r00004
 title: "Replace process-global histories with an explicit career session"
 kind: refactor
-status: ready
+status: review
 type: proposal
 track: architecture
 date: 2026-08-18

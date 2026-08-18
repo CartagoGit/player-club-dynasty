@@ -2,7 +2,7 @@
 id: v00003
 title: "Enforce instant manager interaction budgets"
 kind: perf
-status: ready
+status: review
 type: proposal
 track: performance
 date: 2026-08-18

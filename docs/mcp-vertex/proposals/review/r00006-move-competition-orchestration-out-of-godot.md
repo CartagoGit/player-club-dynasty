@@ -2,7 +2,7 @@
 id: r00006
 title: "Move competition orchestration out of Godot"
 kind: refactor
-status: ready
+status: review
 type: proposal
 track: architecture
 date: 2026-08-18

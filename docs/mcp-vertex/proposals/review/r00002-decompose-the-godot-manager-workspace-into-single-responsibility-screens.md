@@ -2,7 +2,7 @@
 id: r00002
 title: "Decompose the Godot manager workspace into single-responsibility screens"
 kind: refactor
-status: ready
+status: review
 type: proposal
 track: architecture
 date: 2026-08-18

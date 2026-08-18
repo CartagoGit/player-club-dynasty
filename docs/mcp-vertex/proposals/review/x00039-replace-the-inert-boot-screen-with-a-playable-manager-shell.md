@@ -2,7 +2,7 @@
 id: x00039
 title: "Replace the inert boot screen with a playable manager shell"
 kind: fix
-status: ready
+status: review
 type: proposal
 track: presentation
 date: 2026-08-18

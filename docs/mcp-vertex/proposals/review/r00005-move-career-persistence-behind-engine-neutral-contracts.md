@@ -2,7 +2,7 @@
 id: r00005
 title: "Move career persistence behind engine-neutral contracts"
 kind: refactor
-status: ready
+status: review
 type: proposal
 track: architecture
 date: 2026-08-18

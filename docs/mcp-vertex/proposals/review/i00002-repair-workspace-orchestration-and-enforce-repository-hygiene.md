@@ -2,7 +2,7 @@
 id: i00002
 title: "Repair workspace orchestration and enforce repository hygiene"
 kind: infra
-status: ready
+status: review
 type: proposal
 track: quality
 date: 2026-08-18

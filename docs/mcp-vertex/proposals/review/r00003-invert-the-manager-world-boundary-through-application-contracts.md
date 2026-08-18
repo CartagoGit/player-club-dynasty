@@ -2,7 +2,7 @@
 id: r00003
 title: "Invert the manager world boundary through Application contracts"
 kind: refactor
-status: ready
+status: review
 type: proposal
 track: architecture
 date: 2026-08-18
