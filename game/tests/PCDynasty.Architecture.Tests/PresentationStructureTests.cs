@@ -6,6 +6,36 @@ namespace PCDynasty.Architecture.Tests;
 public sealed partial class PresentationStructureTests
 {
     private const int MaximumLinesPerPresentationFile = 500;
+    private const int MaximumLinesPerWorldServiceFile = 180;
+
+    [Fact]
+    public void WorldServiceCollaboratorsStayFocusedAndInternal()
+    {
+        string root = Path.Combine(FindGameRoot(), "src", "PCDynasty.Presentation.Core");
+        string[] files =
+        [
+            "WorldService.cs",
+            "WorldContentCatalog.cs",
+            "WorldClubProjection.cs",
+            "WorldCompetitionProjection.cs",
+        ];
+
+        foreach (string file in files)
+        {
+            int lines = File.ReadLines(Path.Combine(root, file)).Count();
+            Assert.True(lines <= MaximumLinesPerWorldServiceFile, $"{file} has {lines} lines.");
+        }
+
+        Assert.True(typeof(PCDynasty.Presentation.Core.WorldService).IsPublic);
+        Type[] internalCollaborators = typeof(PCDynasty.Presentation.Core.WorldService).Assembly
+            .GetTypes()
+            .Where(type => type.Name is "WorldContentCatalog"
+                or "WorldClubProjection"
+                or "WorldCompetitionProjection")
+            .ToArray();
+        Assert.Equal(3, internalCollaborators.Length);
+        Assert.All(internalCollaborators, type => Assert.False(type.IsPublic));
+    }
 
     [Fact]
     public void GodotPresentationFilesStayFocused()

@@ -29,7 +29,7 @@ The current architecture gates protect dependency direction, but several legacy 
 - global_gate: e2e
 
 ### S1 — Separate world loading from UI projections
-- **Status**: pending
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Presentation.Core/WorldService.cs`, `game/src/PCDynasty.Presentation.Core/WorldContentCatalog.cs`, `game/src/PCDynasty.Presentation.Core/WorldClubProjection.cs`, `game/src/PCDynasty.Presentation.Core/WorldCompetitionProjection.cs`, `game/tests/PCDynasty.Presentation.Tests/WorldServiceTests.cs`, `game/tests/PCDynasty.Architecture.Tests/PresentationStructureTests.cs`
 - **Gate**: e2e
 - acceptance:

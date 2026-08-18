@@ -162,4 +162,22 @@ public sealed class WorldServiceTests
 
         Assert.Null(club);
     }
+
+    [Fact]
+    public async Task EveryWorldCollectionUsesStableOrdinalNameOrdering()
+    {
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
+        await service.ReloadAsync();
+
+        AssertOrdinalOrdering(service.ListClubs().Select(club => club.DisplayName));
+        AssertOrdinalOrdering(service.ListPlayers("club:aurora-quay").Select(player => player.DisplayName));
+        AssertOrdinalOrdering(service.ListAllCompetitions().Select(competition => competition.DisplayName));
+        AssertOrdinalOrdering(service.ListCompetitionsForClub("club:aurora-quay").Select(competition => competition.DisplayName));
+    }
+
+    private static void AssertOrdinalOrdering(IEnumerable<string> values)
+    {
+        string[] snapshot = values.ToArray();
+        Assert.Equal(snapshot.OrderBy(value => value, StringComparer.Ordinal), snapshot);
+    }
 }
