@@ -144,3 +144,73 @@ msgstr ""
 
 msgid "MARKET_REJECT_GENERIC"
 msgstr ""
+
+# History screen
+msgid "HISTORY_EYEBROW"
+msgstr ""
+
+msgid "HISTORY_TITLE"
+msgstr ""
+
+msgid "HISTORY_SUMMARY"
+msgstr ""
+
+msgid "HISTORY_EMPTY"
+msgstr ""
+
+msgid "HISTORY_FILTER_EMPTY"
+msgstr ""
+
+msgid "HISTORY_AGGREGATE"
+msgstr ""
+
+msgid "HISTORY_AGGREGATE_EMPTY"
+msgstr ""
+
+msgid "HISTORY_FILTER_COMPETITION"
+msgstr ""
+
+msgid "HISTORY_FILTER_CLUB"
+msgstr ""
+
+msgid "HISTORY_FILTER_ORDER"
+msgstr ""
+
+msgid "HISTORY_FILTER_ALL"
+msgstr ""
+
+msgid "HISTORY_ORDER_DATE"
+msgstr ""
+
+msgid "HISTORY_ORDER_COMPETITION"
+msgstr ""
+
+msgid "HISTORY_ORDER_GOALS"
+msgstr ""
+
+msgid "HISTORY_COL_WHEN"
+msgstr ""
+
+msgid "HISTORY_COL_COMPETITION"
+msgstr ""
+
+msgid "HISTORY_COL_HOME"
+msgstr ""
+
+msgid "HISTORY_COL_SCORE"
+msgstr ""
+
+msgid "HISTORY_COL_AWAY"
+msgstr ""
+
+msgid "HISTORY_COL_SEED"
+msgstr ""
+
+msgid "HISTORY_COL_ACTION"
+msgstr ""
+
+msgid "HISTORY_ROW_VIEW"
+msgstr ""
+
+msgid "HISTORY_ROW_VIEW_TOOLTIP"
+msgstr ""

@@ -95,7 +95,7 @@ public partial class ManagerWorkspaceController : Control
             RenderCurrent,
             key => Tr(key));
         _financesScreen = new FinancesScreen(financeService, _managed);
-        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent);
+        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent, key => Tr(key));
         _finances = financeService;
         _calendar = calendar;
         _worldScreen = new WorldScreen(world);

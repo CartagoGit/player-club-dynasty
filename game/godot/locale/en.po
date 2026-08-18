@@ -144,3 +144,73 @@ msgstr "the career finance is not initialised"
 
 msgid "MARKET_REJECT_GENERIC"
 msgstr "the offer was refused"
+
+# History screen
+msgid "HISTORY_EYEBROW"
+msgstr "MATCH ARCHIVE"
+
+msgid "HISTORY_TITLE"
+msgstr "HISTORY"
+
+msgid "HISTORY_SUMMARY"
+msgstr "{0} matches · {1} goals · {2} competitions"
+
+msgid "HISTORY_EMPTY"
+msgstr "No matches played yet — head to Competitions."
+
+msgid "HISTORY_FILTER_EMPTY"
+msgstr "No matches match the current filters."
+
+msgid "HISTORY_AGGREGATE"
+msgstr "ALL-TIME STANDINGS"
+
+msgid "HISTORY_AGGREGATE_EMPTY"
+msgstr "No data yet."
+
+msgid "HISTORY_FILTER_COMPETITION"
+msgstr "Competition:"
+
+msgid "HISTORY_FILTER_CLUB"
+msgstr "Club:"
+
+msgid "HISTORY_FILTER_ORDER"
+msgstr "Order:"
+
+msgid "HISTORY_FILTER_ALL"
+msgstr "(all)"
+
+msgid "HISTORY_ORDER_DATE"
+msgstr "Date (most recent)"
+
+msgid "HISTORY_ORDER_COMPETITION"
+msgstr "Competition"
+
+msgid "HISTORY_ORDER_GOALS"
+msgstr "Total goals"
+
+msgid "HISTORY_COL_WHEN"
+msgstr "WHEN"
+
+msgid "HISTORY_COL_COMPETITION"
+msgstr "COMPETITION"
+
+msgid "HISTORY_COL_HOME"
+msgstr "HOME"
+
+msgid "HISTORY_COL_SCORE"
+msgstr "SCORE"
+
+msgid "HISTORY_COL_AWAY"
+msgstr "AWAY"
+
+msgid "HISTORY_COL_SEED"
+msgstr "SEED"
+
+msgid "HISTORY_COL_ACTION"
+msgstr "ACTION"
+
+msgid "HISTORY_ROW_VIEW"
+msgstr "REPLAY"
+
+msgid "HISTORY_ROW_VIEW_TOOLTIP"
+msgstr "Open the match replay (coming in a future slice)"
