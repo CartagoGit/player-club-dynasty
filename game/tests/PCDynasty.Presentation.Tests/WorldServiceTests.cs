@@ -20,7 +20,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ReloadAsyncLoadsEveryShippedStarterWorldFile()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
 
         await service.ReloadAsync();
 
@@ -30,7 +30,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListClubsReturnsAtLeastSixFictionalClubs()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var clubs = service.ListClubs();
@@ -50,7 +50,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListClubsExposesCountryAndSquadSize()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var clubs = service.ListClubs();
@@ -68,7 +68,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListPlayersReturnsRealRosterWithComputedOverall()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var players = service.ListPlayers("club:aurora-quay");
@@ -89,7 +89,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListPlayersReturnsEmptyForUnknownClub()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var players = service.ListPlayers("club:does-not-exist");
@@ -98,27 +98,24 @@ public sealed class WorldServiceTests
     }
 
     [Fact]
-    public void InitializeIsIdempotentForSameContentRoot()
+    public void InstancesAreIndependentForTheSameContentRoot()
     {
-        // Initialize is intentionally a process-wide singleton: subsequent
-        // calls with the same root return the cached instance. This test
-        // pins that contract so a refactor does not silently change it.
-        var first = WorldService.Initialize(new JsonContentReader(), ContentRoot);
-        var second = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var first = new WorldService(new JsonContentReader(), ContentRoot);
+        var second = new WorldService(new JsonContentReader(), ContentRoot);
 
-        Assert.Same(first, second);
+        Assert.NotSame(first, second);
     }
 
     [Fact]
-    public void InitializeRejectsEmptyContentRoot()
+    public void ConstructorRejectsEmptyContentRoot()
     {
-        Assert.Throws<ArgumentException>(() => WorldService.Initialize(new JsonContentReader(), " "));
+        Assert.Throws<ArgumentException>(() => new WorldService(new JsonContentReader(), " "));
     }
 
     [Fact]
     public async Task ListCompetitionsForClubReturnsLeaguesAndCup()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListCompetitionsForClub("club:aurora-quay");
@@ -132,7 +129,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListCompetitionsForClubExposesRivalShortNames()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListCompetitionsForClub("club:aurora-quay");
@@ -147,7 +144,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task ListCompetitionsForClubReturnsEmptyForUnknownClub()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListCompetitionsForClub("club:not-a-real-club");
@@ -158,7 +155,7 @@ public sealed class WorldServiceTests
     [Fact]
     public async Task FindClubReturnsNullForUnknownClub()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var club = service.FindClub("club:not-a-real-club");

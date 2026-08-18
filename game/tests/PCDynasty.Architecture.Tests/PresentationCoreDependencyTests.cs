@@ -1,4 +1,5 @@
 using System.Reflection;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using Xunit;
 
@@ -41,5 +42,28 @@ public sealed class PresentationCoreDependencyTests
         Assert.DoesNotContain(
             references,
             reference => reference.StartsWith("PCDynasty.Presentation", StringComparison.Ordinal) && reference != "PCDynasty.Presentation.Core");
+    }
+
+    [Fact]
+    public void WorldServiceIsAReplaceableManagerWorldAdapter()
+    {
+        Assert.True(typeof(IManagerWorld).IsAssignableFrom(typeof(WorldService)));
+
+        MemberInfo[] staticServiceLocators = typeof(WorldService)
+            .GetMembers(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+        Assert.Empty(staticServiceLocators);
+    }
+
+    [Fact]
+    public void PresentationCoreDoesNotReferenceConcreteContentImporters()
+    {
+        string[] references = typeof(WorldService).Assembly
+            .GetReferencedAssemblies()
+            .Select(reference => reference.Name ?? string.Empty)
+            .ToArray();
+
+        Assert.DoesNotContain(
+            references,
+            reference => string.Equals(reference, "PCDynasty.Content.Importers", StringComparison.Ordinal));
     }
 }

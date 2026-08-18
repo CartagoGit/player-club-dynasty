@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using PCDynasty.Application.Workspace;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -9,7 +10,7 @@ namespace PCDynasty.Presentation.Core;
 /// </summary>
 /// <remarks>
 /// Pure helper: takes the snapshot already loaded by
-/// <see cref="WorldService.ListCompetitionsForClub"/> and the clubs the
+/// <see cref="IManagerWorld.ListCompetitionsForClub"/> and the clubs the
 /// caller already resolved, so the season simulator never touches the
 /// content layer directly.
 /// </remarks>

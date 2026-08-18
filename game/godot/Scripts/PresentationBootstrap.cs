@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Shell;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Shell;
@@ -37,7 +38,7 @@ public partial class PresentationBootstrap : Control
                 "starter-world"));
 
             var reader = new JsonContentReader();
-            var service = WorldService.Initialize(reader, contentRoot);
+            var service = new WorldService(reader, contentRoot);
             await service.ReloadAsync();
 
             int clubCount = service.ListClubs().Count;
@@ -52,7 +53,7 @@ public partial class PresentationBootstrap : Control
         }
     }
 
-    private void AttachMainMenu(WorldService service)
+    private void AttachMainMenu(IManagerWorld service)
     {
         _historyPersistence ??= CareerHistoryPersistence.CreateDefault();
         _historyPersistence.Load();
@@ -61,7 +62,7 @@ public partial class PresentationBootstrap : Control
         AddChild(_mainMenuController);
     }
 
-    private void OpenWorkspace(WorldService service, string clubId)
+    private void OpenWorkspace(IManagerWorld service, string clubId)
     {
         MainMenu.Visible = false;
         Workspace.Visible = true;

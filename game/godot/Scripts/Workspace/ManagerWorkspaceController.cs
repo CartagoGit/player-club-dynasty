@@ -1,4 +1,5 @@
 using Godot;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
@@ -24,7 +25,7 @@ public partial class ManagerWorkspaceController : Control
 
     public event Action? MainMenuRequested;
 
-    private WorldService? _world;
+    private IManagerWorld? _world;
     private WorkspaceSection _selectedSection = WorkspaceSection.Overview;
     private string? _selectedClubId;
     private ClubOverviewScreen? _overviewScreen;
@@ -35,7 +36,7 @@ public partial class ManagerWorkspaceController : Control
     private ClubPickerScreen? _clubPickerScreen;
 
     internal void Configure(
-        WorldService world,
+        IManagerWorld world,
         string selectedClubId,
         CareerHistoryPersistence historyPersistence)
     {

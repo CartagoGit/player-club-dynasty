@@ -1,12 +1,12 @@
 using Godot;
 using PCDynasty.Application.Shell;
-using PCDynasty.Presentation.Core;
+using PCDynasty.Application.Workspace;
 
 namespace PCDynasty.Presentation.Shell;
 
 public partial class MainMenuController : Node
 {
-    private WorldService? _world;
+    private IManagerWorld? _world;
     private ManagerShell? _shell;
     private Action<string>? _openWorkspace;
     private readonly ButtonGroup _clubButtons = new();
@@ -22,7 +22,7 @@ public partial class MainMenuController : Node
     private Button DataEditor => GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/DataEditor");
 
     public void Configure(
-        WorldService world,
+        IManagerWorld world,
         ManagerShell shell,
         Action<string> openWorkspace)
     {

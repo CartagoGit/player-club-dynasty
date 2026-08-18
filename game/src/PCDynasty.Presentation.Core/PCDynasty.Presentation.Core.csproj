@@ -4,8 +4,8 @@
     <RootNamespace>PCDynasty.Presentation.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../PCDynasty.Content.Abstractions/PCDynasty.Content.Abstractions.csproj" />
-    <ProjectReference Include="../PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj" />
     <ProjectReference Include="../PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>

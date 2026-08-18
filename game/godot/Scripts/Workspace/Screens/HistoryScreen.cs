@@ -1,4 +1,5 @@
 using Godot;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
@@ -7,13 +8,13 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 
 internal sealed class HistoryScreen
 {
-    private readonly WorldService _world;
+    private readonly IManagerWorld _world;
     private readonly Action _refresh;
     private string _competitionFilter = "(todas)";
     private string _clubFilter = "(todos)";
     private HistoryOrder _order = HistoryOrder.Date;
 
-    internal HistoryScreen(WorldService world, Action refresh)
+    internal HistoryScreen(IManagerWorld world, Action refresh)
     {
         _world = world;
         _refresh = refresh;

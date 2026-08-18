@@ -1,4 +1,5 @@
 using System.IO;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Importers;
 using PCDynasty.Presentation.Core;
 using Xunit;
@@ -20,7 +21,7 @@ public sealed class MatchSimulatorTests
 
     private static async Task<(ClubRow home, ClubRow away)> LoadClubsAsync(string homeId, string awayId)
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
         var home = service.FindClub(homeId) ?? throw new InvalidOperationException($"missing {homeId}");
         var away = service.FindClub(awayId) ?? throw new InvalidOperationException($"missing {awayId}");

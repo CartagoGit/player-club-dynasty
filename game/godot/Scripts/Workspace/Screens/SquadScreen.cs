@@ -1,5 +1,5 @@
 using Godot;
-using PCDynasty.Presentation.Core;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -7,9 +7,9 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 
 internal sealed class SquadScreen
 {
-    private readonly WorldService _world;
+    private readonly IManagerWorld _world;
 
-    internal SquadScreen(WorldService world)
+    internal SquadScreen(IManagerWorld world)
     {
         _world = world;
     }

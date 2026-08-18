@@ -13,7 +13,7 @@ public sealed class WorldOverviewTests
     [Fact]
     public async Task ListAllCompetitionsReturnsEveryShippedCompetition()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListAllCompetitions();
@@ -33,7 +33,7 @@ public sealed class WorldOverviewTests
     [Fact]
     public async Task ListAllCompetitionsAreOrderedByDisplayName()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListAllCompetitions();
@@ -52,7 +52,7 @@ public sealed class WorldOverviewTests
     [Fact]
     public async Task ListAllCompetitionsExposesRivalsForEach()
     {
-        var service = WorldService.Initialize(new JsonContentReader(), ContentRoot);
+        var service = new WorldService(new JsonContentReader(), ContentRoot);
         await service.ReloadAsync();
 
         var competitions = service.ListAllCompetitions();

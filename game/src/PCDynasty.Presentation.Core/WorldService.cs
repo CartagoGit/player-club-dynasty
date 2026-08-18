@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Abstractions;
-using PCDynasty.Content.Importers;
 
 namespace PCDynasty.Presentation.Core;
 
@@ -14,7 +14,7 @@ namespace PCDynasty.Presentation.Core;
 /// This service is the only place where the presentation layer talks to
 /// the content-import pipeline.
 /// </remarks>
-public sealed class WorldService
+public sealed class WorldService : IManagerWorld
 {
     private readonly IContentReader _reader;
     private readonly string _contentRoot;
@@ -26,7 +26,7 @@ public sealed class WorldService
     private NormalizedContentModel? _countries;
     private NormalizedContentModel? _rules;
 
-    private WorldService(IContentReader reader, string contentRoot)
+    public WorldService(IContentReader reader, string contentRoot)
     {
         _reader = reader ?? throw new ArgumentNullException(nameof(reader));
         if (string.IsNullOrWhiteSpace(contentRoot))
@@ -35,31 +35,6 @@ public sealed class WorldService
         }
 
         _contentRoot = contentRoot;
-    }
-
-    /// <summary>
-    /// Singleton accessor. Initialized once via <see cref="Initialize"/> from the
-    /// Godot bootstrap. Throws if accessed before initialization (test isolation).
-    /// </summary>
-    public static WorldService? Instance { get; private set; }
-
-    /// <summary>
-    /// Initialize the singleton. Idempotent: subsequent calls are no-ops if the
-    /// path matches the existing instance, otherwise the second call replaces
-    /// the cached models.
-    /// </summary>
-    public static WorldService Initialize(IContentReader reader, string contentRoot)
-    {
-        lock (typeof(WorldService))
-        {
-            if (Instance is not null && Instance._contentRoot == contentRoot)
-            {
-                return Instance;
-            }
-
-            Instance = new WorldService(reader, contentRoot);
-            return Instance;
-        }
     }
 
     /// <summary>
@@ -426,42 +401,3 @@ public sealed class WorldService
             : 0;
     }
 }
-
-/// <summary>
-/// Immutable projection of a club for the UI layer. Decoupled from any
-/// domain entity so the presentation never depends on the engine-neutral
-/// assemblies' mutable types.
-/// </summary>
-public sealed record ClubRow(
-    string ExternalId,
-    string DisplayName,
-    string ShortName,
-    string City,
-    string CountryShortName,
-    string FoundedYear,
-    int Prestige,
-    int Fanbase,
-    int SquadSize);
-
-/// <summary>
-/// Immutable projection of a player for the UI layer.
-/// </summary>
-public sealed record PlayerRow(
-    string ExternalId,
-    string DisplayName,
-    int BirthYear,
-    int Technique,
-    int Form,
-    int Physical,
-    int Mental,
-    int Overall);
-
-/// <summary>
-/// Immutable projection of a competition the player club participates in.
-/// </summary>
-public sealed record CompetitionRow(
-    string ExternalId,
-    string DisplayName,
-    string Format,
-    string Frequency,
-    IReadOnlyList<string> Rivals);

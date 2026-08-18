@@ -1,4 +1,5 @@
 using Godot;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
@@ -8,13 +9,13 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 
 internal sealed class CompetitionsScreen
 {
-    private readonly WorldService _world;
+    private readonly IManagerWorld _world;
     private readonly CareerHistoryPersistence _history;
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
 
     internal CompetitionsScreen(
-        WorldService world,
+        IManagerWorld world,
         CareerHistoryPersistence history,
         Action refresh,
         Action<string> setStatus)

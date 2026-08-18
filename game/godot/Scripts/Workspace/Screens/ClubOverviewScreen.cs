@@ -1,4 +1,5 @@
 using Godot;
+using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
@@ -7,10 +8,10 @@ namespace PCDynasty.Presentation.Workspace.Screens;
 
 internal sealed class ClubOverviewScreen
 {
-    private readonly WorldService _world;
+    private readonly IManagerWorld _world;
     private readonly Action _openClubPicker;
 
-    internal ClubOverviewScreen(WorldService world, Action openClubPicker)
+    internal ClubOverviewScreen(IManagerWorld world, Action openClubPicker)
     {
         _world = world;
         _openClubPicker = openClubPicker;
