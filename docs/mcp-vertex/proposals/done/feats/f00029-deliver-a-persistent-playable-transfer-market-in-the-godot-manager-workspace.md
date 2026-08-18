@@ -2,10 +2,11 @@
 id: f00029
 title: "Deliver a persistent playable transfer market in the Godot manager workspace"
 kind: feat
-status: review
+status: done
 type: proposal
 track: product
 date: 2026-08-18
+shipped-in: [9986c9f]
 ---
 
 # f00029 — Deliver a persistent playable transfer market in the Godot manager workspace
@@ -79,6 +80,18 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - review-reviewer: review_world_fix_fresh
 - review-log: requested_changes by review_tactics — Squad header uses original club.SquadSize after acquisitions; smoke must prove Market stays scoped after club browsing, Continue keeps acquired player out of candidates, and a subsequent New career clears prior transfers rather than only starting from an empty DB.
 - review-log: approved by review_world_fix_fresh — Independent re-review approved: projected squad header is correct; managed-club market scope survives browsing; Continue preserves transfer exclusion; second New resets transfers, finances and squad. Application 9/9, SQLite 6/6, Presentation 49/49, Architecture 19/19, Godot Release 0/0, isolated SmokeBoot and diff-check green.
+### S4 — Verify shipped delivery evidence and archive readiness
+- **Status**: done
+- **DependsOn**: [S3]
+- **Files**: `docs/mcp-vertex/proposals/review/f00029-deliver-a-persistent-playable-transfer-market-in-the-godot-manager-workspace.md`
+- **Gate**: e2e
+- acceptance:
+  - "The shipped-in reference identifies the commit containing the complete Godot transfer-market delivery."
+  - "An independent reviewer confirms the complete acceptance suite remains green after the proposal enters review."
+- review-state: done
+- review-implementer: root
+- review-reviewer: review_world_fix_fresh
+- review-log: approved by review_world_fix_fresh — Approved archive evidence: 9986c9f resolves to the complete S3 delivery; independent 9/9 Application, 6/6 SQLite, 49/49 Presentation, 19/19 Architecture, Godot build and isolated smoke evidence matches that content with no functional drift.
 ## acceptance
 
 - Contracts are immutable, validate all external values and live outside engine and persistence assemblies.
