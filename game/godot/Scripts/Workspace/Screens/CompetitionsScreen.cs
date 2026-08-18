@@ -16,6 +16,7 @@ internal sealed class CompetitionsScreen
     private readonly ManagedClubContext _managed;
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
+    private readonly Action? _openHistory;
 
     internal CompetitionsScreen(
         IManagerWorld world,
@@ -23,7 +24,8 @@ internal sealed class CompetitionsScreen
         CareerHistoryPersistence history,
         ManagedClubContext managed,
         Action refresh,
-        Action<string> setStatus)
+        Action<string> setStatus,
+        Action? openHistory = null)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
@@ -31,6 +33,7 @@ internal sealed class CompetitionsScreen
         _managed = managed ?? throw new ArgumentNullException(nameof(managed));
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
         _setStatus = setStatus ?? throw new ArgumentNullException(nameof(setStatus));
+        _openHistory = openHistory;
     }
 
     internal void Render(Control root, ClubRow club)
