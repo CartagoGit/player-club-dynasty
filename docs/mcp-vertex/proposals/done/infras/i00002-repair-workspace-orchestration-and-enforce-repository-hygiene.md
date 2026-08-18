@@ -2,7 +2,7 @@
 id: i00002
 title: "Repair workspace orchestration and enforce repository hygiene"
 kind: infra
-status: review
+status: done
 type: proposal
 track: quality
 date: 2026-08-18
@@ -35,7 +35,10 @@ The live host requests a deprecated duplicate plugin id, the documented root val
   - "The local plugin loads once through the configured path without a deprecated duplicate request."
   - "bun run validate exists and passes the workspace TypeScript/plugin gates."
   - "Plugin contracts follow the repository's explicit type-file naming convention."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: delivery-verifier
+- review-log: approved by delivery-verifier — Independent review verified single project plugin registration, validation entrypoint and canonical plugin contract naming.
 ### S2 — Turn generated-artifact hygiene into a CI gate
 - **Status**: done
 - **Files**: `.gitignore`, `game/scripts/check-repository-hygiene.sh`, `.github/workflows/game-quality.yml`, `game/README.md`, `game/godot/Scripts/Presentation/ClubOverviewProjector.cs.uid`
@@ -44,7 +47,10 @@ The live host requests a deprecated duplicate plugin id, the documented root val
   - "No tracked path matches .NET, Godot, test, benchmark, Node or MCP cache outputs."
   - "The CI job fails if a generated artifact becomes tracked."
   - "Authored Godot UID files remain versioned."
-
+- review-state: done
+- review-implementer: root
+- review-reviewer: delivery-verifier
+- review-log: approved by delivery-verifier — Independent review verified zero tracked generated artifacts, authored UID retention, CI ordering and a negative artifact-index test.
 ## acceptance
 
 - The local plugin loads once through the configured path without a deprecated duplicate request.
