@@ -54,7 +54,7 @@ domain exposes an immutable catalog; the presentation applies it.
 - global_gate: e2e
 
 ### S1 — Define swappable theme palettes and a theme catalog
-- **Status**: ready
+- **Status**: done
 - **Files**: `game/src/PCDynasty.Presentation.Core/ThemePalette.cs`, `game/src/PCDynasty.Presentation.Core/ThemePaletteCatalog.cs`, `game/src/PCDynasty.Presentation.Core/ThemePaletteId.cs`, `game/tests/PCDynasty.Presentation.Tests/ThemePaletteCatalogTests.cs`
 - **Gate**: e2e
 - acceptance:
@@ -64,7 +64,7 @@ domain exposes an immutable catalog; the presentation applies it.
   - "Catalog ids are stable strings; unknown ids fall back to the default palette."
 
 ### S2 — Define a locale catalog and a procedurally drawn flag control
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Presentation.Core/LocaleId.cs`, `game/src/PCDynasty.Presentation.Core/LocaleEntry.cs`, `game/src/PCDynasty.Presentation.Core/LocaleCatalog.cs`, `game/godot/Scripts/Shell/FlagIcon.cs`, `game/tests/PCDynasty.Presentation.Tests/LocaleCatalogTests.cs`
 - **Gate**: e2e
@@ -75,7 +75,7 @@ domain exposes an immutable catalog; the presentation applies it.
   - "Spanish renders the Spanish tricolour; English renders the Union Jack."
 
 ### S3 — Promote PresentationPreferences to a typed, persisted bundle
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S2]
 - **Files**: `game/src/PCDynasty.Presentation.Core/PresentationPreferences.cs`, `game/src/PCDynasty.Presentation.Core/PresentationPreferencesStore.cs`, `game/tests/PCDynasty.Presentation.Tests/PresentationPreferencesTests.cs`
 - **Gate**: e2e
@@ -86,7 +86,7 @@ domain exposes an immutable catalog; the presentation applies it.
   - "Unit tests cover round-trip, corruption, and unknown ids."
 
 ### S4 — Make the design tokens swappable and apply a palette at runtime
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, S3]
 - **Files**: `game/godot/Theme/ManagerDesignTokens.cs`, `game/godot/Theme/ClassicChrome.cs`, `game/godot/Theme/PCDynastyTheme.tres`, `game/godot/Scripts/Shell/ThemePaletteApplier.cs`, `game/tests/PCDynasty.Presentation.Tests/ThemePaletteTests.cs`
 - **Gate**: e2e
@@ -97,7 +97,7 @@ domain exposes an immutable catalog; the presentation applies it.
   - "The ClassicDark palette is byte-identical to the palette the shell uses before the change."
 
 ### S5 — Apply the locale with Godot's TranslationServer and ship `en` + `es`
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S3]
 - **Files**: `game/godot/locale/game.pot`, `game/godot/locale/en.po`, `game/godot/locale/es.po`, `game/godot/Scripts/Shell/LocaleApplier.cs`, `game/godot/project.godot`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceHeader.cs`
 - **Gate**: e2e
@@ -108,7 +108,7 @@ domain exposes an immutable catalog; the presentation applies it.
   - "A missing `en.po` falls back to the source strings; the game never blocks on a translation error."
 
 ### S6 — Add language and theme sections to the options panel
-- **Status**: ready
+- **Status**: done
 - **DependsOn**: [S1, SS2, S3, S4, S5]
 - **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/LocaleSection.cs`, `game/godot/Scripts/Shell/ThemeSection.cs`, `game/godot/Scripts/PresentationBootstrap.cs`, `game/godot/Tests/SmokeBoot.gd`
 - **Gate**: e2e
