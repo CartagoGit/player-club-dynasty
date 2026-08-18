@@ -38,7 +38,7 @@ The finance navigation is still disabled even though the economy ledger exists. 
   - "New and continued career behavior is explicit and covered without static or service-locator state."
 
 ### S2 — Persist career finance state in external SQLite
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S1]
 - **Files**: `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerFinanceStore.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerFinanceSchema.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerFinanceReader.cs`, `game/src/PCDynasty.Persistence.Sqlite/SqliteCareerFinanceWriter.cs`, `game/tests/PCDynasty.Persistence.Sqlite.Tests/SqliteCareerFinanceStoreTests.cs`
 - **Gate**: e2e
