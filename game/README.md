@@ -16,6 +16,26 @@ Run commands from this `game` directory so SDK selection is enforced. Generated
 outputs and are ignored by Git. Godot `.uid` files beside authored scripts and
 scenes are source metadata, so they remain versioned.
 
+## Run the game
+
+Use the launcher so Godot Mono receives the same .NET 8 runtime as the build:
+
+```shell
+./scripts/run-game.sh
+```
+
+If Godot or .NET are installed outside the standard locations, pass them
+explicitly. This also avoids the `Failed to load .NET runtime / hostfxr` dialog
+when a graphical process does not inherit the interactive shell environment:
+
+```shell
+DOTNET_ROOT=/path/to/dotnet GODOT_BIN=/path/to/godot ./scripts/run-game.sh
+```
+
+The launcher holds a per-user lock so repeated clicks do not open duplicate
+game processes. Automated parallel smoke runs can opt out explicitly with
+`PCDYNASTY_ALLOW_MULTIPLE=1`.
+
 ## Quality gates
 
 Run every engine-neutral test, including integration and latency budgets:
