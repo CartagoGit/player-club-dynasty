@@ -107,6 +107,11 @@ fi
 
 printf 'run-godot-smoke: using %s\n' "${godot_bin}" >&2
 
+# A stable link so tooling that needs one fixed path (the Godot MCP server in
+# .vscode/mcp.json) does not have to hard-code a version or a machine.
+mkdir -p "${tools_dir}/godot"
+ln -sfn "${godot_bin}" "${tools_dir}/godot/current"
+
 # Importing resources populates .godot/ so the headless run resolves res:// paths.
 "${godot_bin}" --headless --path "${project_dir}" --import >/dev/null
 

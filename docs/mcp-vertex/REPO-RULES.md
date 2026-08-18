@@ -61,6 +61,18 @@ required and no machine-specific path is committed.
 7. **No `process.cwd()`.** Path resolution flows through `ctx.workspace` (for plugins) or `scripts/mcp-vertex-root.script.ts` (for scripts). The workspace root is the cwd the host is launched from, never assumed by the tool layer.
 8. **Bash, never zsh.** The user keeps zsh (Powerlevel10k). Agent-driven shell calls — direct `run_in_terminal`, subagent shell, MCP tool handlers — must launch `bash -c '<cmd>'`. The p10k instant prompt opens the alternate screen buffer and silently breaks zsh-driven wrappers. The fallback ladder is in [`docs/mcp-vertex/skills/shell-fallback/SKILL.md`](skills/shell-fallback/SKILL.md) once that skill is vendored.
 
+## Known diagnostic noise
+
+`bun run mcp-vertex:doctor` reports `plugins: warn — missing:
+plugins/mcp-vertex_player-club-dynasty/dist/index.js` even when the plugin is
+loaded. The config keys the plugin by its directory
+(`mcp-vertex_player-club-dynasty`) while the plugin declares itself
+`player-club-dynasty`, so the diagnostic compares a path against loaded plugin
+names and never matches. Confirm the real state with `bun run
+mcp-vertex:overview`: the plugin appears in `plugins` with its three tools.
+Run `bun run build:plugin` first — `dist/` is a build output and is ignored by
+Git, so a fresh clone genuinely has no plugin until it is built.
+
 ## Plugin ID prefixes
 
 The proposals plugin assigns IDs to slices; the audit plugin (when
