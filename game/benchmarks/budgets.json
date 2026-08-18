@@ -18,25 +18,29 @@
       "id": "macro-season-advance",
       "operations": 1,
       "fixture": "512 clubs across 16 competitions",
-      "maxMedianMilliseconds": 50
+      "maxMedianMilliseconds": 50,
+      "benchmark": "PCDynasty.Benchmarks.MacroWorldBenchmarks.AdvanceMacroSeason"
     },
     {
       "id": "materialization",
       "operations": 1,
       "fixture": "one club promoted from a 512-club checkpoint",
-      "maxMedianMilliseconds": 16
+      "maxMedianMilliseconds": 16,
+      "benchmark": "PCDynasty.Benchmarks.MaterializationBenchmarks.MaterializeClub"
     },
     {
       "id": "persistence-load",
       "operations": 1,
       "fixture": "1 MiB snapshot plus 256 facts from an external SQLite save",
-      "maxMedianMilliseconds": 100
+      "maxMedianMilliseconds": 100,
+      "benchmark": "PCDynasty.Benchmarks.PersistenceBenchmarks.LoadSaveAsync"
     },
     {
       "id": "persistence-checkpoint",
       "operations": 1,
       "fixture": "atomic 1 MiB external SQLite checkpoint",
-      "maxMedianMilliseconds": 100
+      "maxMedianMilliseconds": 100,
+      "benchmark": "PCDynasty.Benchmarks.PersistenceBenchmarks.SaveCheckpointAsync"
     }
   ]
 }

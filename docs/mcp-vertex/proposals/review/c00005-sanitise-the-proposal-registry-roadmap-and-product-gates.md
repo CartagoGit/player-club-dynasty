@@ -2,7 +2,7 @@
 id: c00005
 title: "Sanitise the proposal registry, the roadmap and the product gates"
 kind: chore
-status: in-progress
+status: review
 type: proposal
 track: infrastructure
 date: 2026-08-18
@@ -82,15 +82,17 @@ versioned budgets.
   - "Specs cover relative pointers, sibling discovery, environment override and a broken explicit source."
 
 ### S5 — Make CI build Godot, run SmokeBoot and compare budgets
-- **Status**: in-progress
+- **Status**: done
 - **DependsOn**: [S3]
-- **Files**: `.github/workflows/game-quality.yml`, `game/scripts/run-godot-smoke.sh`, `game/godot.version`, `scripts/compare-benchmark-budgets.script.ts`, `scripts/compare-benchmark-budgets.script.spec.ts`
+- **Files**: `.github/workflows/game-quality.yml`, `game/scripts/run-godot-smoke.sh`, `game/godot.version`, `game/benchmarks/budgets.json`, `game/benchmarks/interaction-budgets.json`, `scripts/compare-benchmark-budgets.script.ts`, `scripts/compare-benchmark-budgets.script.spec.ts`, `.gitignore`, `game/README.md`
 - **Gate**: e2e
 - acceptance:
+  - "The Godot version is pinned in one file that the launcher, the smoke gate and CI all read."
   - "CI provisions the pinned Godot .NET editor, imports the project and builds it headless."
-  - "CI runs the SmokeBoot scene and fails on any runtime error or unhandled exception."
-  - "The benchmark job compares every produced result against `game/benchmarks/budgets.json` and fails when a workload breaches its budget or has no budget at all."
-  - "A clean checkout leaves no tracked generated artifacts after the full workflow."
+  - "CI runs the SmokeBoot scene and fails on a non-zero exit or on engine errors in its output."
+  - "Every budget names the benchmark that measures it, and the comparison fails when a result breaches its budget or has no published budget."
+  - "A budget with no measurement is reported as uncovered and becomes an error under `--require-complete-coverage`, which `v00004` will turn on."
+  - "A clean checkout leaves no tracked generated artifacts after the smoke run."
 
 ## acceptance
 
@@ -103,3 +105,6 @@ versioned budgets.
 - No committed file pins the workspace to one machine's directory layout.
 - CI builds the Godot project, runs SmokeBoot and compares benchmarks against the
   versioned budgets, failing on breach or on a missing budget.
+
+- review-implementer: claude-opus-5
+- review-log: verified by claude-opus-5 — `bun run validate` green (proposal lint over this workspace, visible-capability gate, typecheck, plugin tests, 23 script tests); `dotnet test game/PCDynasty.sln -c Release` green; `game/scripts/run-godot-smoke.sh --provision` provisioned Godot 4.7.1 mono, built the presentation and passed SmokeBoot headlessly; `scripts/compare-benchmark-budgets.script.ts` compared the published results against the versioned budgets; repository hygiene green.

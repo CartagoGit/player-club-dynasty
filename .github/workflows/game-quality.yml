@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - "game/**"
+      - "scripts/**"
       - ".gitignore"
       - ".github/workflows/game-quality.yml"
   push:
     branches: [main]
     paths:
       - "game/**"
+      - "scripts/**"
       - ".gitignore"
       - ".github/workflows/game-quality.yml"
 
@@ -71,6 +73,36 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+  godot:
+    name: Godot build and SmokeBoot
+    needs: quality
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: game
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Select pinned .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: game/global.json
+
+      - name: Cache the pinned Godot editor
+        uses: actions/cache@v4
+        with:
+          path: .tools/godot
+          key: godot-${{ hashFiles('game/godot.version') }}
+
+      - name: Build the Godot project and run SmokeBoot
+        run: ./scripts/run-godot-smoke.sh --provision
+
+      - name: Reject artifacts created by the smoke run
+        run: ./scripts/check-repository-hygiene.sh
+
   benchmarks:
     name: Benchmark comparison report
     needs: quality
@@ -94,6 +126,15 @@ jobs:
 
       - name: Run reproducible benchmarks
         run: ./scripts/run-benchmarks.sh
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Compare results against the versioned budgets
+        working-directory: .
+        run: bun scripts/compare-benchmark-budgets.script.ts
 
       - name: Publish benchmark comparison inputs and reports
         if: always()

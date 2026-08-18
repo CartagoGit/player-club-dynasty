@@ -5,7 +5,10 @@
     "memoryGiB": 16,
     "storage": "local SSD",
     "runtime": ".NET 8 x64, Release, server or workstation GC reported with results",
-    "operatingSystems": ["Windows 11", "Ubuntu 22.04 or newer"]
+    "operatingSystems": [
+      "Windows 11",
+      "Ubuntu 22.04 or newer"
+    ]
   },
   "measurementPolicy": {
     "statistic": "median",
@@ -26,38 +29,44 @@
       "class": "ui-interaction",
       "maxMilliseconds": 8,
       "fixture": "one deterministic manager match with projected timeline and persistence record",
-      "policy": "Complete inside one interaction frame without visible loading."
+      "policy": "Complete inside one interaction frame without visible loading.",
+      "benchmark": "PCDynasty.Benchmarks.ManagerInteractionBenchmarks.PlayManagerMatch"
     },
     {
       "id": "simulate-manager-season",
       "class": "explicit-advance",
       "maxMilliseconds": 50,
       "fixture": "20-club single round-robin season; 190 matches and persistence projections",
-      "policy": "Complete without a visible loading interruption on reference hardware."
+      "policy": "Complete without a visible loading interruption on reference hardware.",
+      "benchmark": "PCDynasty.Benchmarks.ManagerInteractionBenchmarks.SimulateManagerSeason"
     },
     {
       "id": "open-player-view",
       "class": "ui-interaction",
       "maxMilliseconds": 16,
-      "fixture": "10,000 indexed people; one materialized player read model"
+      "fixture": "10,000 indexed people; one materialized player read model",
+      "benchmark": "PCDynasty.Benchmarks.InteractionBenchmarks.OpenPlayerView"
     },
     {
       "id": "open-club-view",
       "class": "ui-interaction",
       "maxMilliseconds": 16,
-      "fixture": "1,000 indexed clubs; 30-person active squad"
+      "fixture": "1,000 indexed clubs; 30-person active squad",
+      "benchmark": "PCDynasty.Benchmarks.InteractionBenchmarks.OpenClubView"
     },
     {
       "id": "open-competition-view",
       "class": "ui-interaction",
       "maxMilliseconds": 16,
-      "fixture": "64 participants and a 20-stage declarative competition graph"
+      "fixture": "64 participants and a 20-stage declarative competition graph",
+      "benchmark": "PCDynasty.Benchmarks.InteractionBenchmarks.OpenCompetitionView"
     },
     {
       "id": "materialize-club",
       "class": "deferred-short",
       "maxMilliseconds": 50,
-      "fixture": "one club from a 512-club checkpoint and 1,000 commitments"
+      "fixture": "one club from a 512-club checkpoint and 1,000 commitments",
+      "benchmark": "PCDynasty.Benchmarks.MaterializationBenchmarks.MaterializeClub"
     },
     {
       "id": "background-work-slice",

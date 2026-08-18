@@ -65,3 +65,6 @@ saves/
 .aider.chat.history.sqlite
 .aider.input.history
 .aider.tags.cache.v3/
+
+# provisioned toolchains (Godot editor downloads)
+.tools/

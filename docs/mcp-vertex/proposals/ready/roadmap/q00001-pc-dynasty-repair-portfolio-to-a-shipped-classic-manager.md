@@ -60,9 +60,9 @@ at a time.
 - global_gate: e2e
 
 ### S1 — Sanitise the proposal registry, the roadmap and the product gates
-- **Status**: in-progress
+- **Status**: review
 - **Owner**: `c00005`
-- **Files**: `docs/mcp-vertex/proposals/in-progress/c00005-sanitise-the-proposal-registry-roadmap-and-product-gates.md`, `docs/mcp-vertex/proposals/ready/roadmap/q00001-pc-dynasty-repair-portfolio-to-a-shipped-classic-manager.md`, `docs/mcp-vertex/proposals/ready/`, `.github/workflows/game-quality.yml`, `scripts/check-visible-capability-routes.script.ts`
+- **Files**: `docs/mcp-vertex/proposals/ready/roadmap/q00001-pc-dynasty-repair-portfolio-to-a-shipped-classic-manager.md`, `scripts/lint-proposals.script.ts`, `scripts/check-visible-capability-routes.script.ts`, `scripts/compare-benchmark-budgets.script.ts`, `game/scripts/run-godot-smoke.sh`, `.github/workflows/game-quality.yml`
 - **Gate**: e2e
 - acceptance:
   - "Every proposal id resolves to exactly one document; the roadmap is reachable from the board."

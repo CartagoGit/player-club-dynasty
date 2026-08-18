@@ -59,6 +59,26 @@ artifact has been forced into the Git index:
 
 The game CI runs this check before restore, build and tests.
 
+Build the Godot presentation and run the headless SmokeBoot journey:
+
+```shell
+./scripts/run-godot-smoke.sh              # uses an installed Godot or GODOT_BIN
+./scripts/run-godot-smoke.sh --provision  # downloads the pinned editor first
+```
+
+The pinned editor version lives in `game/godot.version`; the launcher, this
+gate and CI all read it, so they cannot drift apart. Downloads land in the
+ignored `.tools/` directory.
+
+Compare benchmark results against the versioned budgets after a run:
+
+```shell
+bun scripts/compare-benchmark-budgets.script.ts
+```
+
+Every budget names the benchmark that measures it. A result without a budget,
+or slower than the strictest budget claiming it, fails the comparison.
+
 Both scripts accept extra `dotnet test` arguments. For example,
 `./scripts/test-all.sh --no-restore` reuses an existing restore in CI.
 
