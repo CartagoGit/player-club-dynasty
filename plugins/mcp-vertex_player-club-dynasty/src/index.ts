@@ -8,9 +8,9 @@ import {
 	assertMusicAnchor,
 	findSlot,
 	loadAudioManifest,
-} from './lib/audio-manifest.helper';
-import { AudioVariantStateSchema } from './lib/audio-spec.types';
-import type { IDataFile, IPlayer } from './lib/game-data.types';
+} from './lib/domain/audio/audio-manifest.helper';
+import { AudioVariantStateSchema } from './lib/domain/audio/audio-spec.types';
+import type { IDataFile, IPlayer } from './lib/domain/game-data/game-data.types';
 
 const OptionsSchema = z
 	.object({

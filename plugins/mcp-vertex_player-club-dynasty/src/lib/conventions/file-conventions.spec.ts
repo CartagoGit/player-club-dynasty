@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { FILE_CONVENTIONS, validatePath, SOLID_PRINCIPLES, WORKSPACE_RULES } from './architecture-conventions';
-import { renderTemplate, templateFor } from './file-assistant';
+import { FILE_CONVENTIONS, SOLID_PRINCIPLES, WORKSPACE_RULES } from './file-conventions.constant';
+import { validatePath } from './file-conventions.helper';
+import { renderTemplate, templateFor } from './file-assistant.helper';
 
 describe('architecture-conventions', () => {
 	it('recognises every supported file extension', () => {
