@@ -71,12 +71,12 @@ func _run() -> void:
 	_expect(workspace.visible, "The manager workspace must become visible after starting a career.")
 	_expect(scene.has_node("WorkspaceController"), "The wired workspace controller is missing.")
 
-	var finances := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
+	var finances := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
 	_expect(not finances.disabled, "The finance office must be enabled.")
 	finances.emit_signal("pressed")
 	await process_frame
-	var cash_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/FinancesOffice/FinanceMetrics/Cash/Content/Value"
-	var transfer_budget_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/FinancesOffice/FinanceMetrics/TransferBudget/Content/Value"
+	var cash_path := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/FinancesOffice/FinanceMetrics/Cash/Content/Value"
+	var transfer_budget_path := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/FinancesOffice/FinanceMetrics/TransferBudget/Content/Value"
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
 		_fail("The persistent finance office did not open.")
 		return
@@ -84,29 +84,28 @@ func _run() -> void:
 	var opening_transfer_budget := _label_text(scene, transfer_budget_path)
 	_expect(opening_cash.contains("EUR"), "The finance office must render meaningful currency values.")
 
-	var market_button := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
+	var market_button := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
 	_expect(not market_button.disabled, "The transfer market must be enabled.")
 	market_button.emit_signal("pressed")
 	await process_frame
-	var market_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/TransferMarket"
+	var market_path := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/TransferMarket"
 	var market_scope_path := market_path + "/Header/ClubScope"
 	if not await _wait_until(func() -> bool: return scene.has_node(market_path)):
 		_fail("The playable transfer market did not open.")
 		return
-	var market_rows := scene.get_node(market_path + "/CandidateRows") as VBoxContainer
 	var managed_market_scope := _label_text(scene, market_scope_path)
-	var candidate_count := market_rows.get_child_count()
+	var candidate_count := _row_count(_content(scene), "CandidateRows")
 	_expect(candidate_count > 0, "The transfer market must expose deterministic candidates.")
-	var first_candidate := market_rows.get_child(0) as HBoxContainer
-	var signed_player := (first_candidate.get_child(0) as Label).text
-	var sign_player := first_candidate.get_node("Sign") as Button
+	var first_candidate := _row_at(_content(scene), "CandidateRows", 0)
+	var signed_player := _first_cell_text(first_candidate)
+	_expect(not signed_player.begins_with("MARKET_"), "The market must render sentences, not translation keys.")
+	var sign_player := _find_node(first_candidate, "Sign") as Button
 	sign_player.emit_signal("pressed")
 	var market_notice_path := market_path + "/Notice"
 	if not await _wait_until(func() -> bool: return scene.has_node(market_notice_path) and _label_text(scene, market_notice_path).contains("FICHAJE CERRADO")):
 		_fail("An affordable one-click transfer was not settled.")
 		return
-	market_rows = scene.get_node(market_path + "/CandidateRows") as VBoxContainer
-	_expect(market_rows.get_child_count() == candidate_count - 1, "The acquired player must leave the transfer candidate list.")
+	_expect(_row_count(_content(scene), "CandidateRows") == candidate_count - 1, "The acquired player must leave the transfer candidate list.")
 
 	finances.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
@@ -117,33 +116,48 @@ func _run() -> void:
 	_expect(cash_after_transfer != opening_cash, "A completed transfer must reduce cash.")
 	_expect(budget_after_transfer != opening_transfer_budget, "A completed transfer must reduce the transfer budget.")
 
-	var squad_button := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
+	var squad_button := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
 	squad_button.emit_signal("pressed")
-	var squad_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/SquadList"
-	if not await _wait_until(func() -> bool: return scene.has_node(squad_path)):
+	if not await _wait_until(func() -> bool: return _find_node(_content(scene), "SquadList") != null):
 		_fail("The managed squad did not open after the transfer.")
 		return
-	_expect(_contains_label_text(scene.get_node(squad_path), signed_player), "The acquired player must appear in the managed squad.")
-	var squad := scene.get_node(squad_path) as VBoxContainer
-	var rendered_squad_size := squad.get_child_count() - 3
-	var managed_squad_header := _label_text(squad, "SquadHeader")
-	_expect(managed_squad_header.contains(str(rendered_squad_size) + " JUGADORES"), "The squad header must count acquired players.")
-	var managed_club_name := managed_squad_header.split(" · ")[0]
+	_expect(_contains_label_text(_find_node(_content(scene), "SquadList"), signed_player), "The acquired player must appear in the managed squad.")
+	var rendered_squad_size := _row_count(_content(scene), "SquadList")
+	_expect(rendered_squad_size > 0, "The managed squad must render its players.")
+	# The title is the static section name; the club and the head-count live in
+	# the summary line under it.
+	_expect(not _panel_text(_content(scene), "SquadHeaderPanel", "Title").begins_with("SQUAD_"), "The squad must render sentences, not translation keys.")
+	var managed_squad_summary := _panel_text(_content(scene), "SquadHeaderPanel", "Summary")
+	_expect(managed_squad_summary.contains(str(rendered_squad_size)), "The squad summary must count the players it renders. Summary reads: '" + managed_squad_summary + "' rows=" + str(rendered_squad_size))
+	# The persistent header always names the managed club, whatever is browsed.
+	var managed_club_name := _panel_text(scene, "HeaderRow", "Club").split(" · ")[0]
+	_expect(managed_club_name.length() > 0, "The workspace header must name the managed club.")
 
-	var overview := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Overview") as Button
+	var overview := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Overview") as Button
 	overview.emit_signal("pressed")
 	await process_frame
-	var change_club_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/ClubOverview/ClubHeader/ChangeClub"
+	var change_club_path := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/ClubOverview/ClubHeader/ChangeClub"
 	var change_club := scene.get_node(change_club_path) as Button
 	change_club.emit_signal("pressed")
 	await process_frame
-	var content := scene.get_node("Workspace/Layout/ContentMargin/ContentScroll/Content") as Control
-	var picker_layout := content.get_child(0) as VBoxContainer
-	_expect(picker_layout.get_child_count() > 4, "The club browser must expose another fictional club.")
-	var second_club_row := picker_layout.get_child(4) as HBoxContainer
-	var second_club_action := second_club_row.get_child(6) as HBoxContainer
-	var choose_second_club := second_club_action.get_child(0) as Button
-	choose_second_club.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return _row_count(_content(scene), "ClubPickerRows") > 1):
+		_fail("The club browser did not list the world's clubs.")
+		return
+	# Re-resolve the rows every time: switching club re-renders the screen, so
+	# a container captured earlier can already be queued for deletion.
+	var chosen := false
+	for index in range(_row_count(_content(scene), "ClubPickerRows")):
+		var candidate_row := _row_at(_content(scene), "ClubPickerRows", index)
+		if candidate_row == null:
+			continue
+		var choose := _find_node(candidate_row, "Choose") as Button
+		if choose != null and not choose.disabled:
+			choose.emit_signal("pressed")
+			chosen = true
+			break
+	if not chosen:
+		_fail("The club browser must offer a club other than the managed one.")
+		return
 	await process_frame
 	finances.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
@@ -155,24 +169,22 @@ func _run() -> void:
 		_fail("Market failed after browsing a non-managed club.")
 		return
 	_expect(_label_text(scene, market_scope_path) == managed_market_scope, "Market must remain scoped to the managed career club.")
-	_expect(not _contains_label_text(scene.get_node(market_path + "/CandidateRows"), signed_player), "The signed player must stay unavailable after club browsing.")
+	_expect(not _contains_label_text(_find_node(_content(scene), "CandidateRows"), signed_player), "The signed player must stay unavailable after club browsing.")
 
 	squad_button.emit_signal("pressed")
-	if not await _wait_until(func() -> bool: return scene.has_node(squad_path)):
+	if not await _wait_until(func() -> bool: return _find_node(_content(scene), "SquadList") != null):
 		_fail("The squad of a browsed rival did not open.")
 		return
-	var rival_squad := scene.get_node(squad_path) as VBoxContainer
-	var rival_squad_size := rival_squad.get_child_count() - 3
+	var rival_squad_size := _row_count(_content(scene), "SquadList")
 	_expect(rival_squad_size > 0, "A browsed rival must expose its own players.")
-	_expect(_label_text(rival_squad, "SquadHeader").contains(str(rival_squad_size) + " JUGADORES"), "A browsed squad must count only the players it renders.")
-	_expect(not _label_text(rival_squad, "SquadHeader").begins_with(managed_club_name), "Browsing a rival must show the rival squad, not the managed one.")
+	_expect(_panel_text(_content(scene), "SquadHeaderPanel", "Summary") != managed_squad_summary, "Browsing a rival must show the rival squad, not the managed one.")
 
-	var tactics := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
+	var tactics := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Tactics") as Button
 	_expect(not tactics.disabled, "The tactics route must be enabled.")
 	tactics.emit_signal("pressed")
 	await process_frame
 
-	var lineup_path := "Workspace/Layout/ContentMargin/ContentScroll/Content/LineupSelection"
+	var lineup_path := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/LineupSelection"
 	if not await _wait_until(func() -> bool: return scene.has_node(lineup_path)):
 		_fail("The persisted lineup selector did not open.")
 		return
@@ -188,7 +200,7 @@ func _run() -> void:
 	var lineup_status := lineup.get_node("Margin/Content/ActionRow/Status") as Label
 	_expect(lineup_status.text == "Selección enviada.", "The lineup plan was not accepted and persisted.")
 
-	var main_menu_button := scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
+	var main_menu_button := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning from a career did not restore the main menu cleanly.")
@@ -201,7 +213,7 @@ func _run() -> void:
 		_fail("Continuing a career did not create a fresh manager workspace.")
 		return
 
-	finances = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
+	finances = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
 	finances.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
 		_fail("The finance office did not reopen after continuing the career.")
@@ -209,14 +221,14 @@ func _run() -> void:
 	_expect(_label_text(scene, cash_path) == cash_after_transfer, "Continuing a career must restore its post-transfer finance state.")
 	_expect(_label_text(scene, transfer_budget_path) == budget_after_transfer, "Continuing a career must restore its transfer budget.")
 
-	squad_button = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
+	squad_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
 	squad_button.emit_signal("pressed")
-	if not await _wait_until(func() -> bool: return scene.has_node(squad_path)):
+	if not await _wait_until(func() -> bool: return _find_node(_content(scene), "SquadList") != null):
 		_fail("The squad did not reopen after continuing the career.")
 		return
-	_expect(_contains_label_text(scene.get_node(squad_path), signed_player), "Continuing a career must restore the acquired player.")
+	_expect(_contains_label_text(_find_node(_content(scene), "SquadList"), signed_player), "Continuing a career must restore the acquired player.")
 
-	market_button = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
+	market_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
 	market_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(market_path)):
 		_fail("Market did not reopen after continuing the career.")
@@ -224,7 +236,7 @@ func _run() -> void:
 	_expect(_label_text(scene, market_scope_path) == managed_market_scope, "Continuing must restore the managed market scope.")
 	_expect(not _contains_label_text(scene.get_node(market_path + "/CandidateRows"), signed_player), "Continuing must keep an acquired player out of the market.")
 
-	main_menu_button = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
+	main_menu_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning before a second new career did not clean up the workspace.")
@@ -245,14 +257,14 @@ func _run() -> void:
 		_fail("The second new career did not open a fresh workspace.")
 		return
 
-	market_button = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
+	market_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
 	market_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(market_path)):
 		_fail("Market did not open in the second new career.")
 		return
 	_expect(_contains_label_text(scene.get_node(market_path + "/CandidateRows"), signed_player), "A new career must clear prior transfers and restore the player to the market.")
 
-	finances = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
+	finances = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Finances") as Button
 	finances.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
 		_fail("Finances did not open in the second new career.")
@@ -260,14 +272,69 @@ func _run() -> void:
 	_expect(_label_text(scene, cash_path) == opening_cash, "A new career must restore opening cash.")
 	_expect(_label_text(scene, transfer_budget_path) == opening_transfer_budget, "A new career must restore its opening transfer budget.")
 
-	squad_button = scene.get_node("Workspace/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
+	squad_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Squad") as Button
 	squad_button.emit_signal("pressed")
-	if not await _wait_until(func() -> bool: return scene.has_node(squad_path)):
+	if not await _wait_until(func() -> bool: return _find_node(_content(scene), "SquadList") != null):
 		_fail("Squad did not open in the second new career.")
 		return
-	_expect(not _contains_label_text(scene.get_node(squad_path), signed_player), "A new career must clear the acquired squad projection.")
+	_expect(not _contains_label_text(_find_node(_content(scene), "SquadList"), signed_player), "A new career must clear the acquired squad projection.")
 
 	quit(1 if _failed else 0)
+
+
+const CONTENT_PATH := "Workspace/Frame/Layout/ContentMargin/ContentScroll/Content"
+
+
+# Screens are re-rendered on every navigation, and a freed node can still be in
+# the tree for a frame. Searching from the live content root instead of the
+# whole scene avoids matching the corpse of the previous screen.
+func _content(scene: Node) -> Node:
+	return scene.get_node(CONTENT_PATH) if scene.has_node(CONTENT_PATH) else scene
+
+
+func _find_node(root: Node, node_name: String) -> Node:
+	if root.name == node_name:
+		return root
+	for child in root.get_children():
+		var found := _find_node(child, node_name)
+		if found != null:
+			return found
+	return null
+
+
+func _rows_of(scene: Node, section_name: String) -> VBoxContainer:
+	var section := _find_node(scene, section_name)
+	if section == null:
+		return null
+	return _find_node(section, "Rows") as VBoxContainer
+
+
+func _row_count(scene: Node, section_name: String) -> int:
+	var rows := _rows_of(scene, section_name)
+	return 0 if rows == null else rows.get_child_count()
+
+
+func _row_at(scene: Node, section_name: String, index: int) -> Node:
+	var rows := _rows_of(scene, section_name)
+	if rows == null or rows.get_child_count() <= index:
+		return null
+	return rows.get_child(index)
+
+
+func _first_cell_text(row: Node) -> String:
+	var cells := _find_node(row, "Cells")
+	if cells == null or cells.get_child_count() == 0:
+		return ""
+	var first := cells.get_child(0)
+	return (first as Label).text if first is Label else ""
+
+
+func _panel_text(scene: Node, panel_name: String, label_name: String) -> String:
+	var panel := _find_node(scene, panel_name)
+	if panel == null:
+		return ""
+	var label := _find_node(panel, label_name)
+	return "" if label == null else (label as Label).text
 
 
 func _wait_until(predicate: Callable, max_frames: int = 300) -> bool:

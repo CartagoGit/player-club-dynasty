@@ -2,6 +2,7 @@ using Godot;
 using PCDynasty.Application.Competitions.Simulation;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 using PCDynasty.Presentation.Workspace.Persistence;
@@ -17,7 +18,7 @@ internal sealed class CompetitionsScreen
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
     private readonly Action? _openHistory;
-    private readonly Func<string, string> _tr;
+    private readonly CompetitionsSection _texts;
 
     internal CompetitionsScreen(
         IManagerWorld world,
@@ -27,7 +28,7 @@ internal sealed class CompetitionsScreen
         Action refresh,
         Action<string> setStatus,
         Action? openHistory,
-        Func<string, string> tr)
+        CompetitionsSection texts)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
@@ -36,7 +37,7 @@ internal sealed class CompetitionsScreen
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
         _setStatus = setStatus ?? throw new ArgumentNullException(nameof(setStatus));
         _openHistory = openHistory;
-        _tr = tr ?? throw new ArgumentNullException(nameof(tr));
+        _texts = texts ?? throw new ArgumentNullException(nameof(texts));
     }
 
     internal void Render(Control root, ClubRow club)
@@ -51,9 +52,9 @@ internal sealed class CompetitionsScreen
 
         var header = new HeaderPanel { Name = "CompetitionsHeaderPanel" };
         header.SetTexts(
-            "COMPETITIONS_EYEBROW",
-            "COMPETITIONS_TITLE",
-            "COMPETITIONS_SUMMARY",
+            _texts.Header.Eyebrow,
+            _texts.Header.Title,
+            _texts.SummaryFormat,
             new[]
             {
                 leagues.ToString(WorkspaceUiFactory.InvariantCulture),
@@ -65,7 +66,7 @@ internal sealed class CompetitionsScreen
         if (competitions.Count == 0)
         {
             layout.AddChild(WorkspaceUiFactory.CreateText(
-                _tr("COMPETITIONS_EMPTY"),
+                (_texts.Empty),
                 ManagerDesignTokens.TextSecondary));
             return;
         }
@@ -86,8 +87,8 @@ internal sealed class CompetitionsScreen
         if (!_managed.Owns(club.ExternalId))
         {
             layout.AddChild(WorkspaceUiFactory.CreatePanel(
-                _tr("COMPETITIONS_READONLY_TITLE"),
-                new[] { _tr("COMPETITIONS_READONLY_BODY") },
+                (_texts.ReadOnly.Title),
+                new[] { (_texts.ReadOnly.Body) },
                 ManagerDesignTokens.TextSecondary));
         }
     }
@@ -105,9 +106,9 @@ internal sealed class CompetitionsScreen
         // version); we just prepend the competition's format string at format
         // time so the eyebrow stays tr()-keyed.
         panel.SetTexts(
-            "COMPETITION_EYEBROW",
+            _texts.Entry.Eyebrow,
             competition.DisplayName,
-            "COMPETITION_SUMMARY",
+            _texts.Entry.SummaryFormat,
             new[] { competition.Frequency, competition.Rivals.Count.ToString(WorkspaceUiFactory.InvariantCulture) });
         // Patch the eyebrow text so it reads "FORMAT · LIGA" / "FORMAT · COPA"
         // — we know the label is set; reach in to add the format prefix.
@@ -124,8 +125,8 @@ internal sealed class CompetitionsScreen
             // season" remains inline below the panel because it needs more
             // space than the action button affordance allows.
             panel.SetAction(
-                "COMPETITION_ACTION_PLAY_NEXT",
-                "COMPETITION_ACTION_PLAY_NEXT_TOOLTIP",
+                _texts.Actions.PlayNext,
+                _texts.Actions.PlayNextTooltip,
                 () => PlayNext(panel, club, competition, clubsByName),
                 enabled: true);
         }
@@ -138,7 +139,7 @@ internal sealed class CompetitionsScreen
                 Name = "PlaySeason",
                 Text = string.Format(
                     System.Globalization.CultureInfo.CurrentCulture,
-                    _tr("COMPETITION_ACTION_PLAY_SEASON_FMT"),
+                    (_texts.Actions.PlaySeasonFormat),
                     competition.Rivals.Count.ToString(WorkspaceUiFactory.InvariantCulture)),
                 CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
             };

@@ -2,6 +2,7 @@ using Godot;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Contracts.Careers;
 using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -20,7 +21,7 @@ internal sealed class HistoryScreen
     private readonly IManagerWorld _world;
     private readonly CareerSession _careerSession;
     private readonly Action _refresh;
-    private readonly Func<string, string> _tr;
+    private readonly HistorySection _texts;
     private string _competitionFilter = "(todas)";
     private string _clubFilter = "(todos)";
     private HistoryOrder _order = HistoryOrder.Date;
@@ -29,12 +30,12 @@ internal sealed class HistoryScreen
         IManagerWorld world,
         CareerSession careerSession,
         Action refresh,
-        Func<string, string> tr)
+        HistorySection texts)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _careerSession = careerSession ?? throw new ArgumentNullException(nameof(careerSession));
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
-        _tr = tr ?? throw new ArgumentNullException(nameof(tr));
+        _texts = texts ?? throw new ArgumentNullException(nameof(texts));
     }
 
     internal void Render(Control root)
@@ -53,9 +54,9 @@ internal sealed class HistoryScreen
 
         var header = new HeaderPanel { Name = "HistoryHeaderPanel" };
         header.SetTexts(
-            "HISTORY_EYEBROW",
-            "HISTORY_TITLE",
-            "HISTORY_SUMMARY",
+            _texts.Header.Eyebrow,
+            _texts.Header.Title,
+            _texts.SummaryFormat,
             new[]
             {
                 entries.Count.ToString(WorkspaceUiFactory.InvariantCulture),
@@ -67,7 +68,7 @@ internal sealed class HistoryScreen
         if (entries.Count == 0)
         {
             layout.AddChild(WorkspaceUiFactory.CreateText(
-                _tr("HISTORY_EMPTY"),
+                (_texts.Empty),
                 ManagerDesignTokens.TextSecondary));
             return;
         }
@@ -76,14 +77,14 @@ internal sealed class HistoryScreen
         layout.AddChild(BuildAggregate(entries));
 
         var list = new ListSection { Name = "MatchList" };
-        list.SetEmptyText("HISTORY_FILTER_EMPTY");
-        list.AddColumnHeader("HISTORY_COL_WHEN", ColumnWhen);
-        list.AddColumnHeader("HISTORY_COL_COMPETITION", ColumnCompetition);
-        list.AddColumnHeader("HISTORY_COL_HOME", ColumnHome);
-        list.AddColumnHeader("HISTORY_COL_SCORE", ColumnScore, HorizontalAlignment.Center);
-        list.AddColumnHeader("HISTORY_COL_AWAY", ColumnAway);
-        list.AddColumnHeader("HISTORY_COL_SEED", ColumnSeed, HorizontalAlignment.Right);
-        list.AddColumnHeader("HISTORY_COL_ACTION", ColumnAction, HorizontalAlignment.Right);
+        list.SetEmptyText(_texts.FilterEmpty);
+        list.AddColumnHeader(_texts.Columns.When, ColumnWhen);
+        list.AddColumnHeader(_texts.Columns.Competition, ColumnCompetition);
+        list.AddColumnHeader(_texts.Columns.Home, ColumnHome);
+        list.AddColumnHeader(_texts.Columns.Score, ColumnScore, HorizontalAlignment.Center);
+        list.AddColumnHeader(_texts.Columns.Away, ColumnAway);
+        list.AddColumnHeader(_texts.Columns.Seed, ColumnSeed, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Action, ColumnAction, HorizontalAlignment.Right);
 
         HistoryEntry[] filtered = Order(Filter(entries)).ToArray();
         foreach (HistoryEntry entry in filtered)
@@ -102,9 +103,9 @@ internal sealed class HistoryScreen
         var row = new HBoxContainer { Name = "HistoryFilters" };
         row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
 
-        row.AddChild(FilterLabel(_tr("HISTORY_FILTER_COMPETITION")));
+        row.AddChild(FilterLabel((_texts.Filters.CompetitionLabel)));
         var competitionButton = new OptionButton { Name = "CompetitionFilter" };
-        competitionButton.AddItem(_tr("HISTORY_FILTER_ALL"), 0);
+        competitionButton.AddItem((_texts.Filters.AllOption), 0);
         for (int index = 0; index < competitions.Length; index++) competitionButton.AddItem(competitions[index], index + 1);
         int selectedCompetition = Array.IndexOf(competitions, _competitionFilter);
         competitionButton.Selected = selectedCompetition < 0 ? 0 : selectedCompetition + 1;
@@ -115,9 +116,9 @@ internal sealed class HistoryScreen
         };
         row.AddChild(competitionButton);
 
-        row.AddChild(FilterLabel(_tr("HISTORY_FILTER_CLUB")));
+        row.AddChild(FilterLabel((_texts.Filters.ClubLabel)));
         var clubButton = new OptionButton { Name = "ClubFilter" };
-        clubButton.AddItem(_tr("HISTORY_FILTER_ALL"), 0);
+        clubButton.AddItem((_texts.Filters.AllOption), 0);
         for (int index = 0; index < clubs.Length; index++) clubButton.AddItem(clubs[index].DisplayName, index + 1);
         int selectedClub = Array.FindIndex(clubs, club => club.DisplayName == _clubFilter);
         clubButton.Selected = selectedClub < 0 ? 0 : selectedClub + 1;
@@ -128,11 +129,11 @@ internal sealed class HistoryScreen
         };
         row.AddChild(clubButton);
 
-        row.AddChild(FilterLabel(_tr("HISTORY_FILTER_ORDER")));
+        row.AddChild(FilterLabel((_texts.Filters.OrderLabel)));
         var orderButton = new OptionButton { Name = "OrderFilter" };
-        orderButton.AddItem(_tr("HISTORY_ORDER_DATE"), 0);
-        orderButton.AddItem(_tr("HISTORY_ORDER_COMPETITION"), 1);
-        orderButton.AddItem(_tr("HISTORY_ORDER_GOALS"), 2);
+        orderButton.AddItem((_texts.Filters.OrderOptions.Date), 0);
+        orderButton.AddItem((_texts.Filters.OrderOptions.Competition), 1);
+        orderButton.AddItem((_texts.Filters.OrderOptions.Goals), 2);
         orderButton.Selected = (int)_order;
         orderButton.ItemSelected += idx =>
         {
@@ -169,8 +170,8 @@ internal sealed class HistoryScreen
             .Select(row => row.Text)
             .ToArray();
         return WorkspaceUiFactory.CreatePanel(
-            _tr("HISTORY_AGGREGATE"),
-            rows.Length == 0 ? new[] { _tr("HISTORY_AGGREGATE_EMPTY") } : rows,
+            (_texts.Aggregate.Title),
+            rows.Length == 0 ? new[] { (_texts.Aggregate.Empty) } : rows,
             ManagerDesignTokens.Accent);
     }
 
@@ -223,7 +224,7 @@ internal sealed class HistoryScreen
         return label;
     }
 
-    private static ZebraRow BuildRow(HistoryEntry entry)
+    private ZebraRow BuildRow(HistoryEntry entry)
     {
         var row = new ZebraRow(0);
         row.AddCell(entry.PlayedAtUtc.ToLocalTime().ToString("HH:mm:ss", WorkspaceUiFactory.InvariantCulture), ColumnWhen, ManagerDesignTokens.TextSecondary);
@@ -233,8 +234,8 @@ internal sealed class HistoryScreen
         row.AddCell(entry.AwayDisplayName, ColumnAway, ManagerDesignTokens.TextPrimary);
         row.AddCell(entry.Seed.ToString(WorkspaceUiFactory.InvariantCulture), ColumnSeed, ManagerDesignTokens.TextSecondary, HorizontalAlignment.Right);
         row.AddAction(
-            "HISTORY_ROW_VIEW",
-            "HISTORY_ROW_VIEW_TOOLTIP",
+            _texts.Actions.View,
+            _texts.Actions.ViewTooltip,
             _ => { /* future slice: open match replay view */ },
             enabled: false);
         return row;

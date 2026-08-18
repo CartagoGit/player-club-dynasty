@@ -1,6 +1,7 @@
 using Godot;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Application.Market;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -23,14 +24,17 @@ internal sealed class SquadScreen
     private readonly ManagedClubContext _managed;
     private readonly CareerCalendar _calendar;
     private readonly Action _onOpenTransferMarket;
+    private readonly SquadSection _texts;
 
     internal SquadScreen(
         IManagerWorld world,
         ICareerSquadProjection careerSquad,
         ManagedClubContext managed,
         CareerCalendar calendar,
-        Action onOpenTransferMarket)
+        Action onOpenTransferMarket,
+        SquadSection texts)
     {
+        _texts = texts ?? throw new ArgumentNullException(nameof(texts));
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _careerSquad = careerSquad ?? throw new ArgumentNullException(nameof(careerSquad));
         _managed = managed ?? throw new ArgumentNullException(nameof(managed));
@@ -50,31 +54,31 @@ internal sealed class SquadScreen
 
         var header = new HeaderPanel { Name = "SquadHeaderPanel" };
         header.SetTexts(
-            "SQUAD_EYEBROW",
-            "SQUAD_TITLE",
-            _managed.Owns(club.ExternalId) ? "SQUAD_SUMMARY_OWNED" : "SQUAD_SUMMARY_BROWSE",
+            _texts.Header.Eyebrow,
+            _texts.Header.Title,
+            _managed.Owns(club.ExternalId) ? _texts.SummaryOwnedFormat : _texts.SummaryBrowseFormat,
             new[] { club.DisplayName, players.Count.ToString(WorkspaceUiFactory.InvariantCulture) });
         if (_managed.Owns(club.ExternalId))
         {
             header.SetAction(
-                "SQUAD_ACTION_OPEN_MARKET",
-                "SQUAD_ACTION_OPEN_MARKET_TOOLTIP",
+                _texts.ActionOpenMarket,
+                _texts.ActionOpenMarketTooltip,
                 _onOpenTransferMarket,
                 enabled: true);
         }
         layout.AddChild(header);
 
         var list = new ListSection { Name = "SquadList" };
-        list.SetEmptyText("SQUAD_EMPTY");
-        list.AddColumnHeader("SQUAD_COL_PLAYER", ColumnPlayer);
-        list.AddColumnHeader("SQUAD_COL_NATION", ColumnNation, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_AGE", ColumnAge, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_TEC", ColumnTech, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_FOR", ColumnForm, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_FIS", ColumnPhys, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_MEN", ColumnMent, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_VAL", ColumnValue, HorizontalAlignment.Right);
-        list.AddColumnHeader("SQUAD_COL_ACTION", ColumnAction, HorizontalAlignment.Right);
+        list.SetEmptyText(_texts.Empty);
+        list.AddColumnHeader(_texts.Columns.Player, ColumnPlayer);
+        list.AddColumnHeader(_texts.Columns.Nation, ColumnNation, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Age, ColumnAge, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Tec, ColumnTech, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.For, ColumnForm, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Fis, ColumnPhys, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Men, ColumnMent, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Val, ColumnValue, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Action, ColumnAction, HorizontalAlignment.Right);
 
         // The smoke-boot reads the squad summary as a child labelled
         // "SquadHeader" so the parent path remains stable across the migration.
@@ -116,8 +120,8 @@ internal sealed class SquadScreen
         row.AddCell(player.Mental.ToString(WorkspaceUiFactory.InvariantCulture), ColumnMent, ManagerDesignTokens.TextPrimary, HorizontalAlignment.Right);
         row.AddCell(player.Overall.ToString(WorkspaceUiFactory.InvariantCulture), ColumnValue, WorkspaceUiFactory.ValueColor(player.Overall), HorizontalAlignment.Right);
         row.AddAction(
-            "SQUAD_ROW_INSPECT",
-            "SQUAD_ROW_INSPECT_TOOLTIP",
+            _texts.Actions.Inspect,
+            _texts.Actions.InspectTooltip,
             onPressed: _ => { /* future slice: open detail panel */ },
             enabled: false);
         return row;

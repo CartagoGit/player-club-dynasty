@@ -424,7 +424,8 @@ public partial class PresentationBootstrap : Control
             runtime.Finances,
             runtime.TransferMarket,
             runtime.Squad,
-            runtime.Calendar);
+            runtime.Calendar,
+            _localeSession!.ActiveFile);
         _workspaceController.MainMenuRequested += CloseWorkspace;
         AddChild(_workspaceController);
     }

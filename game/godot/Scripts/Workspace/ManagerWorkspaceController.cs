@@ -5,6 +5,7 @@ using PCDynasty.Application.Matches;
 using PCDynasty.Application.Market;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 using PCDynasty.Presentation.Workspace.Persistence;
@@ -56,9 +57,11 @@ public partial class ManagerWorkspaceController : Control
         ICareerFinanceService financeService,
         ICareerTransferMarketService transferMarket,
         ICareerSquadProjection squadProjection,
-        CareerCalendar calendar)
+        CareerCalendar calendar,
+        LocaleFile locale)
     {
         ArgumentNullException.ThrowIfNull(calendar);
+        ArgumentNullException.ThrowIfNull(locale);
         _world = world ?? throw new ArgumentNullException(nameof(world));
         // The career manages exactly one club; browsing starts there and may
         // move anywhere without ever moving command authority with it.
@@ -78,7 +81,8 @@ public partial class ManagerWorkspaceController : Control
             squadProjection,
             _managed,
             calendar,
-            () => SelectSection(WorkspaceSection.Market));
+            () => SelectSection(WorkspaceSection.Market),
+            locale.Squad);
         _tacticsScreen = new TacticsScreen(world, lineupService, _managed);
         _competitionsScreen = new CompetitionsScreen(
             world,
@@ -88,19 +92,19 @@ public partial class ManagerWorkspaceController : Control
             RenderCurrent,
             SetStatus,
             () => SelectSection(WorkspaceSection.History),
-            key => Tr(key));
+            locale.Competitions);
         _marketScreen = new MarketScreen(
             transferMarket,
             _managed,
             calendar,
             RenderCurrent,
-            key => Tr(key));
+            locale.Market);
         _financesScreen = new FinancesScreen(financeService, _managed);
-        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent, key => Tr(key));
+        _historyScreen = new HistoryScreen(world, careerSession, RenderCurrent, locale.History);
         _finances = financeService;
         _calendar = calendar;
-        _worldScreen = new WorldScreen(world, key => Tr(key));
-        _clubPickerScreen = new ClubPickerScreen(SelectClub, key => Tr(key));
+        _worldScreen = new WorldScreen(world, locale.World);
+        _clubPickerScreen = new ClubPickerScreen(SelectClub, locale.Picker);
     }
 
     public override void _Ready()

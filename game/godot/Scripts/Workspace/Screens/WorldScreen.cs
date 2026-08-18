@@ -1,5 +1,6 @@
 using Godot;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -14,12 +15,12 @@ internal sealed class WorldScreen
     private const int ColumnAction = 110;
 
     private readonly IManagerWorld _world;
-    private readonly Func<string, string> _tr;
+    private readonly WorldSection _texts;
 
-    internal WorldScreen(IManagerWorld world, Func<string, string> tr)
+    internal WorldScreen(IManagerWorld world, WorldSection texts)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
-        _tr = tr ?? throw new ArgumentNullException(nameof(tr));
+        _texts = texts ?? throw new ArgumentNullException(nameof(texts));
     }
 
     internal void Render(Control root)
@@ -36,9 +37,9 @@ internal sealed class WorldScreen
 
         var header = new HeaderPanel { Name = "WorldHeaderPanel" };
         header.SetTexts(
-            "WORLD_EYEBROW",
-            "WORLD_TITLE",
-            "WORLD_SUMMARY",
+            _texts.Header.Eyebrow,
+            _texts.Header.Title,
+            _texts.SummaryFormat,
             new[]
             {
                 competitions.Count.ToString(WorkspaceUiFactory.InvariantCulture),
@@ -47,12 +48,12 @@ internal sealed class WorldScreen
         layout.AddChild(header);
 
         var list = new ListSection { Name = "WorldCompetitions" };
-        list.SetEmptyText("WORLD_EMPTY");
-        list.AddColumnHeader("WORLD_COL_NAME", ColumnName);
-        list.AddColumnHeader("WORLD_COL_FORMAT", ColumnFormat);
-        list.AddColumnHeader("WORLD_COL_FREQUENCY", ColumnFrequency);
-        list.AddColumnHeader("WORLD_COL_RIVALS", ColumnRivals, HorizontalAlignment.Right);
-        list.AddColumnHeader("WORLD_COL_ACTION", ColumnAction, HorizontalAlignment.Right);
+        list.SetEmptyText(_texts.Empty);
+        list.AddColumnHeader(_texts.Columns.Name, ColumnName);
+        list.AddColumnHeader(_texts.Columns.Format, ColumnFormat);
+        list.AddColumnHeader(_texts.Columns.Frequency, ColumnFrequency);
+        list.AddColumnHeader(_texts.Columns.Rivals, ColumnRivals, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Action, ColumnAction, HorizontalAlignment.Right);
 
         if (competitions.Count == 0)
         {
@@ -68,7 +69,7 @@ internal sealed class WorldScreen
         layout.AddChild(list);
     }
 
-    private static ZebraRow BuildRow(CompetitionRow competition)
+    private ZebraRow BuildRow(CompetitionRow competition)
     {
         var row = new ZebraRow(0);
         row.AddCell(competition.DisplayName, ColumnName, ManagerDesignTokens.TextPrimary);
@@ -76,8 +77,8 @@ internal sealed class WorldScreen
         row.AddCell(competition.Frequency, ColumnFrequency, ManagerDesignTokens.TextSecondary);
         row.AddCell(competition.Rivals.Count.ToString(WorkspaceUiFactory.InvariantCulture), ColumnRivals, ManagerDesignTokens.Accent, HorizontalAlignment.Right);
         row.AddAction(
-            "WORLD_ROW_INSPECT",
-            "WORLD_ROW_INSPECT_TOOLTIP",
+            _texts.Actions.Inspect,
+            _texts.Actions.InspectTooltip,
             _ => { /* future slice: open competition detail */ },
             enabled: false);
         return row;

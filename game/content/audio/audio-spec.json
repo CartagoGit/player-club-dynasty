@@ -1,119 +1,676 @@
 {
-	"$schema": "./audio-spec.schema.json",
-	"version": 3,
-	"root": "game/godot/Audio",
-	"stagingDir": ".audio-staging",
-	"deprecatedDir": ".deprecated/assets/sounds",
-	"tool": {
-		"command": "mmx",
-		"nonInteractive": true,
-		"quiet": true
-	},
-	"_comment": "See game/godot/Audio/SPEC.md for the human-readable workflow. Each entry is a SLOT (the semantic concept, e.g. 'ui_click'). Inside the slot, 'approved' holds the single variant that ships; 'variants' is the review queue of freshly generated alternatives that the human can listen to, approve or deprecate.",
-	"globalMusicAnchor": {
-		"bpm": 96,
-		"key": "C major (Ionian)",
-		"scaleNotes": ["C", "D", "E", "F", "G", "A", "B"],
-		"instruments": "warm analog synth pads, electric piano (Rhodes), pizzicato strings, soft brushed snare, no drums on menu tracks",
-		"palette": "warm 1990s synthwave — muted oranges, deep blues, soft creams. No bright leads, no distorted guitars.",
-		"loopSeconds": 30,
-		"transitionRules": [
-			"Every track MUST begin and end on the C major tonic chord (C-E-G) so any two tracks can be crossfaded without harmonic clash.",
-			"Every track MUST contain a 4-bar bridge at the loop point whose chord progression resolves back to C major, enabling seamless A→B or B→A transitions.",
-			"No track introduces chromatic notes, modulations outside the C major scale, or borrowed chords.",
-			"No track uses percussion beyond a soft brushed snare — drums belong only to the matchday stingers, which are short non-looping accents."
-		]
-	},
-	"groups": [
-		{
-			"id": "music.menu",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro late-1990s Spanish football management PC game menu music. Warm, slightly nostalgic, optimistic but never saccharine.",
-			"coherence": {
-				"bpm": 96,
-				"key": "C major",
-				"instruments": "warm analog synth pads, light electric piano (Rhodes), pizzicato strings",
-				"mood": "calm, inviting, contemplative",
-				"intensity": 0.3,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{ "id": "menu_main", "filename": "menu_main.ogg", "prompt": "Title screen theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Sparse melodic motif, contemplative and inviting. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly." },
-				{ "id": "menu_credits", "filename": "menu_credits.ogg", "prompt": "End credits theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Reflective, gently building, melancholic but resolved. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly." },
-				{ "id": "menu_loadsave", "filename": "menu_loadsave.ogg", "prompt": "Save/load screen theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no percussion, no strings. Short, ambient, slightly suspended, contemplative. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly." }
-			]
-		},
-		{
-			"id": "music.matchday",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro late-1990s Spanish football management PC game matchday music. Driving, tense, stadium atmosphere. Every track is harmonically compatible with the menu group.",
-			"coherence": {
-				"bpm": 96,
-				"key": "C major",
-				"instruments": "warm analog synth pad, electric piano (Rhodes), pizzicato strings, soft brushed snare, light synth bass",
-				"mood": "tense, urgent, building",
-				"intensity": 0.6,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{ "id": "matchday_warmup", "filename": "matchday_warmup.ogg", "prompt": "Pre-match warmup theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, soft brushed snare only. Steady building rhythm, crowd murmurs growing. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly." },
-				{ "id": "matchday_kickoff", "filename": "matchday_kickoff.ogg", "prompt": "Kickoff whistle moment for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano — no drums. Explosive but warm, anthemic but restrained. Last 4 bars form a bridge that resolves back to C major. 30 seconds." },
-				{ "id": "matchday_goal", "filename": "matchday_goal.ogg", "prompt": "Goal celebration sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings — no drums. Short triumphant motif. Final 4 bars form a bridge that resolves back to C major. 30 seconds." },
-				{ "id": "matchday_fulltime", "filename": "matchday_fulltime.ogg", "prompt": "Full time whistle sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano — no drums. Relieved exhale, gentle resolution. Final 4 bars form a bridge that resolves back to C major. 30 seconds." },
-				{ "id": "matchday_victory", "filename": "matchday_victory.ogg", "prompt": "Manager of the month victory sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, soft pizzicato strings — no drums. Short brass-like synth lead, triumphant but warm. Final 4 bars form a bridge that resolves back to C major. 30 seconds." },
-				{ "id": "matchday_defeat", "filename": "matchday_defeat.ogg", "prompt": "Defeat sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums. Short sustained warm chord, mournful but gentle. Final 4 bars form a bridge that resolves back to C major. 30 seconds." }
-			]
-		},
-		{
-			"id": "sfx.ui",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "speech-2.8-hd",
-			"styleAnchor": "Retro 1990s PC speaker UI sound. Short, crisp, synthesized, dry. Should sound like they all came from the same sound chip.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.9,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{ "id": "ui_click", "filename": "ui_click.ogg", "prompt": "soft UI click — short and dry, like a finger tapping a membrane keyboard" },
-				{ "id": "ui_hover", "filename": "ui_hover.ogg", "prompt": "subtle hover tick — even shorter than the click, almost subliminal" },
-				{ "id": "ui_confirm", "filename": "ui_confirm.ogg", "prompt": "positive confirmation — a short two-note ascending chirp" },
-				{ "id": "ui_cancel", "filename": "ui_cancel.ogg", "prompt": "negative cancel — a short two-note descending chirp" },
-				{ "id": "ui_error", "filename": "ui_error.ogg", "prompt": "error buzz — short buzzy reject tone" },
-				{ "id": "ui_notify", "filename": "ui_notify.ogg", "prompt": "incoming notification — soft bell-like ping, ~250ms" }
-			]
-		},
-		{
-			"id": "sfx.match",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "speech-2.8-hd",
-			"styleAnchor": "Retro 1990s football management PC game stadium sound effects. Should sound lo-fi but unmistakable — they are what the manager hears from the stands.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.95
-			},
-			"entries": [
-				{ "id": "whistle_short", "filename": "whistle_short.ogg", "prompt": "referee short whistle — single sharp blast, ~600ms" },
-				{ "id": "whistle_long", "filename": "whistle_long.ogg", "prompt": "referee long whistle — sustained blast, ~1.5 seconds" },
-				{ "id": "whistle_penalty", "filename": "whistle_penalty.ogg", "prompt": "penalty award whistle — three short sharp blasts in quick succession" },
-				{ "id": "crowd_cheer", "filename": "crowd_cheer.ogg", "prompt": "stadium crowd short cheer — quick roar that decays in ~2 seconds" },
-				{ "id": "crowd_groan", "filename": "crowd_groan.ogg", "prompt": "stadium crowd disappointed groan — short communal 'ohhh', ~1.5 seconds" },
-				{ "id": "crowd_chant", "filename": "crowd_chant.ogg", "prompt": "stadium crowd rhythmic clapping chant — repeated claps with low vocal roar, ~3 seconds" },
-				{ "id": "kick", "filename": "kick.ogg", "prompt": "football kick impact — leather thud with a touch of boot-on-ball squeak" },
-				{ "id": "ball_bounce", "filename": "ball_bounce.ogg", "prompt": "football bouncing on grass — two quick soft bounces" },
-				{ "id": "post_hit", "filename": "post_hit.ogg", "prompt": "ball hitting the goalpost — sharp metallic clang" }
-			]
-		}
-	],
-	"status": {}
+  "$schema": "./audio-spec.schema.json",
+  "version": 3,
+  "root": "game/godot/Audio",
+  "stagingDir": ".audio-staging",
+  "deprecatedDir": ".deprecated/assets/sounds",
+  "tool": {
+    "command": "mmx",
+    "nonInteractive": true,
+    "quiet": true
+  },
+  "_comment": "See game/godot/Audio/SPEC.md for the human-readable workflow. Each entry is a SLOT (the semantic concept, e.g. 'ui_click'). Inside the slot, 'approved' holds the single variant that ships; 'variants' is the review queue of freshly generated alternatives that the human can listen to, approve or deprecate.",
+  "globalMusicAnchor": {
+    "bpm": 96,
+    "key": "C major (Ionian)",
+    "scaleNotes": [
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B"
+    ],
+    "instruments": "warm analog synth pads, electric piano (Rhodes), pizzicato strings, soft brushed snare, no drums on menu tracks",
+    "palette": "warm 1990s synthwave — muted oranges, deep blues, soft creams. No bright leads, no distorted guitars.",
+    "loopSeconds": 30,
+    "transitionRules": [
+      "Every track MUST begin and end on the C major tonic chord (C-E-G) so any two tracks can be crossfaded without harmonic clash.",
+      "Every track MUST contain a 4-bar bridge at the loop point whose chord progression resolves back to C major, enabling seamless A→B or B→A transitions.",
+      "No track introduces chromatic notes, modulations outside the C major scale, or borrowed chords.",
+      "No track uses percussion beyond a soft brushed snare — drums belong only to the matchday stingers, which are short non-looping accents."
+    ]
+  },
+  "groups": [
+    {
+      "id": "music.menu",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro late-1990s Spanish football management PC game menu music. Warm, slightly nostalgic, optimistic but never saccharine.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pads, light electric piano (Rhodes), pizzicato strings",
+        "mood": "calm, inviting, contemplative",
+        "intensity": 0.3,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "menu_main",
+          "filename": "menu_main.ogg",
+          "prompt": "Title screen theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Sparse melodic motif, contemplative and inviting. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly."
+        },
+        {
+          "id": "menu_credits",
+          "filename": "menu_credits.ogg",
+          "prompt": "End credits theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Reflective, gently building, melancholic but resolved. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly."
+        },
+        {
+          "id": "menu_loadsave",
+          "filename": "menu_loadsave.ogg",
+          "prompt": "Save/load screen theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no percussion, no strings. Short, ambient, slightly suspended, contemplative. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly."
+        }
+      ]
+    },
+    {
+      "id": "music.matchday",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro late-1990s Spanish football management PC game matchday music. Driving, tense, stadium atmosphere. Every track is harmonically compatible with the menu group.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pad, electric piano (Rhodes), pizzicato strings, soft brushed snare, light synth bass",
+        "mood": "tense, urgent, building",
+        "intensity": 0.6,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "matchday_warmup",
+          "filename": "matchday_warmup.ogg",
+          "prompt": "Pre-match warmup theme for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, soft brushed snare only. Steady building rhythm, crowd murmurs growing. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly."
+        },
+        {
+          "id": "matchday_kickoff",
+          "filename": "matchday_kickoff.ogg",
+          "prompt": "Kickoff whistle moment for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano — no drums. Explosive but warm, anthemic but restrained. Last 4 bars form a bridge that resolves back to C major. 30 seconds."
+        },
+        {
+          "id": "matchday_goal",
+          "filename": "matchday_goal.ogg",
+          "prompt": "Goal celebration sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings — no drums. Short triumphant motif. Final 4 bars form a bridge that resolves back to C major. 30 seconds."
+        },
+        {
+          "id": "matchday_fulltime",
+          "filename": "matchday_fulltime.ogg",
+          "prompt": "Full time whistle sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano — no drums. Relieved exhale, gentle resolution. Final 4 bars form a bridge that resolves back to C major. 30 seconds."
+        },
+        {
+          "id": "matchday_victory",
+          "filename": "matchday_victory.ogg",
+          "prompt": "Manager of the month victory sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, soft pizzicato strings — no drums. Short brass-like synth lead, triumphant but warm. Final 4 bars form a bridge that resolves back to C major. 30 seconds."
+        },
+        {
+          "id": "matchday_defeat",
+          "filename": "matchday_defeat.ogg",
+          "prompt": "Defeat sting for a retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums. Short sustained warm chord, mournful but gentle. Final 4 bars form a bridge that resolves back to C major. 30 seconds."
+        }
+      ]
+    },
+    {
+      "id": "sfx.ui",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro 1990s PC speaker UI sound. Short, crisp, synthesized, dry. Should sound like they all came from the same sound chip.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "ui_click",
+          "filename": "ui_click.ogg",
+          "prompt": "soft UI click — short and dry, like a finger tapping a membrane keyboard"
+        },
+        {
+          "id": "ui_hover",
+          "filename": "ui_hover.ogg",
+          "prompt": "subtle hover tick — even shorter than the click, almost subliminal"
+        },
+        {
+          "id": "ui_confirm",
+          "filename": "ui_confirm.ogg",
+          "prompt": "positive confirmation — a short two-note ascending chirp"
+        },
+        {
+          "id": "ui_cancel",
+          "filename": "ui_cancel.ogg",
+          "prompt": "negative cancel — a short two-note descending chirp"
+        },
+        {
+          "id": "ui_error",
+          "filename": "ui_error.ogg",
+          "prompt": "error buzz — short buzzy reject tone"
+        },
+        {
+          "id": "ui_notify",
+          "filename": "ui_notify.ogg",
+          "prompt": "incoming notification — soft bell-like ping, ~250ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.match",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro 1990s football management PC game stadium sound effects. Should sound lo-fi but unmistakable — they are what the manager hears from the stands.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95
+      },
+      "entries": [
+        {
+          "id": "whistle_short",
+          "filename": "whistle_short.ogg",
+          "prompt": "referee short whistle — single sharp blast, ~600ms"
+        },
+        {
+          "id": "whistle_long",
+          "filename": "whistle_long.ogg",
+          "prompt": "referee long whistle — sustained blast, ~1.5 seconds"
+        },
+        {
+          "id": "whistle_penalty",
+          "filename": "whistle_penalty.ogg",
+          "prompt": "penalty award whistle — three short sharp blasts in quick succession"
+        },
+        {
+          "id": "crowd_cheer",
+          "filename": "crowd_cheer.ogg",
+          "prompt": "stadium crowd short cheer — quick roar that decays in ~2 seconds"
+        },
+        {
+          "id": "crowd_groan",
+          "filename": "crowd_groan.ogg",
+          "prompt": "stadium crowd disappointed groan — short communal 'ohhh', ~1.5 seconds"
+        },
+        {
+          "id": "crowd_chant",
+          "filename": "crowd_chant.ogg",
+          "prompt": "stadium crowd rhythmic clapping chant — repeated claps with low vocal roar, ~3 seconds"
+        },
+        {
+          "id": "kick",
+          "filename": "kick.ogg",
+          "prompt": "football kick impact — leather thud with a touch of boot-on-ball squeak"
+        },
+        {
+          "id": "ball_bounce",
+          "filename": "ball_bounce.ogg",
+          "prompt": "football bouncing on grass — two quick soft bounces"
+        },
+        {
+          "id": "post_hit",
+          "filename": "post_hit.ogg",
+          "prompt": "ball hitting the goalpost — sharp metallic clang"
+        }
+      ]
+    },
+    {
+      "id": "music.workspace",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Sub-views of the club management workspace (Overview / Market / Stadium / Standings). Same warm 1990s synthwave palette as music.menu but each sub-view has a slightly different mood so the manager feels the context shift.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pad, soft Rhodes electric piano, pizzicato strings, occasional muted electric bass",
+        "mood": "calm, contemplative, productive",
+        "intensity": 0.4,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "workspace_hub_01",
+          "filename": "workspace_hub_01.ogg",
+          "prompt": "Workspace hub theme (Overview tab) — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Steady, productive, 'you are home managing your club'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: open with ascending pizzicato motif."
+        },
+        {
+          "id": "workspace_hub_02",
+          "filename": "workspace_hub_02.ogg",
+          "prompt": "Workspace hub theme (Overview tab) — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Steady, productive, 'you are home managing your club'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: open with descending Rhodes arpeggio."
+        },
+        {
+          "id": "workspace_hub_03",
+          "filename": "workspace_hub_03.ogg",
+          "prompt": "Workspace hub theme (Overview tab) — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Steady, productive, 'you are home managing your club'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: open with sustained synth pad chord then Rhodes melody enters."
+        },
+        {
+          "id": "market_browsing_01",
+          "filename": "market_browsing_01.ogg",
+          "prompt": "Transfer market browsing theme — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, muted electric bass — no drums. Slightly tense, appraising, 'every signing counts'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: bass-led walking line."
+        },
+        {
+          "id": "market_browsing_02",
+          "filename": "market_browsing_02.ogg",
+          "prompt": "Transfer market browsing theme — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, muted electric bass — no drums. Slightly tense, appraising, 'every signing counts'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: Rhodes-led melodic counter-melody."
+        },
+        {
+          "id": "market_browsing_03",
+          "filename": "market_browsing_03.ogg",
+          "prompt": "Transfer market browsing theme — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, muted electric bass — no drums. Slightly tense, appraising, 'every signing counts'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: alternating pad-Rhodes-pad-Rhodes pattern."
+        },
+        {
+          "id": "stadium_management_01",
+          "filename": "stadium_management_01.ogg",
+          "prompt": "Stadium management theme (merchandising, expansions, facilities) — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Hopeful, building, industrial-light, 'you are expanding your home'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: ascending pizzicato ostinato."
+        },
+        {
+          "id": "stadium_management_02",
+          "filename": "stadium_management_02.ogg",
+          "prompt": "Stadium management theme (merchandising, expansions, facilities) — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Hopeful, building, industrial-light, 'you are expanding your home'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: warm chord stabs on each beat."
+        },
+        {
+          "id": "stadium_management_03",
+          "filename": "stadium_management_03.ogg",
+          "prompt": "Stadium management theme (merchandising, expansions, facilities) — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Hopeful, building, industrial-light, 'you are expanding your home'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: legato Rhodes melody over slow pad."
+        },
+        {
+          "id": "standings_review_01",
+          "filename": "standings_review_01.ogg",
+          "prompt": "League tables and standings review theme — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Quiet, reflective, 'study the table'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: slow pad with sparse Rhodes chords."
+        },
+        {
+          "id": "standings_review_02",
+          "filename": "standings_review_02.ogg",
+          "prompt": "League tables and standings review theme — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Quiet, reflective, 'study the table'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: single Rhodes melody line, no chords."
+        },
+        {
+          "id": "standings_review_03",
+          "filename": "standings_review_03.ogg",
+          "prompt": "League tables and standings review theme — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Quiet, reflective, 'study the table'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: alternating pad-Rhodes alternating every 4 bars."
+        }
+      ]
+    },
+    {
+      "id": "music.editor",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Pack editor / creative mode. Sparse and minimal so the player can think — no busy motifs, lots of air. Same warm 1990s synthwave palette as the menu group.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pad, soft Rhodes electric piano, sparse pizzicato strings",
+        "mood": "focused, sparse, contemplative",
+        "intensity": 0.25,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "editor_focus_01",
+          "filename": "editor_focus_01.ogg",
+          "prompt": "Pack editor theme — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Very sparse, focused, contemplative, 'you are crafting'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: held pad with single Rhodes note every 2 bars."
+        },
+        {
+          "id": "editor_focus_02",
+          "filename": "editor_focus_02.ogg",
+          "prompt": "Pack editor theme — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Very sparse, focused, contemplative, 'you are crafting'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: slow ascending Rhodes arpeggio every 8 bars."
+        },
+        {
+          "id": "editor_focus_03",
+          "filename": "editor_focus_03.ogg",
+          "prompt": "Pack editor theme — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Very sparse, focused, contemplative, 'you are crafting'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: pad chord changes every 4 bars with sparse Rhodes stabs."
+        }
+      ]
+    },
+    {
+      "id": "music.trophy",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Trophy / winners screen (league titles, promotions, manager of the month). Same warm 1990s synthwave palette but with a contained brass-like synth lead so it feels triumphant without being bombastic.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead, soft brushed snare",
+        "mood": "triumphant, warm, celebratory",
+        "intensity": 0.6,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "trophy_lift_01",
+          "filename": "trophy_lift_01.ogg",
+          "prompt": "Trophy lift theme — variant 1 of 3. Retro 1990s football manager PC game (league title, cup final, manager of the month). EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead — soft brushed snare only. Triumphant but warm, contained celebration. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: brass lead melody over pizzicato ostinato."
+        },
+        {
+          "id": "trophy_lift_02",
+          "filename": "trophy_lift_02.ogg",
+          "prompt": "Trophy lift theme — variant 2 of 3. Retro 1990s football manager PC game (league title, cup final, manager of the month). EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead — soft brushed snare only. Triumphant but warm, contained celebration. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: Rhodes melody carries the lead, brass plays sustained harmony."
+        },
+        {
+          "id": "trophy_lift_03",
+          "filename": "trophy_lift_03.ogg",
+          "prompt": "Trophy lift theme — variant 3 of 3. Retro 1990s football manager PC game (league title, cup final, manager of the month). EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead — soft brushed snare only. Triumphant but warm, contained celebration. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: call-and-response between brass and Rhodes."
+        }
+      ]
+    },
+    {
+      "id": "sfx.workspace",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Section navigation in the workspace sidebar (Overview / Squad / Tactics / Competitions / Market / Finances / World). Should feel cohesive with sfx.ui but slightly more deliberate — these are larger transitions.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "section_change",
+          "filename": "section_change.ogg",
+          "prompt": "workspace sidebar section change — short sweeping whoosh with soft tap, ~400ms"
+        },
+        {
+          "id": "section_hover",
+          "filename": "section_hover.ogg",
+          "prompt": "workspace sidebar button hover — subtle wood-block tick, very short, almost subliminal"
+        },
+        {
+          "id": "section_pin",
+          "filename": "section_pin.ogg",
+          "prompt": "workspace sidebar button pinned / focused — soft positive two-note ping"
+        }
+      ]
+    },
+    {
+      "id": "sfx.editor",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Pack editor — placing, rotating and removing tiles / cards / stickers on the canvas. Crispy, satisfying, retro-gamey.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "tile_place",
+          "filename": "tile_place.ogg",
+          "prompt": "pack editor tile placed — chunky satisfying snap, like a stamp hitting paper, ~150ms"
+        },
+        {
+          "id": "tile_remove",
+          "filename": "tile_remove.ogg",
+          "prompt": "pack editor tile removed — soft click-pop, like a suction cup detaching, ~120ms"
+        },
+        {
+          "id": "tile_rotate",
+          "filename": "tile_rotate.ogg",
+          "prompt": "pack editor tile rotated — quick wooden tick, very short, ~80ms"
+        },
+        {
+          "id": "canvas_save",
+          "filename": "canvas_save.ogg",
+          "prompt": "pack editor canvas saved — ascending two-note confirmation, slightly brighter than ui_confirm, ~300ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.match_extended",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Extended match commentary stingers: cards, fouls, shots, saves, substitutions. Each event needs a short, identifiable sting that the manager associates with that exact play.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95
+      },
+      "entries": [
+        {
+          "id": "match_start",
+          "filename": "match_start.ogg",
+          "prompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second"
+        },
+        {
+          "id": "half_time",
+          "filename": "half_time.ogg",
+          "prompt": "half time whistle — two long sustained blasts, ~1.5 seconds"
+        },
+        {
+          "id": "yellow_card",
+          "filename": "yellow_card.ogg",
+          "prompt": "yellow card sting — single sharp whistle beep plus a short plastic card flick, ~800ms"
+        },
+        {
+          "id": "red_card",
+          "filename": "red_card.ogg",
+          "prompt": "red card sting — sharp whistle plus a louder plastic card flick with a low ominous tone underneath, ~1 second"
+        },
+        {
+          "id": "foul",
+          "filename": "foul.ogg",
+          "prompt": "foul whistle — single medium whistle with a short crowd ohh, ~700ms"
+        },
+        {
+          "id": "shot_on_target",
+          "filename": "shot_on_target.ogg",
+          "prompt": "shot on target — leather strike followed by a glove save slap, ~1 second"
+        },
+        {
+          "id": "shot_off_target",
+          "filename": "shot_off_target.ogg",
+          "prompt": "shot off target — leather strike followed by a thud against advertising board, ~1 second"
+        },
+        {
+          "id": "substitution",
+          "filename": "substitution.ogg",
+          "prompt": "substitution sting — board-up electronic ping plus short crowd murmur, ~900ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.transfer",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Transfer market stingers — incoming offer, scout report, completed deal. Lo-fi retro chime-ish to fit the 1990s chip aesthetic but with a cash-register undertone for deals.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "offer_received",
+          "filename": "offer_received.ogg",
+          "prompt": "transfer offer received — soft incoming message chime, ~400ms"
+        },
+        {
+          "id": "scout_report",
+          "filename": "scout_report.ogg",
+          "prompt": "scout report delivered — paper unfolding rustle plus a soft bell ping, ~600ms"
+        },
+        {
+          "id": "transfer_complete",
+          "filename": "transfer_complete.ogg",
+          "prompt": "transfer deal complete — vintage cash register ka-ching plus a short crowd cheer, ~1.2 seconds"
+        },
+        {
+          "id": "transfer_rejected",
+          "filename": "transfer_rejected.ogg",
+          "prompt": "transfer offer rejected — soft descending two-note decline, ~300ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.achievement",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Career achievement stingers — manager of the month, season complete, promotion, relegation, trophy lift. Each is a short fanfare that complements music.trophy.trophy_lift without overshadowing it.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "manager_of_month",
+          "filename": "manager_of_month.ogg",
+          "prompt": "manager of the month sting — short three-note ascending brass-like fanfare, ~1.2 seconds"
+        },
+        {
+          "id": "season_complete",
+          "filename": "season_complete.ogg",
+          "prompt": "season complete sting — soft bell sequence (ding-ding-ding) with a crowd swell, ~1.5 seconds"
+        },
+        {
+          "id": "promotion",
+          "filename": "promotion.ogg",
+          "prompt": "promotion sting — bright ascending brass fanfare with crowd roar, ~2 seconds"
+        },
+        {
+          "id": "relegation",
+          "filename": "relegation.ogg",
+          "prompt": "relegation sting — soft descending minor-ish chime plus a quiet crowd groan, ~1.5 seconds"
+        }
+      ]
+    }
+  ],
+  "status": {
+    "music.workspace.workspace_hub_01": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787092925710": {
+          "variantId": "v_1787092925710",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:43:55.067Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.workspace/workspace_hub_01/v_1787092925710.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 16198882,
+          "lastPrompt": "Workspace hub theme (Overview tab) — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, gentle pizzicato strings — no drums. Steady, productive, 'you are home managing your club'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: open with ascending pizzicato motif."
+        }
+      }
+    },
+    "music.workspace.market_browsing_01": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093041219": {
+          "variantId": "v_1787093041219",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:46:36.721Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.workspace/market_browsing_01/v_1787093041219.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 27575522,
+          "lastPrompt": "Transfer market browsing theme — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, muted electric bass — no drums. Slightly tense, appraising, 'every signing counts'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: bass-led walking line."
+        }
+      }
+    },
+    "music.workspace.stadium_management_01": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093203207": {
+          "variantId": "v_1787093203207",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:49:07.222Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.workspace/stadium_management_01/v_1787093203207.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 24530146,
+          "lastPrompt": "Stadium management theme (merchandising, expansions, facilities) — variant 1 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Hopeful, building, industrial-light, 'you are expanding your home'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 1: ascending pizzicato ostinato."
+        }
+      }
+    },
+    "music.workspace.stadium_management_03": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093349236": {
+          "variantId": "v_1787093349236",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:52:20.189Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.workspace/stadium_management_03/v_1787093349236.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 27725026,
+          "lastPrompt": "Stadium management theme (merchandising, expansions, facilities) — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, soft Rhodes electric piano, pizzicato strings — no drums. Hopeful, building, industrial-light, 'you are expanding your home'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: legato Rhodes melody over slow pad."
+        }
+      }
+    },
+    "music.workspace.standings_review_03": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093548896": {
+          "variantId": "v_1787093548896",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:54:49.444Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.workspace/standings_review_03/v_1787093548896.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 22750434,
+          "lastPrompt": "League tables and standings review theme — variant 3 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Quiet, reflective, 'study the table'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 3: alternating pad-Rhodes alternating every 4 bars."
+        }
+      }
+    },
+    "music.editor.editor_focus_02": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093695303": {
+          "variantId": "v_1787093695303",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:57:30.538Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.editor/editor_focus_02/v_1787093695303.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 27405538,
+          "lastPrompt": "Pack editor theme — variant 2 of 3. Retro 1990s football manager PC game. EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad and soft Rhodes electric piano only — no drums, no strings, no bass. Very sparse, focused, contemplative, 'you are crafting'. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: slow ascending Rhodes arpeggio every 8 bars."
+        }
+      }
+    },
+    "music.trophy.trophy_lift_02": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787093855784": {
+          "variantId": "v_1787093855784",
+          "state": "staged",
+          "stagedAt": "2026-08-18T22:59:54.805Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/music.trophy/trophy_lift_02/v_1787093855784.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 22035682,
+          "lastPrompt": "Trophy lift theme — variant 2 of 3. Retro 1990s football manager PC game (league title, cup final, manager of the month). EXACTLY 96 BPM, key of C major only. Begin and end on a C major triad (C-E-G). Warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead — soft brushed snare only. Triumphant but warm, contained celebration. Include a 4-bar bridge at the loop point that resolves back to C major. 30 seconds, loops seamlessly. Variant 2: Rhodes melody carries the lead, brass plays sustained harmony."
+        }
+      }
+    }
+  }
 }

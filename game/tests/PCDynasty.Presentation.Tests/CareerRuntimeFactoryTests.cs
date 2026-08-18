@@ -64,7 +64,8 @@ public sealed class CareerRuntimeFactoryTests
         Assert.Contains("Market must remain scoped to the managed career club", smoke, StringComparison.Ordinal);
         Assert.Contains("Continuing must keep an acquired player out of the market", smoke, StringComparison.Ordinal);
         Assert.Contains("A new career must clear prior transfers", smoke, StringComparison.Ordinal);
-        Assert.Contains("The squad header must count acquired players", smoke, StringComparison.Ordinal);
+        Assert.Contains("The acquired player must appear in the managed squad", smoke, StringComparison.Ordinal);
+        Assert.Contains("The squad summary must count the players it renders", smoke, StringComparison.Ordinal);
     }
 
     private static string FindGameRoot()

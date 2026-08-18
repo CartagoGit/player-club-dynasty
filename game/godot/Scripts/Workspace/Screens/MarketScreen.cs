@@ -1,6 +1,7 @@
 using Godot;
 using PCDynasty.Application.Market;
 using PCDynasty.Application.Workspace;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace.Components;
 
@@ -20,8 +21,8 @@ internal sealed class MarketScreen
     private readonly ManagedClubContext _managed;
     private readonly CareerCalendar _calendar;
     private readonly Action _refresh;
-    private readonly Func<string, string> _tr;
-    private string _noticeKey = "MARKET_NOTICE_IDLE";
+    private readonly MarketSection _texts;
+    private NoticeState _notice = NoticeState.Idle;
     private string[] _noticeArgs = Array.Empty<string>();
     private bool _lastOfferAccepted;
 
@@ -30,13 +31,13 @@ internal sealed class MarketScreen
         ManagedClubContext managed,
         CareerCalendar calendar,
         Action refresh,
-        Func<string, string> tr)
+        MarketSection texts)
     {
         _market = market ?? throw new ArgumentNullException(nameof(market));
         _managed = managed ?? throw new ArgumentNullException(nameof(managed));
         _calendar = calendar ?? throw new ArgumentNullException(nameof(calendar));
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
-        _tr = tr ?? throw new ArgumentNullException(nameof(tr));
+        _texts = texts ?? throw new ArgumentNullException(nameof(texts));
     }
 
     internal void Render(Control root, ClubRow club)
@@ -49,9 +50,9 @@ internal sealed class MarketScreen
 
         var header = new HeaderPanel { Name = "Header" };
         header.SetTexts(
-            "MARKET_EYEBROW",
-            "MARKET_TITLE",
-            "MARKET_SUMMARY",
+            _texts.Header.Eyebrow,
+            _texts.Header.Title,
+            _texts.SummaryFormat,
             new[]
             {
                 club.DisplayName,
@@ -78,20 +79,29 @@ internal sealed class MarketScreen
             "font_color",
             _lastOfferAccepted ? ManagerDesignTokens.Positive : ManagerDesignTokens.TextSecondary);
         notice.AddThemeFontSizeOverride("font_size", 13);
-        notice.Text = _noticeArgs.Length > 0
-            ? string.Format(System.Globalization.CultureInfo.CurrentCulture, _tr(_noticeKey), _noticeArgs)
-            : _tr(_noticeKey);
+        notice.Text = _notice switch
+        {
+            NoticeState.Accepted => string.Format(
+                System.Globalization.CultureInfo.CurrentCulture,
+                _texts.NoticeAcceptedFormat,
+                _noticeArgs),
+            NoticeState.Rejected => string.Format(
+                System.Globalization.CultureInfo.CurrentCulture,
+                _texts.NoticeRejectedFormat,
+                _noticeArgs),
+            _ => _texts.NoticeIdle,
+        };
         market.AddChild(notice);
 
         var list = new ListSection { Name = "CandidateRows" };
-        list.SetEmptyText("MARKET_EMPTY");
-        list.AddColumnHeader("MARKET_COL_PLAYER", ColumnPlayer);
-        list.AddColumnHeader("MARKET_COL_SELLING_CLUB", ColumnClub);
-        list.AddColumnHeader("MARKET_COL_AGE", ColumnAge, HorizontalAlignment.Right);
-        list.AddColumnHeader("MARKET_COL_TEC", ColumnTech, HorizontalAlignment.Right);
-        list.AddColumnHeader("MARKET_COL_VAL", ColumnValue, HorizontalAlignment.Right);
-        list.AddColumnHeader("MARKET_COL_PRICE", ColumnPrice, HorizontalAlignment.Right);
-        list.AddColumnHeader("MARKET_COL_ACTION", ColumnAction, HorizontalAlignment.Right);
+        list.SetEmptyText(_texts.Empty);
+        list.AddColumnHeader(_texts.Columns.Player, ColumnPlayer);
+        list.AddColumnHeader(_texts.Columns.SellingClub, ColumnClub);
+        list.AddColumnHeader(_texts.Columns.Age, ColumnAge, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Tec, ColumnTech, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Val, ColumnValue, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Price, ColumnPrice, HorizontalAlignment.Right);
+        list.AddColumnHeader(_texts.Columns.Action, ColumnAction, HorizontalAlignment.Right);
 
         if (candidates.Count == 0)
         {
@@ -123,14 +133,15 @@ internal sealed class MarketScreen
         // keys simple (one place-holder, not two).
         string tooltip = string.Format(
             System.Globalization.CultureInfo.CurrentCulture,
-            _tr("MARKET_ROW_SIGN_TOOLTIP_FMT"),
+            (_texts.Actions.SignTooltipFormat),
             WorkspaceUiFactory.FormatMoney(candidate.AskingPrice, candidate.Currency),
             candidate.PlayerName);
         row.AddAction(
-            "MARKET_ROW_SIGN",
+            _texts.Actions.Sign,
             tooltip,
             _ => Sign(candidate),
-            enabled: true);
+            enabled: true,
+            name: "Sign");
         return row;
     }
 
@@ -143,7 +154,7 @@ internal sealed class MarketScreen
         _lastOfferAccepted = result.Accepted;
         if (result.Accepted)
         {
-            _noticeKey = "MARKET_NOTICE_ACCEPTED";
+            _notice = NoticeState.Accepted;
             _noticeArgs = new[]
             {
                 candidate.PlayerName,
@@ -152,19 +163,27 @@ internal sealed class MarketScreen
         }
         else
         {
-            _noticeKey = "MARKET_NOTICE_REJECTED";
-            _noticeArgs = new[] { RejectionKey(result.Reason) };
+            _notice = NoticeState.Rejected;
+            _noticeArgs = new[] { RejectionText(result.Reason) };
         }
         _refresh();
     }
 
-    private static string RejectionKey(string reason) => reason switch
+    private string RejectionText(string reason) => reason switch
     {
-        "budget-exceeded" => "MARKET_REJECT_BUDGET",
-        "below-asking-price" => "MARKET_REJECT_PRICE",
-        "player-unavailable" => "MARKET_REJECT_UNAVAILABLE",
-        "stale-or-duplicate" => "MARKET_REJECT_STALE",
-        "finance-not-initialized" => "MARKET_REJECT_FINANCE",
-        _ => "MARKET_REJECT_GENERIC",
+        "budget-exceeded" => _texts.Reasons.Budget,
+        "below-asking-price" => _texts.Reasons.Price,
+        "player-unavailable" => _texts.Reasons.Unavailable,
+        "stale-or-duplicate" => _texts.Reasons.Stale,
+        "finance-not-initialized" => _texts.Reasons.Finance,
+        _ => _texts.Reasons.Generic,
     };
+
+    /// <summary>Which of the three notice sentences the screen is showing.</summary>
+    private enum NoticeState
+    {
+        Idle = 0,
+        Accepted = 1,
+        Rejected = 2,
+    }
 }

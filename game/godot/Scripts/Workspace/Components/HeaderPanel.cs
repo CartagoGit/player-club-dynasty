@@ -16,16 +16,22 @@ namespace PCDynasty.Presentation.Workspace.Components;
 /// </remarks>
 public sealed partial class HeaderPanel : PanelContainer
 {
-    private Label? _eyebrow;
-    private Label? _title;
-    private Label? _summary;
-    private HBoxContainer? _actions;
-    private VBoxContainer? _footer;
+    private readonly Label _eyebrow = new() { Name = "Eyebrow" };
+    private readonly Label _title = new() { Name = "Title" };
+    private readonly Label _summary = new() { Name = "Summary" };
+    private readonly HBoxContainer _actions = new() { Name = "HeaderActions" };
+    private readonly VBoxContainer _footer = new() { Name = "HeaderFooter" };
     private Button? _actionButton;
 
     public string ActionName { get; private set; } = "Action";
 
-    public override void _Ready()
+    /// <remarks>
+    /// The children are built here rather than in <c>_Ready</c>: screens
+    /// configure a header before adding it to the tree, and a panel that only
+    /// exists after <c>_Ready</c> dropped every text it was handed, which is
+    /// how the workspace ended up with blank header bands.
+    /// </remarks>
+    public HeaderPanel()
     {
         AddThemeStyleboxOverride("panel", ClassicChrome.TitlePlate());
 
@@ -42,29 +48,24 @@ public sealed partial class HeaderPanel : PanelContainer
         left.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
         band.AddChild(left);
 
-        _eyebrow = new Label { Name = "Eyebrow" };
         _eyebrow.AddThemeColorOverride("font_color", ManagerDesignTokens.Accent);
         _eyebrow.AddThemeFontSizeOverride("font_size", 12);
         left.AddChild(_eyebrow);
 
-        _title = new Label { Name = "Title" };
         _title.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
         _title.AddThemeFontSizeOverride("font_size", 22);
         left.AddChild(_title);
 
-        _summary = new Label { Name = "Summary" };
         _summary.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
         _summary.AddThemeFontSizeOverride("font_size", 13);
         _summary.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         left.AddChild(_summary);
 
-        _actions = new HBoxContainer { Name = "HeaderActions" };
         _actions.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         _actions.Alignment = BoxContainer.AlignmentMode.End;
         _actions.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
         band.AddChild(_actions);
 
-        _footer = new VBoxContainer { Name = "HeaderFooter" };
         _footer.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         column.AddChild(_footer);
     }
@@ -72,29 +73,21 @@ public sealed partial class HeaderPanel : PanelContainer
     /// <summary>Wires the three text fields. Pass empty strings to hide them.</summary>
     public void SetTexts(string eyebrow, string title, string summary)
     {
-        if (_eyebrow is null || _title is null || _summary is null)
-        {
-            return;
-        }
         _eyebrow.Visible = !string.IsNullOrEmpty(eyebrow);
-        _eyebrow.Text = Tr(eyebrow);
-        _title.Text = Tr(title);
+        _eyebrow.Text = eyebrow;
+        _title.Text = title;
         _summary.Visible = !string.IsNullOrEmpty(summary);
-        _summary.Text = Tr(summary);
+        _summary.Text = summary;
     }
 
     /// <summary>Wires the three text fields and formats the summary with the given args.</summary>
     public void SetTexts(string eyebrow, string title, string summaryKey, string[] summaryArgs)
     {
-        if (_eyebrow is null || _title is null || _summary is null)
-        {
-            return;
-        }
         _eyebrow.Visible = !string.IsNullOrEmpty(eyebrow);
-        _eyebrow.Text = Tr(eyebrow);
-        _title.Text = Tr(title);
+        _eyebrow.Text = eyebrow;
+        _title.Text = title;
         _summary.Visible = !string.IsNullOrEmpty(summaryKey);
-        string translated = Tr(summaryKey);
+        string translated = summaryKey;
         _summary.Text = summaryArgs is { Length: > 0 }
             ? string.Format(System.Globalization.CultureInfo.CurrentCulture, translated, summaryArgs)
             : translated;
@@ -107,10 +100,6 @@ public sealed partial class HeaderPanel : PanelContainer
     /// </summary>
     public void SetAction(string? text, string? tooltip, Action? onPressed, bool enabled = true)
     {
-        if (_actions is null)
-        {
-            return;
-        }
         if (_actionButton is not null)
         {
             _actions.RemoveChild(_actionButton);

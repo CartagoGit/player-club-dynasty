@@ -142,10 +142,20 @@ public sealed partial class ZebraRow : PanelContainer
     }
 
     /// <summary>Appends a trailing action button. The action is invoked with the row index.</summary>
-    public Button AddAction(string text, string? tooltip, Action<int>? onPressed, bool enabled = true)
+    /// <param name="name">
+    /// Node name for the action, so a test or a keyboard shortcut can address
+    /// it without depending on the translated label.
+    /// </param>
+    public Button AddAction(
+        string text,
+        string? tooltip,
+        Action<int>? onPressed,
+        bool enabled = true,
+        string name = "Action")
     {
         var button = new Button
         {
+            Name = name,
             Text = text,
             TooltipText = tooltip ?? string.Empty,
             Disabled = !enabled,

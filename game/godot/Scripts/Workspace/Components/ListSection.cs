@@ -139,7 +139,7 @@ public sealed partial class ListSection : PanelContainer
     /// <summary>Sets the text shown when there are no rows.</summary>
     public void SetEmptyText(string text)
     {
-        _empty.Text = Tr(text);
+        _empty.Text = text;
     }
 
     /// <summary>Visibility of the empty-state label, derived from the row count.</summary>
