@@ -6,6 +6,7 @@ status: review
 type: proposal
 track: architecture
 date: 2026-08-18
+shipped-in: f446dd7
 ---
 
 # a00001 — Audit initial-plan compliance across runtime architecture proposals and playable Godot delivery
@@ -37,8 +38,10 @@ The executable is visible but the current proposal portfolio and green unit test
   - "Every finding distinguishes implemented-and-integrated, implemented-but-disconnected, partial, missing and proposal-registry defects with file evidence."
   - "The report covers SOLID and naming, Godot/Core boundaries, external content and saves, deterministic orchestration, actual gameplay loop, classic-manager UX, scale benchmarks, CI and Git hygiene."
   - "The report defines a dependency-ordered repair portfolio with measurable acceptance and explicitly preserves validated work."
-- review-state: in_review
+- review-state: changes_requested
 - review-implementer: root
+- review-reviewer: review_world_fix_fresh
+- review-log: requested_changes by review_world_fix_fresh — Falta matriz propuesta done a aceptación y consumidor runtime; la secuencia tiene dependencias invertidas entre contenido, orquestador y sistemas; faltan editor/modding, LifeEvent, staff/mercado, fanbase/estadio, sanciones y memoria de 80 años; varios criterios carecen de gates y umbrales; taxonomía inconsistente.
 ## acceptance
 
 - The audit traces INITIAL-PLAN, ADRs and completed proposals to concrete runtime code, tests, benchmarks and visible Godot behavior.

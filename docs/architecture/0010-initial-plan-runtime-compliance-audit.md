@@ -67,11 +67,11 @@ presenta como terminadas.
 | Capacidad del plan | Camino ejecutable real | Estado |
 | --- | --- | --- |
 | Menú, nueva carrera y continuar | Menú original, selección de club y un único perfil; no se elige manager y `Cargar carrera` está deshabilitado | parcial |
-| Mundo navegable | Seis clubes y cuatro competiciones sin divisiones completas, calendario ni escala mundial | demo |
+| Mundo navegable | Seis clubes y cuatro competiciones sin divisiones completas, calendario ni escala mundial | parcial |
 | Plantilla | Tabla visible, pero incluye managers como si fueran jugadores | defectuoso |
 | Ficha profunda y conocimiento | Existen escena/controlador y dominio de Knowledge, pero las filas de plantilla no abren la ficha | isla |
-| Alineación y táctica | Persiste una selección y un texto libre; admite un participante, no modela once/banquillo/posición y no afecta al partido | persistencia sin gameplay |
-| Partido | Marcador, timeline y replay; usa prestigio, afición y tamaño de plantilla, no futbolistas ni táctica | demo técnica |
+| Alineación y táctica | Persiste una selección y un texto libre; admite un participante, no modela once/banquillo/posición y no afecta al partido | parcial |
+| Partido | Marcador, timeline y replay; usa prestigio, afición y tamaño de plantilla, no futbolistas ni táctica | parcial |
 | Eventos de partido | El actor es el club; no hay goleadores. Con magnitud máxima 8, los umbrales 40/60/80 hacen imposibles Card/Shot/Save | defectuoso |
 | Competiciones | Partido aislado o round-robin simple inmediato; una copa también se trata como liga | defectuoso |
 | Carrera temporal | No hay fecha de juego ni AdvanceDay/Week/ToDate | ausente |
@@ -86,7 +86,7 @@ presenta como terminadas.
 | Carrera del manager | Reputación, relaciones y ofertas en un ensamblado no referenciado | isla |
 | Editor | Escena aislada y servicios; opción de menú deshabilitada | isla |
 | Contenido externo | Adaptadores JSON/CSV/SQLite existen, pero el juego fija el starter JSON y no permite elegir una fuente | parcial |
-| Distribución | Launcher local robusto y de instancia única; requiere SDK/runtime y Godot Mono instalados | no entregado |
+| Distribución | Launcher local robusto y de instancia única; requiere SDK/runtime y Godot Mono instalados | ausente |
 
 ### Evidencia principal
 
@@ -109,6 +109,41 @@ presenta como terminadas.
 - No existe ningún consumidor productivo de `PCDynasty.Career`,
   `PCDynasty.Careers`, `PCDynasty.Club`, `PCDynasty.Football` o
   `PCDynasty.World`.
+
+## Trazabilidad de las propuestas cerradas
+
+La tabla siguiente no reabre el alcance histórico de cada slice: contrasta su
+aceptación demostrada con el consumidor actual. Todos los IDs que están en
+`done` quedan asignados a una fila. «Verde» en la columna de evidencia significa
+que la prueba del slice sigue pasando; el estado final exige además un camino
+productivo desde Godot.
+
+| Propuestas `done` | Aceptación que sí quedó demostrada | Consumidor productivo y evidencia actual | Estado |
+| --- | --- | --- | --- |
+| `c00001..c00004`, `i00001..i00002` | Contratos/ADRs, calidad .NET, metadatos Godot e higiene de artefactos | CI .NET y `check-repository-hygiene.sh` los consumen; CI aún no ejecuta Godot/SmokeBoot | parcial |
+| `f00001..f00002`, `x00001`, `x00003..x00008` | Fundación Godot/.NET, contrato de sport pack, TestSport y ownership de proyectos | Godot usa la fundación; `ISportPack` sólo tiene consumidores de test | parcial |
+| `f00003..f00004`, `f00018`, `x00002`, `x00020` | Persona/atributos/knowledge, FootballPack, read models y comando de alineación | Plantilla y táctica Godot usan una proyección paralela; Knowledge y atributos del pack no gobiernan la vista | parcial |
+| `f00005..f00007`, `x00009..x00010`, `x00038` | Simulación/replay deterministas, grafos de competición y reglas de Football | El workspace usa `MatchSimulator`/`SeasonSimulator` de Application, no el contest pack ni los grafos declarativos | isla |
+| `f00009`, `x00011`, `x00037` | WorldStore SQLite, checksum, migración y aislamiento de resultados de test | La carrera Godot usa cinco stores específicos y no carga `IWorldStore`/`SaveMigrator` | isla |
+| `f00010`, `f00014..f00015`, `x00012..x00013`, `x00017..x00018`, `x00030..x00031`, `x00036` | Lectores JSON/CSV/SQLite, validator/compiler, contratos, fixtures y starter versionado | Godot sólo usa el lector JSON sobre rutas fijas y omite validator/compiler; el smoke de contenido no prueba el ejecutable | parcial |
+| `f00011`, `x00014` | Hechos históricos, checkpoints y queries | El historial visible usa contratos/tablas específicos de carrera, no este world history | isla |
+| `f00012..f00013`, `f00016`, `x00015..x00016`, `x00019` | Protocolo determinista, fidelidades y macro advancement testeados | Ningún `AdvanceWorld` ni orquestador es alcanzable desde Godot | isla |
+| `f00017`, `f00027..f00029`, `x00039..x00040` | Shell, design tokens, alineación, finanzas y compra persistentes y visibles | Son alcanzables y SmokeBoot cubre el happy path; táctica no afecta al partido y el mercado no conserva ownership/dinero vendedor | parcial |
+| `f00019`, `x00021..x00022` | Carrera de persona, development, retirement e injury engines con tests | Assemblies no referenciados por Application/Godot; no hay calendario que los dispare | isla |
+| `f00020`, `x00023..x00024` | Economía, valoración, negociación y mercado aislados | Godot usa un servicio simplificado de Application; el motor Market/Economy original no participa | isla |
+| `f00021`, `x00025..x00026` | Instalaciones, cantera, staff y evolución de club aislados | `PCDynasty.Club` no tiene consumidor productivo | isla |
+| `f00022` | Scouting, assignments y knowledge projection testeados | Botón Scouting deshabilitado y módulo no conectado | isla |
+| `f00023` | Training, chemistry y motivation testeados | No hay caso de uso, persistencia, pantalla ni efecto en partido | isla |
+| `f00024`, `x00027` | Reputación, relaciones, contratos y ofertas del manager | `PCDynasty.Career` no tiene consumidor productivo | isla |
+| `f00025`, `x00028..x00029` | Documento/editor/validación y escena Godot construibles | La opción de editor está deshabilitada; no hay autoría/exportación/importación accesible | isla |
+| `f00026` | Pack ficticio con IDs/referencias/licencias y tests de integración | Es la fuente visible, pero sólo contiene 6 clubes y 11 jugadores; no alcanza la aceptación de una liga jugable | parcial |
+| `r00001..r00006` | Reducción de tamaños, inversión de puertos, sesión por carrera, contratos de persistencia y simulación fuera de Godot | Mejoran el grafo, pero dejan estado en Presentation, reglas duplicadas en Application y módulos canónicos desconectados | parcial |
+| `v00001..v00003`, `x00032..x00035` | Harness BDN, budgets y gates rápidos para fixtures pequeños | Las suites pasan; no ejercitan todas las cargas obligatorias ni varias rutas productivas/SQLite | parcial |
+
+Esta trazabilidad explica por qué no se pueden usar los estados de la propuesta
+como porcentaje de producto terminado. Las filas «isla» conservan valor como
+tests de diseño, pero su reparación debe integrar o retirar la implementación
+paralela; crear una tercera variante queda prohibido.
 
 ## Cumplimiento arquitectónico
 
@@ -314,139 +349,253 @@ El roadmap invisible también está obsoleto:
 
 ## Cartera de reparación, en orden de dependencia
 
-### 1. Sanear registro, gates y roadmap
+Cada etapa nombra sus prerequisitos y su puerta de salida. Los umbrales de
+rendimiento usan el hardware de referencia de
+`game/benchmarks/interaction-budgets.json`; sólo pueden cambiar mediante ADR y
+una línea base publicada, nunca para hacer verde una regresión.
 
-Objetivo: recuperar una cola MCP fiable antes de modificar más runtime.
+### 1. Sanear registro, roadmap y gates
 
-Aceptación mínima:
+**Prerequisito:** esta auditoría aprobada.
 
-- ID único para el roadmap y board/catalog sin colisiones;
-- retirar pasos obsoletos y convertir fases reales en propuestas parseables;
-- gate MCP combinado para propuesta, .NET, arquitectura, Godot y smoke cuando
-  aplique;
-- CI Godot headless y comparación ejecutable de budgets;
-- regla de cierre: una capacidad de producto requiere ruta desde
-  `Main.tscn`, efecto observable, persistencia y smoke, no sólo una clase.
+**Entrega:** dar ID único al roadmap, retirar su `WorldService.Instance` y sus
+fases obsoletas, y convertir esta cartera en propuestas parseables. El gate de
+producto debe ejecutar MCP, solución Release, arquitectura, Godot headless y
+SmokeBoot cuando una slice declare integración visible. CI debe instalar Godot
+y comparar, no sólo publicar, todos los budgets.
 
-### 2. Corregir identidad y contexto gestionado
+**Gate:** catálogo y board resuelven exactamente una propuesta por ID; prueba
+negativa hace fallar una propuesta sin ruta `Main.tscn` cuando declara una
+capacidad visible; el workflow completo pasa desde checkout limpio y no deja
+artefactos trackeados.
 
-Objetivo: eliminar fallos visibles antes del nuevo motor.
+### 2. Corregir identidad y autoridad del club gestionado
 
-Aceptación mínima:
+**Prerequisito:** 1.
 
-- players, managers y staff son proyecciones distintas;
-- managers nunca aparecen en plantilla, táctica o mercado;
-- `ManagedClubContext` y `BrowsedClubContext` explícitos;
-- táctica, competiciones, finanzas y mercado no pueden mutar rivales;
-- país y edad llegan de datos/fecha de carrera, sin heurísticas UI.
+**Entrega:** separar read models de player, manager y staff; introducir
+`ManagedClubContext` y `BrowsedClubContext`; llevar país y fecha de nacimiento
+reales hasta la UI. Táctica, competiciones, finanzas y mercado sólo aceptan el
+contexto gestionado para comandos.
 
-### 3. Unificar carga de mundo y carrera externa
+**Gate:** fixture con 11 players y 7 managers devuelve exactamente 11 filas en
+plantilla/táctica y cero managers en mercado; tests de autoridad rechazan mutar
+un rival; edad se calcula con la fecha de carrera en dos cumpleaños límite;
+SmokeBoot navega un rival y demuestra que su estado no cambia.
 
-Objetivo: establecer una fuente de verdad sustituible.
+### 3. Establecer el cargador canónico e indexado de mundo
 
-Aceptación mínima:
+**Prerequisito:** 2.
 
-- `WorldLoader` de Application usa reader, validator y compiler;
-- snapshot inmutable indexado por StableId y hash;
-- fuente integrada o externa JSON/CSV/SQLite seleccionable;
-- save por defecto en `user://`, con override/importación;
-- manifest único con versión, seed y hashes de packs;
-- inicialización/reset/migración de carrera atómicos y recuperables;
-- selector de múltiples carreras.
+**Entrega:** un `WorldLoader` de Application compone reader → normalización →
+validator → compiler y devuelve snapshot inmutable con StableIds, hash e índices
+`byId`/`byClub`/`byCompetition`. Godot elige una fuente integrada o externa
+JSON/CSV/SQLite y deja de usar `WorldContentValueReader` tolerante.
 
-### 4. Construir el orquestador temporal
+**Gate:** contenido inválido falla con diagnóstico y nunca se convierte en
+cero; fixtures equivalentes JSON/CSV/SQLite producen el mismo hash; búsquedas
+indexadas sobre 160.000 personas son O(1)/O(log n), con mediana menor o igual a
+16 ms; cold compile/index del starter queda en 2.000 ms.
 
-Objetivo: un único dueño de fecha y mutaciones.
+### 4. Entregar contenido jugable y autoría/modding de ida y vuelta
 
-Aceptación mínima:
+**Prerequisito:** 3.
 
-- `AdvanceWorld` incluye versión, intervalo, rules hash, seed raíz,
-  fidelidad, correlación y presupuesto;
-- agenda y semillas estables sin reloj de pared;
-- hechos ordenados aplicados en unidad atómica;
-- checkpoints reanudables;
-- partidos, competición, economía, desarrollo, lesiones, mercado y cantera se
-  registran como unidades/cadencias, no llamadas entre pantallas.
+**Entrega:** ampliar el starter a una primera y segunda división de 20 clubes
+cada una, 22–25 jugadores por club, managers/staff separados, posiciones,
+contratos, equipaciones, estadios, instalaciones, reglas y calendario. Conectar
+el editor para personas no programadoras: clubes, personas, equipaciones,
+estadios, instalaciones, competiciones por fases, reglas, bases y packs. Import
+y export deben usar el mismo pipeline canónico y conservar licencia/manifest.
 
-### 5. Integrar FootballPack, alineación y competición
+**Gate:** validator comprueba 40 clubes y entre 880 y 1.000 jugadores, plantillas
+válidas y referencias cerradas; round-trip editor → export → import conserva el
+hash semántico para cada tipo editable; un pack externo alternativo abre en
+Godot sin depender de IDs/nombres del starter; smoke crea, corrige y exporta un
+pack inválido.
 
-Objetivo: que decisiones futbolísticas cambien el partido y la temporada.
+### 5. Unificar carrera, persistencia externa y transacciones
 
-Aceptación mínima:
+**Prerequisito:** 3.
 
-- Application recibe políticas del pack y no codifica 90 minutos o 3/1/0;
-- snapshot usa plantilla, titulares, banquillo, posiciones, táctica, forma,
-  físico, mental, química y motivación;
-- goles, tarjetas, lesiones, sustituciones y ratings tienen actor persona;
-- alineaciones inválidas se rechazan;
-- formatos declarativos gobiernan liga/copa, calendario, clasificación,
-  ascensos, descensos y premios;
-- replay y save/load reproducen los mismos hechos.
+**Entrega:** una única familia de contratos de save, manifest con schema/save
+version, seed y hashes, y una unidad de trabajo SQLite compartida. Nueva carrera,
+reset, migración y commit de hechos son atómicos. Los saves viven por defecto en
+`user://`, admiten varios slots, backup, importación de DB externa y override.
+Presentation deja de poseer el historial; los puertos de I/O son async y
+cancelables.
 
-### 6. Hacer el starter world realmente jugable
+**Gate:** fault injection en cada escritura deja antes o después completo, nunca
+estado mixto; save/load y migración golden conservan hash; dos slots y una DB
+externa no se contaminan; un handler Godot completa su parte síncrona en 8 ms sin
+I/O; carga de checkpoint de 16 MiB/10.000 hechos queda en 500 ms.
 
-Objetivo: contenido mínimo coherente antes de escalar.
+### 6. Construir calendario y orquestador determinista mínimo
 
-Aceptación mínima:
+**Prerequisitos:** 4 y 5.
 
-- al menos una liga y segunda división completas;
-- 22–25 futbolistas por club, managers y staff separados;
-- posiciones, contratos, calendario y reglas consistentes;
-- origen/licencia/manifest verificables;
-- pack externo alternativo que produzca el mismo modelo compilado;
-- ninguna pantalla depende de nombres o IDs concretos del starter.
+**Entrega:** un único `AdvanceWorld` posee fecha, world version, intervalo,
+rules hash, seed raíz, fidelidad, correlación y work budget. Primero registra
+calendario/competiciones como unidades reales; los sistemas de etapas posteriores
+se conectarán mediante el mismo puerto cuando existan, no con stubs que finjan
+su integración. La agenda produce checkpoints reanudables y hechos ordenados.
 
-### 7. Completar economía y mercado autoritativos
+**Gate:** las cinco puertas de ADR 0003 pasan: misma entrada produce mismos
+hechos/orden; serie y paralelo coinciden; Macro/Detailed conservan calendario,
+contratos y reglas; un fallo deja intacto el snapshot; partido, transición anual
+y materialización publican tiempo y memoria. `AdvanceDay`, `AdvanceWeek` y
+`AdvanceToDate` sobreviven save/load; cada slice de background cede en 8 ms.
 
-Objetivo: conservar dinero y ownership.
+### 7. Integrar FootballPack, alineación y formatos de competición
 
-Aceptación mínima:
+**Prerequisitos:** 2, 4 y 6.
 
-- transferencia atómica debita comprador, acredita vendedor y cambia roster;
-- todas las plantillas proyectan el mismo estado;
-- oferta editable, contraoferta, salario, contrato, cláusulas, venta y cesión;
-- macro market y reemplazos;
-- inflación y cierre financiero anual;
-- UI async sobre read models versionados.
+**Entrega:** Application recibe políticas del pack y elimina 90 minutos, eventos
+y 3/1/0 duplicados. El snapshot usa plantilla, once, banquillo, posiciones,
+táctica, forma, físico, mental, química y motivación. Liga/copa declarativas
+gobiernan calendario, clasificación, ascensos, descensos, premios y sanciones
+deportivas. Los hechos nombran personas para goles, tarjetas, lesiones,
+sustituciones y ratings.
 
-### 8. Conectar profundidad del manager
+**Gate:** alineaciones fuera de 11 titulares o con posición inválida se rechazan;
+dos tácticas válidas cambian los inputs efectivos sin romper replay; todos los
+tipos de evento son alcanzables en fixtures deterministas; liga y copa producen
+formatos distintos; replay y save/load conservan exactamente hechos, tabla y
+campeón; partido visible queda en 8 ms y temporada de 190 partidos en 50 ms.
 
-Abrir propuestas separadas, cada una con Application, persistencia, Godot,
-efecto de simulación y benchmark:
+### 8. Conectar economía, contratos y mercado autoritativos
 
-1. ficha/knowledge/scouting;
-2. entrenamiento/química/desarrollo/lesiones;
-3. staff/cantera/instalaciones;
-4. carrera del manager, relaciones, contratos y cambios de club.
+**Prerequisitos:** 4, 5, 6 y 7.
 
-### 9. Rehacer el workspace como ciclo de decisiones clásico y original
+**Entrega:** un único hecho de transferencia debita comprador, acredita vendedor,
+cambia ownership/rosters y crea contrato. Añadir oferta editable, contraoferta,
+salario, cláusulas, venta, cesión, reemplazo macro, inflación, premios, salarios,
+mantenimiento, deuda y sanciones financieras. La UI opera sobre read models
+versionados y comandos async.
 
-Objetivo: usabilidad de manager, no imitación visual.
+**Gate:** pruebas de conservación de dinero y ownership antes/después, rollback
+en cada fallo y proyección idéntica desde ambos clubes; cierre anual reconcilia
+ledger a cero; mercado macro sobre 6.400 clubes tiene mediana menor o igual a
+250 ms y ninguna interacción bloquea más de 8 ms; SmokeBoot compra, vende,
+continúa y verifica ambos rosters/saldos.
 
-Aceptación mínima:
+### 9. Conectar ficha, knowledge y scouting
 
-- cabecera con fecha, club, próxima cita y acciones urgentes;
-- máximo siete áreas agrupadas, estado activo, teclado/mando y `Esc`;
-- agenda/inbox como siguiente decisión;
-- resumen → detalle → razones/historial;
-- filas interactivas y drill-down real;
-- crest, kit y retrato originales/generados;
-- estados vacío/cargando/disponible/obsoleto/error;
-- componentes reutilizables y pantallas sin reglas.
+**Prerequisitos:** 2, 4, 5 y 6.
 
-### 10. Cerrar escala, distribución y rendimiento
+**Entrega:** drill-down de jugador, verdad/percepción separadas, visibilidad,
+asignaciones, regiones, calidad/carga del scout, progresión y caducidad del
+informe. Las decisiones de fichaje sólo consumen knowledge permitido.
 
-Objetivo: convertir el vertical slice en producto entregable.
+**Gate:** tests prueban que dos clubes perciben distinto al mismo jugador y que
+la verdad oculta no cruza el contrato UI; save/load conserva observaciones;
+query indexada sobre 160.000 personas queda en 16 ms; SmokeBoot asigna scout,
+avanza fecha y abre un informe actualizado.
 
-Aceptación mínima:
+### 10. Conectar entrenamiento, química y ciclo vital de personas
 
-- los benchmarks obligatorios exactos pasan por los mismos puertos del juego;
-- mercado 6.400 clubes, 160.000 personas, 320 ligas y 30 años;
-- memoria y tamaño de save presupuestados;
-- cold start, SQLite, filtros y navegación Godot medidos;
-- operaciones largas async/checkpoint sin bloquear input;
-- presets y exports autocontenidos Windows/Linux;
-- smoke desde instalación limpia sin SDK ni editor preinstalados.
+**Prerequisitos:** 4, 5, 6, 7 y 9.
+
+**Entrega:** entrenamiento, desarrollo, desgaste, lesión, recuperación, química,
+motivación, LifeEventEngine, jubilación, jóvenes y reconversión posicional son
+unidades deterministas de calendario con hechos persistidos y efecto en partido.
+
+**Gate:** 160.000 `DevelopmentStep` quedan en 1.000 ms y son reproducibles en
+serie/paralelo; fixtures cubren lesión/recuperación, vida fuera del fútbol,
+retirada/relevo y reconversión válida/inválida; un plan de entrenamiento cambia
+atributos efectivos y riesgo medidos; SmokeBoot avanza una semana y muestra
+causa, cambio e historial sin revelar información oculta.
+
+### 11. Conectar staff, cantera, instalaciones y evolución de club
+
+**Prerequisitos:** 4, 5, 6, 8 y 10.
+
+**Entrega:** empleados envejecen, progresan, se retiran y participan en mercado;
+cantera genera/forma/promociona personas; instalaciones y estadio tienen
+capacidad, modernidad, deterioro, mantenimiento, obra y cierres; fanbase y
+demanda responden a historia, ciudad y rendimiento. Todo afecta economía y
+simulación mediante puertos, no llamadas de pantalla.
+
+**Gate:** una simulación de 30 temporadas reemplaza staff sin congelarlo, conserva
+presupuesto y produce jóvenes; instalaciones se deterioran y una obra cambia
+capacidad/coste sólo tras completarse; demanda nunca excede capacidad vendible;
+save/load y rollback conservan hechos; SmokeBoot contrata staff, inicia una obra
+y promociona un juvenil.
+
+### 12. Conectar la carrera del manager
+
+**Prerequisitos:** 5, 6, 8 y 11.
+
+**Entrega:** identidad de manager, contrato, reputación, relaciones, objetivos,
+ofertas, despido, dimisión, cambio de club y desempleo gobiernan qué club puede
+mutarse. Nueva carrera y continuar reconstruyen el mismo contexto.
+
+**Gate:** tests cubren éxito/fracaso de objetivo, oferta, despido, periodo sin
+club y firma por otro club sin fuga de estado; save/load conserva reputación y
+relaciones; SmokeBoot cambia de club y demuestra que toda acción usa la nueva
+autoridad.
+
+### 13. Rehacer el workspace como ciclo de decisiones clásico y original
+
+**Prerequisitos:** 2 y 5–12.
+
+**Entrega:** máximo siete áreas agrupadas, cabecera con fecha/club/próxima cita,
+agenda-inbox, estado activo, teclado/mando/Esc, drill-down, formación visual y
+componentes reutilizables. Crest, kit, retrato y estadio serán originales; cada
+componente representa vacío, loading, disponible, obsoleto y error. Las pantallas
+no contienen reglas ni SQL.
+
+**Gate:** test estructural limita pantallas a composición/render y prohíbe
+referencias de infraestructura; navegación completa es accesible por teclado y
+mando; contraste AA y escalas 100/125/150 % pasan capturas golden; SmokeBoot
+recorre las siete áreas, agenda y cinco estados sin bloqueo mayor de 8 ms.
+
+### 14. Completar mundo macro, continuidad e historia de 80 años
+
+**Prerequisitos:** 6–12.
+
+**Entrega:** 320 ligas/6.400 clubes avanzan con fidelidad macro sin congelar
+economía, plantillas, empleados ni reglas; clasificación continental y
+materialización preservan invariantes. La memoria compacta conserva campeones,
+tablas, ascensos, descensos, títulos, fichajes, carreras, récords, grandes
+eventos e instalaciones durante 80 años.
+
+**Gate:** Macro/Detailed convergen en invariantes compartidas; 320 cierres de liga
+quedan en 1.000 ms, materialización de club en 50 ms y clasificación continental
+en 50 ms; benchmark de 30 años queda en 30 s fuera del frame, con slices de 8 ms;
+una partida golden de 80 años conserva todos los tipos históricos y ocupa como
+máximo 512 MiB en disco y 2 GiB de memoria residente.
+
+### 15. Cerrar rendimiento real y distribución autocontenida
+
+**Prerequisitos:** 1–14. Cada etapa anterior añade su benchmark en su misma
+slice; ésta cierra la matriz y el empaquetado, no pospone el perfilado.
+
+**Entrega:** todos los workloads usan los mismos puertos/composition root del
+juego. Añadir 10.000 partidos Fast, 160.000 development, mercado 6.400, 320
+ligas, 30 años, load/save, materialización, scouting, continental, SQLite,
+cold start y navegación Godot. Crear presets Windows/Linux autocontenidos y
+launcher que no requiera SDK, editor ni runtime externo.
+
+**Gate:** 10.000 Fast quedan en 1.000 ms; los demás umbrales son los definidos en
+3, 5 y 7–14; CI falla si un workload carece de presupuesto o lo supera, y publica
+tiempo, allocations, RSS y tamaño de save. Exports limpios Windows/Linux abren
+una sola instancia, crean carrera, juegan/guardan/continúan y cargan un pack/DB
+externos sin .NET ni Godot preinstalados.
+
+### Cobertura de promesas maestras
+
+| Promesa explícita que antes no tenía destino | Etapa propietaria |
+| --- | --- |
+| Editor/modding de clubes, personas, equipaciones, estadios, instalaciones, competiciones, reglas, DB y packs | 4 |
+| LifeEventEngine, jubilación, jóvenes y reconversión posicional | 10 |
+| Evolución, retirada y mercado de empleados | 11 |
+| Fanbase, demanda, estadio, mantenimiento y cierres | 11 |
+| Deuda, inflación, premios y sanciones financieras | 8 |
+| Cambio de club, desempleo y carrera del manager | 12 |
+| Macro world, materialización y clasificación continental | 14 |
+| Memoria histórica de 80 años | 14 |
+| Escala exacta, memoria, save y distribución limpia | 15 |
 
 ## Regla de ejecución posterior
 
