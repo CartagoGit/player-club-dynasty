@@ -8,6 +8,7 @@ using PCDynasty.Contracts.Careers;
 using PCDynasty.Persistence.Sqlite;
 using PCDynasty.Presentation.Careers;
 using PCDynasty.Presentation.Core;
+using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Shell;
 using PCDynasty.Presentation.Workspace;
 
@@ -31,6 +32,7 @@ public partial class PresentationBootstrap : Control
     private ContentSourcePreference? _contentSourcePreference;
     private ContentSourceSection? _contentSourceSection;
     private PresentationPreferencesStore? _preferencesStore;
+    private LocaleSession? _localeSession;
     private string _integratedContentRoot = string.Empty;
 
     public override void _Ready()
@@ -40,6 +42,17 @@ public partial class PresentationBootstrap : Control
 
     private async Task InitializeAndLoadAsync()
     {
+        // Step 1 — locale activation. Runs before the world loads so
+        // every localised string in the menu uses the chosen language.
+        // Fatal outcomes quit the game on the player's confirmation;
+        // Recovered shows panel A and continues with English; Activated
+        // runs silently.
+        LocaleActivationOutcome activation = await ActivateLocaleOrQuitAsync();
+        if (activation is LocaleActivationOutcome.Fatal)
+        {
+            return;
+        }
+
         // Content root: parent of godot/ is game/, content/ is at game/content/.
         // Resolved through Godot's ProjectSettings so a packaged build keeps working.
         string gameRoot = ProjectSettings.GlobalizePath("res://../");
@@ -57,6 +70,97 @@ public partial class PresentationBootstrap : Control
             _contentSourcePreference.ClearExternalPath();
             await LoadWorldAsync(ContentSourceDescriptor.Integrated(_integratedContentRoot))
                 .ConfigureAwait(true);
+        }
+    }
+
+    /// <summary>
+    /// Builds the activation pipeline and runs it on the saved
+    /// locale id. On a recoverable failure, shows panel A and waits
+    /// for the player to confirm; on a fatal failure, shows panel B,
+    /// waits for the player, and quits. Returns the outcome so the
+    /// caller can branch (the Fatal branch never reaches the world
+    /// load).
+    /// </summary>
+    private async Task<LocaleActivationOutcome> ActivateLocaleOrQuitAsync()
+    {
+        ILocaleFileSource source = new GodotLocaleFileSource(
+            rootFolder: "res://locale/langs/",
+            builtInFolder: "res://locale/langs/built/");
+        LocaleLoader loader = new(source);
+        LocaleRegistry registry = new(source, loader);
+        ISystemLocaleProbe probe = new SystemLocaleProbe(ReadGodotLocale);
+        LocaleActivationService service = new(registry, loader, probe);
+
+        string? savedLocaleId = ReadSavedLocaleId();
+        LocaleActivationOutcome outcome = service.Activate(savedLocaleId);
+
+        switch (outcome)
+        {
+            case LocaleActivationOutcome.Recovered recovered:
+                await ShowAndAwaitPanelAsync(TranslationErrorPanelShapeBuilder.ForActivation(recovered));
+                break;
+            case LocaleActivationOutcome.Fatal fatal:
+                await ShowAndAwaitPanelAsync(TranslationErrorPanelShapeBuilder.ForActivation(fatal));
+                GetTree().Quit();
+                return outcome;
+        }
+
+        _localeSession = new LocaleSession();
+        _localeSession.Apply(outcome);
+        return outcome;
+    }
+
+    private static string? ReadSavedLocaleId()
+    {
+        string path = PresentationPreferencesPath();
+        if (!System.IO.File.Exists(path))
+        {
+            return null;
+        }
+
+        try
+        {
+            string raw = System.IO.File.ReadAllText(path);
+            using var document = System.Text.Json.JsonDocument.Parse(
+                raw,
+                new System.Text.Json.JsonDocumentOptions
+                {
+                    AllowTrailingCommas = true,
+                    CommentHandling = System.Text.Json.JsonCommentHandling.Skip,
+                });
+            return document.RootElement.TryGetProperty("localeId", out System.Text.Json.JsonElement element)
+                && element.ValueKind == System.Text.Json.JsonValueKind.String
+                ? element.GetString()
+                : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private async Task ShowAndAwaitPanelAsync(TranslationErrorPanelShape shape)
+    {
+        var panel = new TranslationErrorPanel(shape);
+        AddChild(panel);
+
+        var tcs = new TaskCompletionSource();
+        panel.PrimaryPressed += () => tcs.TrySetResult();
+
+        await tcs.Task;
+
+        panel.QueueFree();
+    }
+
+    private static string? ReadGodotLocale()
+    {
+        try
+        {
+            return OS.GetLocale();
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 
