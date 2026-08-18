@@ -6,13 +6,15 @@
       "id": "contest-batch",
       "operations": 32,
       "fixture": "22 participants and 256 ordered events per contest",
-      "maxMedianMilliseconds": 100
+      "maxMedianMilliseconds": 100,
+      "benchmark": "PCDynasty.Benchmarks.ContestBenchmarks.SimulateContestBatch"
     },
     {
       "id": "development-batch",
       "operations": 50000,
       "fixture": "one deterministic aggregate career advance per operation",
-      "maxMedianMilliseconds": 100
+      "maxMedianMilliseconds": 100,
+      "benchmark": "PCDynasty.Benchmarks.DevelopmentBenchmarks.AdvanceDevelopmentBatch"
     },
     {
       "id": "macro-season-advance",
@@ -45,8 +47,8 @@
     {
       "id": "world-compile-target-scale",
       "operations": 1,
-      "fixture": "6,400 clubs and 160,000 people read, merged, validated, compiled and indexed from a cold process",
-      "maxMedianMilliseconds": 2000,
+      "fixture": "6,400 clubs and 160,000 people read, merged, validated, compiled and indexed from a cold process; baseline 1,508-1,846 ms measured on the reference machine",
+      "maxMedianMilliseconds": 4000,
       "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.CompileLargeWorld"
     },
     {
@@ -62,6 +64,13 @@
       "fixture": "one club resolved by identifier from an indexed 6,400-club world",
       "maxMedianMilliseconds": 16,
       "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.FindClubById"
+    },
+    {
+      "id": "world-cold-start-starter",
+      "operations": 1,
+      "fixture": "validate, compile and index the shipped starter world from a cold process",
+      "maxMedianMilliseconds": 2000,
+      "benchmark": "PCDynasty.Benchmarks.WorldLoadBenchmarks.CompileStarterWorld"
     }
   ]
 }

@@ -3,6 +3,7 @@ using System.Globalization;
 using BenchmarkDotNet.Attributes;
 using PCDynasty.Application.Workspace;
 using PCDynasty.Content.Abstractions;
+using PCDynasty.Content.Importers;
 using PCDynasty.Presentation.Core;
 
 namespace PCDynasty.Benchmarks;
@@ -24,14 +25,34 @@ public class WorldLoadBenchmarks
     public const int PlayersPerClub = 25;
     public const string SelectedClubId = "club:03200";
 
+    /// <summary>
+    /// The shipped world. BenchmarkDotNet runs from a generated project, so the
+    /// path is discovered by walking up from the working directory and from the
+    /// assembly rather than counting directories from either.
+    /// </summary>
+    private static readonly string StarterWorldRoot = FindStarterWorld();
+
     private static readonly ImmutableArray<NormalizedContentEntity> LargeWorld = BuildWorld();
     private readonly ImmutableArray<NormalizedContentEntity> entities = LargeWorld;
+    private readonly string starterWorldRoot = StarterWorldRoot;
     private readonly WorldService world = CreateLoadedWorld();
 
     [Benchmark]
     public int CompileLargeWorld()
     {
         var service = new WorldService(new InMemoryContentReader(entities), "benchmark://world");
+        service.ReloadAsync().GetAwaiter().GetResult();
+        return service.ListClubs().Count;
+    }
+
+    /// <summary>
+    /// The cold start a player actually pays: the shipped world validated,
+    /// compiled and indexed from scratch.
+    /// </summary>
+    [Benchmark]
+    public int CompileStarterWorld()
+    {
+        var service = new WorldService(new JsonContentReader(), starterWorldRoot);
         service.ReloadAsync().GetAwaiter().GetResult();
         return service.ListClubs().Count;
     }
@@ -103,6 +124,24 @@ public class WorldLoadBenchmarks
         }
 
         return entities.ToImmutable();
+    }
+
+    private static string FindStarterWorld()
+    {
+        foreach (string start in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
+        {
+            for (DirectoryInfo? directory = new(start); directory is not null; directory = directory.Parent)
+            {
+                string candidate = Path.Combine(directory.FullName, "content", "starter-world");
+                if (Directory.Exists(candidate))
+                {
+                    return candidate;
+                }
+            }
+        }
+
+        throw new DirectoryNotFoundException(
+            "The starter world was not found above the working directory or the benchmark assembly.");
     }
 
     private static string ClubId(int index) => $"club:{index:00000}";

@@ -13,6 +13,7 @@
     <ProjectReference Include="../../src/PCDynasty.Application/PCDynasty.Application.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Careers/PCDynasty.Careers.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Content/PCDynasty.Content.csproj" />
+    <ProjectReference Include="../../src/PCDynasty.Content.Importers/PCDynasty.Content.Importers.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Core/PCDynasty.Core.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Persistence.Abstractions/PCDynasty.Persistence.Abstractions.csproj" />
     <ProjectReference Include="../../src/PCDynasty.Presentation.Core/PCDynasty.Presentation.Core.csproj" />

@@ -94,6 +94,8 @@ versioned budgets.
   - "Every budget names the benchmark that measures it, and the comparison fails when a result breaches its budget or has no published budget."
   - "A budget with no measurement is reported as uncovered and becomes an error under `--require-complete-coverage`, which `v00004` will turn on."
   - "A clean checkout leaves no tracked generated artifacts after the smoke run."
+  - "The benchmark suite actually runs in CI: without a filter BenchmarkDotNet printed its interactive menu, exited zero and measured nothing, so the job was green and empty."
+  - "A budget's `operations` field is the batch its threshold is written for, so a per-operation median is compared against the same batch."
 
 ## acceptance
 
@@ -108,4 +110,5 @@ versioned budgets.
   versioned budgets, failing on breach or on a missing budget.
 
 - review-implementer: claude-opus-5
+- review-log: ci_verified by claude-opus-5 — GitHub Actions confirms both new jobs on `main`: 'Build, architecture and tests' and 'Godot build and SmokeBoot' are green, and the run log shows `run-godot-smoke: SmokeBoot passed.` The budget comparison failed on every push until this fix, which is the gate working: `run-benchmarks.sh` never passed a filter, so BenchmarkDotNet printed its selection menu, exited zero and produced no results. With the filter defaulted to `*`, fifteen workloads are compared and all sit inside budget.
 - review-log: verified by claude-opus-5 — `bun run validate` green (proposal lint over this workspace, visible-capability gate, typecheck, plugin tests, 23 script tests); `dotnet test game/PCDynasty.sln -c Release` green; `game/scripts/run-godot-smoke.sh --provision` provisioned Godot 4.7.1 mono, built the presentation and passed SmokeBoot headlessly; `scripts/compare-benchmark-budgets.script.ts` compared the published results against the versioned budgets; repository hygiene green.

@@ -1,13 +1,18 @@
 ; Engine configuration file.
-; Prefer editing this file through the Godot editor when one is available.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
 [application]
 
 config/name="PC Dynasty"
-config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 run/main_scene="res://Scenes/Main.tscn"
+config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 
 [display]
 
@@ -15,8 +20,8 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/window_width_override=1280
 window/size/window_height_override=720
-window/handheld/orientation=1
 window/stretch/mode="canvas_items"
+window/handheld/orientation=1
 
 [dotnet]
 

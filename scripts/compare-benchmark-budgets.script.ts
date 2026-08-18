@@ -14,6 +14,12 @@
  *   - a measured benchmark slower than the strictest budget that claims it
  *     fails, reported in milliseconds.
  *
+ * A budget's `operations` field is the batch size its threshold is written
+ * for. BenchmarkDotNet reports a per-operation median whenever the benchmark
+ * declares `OperationsPerInvoke`, so the comparison multiplies by it: a budget
+ * of 100 ms for 32 contests is compared against 32 × the reported median. Keep
+ * `operations` equal to the benchmark's `OperationsPerInvoke`, or 1.
+ *
  * A budget with no measurement is reported as uncovered. That is the known
  * debt owned by `v00004`; pass `--require-complete-coverage` once every
  * mandatory workload exists, and the gap becomes an error too.
@@ -44,6 +50,8 @@ export interface IBudget {
 	readonly id: string;
 	readonly benchmark: string;
 	readonly maxMilliseconds: number;
+	/** Batch size the threshold is written for; 1 when the benchmark is per-invocation. */
+	readonly operations: number;
 	readonly source: string;
 }
 
@@ -82,7 +90,9 @@ export const parseBudgets = (raw: string, source: string): readonly IBudget[] =>
 					? record.maxMilliseconds
 					: Number.NaN;
 		if (id === '' || benchmark === '' || Number.isNaN(limit)) continue;
-		budgets.push({ id, benchmark, maxMilliseconds: limit, source });
+		const operations =
+			typeof record.operations === 'number' && record.operations > 0 ? record.operations : 1;
+		budgets.push({ id, benchmark, maxMilliseconds: limit, operations, source });
 	}
 	return budgets;
 };
@@ -132,16 +142,21 @@ export const compare = (
 			);
 			continue;
 		}
-		// Several budgets may claim the same benchmark; the strictest governs.
+		// Several budgets may claim the same benchmark; the strictest governs,
+		// compared on the same batch size the threshold is written for.
 		const strictest = applicable.reduce((left, right) =>
-			right.maxMilliseconds < left.maxMilliseconds ? right : left,
+			right.maxMilliseconds / right.operations < left.maxMilliseconds / left.operations
+				? right
+				: left,
 		);
+		const elapsed = measurement.medianMilliseconds * strictest.operations;
+		const batch = strictest.operations === 1 ? '' : ` over ${strictest.operations} operations`;
 		checked.push(
-			`${strictest.id}: ${measurement.medianMilliseconds.toFixed(3)} ms of ${strictest.maxMilliseconds} ms`,
+			`${strictest.id}: ${elapsed.toFixed(3)} ms of ${strictest.maxMilliseconds} ms${batch}`,
 		);
-		if (measurement.medianMilliseconds > strictest.maxMilliseconds) {
+		if (elapsed > strictest.maxMilliseconds) {
 			failures.push(
-				`${strictest.id} (${measurement.benchmark}) took ${measurement.medianMilliseconds.toFixed(3)} ms; budget is ${strictest.maxMilliseconds} ms.`,
+				`${strictest.id} (${measurement.benchmark}) took ${elapsed.toFixed(3)} ms${batch}; budget is ${strictest.maxMilliseconds} ms.`,
 			);
 		}
 	}

@@ -31,6 +31,17 @@
 		"typecheck": "bunx tsc --noEmit -p tsconfig.json && bun run --cwd plugins/mcp-vertex_player-club-dynasty typecheck",
 		"test": "bun run --cwd plugins/mcp-vertex_player-club-dynasty test",
 		"test:scripts": "bunx vitest run",
+		"game:play": "bun scripts/play-game.script.ts",
+		"game:editor": "bun scripts/play-game.script.ts --editor",
+		"game:import": "bun scripts/play-game.script.ts --headless --import",
+		"game:smoke": "bun scripts/run-godot-smoke.script.ts",
+		"game:smoke:provision": "bun scripts/run-godot-smoke.script.ts --provision",
+		"game:doctor": "bun scripts/game-doctor.script.ts",
+		"game:resolve": "bun scripts/game-doctor.script.ts --resolve",
+		"game:tests": "bash ./game/scripts/test-all.sh",
+		"game:architecture": "bash ./game/scripts/check-architecture.sh",
+		"game:hygiene": "bash ./game/scripts/check-repository-hygiene.sh",
+		"game:benchmarks": "bash ./game/scripts/run-benchmarks.sh",
 		"postinstall": "bun scripts/link-mcp-vertex.script.ts"
 	},
 	"devDependencies": {

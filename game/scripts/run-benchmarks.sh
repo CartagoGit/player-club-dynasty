@@ -12,10 +12,10 @@ cp "$game_dir/benchmarks/interaction-budgets.json" "$context_dir/interaction-bud
 git -C "$game_dir" rev-parse HEAD > "$context_dir/commit.txt"
 dotnet --info > "$context_dir/dotnet-info.txt"
 
-benchmark_arguments=(--join)
-if [[ -n "${BENCHMARK_FILTER:-}" ]]; then
-  benchmark_arguments+=(--filter "$BENCHMARK_FILTER")
-fi
+# Without a filter BenchmarkDotNet asks which benchmarks to run. With no
+# terminal it prints the menu, exits 0 and measures nothing, so the job looked
+# green while producing no results at all. Select everything by default.
+benchmark_arguments=(--join --filter "${BENCHMARK_FILTER:-*}")
 
 cd -- "$game_dir"
 dotnet run \
