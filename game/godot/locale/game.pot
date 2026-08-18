@@ -214,3 +214,40 @@ msgstr ""
 
 msgid "HISTORY_ROW_VIEW_TOOLTIP"
 msgstr ""
+
+# Competitions screen
+msgid "COMPETITIONS_EYEBROW"
+msgstr ""
+
+msgid "COMPETITIONS_TITLE"
+msgstr ""
+
+msgid "COMPETITIONS_SUMMARY"
+msgstr ""
+
+msgid "COMPETITIONS_EMPTY"
+msgstr ""
+
+msgid "COMPETITIONS_READONLY_TITLE"
+msgstr ""
+
+msgid "COMPETITIONS_READONLY_BODY"
+msgstr ""
+
+msgid "COMPETITION_EYEBROW"
+msgstr ""
+
+msgid "COMPETITION_SUMMARY"
+msgstr ""
+
+msgid "COMPETITION_ACTION_PLAY_NEXT"
+msgstr ""
+
+msgid "COMPETITION_ACTION_PLAY_NEXT_TOOLTIP"
+msgstr ""
+
+msgid "COMPETITION_ACTION_PLAY_SEASON"
+msgstr ""
+
+msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
+msgstr ""

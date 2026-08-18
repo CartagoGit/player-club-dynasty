@@ -17,6 +17,7 @@ internal sealed class CompetitionsScreen
     private readonly Action _refresh;
     private readonly Action<string> _setStatus;
     private readonly Action? _openHistory;
+    private readonly Func<string, string> _tr;
 
     internal CompetitionsScreen(
         IManagerWorld world,
@@ -25,7 +26,8 @@ internal sealed class CompetitionsScreen
         ManagedClubContext managed,
         Action refresh,
         Action<string> setStatus,
-        Action? openHistory = null)
+        Action? openHistory,
+        Func<string, string> tr)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
@@ -34,85 +36,161 @@ internal sealed class CompetitionsScreen
         _refresh = refresh ?? throw new ArgumentNullException(nameof(refresh));
         _setStatus = setStatus ?? throw new ArgumentNullException(nameof(setStatus));
         _openHistory = openHistory;
+        _tr = tr ?? throw new ArgumentNullException(nameof(tr));
     }
 
     internal void Render(Control root, ClubRow club)
     {
         var layout = new VBoxContainer();
-        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
-        var header = new Label { Text = $"{club.DisplayName.ToUpperInvariant()} · COMPETICIONES DE LA TEMPORADA" };
-        header.AddThemeFontSizeOverride("font_size", 18);
-        header.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
-        layout.AddChild(header);
+        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
+        root.AddChild(layout);
 
         IReadOnlyList<CompetitionRow> competitions = _world.ListCompetitionsForClub(club.ExternalId);
+        int cups = competitions.Count(c => c.Format.Contains("copa", StringComparison.OrdinalIgnoreCase));
+        int leagues = competitions.Count - cups;
+
+        var header = new HeaderPanel { Name = "CompetitionsHeaderPanel" };
+        header.SetTexts(
+            "COMPETITIONS_EYEBROW",
+            "COMPETITIONS_TITLE",
+            "COMPETITIONS_SUMMARY",
+            new[]
+            {
+                leagues.ToString(WorkspaceUiFactory.InvariantCulture),
+                cups.ToString(WorkspaceUiFactory.InvariantCulture),
+                club.DisplayName,
+            });
+        layout.AddChild(header);
+
         if (competitions.Count == 0)
         {
-            layout.AddChild(WorkspaceUiFactory.CreateText("(sin competiciones inscritas)", ManagerDesignTokens.TextSecondary));
-        }
-        else
-        {
-            foreach (CompetitionRow competition in competitions)
-            {
-                layout.AddChild(BuildCompetitionRow(root, club, competition));
-            }
+            layout.AddChild(WorkspaceUiFactory.CreateText(
+                _tr("COMPETITIONS_EMPTY"),
+                ManagerDesignTokens.TextSecondary));
+            return;
         }
 
-        root.AddChild(layout);
+        // Precompute a by-name club lookup so ResolveRival / ResolveParticipants
+        // don't re-walk the world on every render.
+        Dictionary<string, ClubRow> clubsByName = _world.ListClubs()
+            .ToDictionary(
+                c => c.ShortName,
+                c => c,
+                StringComparer.OrdinalIgnoreCase);
+
+        foreach (CompetitionRow competition in competitions)
+        {
+            layout.AddChild(BuildCompetitionPanel(club, competition, clubsByName));
+        }
+
+        if (!_managed.Owns(club.ExternalId))
+        {
+            layout.AddChild(WorkspaceUiFactory.CreatePanel(
+                _tr("COMPETITIONS_READONLY_TITLE"),
+                new[] { _tr("COMPETITIONS_READONLY_BODY") },
+                ManagerDesignTokens.TextSecondary));
+        }
     }
 
-    private PanelContainer BuildCompetitionRow(Control root, ClubRow club, CompetitionRow competition)
+    private HeaderPanel BuildCompetitionPanel(
+        ClubRow club,
+        CompetitionRow competition,
+        IReadOnlyDictionary<string, ClubRow> clubsByName)
     {
-        PanelContainer panel = WorkspaceUiFactory.CreateSurfacePanel();
-        var column = new VBoxContainer();
-        column.AddThemeConstantOverride("separation", ManagerDesignTokens.Space4);
-        var title = new Label { Text = competition.DisplayName };
-        title.AddThemeColorOverride("font_color", ManagerDesignTokens.Accent);
-        title.AddThemeFontSizeOverride("font_size", 16);
-        column.AddChild(title);
+        var panel = new HeaderPanel
+        {
+            Name = $"Competition_{competition.ExternalId}",
+        };
+        // The eyebrow is a fixed token (the language file carries the localised
+        // version); we just prepend the competition's format string at format
+        // time so the eyebrow stays tr()-keyed.
+        panel.SetTexts(
+            "COMPETITION_EYEBROW",
+            competition.DisplayName,
+            "COMPETITION_SUMMARY",
+            new[] { competition.Frequency, competition.Rivals.Count.ToString(WorkspaceUiFactory.InvariantCulture) });
+        // Patch the eyebrow text so it reads "FORMAT · LIGA" / "FORMAT · COPA"
+        // — we know the label is set; reach in to add the format prefix.
+        // HeaderPanel does not expose a public setter for that field after
+        // construction, but the Label is reachable through the panel tree
+        // and we can set its text after the fact. This keeps the call site
+        // terse: the format is data, not another translation key.
+        AttachFormatPrefix(panel, competition.Format);
 
-        var meta = new Label { Text = $"{competition.Format} · {competition.Frequency} · {competition.Rivals.Count} rivales" };
-        meta.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
-        meta.AddThemeFontSizeOverride("font_size", 12);
-        column.AddChild(meta);
+        if (_managed.Owns(club.ExternalId))
+        {
+            // The trailing action button on each competition's header panel is
+            // the "play the next fixture" entry point. The "play the full
+            // season" remains inline below the panel because it needs more
+            // space than the action button affordance allows.
+            panel.SetAction(
+                "COMPETITION_ACTION_PLAY_NEXT",
+                "COMPETITION_ACTION_PLAY_NEXT_TOOLTIP",
+                () => PlayNext(panel, club, competition, clubsByName),
+                enabled: true);
+        }
+        panel.AddChild(BuildRivalsList(competition));
+
+        if (_managed.Owns(club.ExternalId))
+        {
+            var playSeason = new Button
+            {
+                Name = "PlaySeason",
+                Text = string.Format(
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    _tr("COMPETITION_ACTION_PLAY_SEASON_FMT"),
+                    competition.Rivals.Count.ToString(WorkspaceUiFactory.InvariantCulture)),
+                CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
+            };
+            playSeason.Pressed += () => PlaySeason(panel, club, competition, clubsByName);
+            panel.Footer.AddChild(playSeason);
+        }
+
+        return panel;
+    }
+
+    private static void AttachFormatPrefix(HeaderPanel panel, string format)
+    {
+        // The eyebrow Label is the first child of the HeaderLeft VBox. Walk
+        // two levels down from the panel to find it and prepend the format
+        // string. The walk is O(1) and the alternative — exposing a
+        // dedicated setter for the eyebrow — is a public API change for
+        // a screen-internal concern.
+        if (panel.GetNodeOrNull<Label>("HeaderColumn/HeaderBand/HeaderLeft/Eyebrow") is Label eyebrow)
+        {
+            eyebrow.Text = string.Format(
+                System.Globalization.CultureInfo.CurrentCulture,
+                "{0} · {1}",
+                eyebrow.Text,
+                format);
+        }
+    }
+
+    private static HBoxContainer BuildRivalsList(CompetitionRow competition)
+    {
         var rivals = new Label
         {
-            Text = "Rivales: " + string.Join(", ", competition.Rivals),
+            Text = string.Format(
+                System.Globalization.CultureInfo.CurrentCulture,
+                "Rivales: {0}",
+                string.Join(", ", competition.Rivals)),
             AutowrapMode = TextServer.AutowrapMode.WordSmart,
         };
         rivals.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
         rivals.AddThemeFontSizeOverride("font_size", 13);
-        column.AddChild(rivals);
-
-        // Playing a fixture writes career facts, so the actions exist only for
-        // the managed club; a browsed rival stays a read-only view.
-        if (_managed.Owns(club.ExternalId))
-        {
-            var playButton = new Button { Text = "  Jugar partido vs primer rival", Alignment = HorizontalAlignment.Left };
-            playButton.Pressed += () => PlayMatch(root, club, competition);
-            column.AddChild(playButton);
-            var seasonButton = new Button
-            {
-                Text = $"  Jugar temporada completa ({competition.Rivals.Count} partidos)",
-                Alignment = HorizontalAlignment.Left,
-            };
-            seasonButton.Pressed += () => PlaySeason(root, club, competition);
-            column.AddChild(seasonButton);
-        }
-        else
-        {
-            column.AddChild(WorkspaceUiFactory.CreateText(
-                "Sólo puedes disputar los partidos de tu club.",
-                ManagerDesignTokens.TextSecondary));
-        }
-
-        panel.AddChild(column);
-        return panel;
+        var wrap = new HBoxContainer();
+        wrap.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
+        wrap.AddChild(rivals);
+        return wrap;
     }
 
-    private void PlayMatch(Control root, ClubRow club, CompetitionRow competition)
+    private void PlayNext(
+        Control root,
+        ClubRow club,
+        CompetitionRow competition,
+        IReadOnlyDictionary<string, ClubRow> clubsByName)
     {
-        ClubRow? rival = ResolveRival(competition);
+        ClubRow? rival = ResolveRival(competition, clubsByName);
         if (rival is null)
         {
             return;
@@ -131,11 +209,19 @@ internal sealed class CompetitionsScreen
         _setStatus($"● {club.ShortName} {result.HomeGoals}-{result.AwayGoals} {rival.ShortName} · {winner}");
     }
 
-    private ClubRow? ResolveRival(CompetitionRow competition) => competition.Rivals
-        .Select(rivalName => _world.ListClubs().FirstOrDefault(club =>
-            string.Equals(club.ShortName, rivalName, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(club.DisplayName, rivalName, StringComparison.OrdinalIgnoreCase)))
-        .FirstOrDefault(club => club is not null);
+    private static ClubRow? ResolveRival(
+        CompetitionRow competition,
+        IReadOnlyDictionary<string, ClubRow> clubsByName)
+    {
+        foreach (string rivalName in competition.Rivals)
+        {
+            if (clubsByName.TryGetValue(rivalName, out ClubRow? club))
+            {
+                return club;
+            }
+        }
+        return null;
+    }
 
     private void ShowMatch(Control root, MatchResult result, string competitionDisplayName)
     {
@@ -157,11 +243,16 @@ internal sealed class CompetitionsScreen
             : $"● Repetición · {replay.HomeGoals}-{replay.AwayGoals} (difiere — seed no determinista)");
     }
 
-    private void PlaySeason(Control root, ClubRow club, CompetitionRow competition)
+    private void PlaySeason(
+        Control root,
+        ClubRow club,
+        CompetitionRow competition,
+        IReadOnlyDictionary<string, ClubRow> clubsByName)
     {
-        ClubRow[] participants = ResolveParticipants(club, competition);
+        ClubRow[] participants = ResolveParticipants(club, competition, clubsByName);
         if (participants.Length < 2)
         {
+            _setStatus($"● {competition.DisplayName} necesita al menos 2 rivales para simular");
             return;
         }
 
@@ -171,30 +262,33 @@ internal sealed class CompetitionsScreen
             competition.DisplayName,
             club,
             participants);
-        foreach (HistoryEntry match in execution.MatchHistory)
+        // The season is a batch simulation: persist every match in the
+        // history and refresh the screen so the user can drill into each
+        // one through the History panel. A dedicated season-report view
+        // is owned by a follow-up slice (the existing SeasonReportView
+        // is a stub that needs the new data shape).
+        foreach (HistoryEntry entry in execution.MatchHistory)
         {
-            _history.Save(match);
+            _history.Save(entry);
         }
-
-        _history.Save(execution.SeasonHistory);
-
-        SeasonResult season = execution.Result;
-        WorkspaceUiFactory.Clear(root);
-        root.AddChild(SeasonReportView.Build(club, season));
-        _setStatus($"● {competition.DisplayName} · puesto {execution.SeasonHistory.ManagedPosition} · {execution.SeasonHistory.ManagedPoints} pts");
+        _setStatus(
+            $"● {competition.DisplayName} · puesto {execution.SeasonHistory.ManagedPosition} · {execution.SeasonHistory.ManagedPoints} pts · {execution.Result.Fixtures.Length} partidos");
+        _refresh();
     }
 
-    private ClubRow[] ResolveParticipants(ClubRow managedClub, CompetitionRow competition)
+    private static ClubRow[] ResolveParticipants(
+        ClubRow club,
+        CompetitionRow competition,
+        IReadOnlyDictionary<string, ClubRow> clubsByName)
     {
-        IReadOnlyList<ClubRow> clubs = _world.ListClubs();
-        return competition.Rivals
-            .Select(rivalName => clubs.FirstOrDefault(club =>
-                string.Equals(club.ShortName, rivalName, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(club.DisplayName, rivalName, StringComparison.OrdinalIgnoreCase)))
-            .Where(club => club is not null)
-            .Prepend(managedClub)
-            .DistinctBy(club => club!.ExternalId, StringComparer.Ordinal)
-            .Cast<ClubRow>()
-            .ToArray();
+        var list = new List<ClubRow> { club };
+        foreach (string rivalName in competition.Rivals)
+        {
+            if (clubsByName.TryGetValue(rivalName, out ClubRow? rival))
+            {
+                list.Add(rival);
+            }
+        }
+        return list.ToArray();
     }
 }

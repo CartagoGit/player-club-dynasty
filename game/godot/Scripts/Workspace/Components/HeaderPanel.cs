@@ -20,6 +20,7 @@ public sealed partial class HeaderPanel : PanelContainer
     private Label? _title;
     private Label? _summary;
     private HBoxContainer? _actions;
+    private VBoxContainer? _footer;
     private Button? _actionButton;
 
     public string ActionName { get; private set; } = "Action";
@@ -62,6 +63,10 @@ public sealed partial class HeaderPanel : PanelContainer
         _actions.Alignment = BoxContainer.AlignmentMode.End;
         _actions.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
         band.AddChild(_actions);
+
+        _footer = new VBoxContainer { Name = "HeaderFooter" };
+        _footer.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
+        column.AddChild(_footer);
     }
 
     /// <summary>Wires the three text fields. Pass empty strings to hide them.</summary>
@@ -136,4 +141,7 @@ public sealed partial class HeaderPanel : PanelContainer
 
     /// <summary>The summary label, exposed so screens can update it after a refresh.</summary>
     public Label Summary => _summary ?? throw new InvalidOperationException("HeaderPanel is not in the tree yet.");
+
+    /// <summary>The footer VBox; a screen can append hints or trailing actions here.</summary>
+    public VBoxContainer Footer => _footer ?? throw new InvalidOperationException("HeaderPanel is not in the tree yet.");
 }

@@ -214,3 +214,40 @@ msgstr "REPETIR"
 
 msgid "HISTORY_ROW_VIEW_TOOLTIP"
 msgstr "Abrir la repetición del partido (próximamente)"
+
+# Pantalla de competiciones
+msgid "COMPETITIONS_EYEBROW"
+msgstr "CALENDARIO DE LA TEMPORADA"
+
+msgid "COMPETITIONS_TITLE"
+msgstr "COMPETICIONES"
+
+msgid "COMPETITIONS_SUMMARY"
+msgstr "{0} ligas · {1} copas · temporada de {2}"
+
+msgid "COMPETITIONS_EMPTY"
+msgstr "Este club aún no está inscrito en ninguna competición."
+
+msgid "COMPETITIONS_READONLY_TITLE"
+msgstr "VISTA DE SÓLO LECTURA"
+
+msgid "COMPETITIONS_READONLY_BODY"
+msgstr "Sólo puedes disputar los partidos de tu club."
+
+msgid "COMPETITION_EYEBROW"
+msgstr "COMPETICIÓN"
+
+msgid "COMPETITION_SUMMARY"
+msgstr "Frecuencia: {0} · {1} rivales"
+
+msgid "COMPETITION_ACTION_PLAY_NEXT"
+msgstr "JUGAR PRÓXIMO RIVAL"
+
+msgid "COMPETITION_ACTION_PLAY_NEXT_TOOLTIP"
+msgstr "Jugar el próximo partido contra el primer rival"
+
+msgid "COMPETITION_ACTION_PLAY_SEASON"
+msgstr "JUGAR TEMPORADA COMPLETA"
+
+msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
+msgstr "Jugar temporada completa ({0} partidos)"

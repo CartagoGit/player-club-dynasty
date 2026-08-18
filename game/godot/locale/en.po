@@ -214,3 +214,40 @@ msgstr "REPLAY"
 
 msgid "HISTORY_ROW_VIEW_TOOLTIP"
 msgstr "Open the match replay (coming in a future slice)"
+
+# Competitions screen
+msgid "COMPETITIONS_EYEBROW"
+msgstr "SEASON CALENDAR"
+
+msgid "COMPETITIONS_TITLE"
+msgstr "COMPETITIONS"
+
+msgid "COMPETITIONS_SUMMARY"
+msgstr "{0} leagues · {1} cups · {2} season"
+
+msgid "COMPETITIONS_EMPTY"
+msgstr "This club is not enrolled in any competition yet."
+
+msgid "COMPETITIONS_READONLY_TITLE"
+msgstr "READ-ONLY VIEW"
+
+msgid "COMPETITIONS_READONLY_BODY"
+msgstr "You can only play the matches of your own club."
+
+msgid "COMPETITION_EYEBROW"
+msgstr "COMPETITION"
+
+msgid "COMPETITION_SUMMARY"
+msgstr "Frequency: {0} · {1} rivals"
+
+msgid "COMPETITION_ACTION_PLAY_NEXT"
+msgstr "PLAY NEXT FIXTURE"
+
+msgid "COMPETITION_ACTION_PLAY_NEXT_TOOLTIP"
+msgstr "Play the next fixture against the first rival"
+
+msgid "COMPETITION_ACTION_PLAY_SEASON"
+msgstr "PLAY FULL SEASON"
+
+msgid "COMPETITION_ACTION_PLAY_SEASON_FMT"
+msgstr "Play full season ({0} matches)"

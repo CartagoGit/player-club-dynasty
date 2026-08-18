@@ -87,7 +87,8 @@ public partial class ManagerWorkspaceController : Control
             _managed,
             RenderCurrent,
             SetStatus,
-            () => SelectSection(WorkspaceSection.History));
+            () => SelectSection(WorkspaceSection.History),
+            key => Tr(key));
         _marketScreen = new MarketScreen(
             transferMarket,
             _managed,
