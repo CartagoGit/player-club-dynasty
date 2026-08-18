@@ -11,6 +11,7 @@
     <ProjectReference Include="../PCDynasty.Economy/PCDynasty.Economy.csproj" />
     <ProjectReference Include="../PCDynasty.History/PCDynasty.History.csproj" />
     <ProjectReference Include="../PCDynasty.Knowledge/PCDynasty.Knowledge.csproj" />
+    <ProjectReference Include="../PCDynasty.Market/PCDynasty.Market.csproj" />
     <ProjectReference Include="../PCDynasty.Simulation/PCDynasty.Simulation.csproj" />
   </ItemGroup>
 </Project>

@@ -30,8 +30,8 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - global_gate: e2e
 
 ### S1 — Define engine-neutral transfer contracts and application use case
-- **Status**: pending
-- **Files**: `game/src/PCDynasty.Contracts/Careers/CareerTransferRecord.cs`, `game/src/PCDynasty.Contracts/Careers/ICareerTransferStore.cs`, `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Market/CareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/ICareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/TransferCandidate.cs`, `game/src/PCDynasty.Application/Market/TransferOfferResult.cs`, `game/tests/PCDynasty.Contracts.Tests/CareerTransferRecordTests.cs`, `game/tests/PCDynasty.Application.Tests/Market/CareerTransferMarketServiceTests.cs`
+- **Status**: done
+- **Files**: `game/src/PCDynasty.Contracts/Careers/CareerTransferRecord.cs`, `game/src/PCDynasty.Contracts/Careers/ICareerTransferStore.cs`, `game/src/PCDynasty.Application/PCDynasty.Application.csproj`, `game/src/PCDynasty.Application/Market/CareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/ICareerTransferMarketService.cs`, `game/src/PCDynasty.Application/Market/ICareerSquadProjection.cs`, `game/src/PCDynasty.Application/Market/TransferCandidate.cs`, `game/src/PCDynasty.Application/Market/TransferOfferResult.cs`, `game/tests/PCDynasty.Contracts.Tests/CareerTransferRecordTests.cs`, `game/tests/PCDynasty.Application.Tests/Market/CareerTransferMarketServiceTests.cs`
 - **Gate**: type
 - acceptance:
   - "Contracts are immutable, validate all external values and live outside engine and persistence assemblies."
@@ -39,7 +39,12 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
   - "Candidates exclude the managed squad and already acquired players, remain deterministic, and expose an asking price."
   - "An accepted offer atomically requests settlement against the expected finance snapshot; rejected or stale settlements do not mutate career state."
   - "Tests cover affordability, below-asking rejection, duplicate prevention, finance decrement and acquired-squad projection."
-
+  - "Squad consumers depend on a dedicated read-only projection port rather than the market command surface."
+- review-state: done
+- review-implementer: root
+- review-reviewer: review_world_fix_fresh
+- review-log: requested_changes by review_tactics — Determinism needs a total tie-break; affordability must also respect cash; public market records must reject impossible states; tests must exercise real duplicate and stale snapshots; split squad projection into a narrow read port.
+- review-log: approved by review_world_fix_fresh — Fresh re-review approved: total deterministic ordering, cash-bounded affordability, validated immutable public models, real duplicate and optimistic stale tests, segregated squad projection; focused contracts/application/market/architecture and Release build green.
 ### S2 — Persist transfers and finance settlement atomically in external SQLite
 - **Status**: pending
 - **DependsOn**: [S1]
@@ -73,6 +78,7 @@ The classic-manager workspace still exposes Mercado as a disabled placeholder. A
 - Candidates exclude the managed squad and already acquired players, remain deterministic, and expose an asking price.
 - An accepted offer atomically requests settlement against the expected finance snapshot; rejected or stale settlements do not mutate career state.
 - Tests cover affordability, below-asking rejection, duplicate prevention, finance decrement and acquired-squad projection.
+- Squad consumers depend on a dedicated read-only projection port rather than the market command surface.
 - The store receives the database path from the caller and never assumes a project-local database.
 - A single SQLite transaction inserts the accepted transfer and updates the matching finance snapshot or rolls back both.
 - Optimistic snapshot mismatch and duplicate player settlement return false without partial writes.
