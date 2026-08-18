@@ -739,6 +739,108 @@
           "lastPrompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second"
         }
       }
+    },
+    "sfx.match_extended.foul": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094685521": {
+          "variantId": "v_1787094685521",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:13:35.903Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.match_extended/foul/v_1787094685521.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 20403426,
+          "lastPrompt": "foul whistle — single medium whistle with a short crowd ohh, ~700ms"
+        }
+      }
+    },
+    "sfx.match_extended.substitution": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094819661": {
+          "variantId": "v_1787094819661",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:15:40.991Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.match_extended/substitution/v_1787094819661.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 19746018,
+          "lastPrompt": "substitution sting — board-up electronic ping plus short crowd murmur, ~900ms"
+        }
+      }
+    },
+    "sfx.transfer.transfer_rejected": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787094951110": {
+          "variantId": "v_1787094951110",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:17:56.900Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.transfer/transfer_rejected/v_1787094951110.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 19541218,
+          "lastPrompt": "transfer offer rejected — soft descending two-note decline, ~300ms"
+        }
+      }
+    },
+    "sfx.achievement.season_complete": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787095137927": {
+          "variantId": "v_1787095137927",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:21:14.098Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.achievement/season_complete/v_1787095137927.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 21824738,
+          "lastPrompt": "season complete sting — soft bell sequence (ding-ding-ding) with a crowd swell, ~1.5 seconds"
+        }
+      }
+    },
+    "sfx.transfer.transfer_complete": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787095279647": {
+          "variantId": "v_1787095279647",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:22:42.325Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.transfer/transfer_complete/v_1787095279647.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 12786914,
+          "lastPrompt": "transfer deal complete — vintage cash register ka-ching plus a short crowd cheer, ~1.2 seconds"
+        }
+      }
+    },
+    "sfx.achievement.relegation": {
+      "approvedVariantId": null,
+      "variants": {
+        "v_1787095507980": {
+          "variantId": "v_1787095507980",
+          "state": "staged",
+          "stagedAt": "2026-08-18T23:27:23.089Z",
+          "approvedAt": null,
+          "deprecatedAt": null,
+          "wavPath": ".audio-staging/sfx.achievement/relegation/v_1787095507980.wav",
+          "finalPath": null,
+          "finalSizeBytes": null,
+          "wavSizeBytes": 22453474,
+          "lastPrompt": "relegation sting — soft descending minor-ish chime plus a quiet crowd groan, ~1.5 seconds"
+        }
+      }
     }
   }
 }

@@ -42,15 +42,22 @@ spec:
 
 ## `mmx speech synthesize` flags the runner uses
 
-| Flag | Source | Notes |
-|---|---|---|
-| `--speed <n>` | `coherence.speed` | Multiplier on the default speech rate. `1` is unchanged. |
-| `--volume <n>` | `coherence.volume` | `0.9` keeps headroom for mixing with music. |
-| `--sound-effect <name>` | `coherence.sound-effect` (optional) | Adds a built-in effect (e.g. `ui_chime`). mmx-specific. |
+> **Important (2026-08-18):** the runner no longer calls
+> `mmx speech synthesize` for SFX groups. `speech-2.8-hd` requires
+> `--text`, which makes no sense for non-vocal UI / match stingers.
+> The runner now pipes SFX through `mmx music generate --instrumental`
+> (same as music groups), with the SFX `coherence.speed`/`volume`/
+> `sound-effect` mapped to music-style flags (`--tempo`, `--mood`,
+> `--instruments`). The slot prompt is the load-bearing input.
 
-The runner **does not** use `--voice` — the slot prompt is enough to
-describe the sound and we want all UI sounds coherent (not 6 different
-voices for 6 different clicks).
+| Flag (was: speech) | Flag (now: music) | Source | Notes |
+|---|---|---|---|
+| `--speed <n>` | `--tempo <text>` (`"<n>x speed"`) | `coherence.speed` | Multiplier on the default speech rate. `1` is unchanged. |
+| `--volume <n>` | `--mood <text>` (`"volume <n>"`) | `coherence.volume` | `0.9` keeps headroom for mixing with music. |
+| `--sound-effect <name>` | `--instruments <text>` | `coherence['sound-effect']` (optional) | Adds a built-in effect (e.g. `ui_chime`). mmx-specific. |
+
+The SFX `model` field in `audio-spec.json` should be `music-3.0`,
+**not** `speech-2.8-hd` — see the audio-spec.json edit history.
 
 ## Prompt engineering rules baked into the spec
 

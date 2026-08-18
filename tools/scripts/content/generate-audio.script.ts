@@ -181,7 +181,12 @@ const buildCommand = (
 	if (group.kind === 'music') {
 		argv.push('music', 'generate', '--instrumental');
 	} else {
-		argv.push('speech', 'synthesize');
+		// SFX groups also use `music generate --instrumental` because
+		// `mmx speech synthesize` requires --text, which makes no sense
+		// for non-vocal UI / match stings. We pass the SFX coherence as
+		// music-style flags (instruments/mood) so the chip aesthetic
+		// from the original spec still comes through.
+		argv.push('music', 'generate', '--instrumental');
 	}
 	if (nonInteractive) argv.push('--non-interactive');
 	if (quiet) argv.push('--quiet');
@@ -195,10 +200,17 @@ const buildCommand = (
 		if (group.coherence.mood) argv.push('--mood', String(group.coherence.mood));
 		if (group.coherence.tempo) argv.push('--tempo', String(group.coherence.tempo));
 	} else {
-		if (group.coherence.speed !== undefined) argv.push('--speed', String(group.coherence.speed));
-		if (group.coherence.volume !== undefined) argv.push('--volume', String(group.coherence.volume));
+		// SFX pass through `speed` / `volume` as `tempo` / `mood` hints so
+		// they survive the music-3.0 pipe. The prompt is the load-bearing
+		// input — the coherence is supplementary.
+		if (group.coherence.speed !== undefined) {
+			argv.push('--tempo', `${String(group.coherence.speed)}x speed`);
+		}
+		if (group.coherence.volume !== undefined) {
+			argv.push('--mood', `volume ${String(group.coherence.volume)}`);
+		}
 		if (typeof group.coherence['sound-effect'] === 'string') {
-			argv.push('--sound-effect', String(group.coherence['sound-effect']));
+			argv.push('--instruments', String(group.coherence['sound-effect']));
 		}
 	}
 	argv.push('--prompt', entry.prompt);
