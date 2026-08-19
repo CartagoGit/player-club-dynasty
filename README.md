@@ -57,7 +57,9 @@ player-club-dynasty/
 │  ├─ host-hints/agent-instructions.generated.md  auto-generated catalog fragment
 │  └─ proposals/                        proposals store (8 status folders)
 ├─ docs/wiki/                           design knowledge base (classic-manager reference)
+│  ├─ pcfutbol/00-objetivo-y-alcance.md NORMATIVE — the target is PC Fútbol 6.0/7.0
 │  ├─ pcfutbol/04-gramatica-visual.md   NORMATIVE visual grammar — read before any UI change
+│  ├─ pcfutbol/13-version-objetivo-*.md the target version, screen by screen, with wireframes
 │  └─ pc-dynasty/mapa-de-equivalencias.md  our screens vs the classic, with the open gaps
 ├─ plugins/player-club/                 @player-club/plugin (project-scoped MCP plugin)
 ├─ scripts/                             workspace-local helpers
@@ -132,7 +134,9 @@ rm .mcp-vertex-root
   classic desktop managers structured their screens, interactions and systems,
   and what PC Dynasty takes from them. Served to agents through the `docs`
   plugin, so `mcp-vertex_docs_search` finds it without crawling the repo.
+  [`docs/wiki/pcfutbol/00-objetivo-y-alcance.md`](docs/wiki/pcfutbol/00-objetivo-y-alcance.md)
+  (the target is PC Fútbol 6.0, with 7.0's improvements) and
   [`docs/wiki/pcfutbol/04-gramatica-visual.md`](docs/wiki/pcfutbol/04-gramatica-visual.md)
-  is **normative** for every UI change.
+  are **normative** for every UI change.
 - Local mcp-vertex README — `$(bun run mcp-vertex:resolve-root)/README.md`
   — the upstream monorepo layout.

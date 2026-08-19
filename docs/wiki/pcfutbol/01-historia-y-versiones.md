@@ -2,7 +2,11 @@
 
 > Origen de los datos: `[wiki]` enciclopedias, `[prensa]` análisis y reportajes,
 > `[manual 4.0]` manual oficial de PC Fútbol 4.0, `[comunidad]` foros. Ver
-> [`13-fuentes.md`](13-fuentes.md).
+> [`99-fuentes.md`](99-fuentes.md).
+
+> **Recordatorio.** De toda esta historia, la versión objetivo de PC Dynasty es
+> **6.0 (con las mejoras de 7)**. Ver
+> [`00-objetivo-y-alcance.md`](00-objetivo-y-alcance.md).
 
 ## Por qué importa esta historia
 
@@ -22,8 +26,8 @@ destruyen un manager. Las dos mitades (el ascenso y la caída) son igual de úti
 | 1994 | **PC Fútbol 3.0** (Liga 94/95) | Simulador propio; entorno gráfico GFX™. `[manual 4.0]` |
 | 1995 | **PC Fútbol 4.0** (Liga 95/96) | **Salto estructural**: Copa del Rey + 3 competiciones europeas, **Liga Pro-Manager**, roles de jugador, moral y estado de forma, árbitro y jueces de línea, seguimiento manual, actualización por módem. `[manual 4.0]` |
 | 1996 | **PC Fútbol 5.0** (Liga 96/97) | Salto a 3D con cámara móvil; primera versión para Windows 95 (y build MS-DOS); Segunda B; **cuatro roles de gestión** (Entrenador / Manager / Presidente / Total); once secciones en el disco. La más vendida de la saga. `[wiki]` `[prensa]` |
-| 1997 | **PC Fútbol 6.0** (Liga 97/98) | Interfaz más intuitiva; cantera de juveniles; ver tácticas del rival; reformas de estadio y finanzas; **Desafío América-Europa**; **ProQuinielas 2.0**; *Los goles de la Liga*. ~600.000 copias. `[wiki]` `[prensa]` |
-| 1998 | **PC Fútbol 7 / 7.5** | Integra ligas internacionales en un solo paquete (**Euro PC Fútbol**: España, Francia, Inglaterra, Alemania, Italia); **Desafío Mundial**; 7.5 actualiza mercado y añade la 3ª italiana. ~360.000 copias. `[wiki]` |
+| 1997 | **★ PC Fútbol 6.0** (Liga 97/98) — **VERSIÓN OBJETIVO** | Interfaz más intuitiva; cantera de juveniles; ver tácticas del rival; reformas de estadio y finanzas; **Desafío América-Europa**; **ProQuinielas 2.0**; *Los goles de la Liga*. ~600.000 copias. `[wiki]` `[prensa]` |
+| 1998 | **★ PC Fútbol 7 / 7.5** — **OBJETIVO (mejoras)** | Integra ligas internacionales en un solo paquete (**Euro PC Fútbol**: España, Francia, Inglaterra, Alemania, Italia); **Desafío Mundial**; 7.5 actualiza mercado y añade la 3ª italiana. ~360.000 copias. `[wiki]` |
 | 1999 | **PC Fútbol 2000** | Interfaz **totalmente rehecha**; entorno 3D completo con modelado específico de estrellas; archivo histórico de la Liga; actualización de mercado a media temporada; partidas online. `[wiki]` `[prensa]` |
 | 2000 | **PC Fútbol 2001** | Considerada la cumbre: **EuroManager** con ligas de Italia, Inglaterra, Alemania, Francia, Bélgica, Argentina, Escocia, Portugal y Holanda; multijugador en red; el mejor diseño gráfico de la saga. `[prensa]` `[comunidad]` |
 | 2001 | — | Dinamic Multimedia quiebra. `[wiki]` |

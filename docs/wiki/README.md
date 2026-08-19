@@ -1,9 +1,21 @@
 # Wiki — el manager clásico como referencia de diseño
 
+> ## El objetivo es **PC Fútbol 6.0** (con las mejoras de **7.0**)
+>
+> Todo lo demás que hay aquí es **contexto**: de dónde salieron las ideas (4.0 y
+> 5.0), cómo evolucionaron después (2000, 2001) y qué errores no vamos a repetir
+> (2005 en adelante).
+>
+> Antes de decidir nada de interfaz o de alcance, lee
+> **[`00-objetivo-y-alcance.md`](pcfutbol/00-objetivo-y-alcance.md)** — es
+> normativo — y luego
+> **[`13-version-objetivo-6-0-y-7-0.md`](pcfutbol/13-version-objetivo-6-0-y-7-0.md)**,
+> que describe la versión objetivo pantalla a pantalla.
+
 Esta carpeta es la **base de conocimiento** de PC Dynasty sobre los managers de
 fútbol clásicos de los noventa, con PC Fútbol (Dinamic Multimedia, 1992–2001) como
-caso de estudio principal. No es documentación de nuestro código: es la referencia
-que cualquier agente debe leer **antes** de diseñar una pantalla, un flujo o un
+caso de estudio. No es documentación de nuestro código: es la referencia que
+cualquier agente debe leer **antes** de diseñar una pantalla, un flujo o un
 sistema de juego, para que las decisiones tengan un origen documentado en vez de
 salir de la intuición de quien toque el fichero ese día.
 
@@ -12,13 +24,16 @@ salir de la intuición de quien toque el fichero ese día.
 > reglas de juego. Nada de lo que se describe autoriza a copiar material: ni
 > ilustraciones, ni fuentes, ni sonidos, ni capturas, ni nombres de marcas, clubes,
 > competiciones o personas reales. PC Dynasty reproduce **gramática**, nunca
-> **activos**. Ver [`13-fuentes.md`](pcfutbol/13-fuentes.md).
+> **activos**. Ver [`99-fuentes.md`](pcfutbol/99-fuentes.md).
 
 ## Cómo la usa un agente
 
 | Si vas a… | Lee primero |
 |---|---|
-| Diseñar o retocar **cualquier** pantalla | [`04-gramatica-visual.md`](pcfutbol/04-gramatica-visual.md) — es **normativo** |
+| Cualquier cosa, la primera vez | [`00-objetivo-y-alcance.md`](pcfutbol/00-objetivo-y-alcance.md) — **normativo**: a qué nos parecemos |
+| Diseñar o retocar **cualquier** pantalla | [`04-gramatica-visual.md`](pcfutbol/04-gramatica-visual.md) — **normativo** — y [`13`](pcfutbol/13-version-objetivo-6-0-y-7-0.md) §7 |
+| Reproducir una pantalla concreta del objetivo | [`13-version-objetivo-6-0-y-7-0.md`](pcfutbol/13-version-objetivo-6-0-y-7-0.md) |
+| Buscar la captura original de referencia | [`14-catalogo-visual.md`](pcfutbol/14-catalogo-visual.md) |
 | Decidir dónde vive un botón o cómo se navega | [`05-interaccion-y-controles.md`](pcfutbol/05-interaccion-y-controles.md) |
 | Crear una pantalla nueva | [`03-mapa-de-pantallas.md`](pcfutbol/03-mapa-de-pantallas.md) |
 | Implementar una regla de simulación | [`06-sistemas-deportivos.md`](pcfutbol/06-sistemas-deportivos.md) |
@@ -31,6 +46,12 @@ salir de la intuición de quien toque el fichero ese día.
 | Saber qué pantalla nuestra corresponde a cuál | [`pc-dynasty/mapa-de-equivalencias.md`](pc-dynasty/mapa-de-equivalencias.md) |
 
 ## Índice completo
+
+### Objetivo
+
+0. [Objetivo y alcance](pcfutbol/00-objetivo-y-alcance.md) — **normativo**: la versión objetivo, qué papel juega cada entrega y las reglas de decisión.
+13. [La versión objetivo: 6.0 y 7.0](pcfutbol/13-version-objetivo-6-0-y-7-0.md) — pantalla a pantalla, con wireframes.
+14. [Catálogo visual](pcfutbol/14-catalogo-visual.md) — referencias originales enlazadas, y la política de por qué no se copian.
 
 ### Referencia del clásico
 
@@ -46,7 +67,7 @@ salir de la intuición de quien toque el fichero ese día.
 10. [Datos, seguimiento y base de datos](pcfutbol/10-datos-seguimiento-y-base-de-datos.md) — fichas, comparativas, clasificaciones, actualizaciones.
 11. [Recepción y lecciones](pcfutbol/11-recepcion-y-lecciones.md) — qué elogió y qué destrozó la crítica, versión a versión.
 12. [Mejoras para PC Dynasty](pcfutbol/12-mejoras-para-pc-dynasty.md) — qué conservar, qué corregir, qué añadir.
-13. [Fuentes](pcfutbol/13-fuentes.md) — de dónde sale cada dato y qué fiabilidad tiene.
+99. [Fuentes](pcfutbol/99-fuentes.md) — de dónde sale cada dato y qué fiabilidad tiene.
 
 ### Aplicación a este proyecto
 
@@ -62,5 +83,8 @@ salir de la intuición de quien toque el fichero ese día.
    El 12 y la carpeta `pc-dynasty/` contienen lo que *nosotros* decidimos hacer.
 3. **La gramática visual es normativa.** Un cambio de UI que la contradiga es un
    defecto, no una variante de estilo.
-4. **Nunca material ajeno.** Ni un byte de arte, audio, fuente, captura o dato con
-   licencia entra en el repositorio.
+4. **Ante la duda, 6.0.** Cuando dos entregas resuelven lo mismo de forma
+   distinta, gana la versión objetivo salvo razón escrita.
+5. **Nunca material ajeno.** Ni un byte de arte, audio, fuente, captura o dato con
+   licencia entra en el repositorio. Las referencias visuales se **enlazan** y se
+   **describen**; los wireframes son propios. Ver [`14`](pcfutbol/14-catalogo-visual.md) §1.

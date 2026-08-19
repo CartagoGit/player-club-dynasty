@@ -7,7 +7,7 @@ Leyenda: `[hecho]` · `[en curso]` · `[pendiente]` · `[descartado]`
 
 ---
 
-## A · Conservar tal cual (la deuda es reproducirlo bien)
+## A · Deuda con la versión objetivo (6.0/7.0 ya lo tenía)
 
 | # | Qué | Estado |
 |---|---|---|
@@ -23,6 +23,14 @@ Leyenda: `[hecho]` · `[en curso]` · `[pendiente]` · `[descartado]`
 | A10 | Simulación completa de la decisión **antes** de confirmarla (estadio, crédito, oferta) | `[pendiente]` |
 | A11 | Tres semanas de números rojos antes de la quiebra: la ruina se ve venir | `[pendiente]` |
 | A12 | Ligas consecutivas con clasificación europea encadenada por reglas | `[pendiente]` |
+| A13 | Conmutador de vista sobre una misma tabla (`PARÁMETROS` / `CALIFICACIÓN`) | `[pendiente]` |
+| A14 | Ficha lateral reactiva: señalar una fila actualiza el panel sin navegar | `[pendiente]` |
+| A15 | Placa del empleado responsable en la pantalla que gobierna | `[pendiente]` |
+| A16 | Listas de ranuras que conservan su forma vacías (negociaciones abiertas) | `[pendiente]` |
+| A17 | Negociación como diario fechado en prosa, no como campos de estado | `[pendiente]` |
+| A18 | Dossier con dos tiras de pestañas (faceta arriba, modo abajo) y notas propias | `[pendiente]` |
+| A19 | Ficha de club: estadio, aforo, presupuesto, socios, patrocinador, equipador | `[pendiente]` |
+| A20 | Pretemporada con amistosos de pago y partido de presentación | `[pendiente]` |
 
 ## B · Corregir lo que el clásico hacía mal
 

@@ -42,6 +42,22 @@
 - El Desmarque — *Los proyectos que nacen del drama de PC Fútbol 8* — <https://www.eldesmarque.com/videojuegos/20260702/proyectos-manager-nacen-pc-futbol_18_019612534.html>
 - pcfutbol.com — *Características de PC Fútbol 8* (modos de partido incl. Chapas) — <https://www.pcfutbol.com/spain/caracteristicas-de-pcfutbol-8>
 
+## Fichas y capturas de la versión objetivo
+
+Catalogadas una a una, con lo que muestra cada imagen, en
+[`14-catalogo-visual.md`](14-catalogo-visual.md).
+
+- **PC Fútbol 6.0 — Temporada 97-98** (ficha, capturas, notas de prensa de la época:
+  Micromanía 89, PCManía 90, Meristation 8/10) — <https://computeremuzone.com/ficha/177/pc-futbol-60-temporada-97-98>
+- **PC Fútbol 6.0 — eXtensión 1** — <https://computeremuzone.com/ficha/1448/pc-futbol-60-extension-1>
+- **PC Fútbol 6.0 — eXtensión 2** — <https://computeremuzone.com/ficha/1449/pc-futbol-60-extension-2>
+- **PC Fútbol 6.0 — Edición de Oro** (recopilatorio en DVD de toda la saga) — <https://computeremuzone.com/ficha/1450/pc-futbol-60-edicion-de-oro>
+- **PC Fútbol 7 — Temporada 98-99** (Micromanía 79, PCManía 90; valoración CEZ 9,1) — <https://computeremuzone.com/ficha/253/pc-futbol-7-temporada-98-99>
+- Índice de la saga en Computer Emuzone — <https://computeremuzone.com/pc/saga/pc-futbol>
+
+> Estas páginas alojan las capturas que sostienen los wireframes del capítulo 13.
+> **Ninguna de esas imágenes está en el repositorio**; se enlazan y se describen.
+
 ## Comunidad
 
 - **PC Fútbol Manía** — comunidad activa desde finales de 2003; plantillas actualizadas para 7.0 y 2001 — <https://www.pcfutbolmania.com/>

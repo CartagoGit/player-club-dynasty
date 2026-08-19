@@ -4,7 +4,7 @@ title: "Build the classic-manager knowledge base every agent can reach"
 kind: feat
 status: review
 type: proposal
-track: product
+track: knowledge
 date: 2026-08-19
 plan: q00001
 audit-source: a00001
@@ -53,7 +53,7 @@ list of the concrete implementation traps this codebase has already fallen into.
 
 ### S1 — Research the reference and record the sources
 - **Status**: done
-- **Files**: `docs/wiki/pcfutbol/13-fuentes.md`
+- **Files**: `docs/wiki/pcfutbol/99-fuentes.md`
 - **Gate**: unit
 - acceptance:
   - "Every factual claim in the wiki carries a provenance tag: `[manual 4.0]` for the
@@ -123,6 +123,33 @@ list of the concrete implementation traps this codebase has already fallen into.
     without turning into content files."
   - "`docs/wiki/README.md` routes an agent to the right chapter by task."
 
+### S6 — Name the target version and catalogue the visual references
+- **Status**: done
+- **DependsOn**: [S3, S4]
+- **Files**: `docs/wiki/pcfutbol/00-objetivo-y-alcance.md`, `docs/wiki/pcfutbol/13-version-objetivo-6-0-y-7-0.md`, `docs/wiki/pcfutbol/14-catalogo-visual.md`, `docs/wiki/pcfutbol/99-fuentes.md`, `docs/wiki/README.md`, `docs/wiki/pcfutbol/01-historia-y-versiones.md`, `docs/wiki/pcfutbol/04-gramatica-visual.md`, `docs/wiki/pcfutbol/12-mejoras-para-pc-dynasty.md`, `docs/wiki/pc-dynasty/mapa-de-equivalencias.md`, `docs/mcp-vertex/REPO-RULES.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`
+- **Gate**: unit
+- acceptance:
+  - "A normative chapter states the target — PC Fútbol 6.0 with 7.0's
+    improvements — gives each other release an explicit role (4.0 and 5.0 as the
+    origin of ideas, 2000 and 2001 as evolution, 2005 onwards as warnings), and
+    carries the rules for resolving a conflict between them."
+  - "A chapter describes the target version screen by screen with original
+    wireframes: main menu, the persistent top band, the Liga Manager route from
+    name entry to pre-season to the lineup screen that acts as the hub, the
+    offers board, both dossiers, the historical comparison and the walk-out."
+  - "The attribute column set the original repeated everywhere — EN VE RE AG CA
+    EF MO ME ROL DEM — is recorded once and referenced from every screen that
+    shows it."
+  - "Six components found in the reference are added to the grammar: tab strip,
+    row tab, view switch, staff plate, slot list and segment indicator."
+  - "A visual catalogue links every reference image at its source, says what each
+    one shows and where its wireframe lives, and states the policy: references
+    are linked and described, never copied into the repository."
+  - "The two lineages of interface that circulate as 'PC Fútbol' — the classic
+    Liga Manager and the later quadrant desk — are told apart, so nobody rebuilds
+    the wrong one by accident."
+  - "Every host pointer names the objective chapter, not only the grammar."
+
 ## acceptance
 
 - An agent that has never seen this repository can, from `mcp-vertex_docs_search`
@@ -132,3 +159,5 @@ list of the concrete implementation traps this codebase has already fallen into.
   repository, and the wiki says so on its front page and in its sources chapter.
 - The equivalence map gives a truthful account of what is missing, including for
   screens this project has already shipped.
+- The wiki states, in the first screen an agent sees, which version it is trying
+  to look like and what everything else is there for.

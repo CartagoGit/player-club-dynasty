@@ -42,6 +42,9 @@ held to.
 
 | Before you… | Read |
 |---|---|
+| anything, the first time | [`docs/wiki/pcfutbol/00-objetivo-y-alcance.md`](../wiki/pcfutbol/00-objetivo-y-alcance.md) — **normative**: the target is PC Fútbol 6.0, with 7.0's improvements; everything else in the wiki is context |
+| reproduce a specific screen of the target | [`docs/wiki/pcfutbol/13-version-objetivo-6-0-y-7-0.md`](../wiki/pcfutbol/13-version-objetivo-6-0-y-7-0.md) — screen by screen, with wireframes |
+| look for the original reference image | [`docs/wiki/pcfutbol/14-catalogo-visual.md`](../wiki/pcfutbol/14-catalogo-visual.md) — links, never copies |
 | change **any** screen, panel, table or control | [`docs/wiki/pcfutbol/04-gramatica-visual.md`](../wiki/pcfutbol/04-gramatica-visual.md) — **normative**, with a checklist at the end |
 | add a screen or decide where a control lives | [`docs/wiki/pcfutbol/03-mapa-de-pantallas.md`](../wiki/pcfutbol/03-mapa-de-pantallas.md) and [`05-interaccion-y-controles.md`](../wiki/pcfutbol/05-interaccion-y-controles.md) |
 | implement a simulation, economy or market rule | [`06`](../wiki/pcfutbol/06-sistemas-deportivos.md), [`07`](../wiki/pcfutbol/07-economia-y-club.md), [`08`](../wiki/pcfutbol/08-mercado-y-fichajes.md) |
@@ -55,7 +58,10 @@ Hard rules that come from it:
   `Button` is not a container; see `05` §5.1.
 - **Shared components never call `tr()`** — they render the text they are handed.
 - **Every colour resolves through the palette**, never a literal.
-- The checklist at the end of `04` is the acceptance bar for any UI slice.
+- The checklist at the end of `04` is the acceptance bar for any UI slice, and
+  `13` §7 is the same bar expressed as "does this look like the target version".
+- **No third-party screenshot enters the repository.** References are linked and
+  described; the wireframes are ours. See `14` §1.
 
 
 ## Commands (the only ones you need)

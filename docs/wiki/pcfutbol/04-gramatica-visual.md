@@ -5,6 +5,11 @@ contradiga es un defecto**, no una variante de estilo. Describe *forma*, no
 *material*: los colores, proporciones y nombres son nuestros; lo que se toma del
 clásico es la manera de organizar la superficie.
 
+> **La referencia es PC Fútbol 6.0/7.0.** Cuando este documento y una captura de
+> otra entrega discrepen, manda 6.0. Ver
+> [`00-objetivo-y-alcance.md`](00-objetivo-y-alcance.md) y la descripción
+> pantalla a pantalla en [`13`](13-version-objetivo-6-0-y-7-0.md).
+
 Origen: análisis de capturas del clásico + [`03-mapa-de-pantallas.md`](03-mapa-de-pantallas.md).
 Todo lo marcado **inferencia** es deducción nuestra a partir de esas capturas.
 
@@ -175,6 +180,42 @@ Franja de 24–32 px en el borde, texto rotado 90°, versales, fondo del color d
 Tarjeta con ilustración y rótulo debajo, para el menú principal. Todos los destinos
 principales visibles a la vez.
 
+### 3.15 Tira de pestañas (`TabStrip`)
+
+Pestañas trapezoidales sobre el borde de una placa. El dossier del clásico usaba
+**dos tiras a la vez**: arriba la faceta del contenido (técnicas, palmarés,
+trayectoria…), abajo el modo de trabajo (datos, notas, seguimiento). Máximo seis
+pestañas por tira; más de seis significa que faltaba una pantalla.
+
+### 3.16 Pestaña de fila (`RowTab`)
+
+La acción de una fila cuando la fila es alta: una pestaña vertical con el rótulo
+rotado, pegada al borde derecho de la lista. Se usa cuando la acción es la misma
+para todas las filas y necesita nombre (`OFERTA`), en vez de repetir un botón.
+
+### 3.17 Conmutador de vista (`ViewSwitch`)
+
+Dos o tres botones que cambian **qué columnas muestra la misma tabla**, no qué
+pantalla se ve. El botón de la vista activa se pinta con el acento; es el único
+elemento resaltado de su raíl, para que la pantalla diga siempre qué enseña.
+
+### 3.18 Placa de empleado (`StaffPlate`)
+
+Retrato, cargo y nombre del miembro del cuerpo técnico responsable de la
+pantalla, abajo a la izquierda. No es decoración: identifica a quién compete lo
+que se está haciendo, y es el gancho natural para "mejora a este empleado".
+
+### 3.19 Lista de ranuras (`SlotList`)
+
+Una lista de tamaño fijo cuyos huecos vacíos **conservan su forma**. Cinco
+ranuras de negociación son siempre cinco cajas; las libres se dibujan vacías. La
+pantalla nunca cambia de altura y el jugador ve de un vistazo cuánto le queda.
+
+### 3.20 Indicador segmentado (`SegmentIndicator`)
+
+Barritas en el extremo de una barra de rótulo que dicen cuántos elementos hay y
+en cuál estás. Más barato y más legible que "3 de 6" cuando el total es pequeño.
+
 ---
 
 ## 4. Color
@@ -235,3 +276,7 @@ paleta es propia, pero adopta la **estructura**:
 - [ ] ¿Ningún control interactivo tiene hijos que le roben el clic? (ver
       [`05`](05-interaccion-y-controles.md) §"Trampas de implementación")
 - [ ] ¿Abrir el área no dispara consultas ni cargas?
+- [ ] ¿El estado especial de una fila **sustituye** a su dato en vez de añadir una
+      columna?
+- [ ] ¿Las listas de tamaño fijo conservan su forma cuando están vacías?
+- [ ] ¿La vista activa de una tabla está resaltada en su conmutador?
