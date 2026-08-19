@@ -4,6 +4,7 @@ using PCDynasty.Application.Workspace;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Core.Localization;
+using PCDynasty.Presentation.Workspace.Components;
 
 namespace PCDynasty.Presentation.Shell;
 
@@ -13,11 +14,19 @@ public partial class MainMenuController : Node
     private ManagerShell? _shell;
     private Action<string>? _startNewCareer;
     private Action<string>? _continueCareer;
-    private readonly ButtonGroup _clubButtons = new();
+    private const int ColumnClub = 240;
+    private const int ColumnCountry = 110;
+    private const int ColumnCity = 150;
+    private const int ColumnFounded = 70;
+    private const int ColumnSquad = 70;
+    private const int ColumnPrestige = 90;
+    private const int ColumnAction = 90;
 
     private Control MenuFrame => GetNode<Control>("../MainMenu/MenuFrame");
     private Control CareerSetup => GetNode<Control>("../MainMenu/CareerSetup");
     private Control OptionsPanel => GetNode<Control>("../MainMenu/OptionsPanel");
+    private Control Hero => GetNode<Control>("../MainMenu/Hero");
+    private Label ScreenTitle => GetNode<Label>("../MainMenu/TopBar/ScreenTitle");
     private VBoxContainer ClubList => GetNode<VBoxContainer>("../MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList");
     private Label SelectedClub => GetNode<Label>("../MainMenu/CareerSetup/SetupContent/SelectedClub");
     private Button StartCareer => GetNode<Button>("../MainMenu/CareerSetup/SetupContent/SetupActions/StartCareer");
@@ -66,9 +75,9 @@ public partial class MainMenuController : Node
         _localeSession = localeSession;
         _activationService = activationService;
 
-        VBoxContainer options = GetNode<VBoxContainer>("../MainMenu/OptionsPanel/OptionsContent");
+        Control options = GetNode<Control>("../MainMenu/OptionsPanel");
         var preferences = _preferencesStore.Load();
-        _optionsMenu = new OptionsMenu();
+        _optionsMenu = new OptionsBoard();
         _optionsMenu.Closed += ShowMainMenu;
 
         var languageSection = new LocaleSection(_localeSession, _activationService)
@@ -79,13 +88,16 @@ public partial class MainMenuController : Node
         var themeSection = new ThemeSection(
             _palettes,
             preferences.ThemeId,
-            OnThemeSelected)
+            OnThemeSelected,
+            _localeSession.ActiveFile.Options.ThemeHint)
         {
             Name = "ThemeSection",
         };
 
-        // Settings is a menu of areas, not one stacked panel: the player picks
-        // language, look, display or data first and only then sees its controls.
+        // Settings is one configuration screen: every group is a captioned
+        // plate and all of them are visible at once, the way the classic
+        // configuration screen laid out match, resolution, sound and timing.
+        _optionsMenu.SetAnchorsPreset(Control.LayoutPreset.FullRect);
         options.AddChild(_optionsMenu);
         _optionsMenu.AddSection(_localeSession.ActiveFile.Options.LanguageHeader, languageSection, "SectionLanguage");
         _optionsMenu.AddSection(_localeSession.ActiveFile.Options.ThemeHeader, themeSection, "SectionTheme");
@@ -229,10 +241,10 @@ public partial class MainMenuController : Node
     private PCDynasty.Presentation.Core.PresentationPreferencesStore? _preferencesStore;
     private PCDynasty.Presentation.Core.ThemePaletteCatalog? _palettes;
     private LocaleSession? _localeSession;
-    private OptionsMenu? _optionsMenu;
+    private OptionsBoard? _optionsMenu;
 
-    /// <summary>The settings menu, so the composition root can add its own area.</summary>
-    public OptionsMenu? Settings => _optionsMenu;
+    /// <summary>The settings board, so the composition root can add its own group.</summary>
+    public OptionsBoard? Settings => _optionsMenu;
     private LocaleActivationService? _activationService;
     private Godot.SceneTree? _tree;
 
@@ -293,34 +305,76 @@ public partial class MainMenuController : Node
         }
 
         MenuFrame.Visible = false;
+        Hero.Visible = false;
         OptionsPanel.Visible = false;
         CareerSetup.Visible = true;
+        ScreenTitle.Text = "NUEVA CARRERA";
         StartCareer.Disabled = true;
         SelectedClub.Text = "Selecciona el club con el que quieres construir tu historia.";
         PopulateClubs();
     }
 
+    /// <summary>
+    /// The club list is a dense table, not a stack of buttons with padded
+    /// captions: proportional type never lines up, so the columns used to
+    /// wander from row to row.
+    /// </summary>
     private void PopulateClubs()
     {
         foreach (Node child in ClubList.GetChildren())
         {
+            ClubList.RemoveChild(child);
             child.QueueFree();
         }
 
-        foreach (ClubRow club in _world!.ListClubs())
+        var table = new ListSection { Name = "ClubTable", Area = ShellArea.World };
+        table.AddColumnHeader("CLUB", ColumnClub);
+        table.AddColumnHeader("PAÍS", ColumnCountry);
+        table.AddColumnHeader("CIUDAD", ColumnCity);
+        table.AddColumnHeader("FUND.", ColumnFounded, HorizontalAlignment.Right);
+        table.AddColumnHeader("PLANT.", ColumnSquad, HorizontalAlignment.Right);
+        table.AddColumnHeader("PRESTIGIO", ColumnPrestige, HorizontalAlignment.Right);
+        table.AddColumnHeader("", ColumnAction, HorizontalAlignment.Right);
+
+        IReadOnlyList<ClubRow> clubs = _world!.ListClubs();
+        for (int index = 0; index < clubs.Count; index++)
         {
-            var button = new Button
+            ClubRow club = clubs[index];
+            var row = new ZebraRow(index)
             {
-                Text = $"  {club.DisplayName,-32}  {club.CountryShortName,-10}  PRESTIGIO {club.Prestige,3}",
-                Alignment = HorizontalAlignment.Left,
-                CustomMinimumSize = new Vector2(0, 44),
-                ToggleMode = true,
-                ButtonGroup = _clubButtons,
                 TooltipText = $"{club.City} · fundado {club.FoundedYear} · {club.SquadSize} jugadores",
             };
-            button.Pressed += () => SelectClub(club);
-            ClubList.AddChild(button);
+            row.AddCell(club.DisplayName, ColumnClub, ManagerDesignTokens.TextPrimary);
+            row.AddCell(club.CountryShortName, ColumnCountry, ManagerDesignTokens.TextSecondary);
+            row.AddCell(club.City, ColumnCity, ManagerDesignTokens.TextSecondary);
+            row.AddCell(
+                club.FoundedYear.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                ColumnFounded,
+                ManagerDesignTokens.TextSecondary,
+                HorizontalAlignment.Right);
+            row.AddCell(
+                club.SquadSize.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                ColumnSquad,
+                ManagerDesignTokens.TextSecondary,
+                HorizontalAlignment.Right);
+            row.AddCell(
+                club.Prestige.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                ColumnPrestige,
+                ManagerDesignTokens.Accent,
+                HorizontalAlignment.Right);
+            row.AddAction("ELEGIR", club.DisplayName, _ => SelectClub(club), enabled: true, name: "Choose");
+            table.AddRow(row);
         }
+
+        table.RowActivated += index =>
+        {
+            if (index >= 0 && index < clubs.Count)
+            {
+                table.SelectedIndex = index;
+                SelectClub(clubs[index]);
+            }
+        };
+        ClubList.AddChild(table);
     }
 
     private void SelectClub(ClubRow club)
@@ -363,8 +417,12 @@ public partial class MainMenuController : Node
         }
 
         MenuFrame.Visible = false;
+        Hero.Visible = false;
         CareerSetup.Visible = false;
         OptionsPanel.Visible = true;
+        ScreenTitle.Text = _localeSession is null
+            ? "OPCIONES"
+            : _localeSession.ActiveFile.Options.Header.Title.ToUpperInvariant();
     }
 
     public void ShowMainMenu()
@@ -372,8 +430,10 @@ public partial class MainMenuController : Node
         _shell!.ReturnToMainMenu();
         RefreshCareerActions();
         MenuFrame.Visible = true;
+        Hero.Visible = true;
         CareerSetup.Visible = false;
         OptionsPanel.Visible = false;
+        ScreenTitle.Text = "MENÚ PRINCIPAL";
     }
 
     private void RefreshCareerActions()

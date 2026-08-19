@@ -93,7 +93,7 @@ internal sealed class MarketScreen
         };
         market.AddChild(notice);
 
-        var list = new ListSection { Name = "CandidateRows" };
+        var list = new ListSection { Name = "CandidateRows", Area = ShellArea.Market };
         list.SetEmptyText(_texts.Empty);
         list.AddColumnHeader(_texts.Columns.Player, ColumnPlayer);
         list.AddColumnHeader(_texts.Columns.SellingClub, ColumnClub);

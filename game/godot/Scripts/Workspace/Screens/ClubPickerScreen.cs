@@ -39,7 +39,7 @@ internal sealed class ClubPickerScreen
             new[] { clubs.Count.ToString(WorkspaceUiFactory.InvariantCulture) });
         layout.AddChild(header);
 
-        var list = new ListSection { Name = "ClubPickerRows" };
+        var list = new ListSection { Name = "ClubPickerRows", Area = ShellArea.World };
         list.SetEmptyText(_texts.Empty);
         list.AddColumnHeader(_texts.Columns.Club, ColumnClub);
         list.AddColumnHeader(_texts.Columns.Country, ColumnCountry);

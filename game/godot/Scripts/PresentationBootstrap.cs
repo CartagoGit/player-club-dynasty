@@ -16,7 +16,7 @@ namespace PCDynasty.Presentation;
 
 public partial class PresentationBootstrap : Control
 {
-    private Label WorldStatus => GetNode<Label>("MainMenu/MenuFrame/MenuContent/WorldStatus");
+    private Label WorldStatus => GetNode<Label>("MainMenu/StatusStrip/WorldStatus");
     private Label WorldMetric => GetNode<Label>("MainMenu/Hero/HeroContent/Metric1/Text");
     private Control MainMenu => GetNode<Control>("MainMenu");
     private Control MenuFrame => GetNode<Control>("MainMenu/MenuFrame");
@@ -37,6 +37,10 @@ public partial class PresentationBootstrap : Control
 
     public override void _Ready()
     {
+        // The chrome goes on before anything is loaded: a first launch that
+        // fails still shows a dressed shell with a readable message instead of
+        // a bare grey window.
+        AddChild(new ShellChrome(this));
         _ = StartAsync();
     }
 
@@ -350,7 +354,7 @@ public partial class PresentationBootstrap : Control
     /// </summary>
     private void AttachContentSourceSection(WorldService world)
     {
-        OptionsMenu? settings = _mainMenuController?.Settings;
+        OptionsBoard? settings = _mainMenuController?.Settings;
         if (settings is null)
         {
             return;

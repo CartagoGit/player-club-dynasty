@@ -24,8 +24,7 @@ public sealed partial class LocaleSection : VBoxContainer
 {
     private readonly LocaleSession _session;
     private readonly LocaleActivationService _service;
-    private readonly ButtonGroup _buttonGroup = new();
-    private readonly List<Button> _buttons = new();
+    private readonly List<SelectableTile> _tiles = [];
 
     /// <summary>Fired when the player picks a locale (OK or failure — see <see cref="LocaleSelectionResult"/>).</summary>
     public event Action<LocaleSelectionResult>? LocaleSelected;
@@ -45,55 +44,66 @@ public sealed partial class LocaleSection : VBoxContainer
 
     public override void _Ready()
     {
-        AddChild(Caption(_session.ActiveFile.Options.LanguageHeader, ManagerDesignTokens.Accent, 12));
+        // The plate that hosts this section already carries the group's name
+        // on its caption bar; repeating it inside is noise.
         AddChild(Caption(
             _session.ActiveFile.Options.LanguageHint,
             ManagerDesignTokens.TextSecondary,
             12));
 
-        var rows = new HBoxContainer { Name = "LocaleRows" };
-        rows.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        var rows = new HFlowContainer { Name = "LocaleRows" };
+        rows.AddThemeConstantOverride("h_separation", ManagerDesignTokens.Space8);
+        rows.AddThemeConstantOverride("v_separation", ManagerDesignTokens.Space8);
 
         LocaleRegistryResult scan = _service.Scan();
         foreach (LocaleMetadata entry in scan.Locales)
         {
-            var button = LocaleButton(entry);
-            rows.AddChild(button);
-            _buttons.Add(button);
+            rows.AddChild(LocaleTile(entry));
         }
 
         AddChild(rows);
     }
 
-    private Button LocaleButton(LocaleMetadata entry)
+    /// <remarks>
+    /// A <see cref="SelectableTile"/> rather than a <see cref="Button"/>: the
+    /// tile pairs a flag with a caption, and a button given <see cref="Control"/>
+    /// children has them swallow the click and draw outside its frame — which is
+    /// exactly why this picker used to be impossible to press.
+    /// </remarks>
+    private SelectableTile LocaleTile(LocaleMetadata entry)
     {
-        var button = new Button
+        var tile = new SelectableTile(_tiles)
         {
             Name = $"Locale_{entry.Id}",
-            ToggleMode = true,
-            ButtonGroup = _buttonGroup,
             TooltipText = entry.Name,
-            CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
+            Area = ShellArea.Settings,
+            CustomMinimumSize = new Vector2(160, ManagerDesignTokens.MinimumPointerTarget + 12),
         };
 
-        var layout = new HBoxContainer { Name = "LocaleLayout" };
-        layout.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
+        var row = new HBoxContainer { Name = "LocaleLayout" };
+        row.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         // The procedural flag is a placeholder until the real flag
         // assets ship with the content pack. The icon path lives in
         // the JSON metadata; this fallback keeps the picker non-empty
         // when the path is missing.
         var flag = new FlagIcon { Name = "Flag" };
         flag.SetGeometry(ProceduralFlagFor(entry.Id));
-        layout.AddChild(flag);
+        row.AddChild(flag);
 
-        var label = new Label { Name = "Name", Text = entry.Name };
+        var label = new Label
+        {
+            Name = "Name",
+            Text = entry.Name,
+            VerticalAlignment = VerticalAlignment.Center,
+            SizeFlagsHorizontal = SizeFlags.ExpandFill,
+        };
         label.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
-        layout.AddChild(label);
-        button.AddChild(layout);
+        row.AddChild(label);
+        tile.AddContent(row);
 
-        button.ButtonPressed = entry.Id == _session.ActiveId;
-        button.Pressed += () => Select(entry);
-        return button;
+        tile.Selected = entry.Id == _session.ActiveId;
+        tile.Pressed += () => Select(entry);
+        return tile;
     }
 
     private void Select(LocaleMetadata entry)

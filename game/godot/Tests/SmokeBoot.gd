@@ -26,21 +26,31 @@ func _run() -> void:
 	var options_button := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/Options") as Button
 	options_button.emit_signal("pressed")
 	await process_frame
-	var settings := _find_node(scene, "OptionsMenu")
+	var settings := _find_node(scene, "OptionsBoard")
 	if settings == null:
-		_fail("Settings did not open as a menu of areas.")
+		_fail("Settings did not open as a configuration board.")
 		return
-	var entries := _find_node(settings, "OptionsEntries")
-	_expect(entries.get_child_count() >= 3, "Settings must offer its areas as a menu, not one stacked panel.")
-	# Areas are addressed by node name: their titles are translated.
-	var data_entry := _find_node(settings, "SectionData") as Button
-	if data_entry == null:
-		_fail("The settings menu has no data area.")
+	var groups := _find_node(settings, "GroupsFlow")
+	_expect(groups.get_child_count() >= 4, "Settings must show every group of preferences at once.")
+	# Groups are addressed by node name: their titles are translated.
+	for group_name in ["SectionLanguage", "SectionTheme", "SectionDisplay", "SectionData"]:
+		var group := _find_node(settings, group_name)
+		if group == null:
+			_fail("The settings board has no %s group." % group_name)
+			return
+		_expect(group.visible, "Every settings group must be visible at once: %s was hidden." % group_name)
+
+	# The language and the theme pickers must actually accept a click. They are
+	# tiles, not buttons: a Button with Control children swallows its own input.
+	_check_picker_is_clickable(settings, "SectionLanguage", "the language picker")
+	_check_picker_is_clickable(settings, "SectionTheme", "the theme picker")
+	_expect(not _contains_label_text(settings, "OPTIONS_THEME_HEADER"), "The theme group is rendering a raw translation key.")
+
+	var source_node := _find_node(settings, "ContentSource")
+	if source_node == null:
+		_fail("The data group did not show the content source controls.")
 		return
-	data_entry.emit_signal("pressed")
-	await process_frame
-	_expect(not entries.visible, "Walking into an area must replace the list with that area.")
-	var source_path := "MainMenu/OptionsPanel/OptionsContent/OptionsMenu/OptionsSectionContent/ContentSource"
+	var source_path := String(scene.get_path_to(source_node))
 	if not await _wait_until(func() -> bool: return scene.has_node(source_path)):
 		_fail("The data area did not show the content source controls.")
 		return
@@ -60,25 +70,27 @@ func _run() -> void:
 		_fail("Restoring did not return to the integrated world.")
 		return
 	source_status = scene.get_node(source_path + "/ContentSourceStatus") as Label
-	# One way back: first out of the area, then out of settings.
+	# One command bar, one way out.
 	var settings_back := _find_node(settings, "Back") as Button
 	settings_back.emit_signal("pressed")
 	await process_frame
-	_expect(entries.visible, "Leaving an area must return to the settings menu.")
-	settings_back.emit_signal("pressed")
-	await process_frame
+	_expect(main_menu.visible, "Leaving settings must return to the main menu.")
+	_check_nothing_overflows(main_menu)
 
 	var new_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/NewCareer") as Button
 	new_career.emit_signal("pressed")
 	await process_frame
 
 	var club_list := scene.get_node("MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList") as VBoxContainer
-	if not await _wait_until(func() -> bool: return club_list.get_child_count() > 0):
+	if not await _wait_until(func() -> bool: return _row_count(club_list, "ClubTable") > 0):
 		_fail("The career setup did not render starter-world clubs.")
 		return
-
-	var first_club := club_list.get_child(0) as Button
-	first_club.emit_signal("pressed")
+	# A table whose rows lay out at zero pixels is in the tree and invisible:
+	# assert the first row has real height before trusting the count.
+	var first_row := _row_at(club_list, "ClubTable", 0) as Control
+	_expect(first_row.size.y > 0.0, "The club table rendered rows with no height.")
+	var choose_first := _find_node(first_row, "Choose") as Button
+	choose_first.emit_signal("pressed")
 	await process_frame
 
 	var start_career := scene.get_node("MainMenu/CareerSetup/SetupContent/SetupActions/StartCareer") as Button
@@ -269,11 +281,12 @@ func _run() -> void:
 	new_career.emit_signal("pressed")
 	await process_frame
 	club_list = scene.get_node("MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList") as VBoxContainer
-	if not await _wait_until(func() -> bool: return club_list.get_child_count() > 0):
+	if not await _wait_until(func() -> bool: return _row_count(club_list, "ClubTable") > 0):
 		_fail("The second new-career setup did not render clubs.")
 		return
-	first_club = club_list.get_child(0) as Button
-	first_club.emit_signal("pressed")
+	first_row = _row_at(club_list, "ClubTable", 0) as Control
+	var choose_again := _find_node(first_row, "Choose") as Button
+	choose_again.emit_signal("pressed")
 	await process_frame
 	start_career = scene.get_node("MainMenu/CareerSetup/SetupContent/SetupActions/StartCareer") as Button
 	start_career.emit_signal("pressed")
@@ -392,3 +405,56 @@ func _expect(condition: bool, message: String) -> void:
 func _fail(message: String) -> void:
 	push_error(message)
 	quit(1)
+
+
+## Presses the first tile of a picker and asserts the selection actually moved.
+## A control that cannot be clicked reports the same state before and after.
+func _check_picker_is_clickable(settings: Node, group_name: String, description: String) -> void:
+	var group := _find_node(settings, group_name)
+	if group == null:
+		_fail("There is no %s." % description)
+		return
+	var tiles: Array[Node] = []
+	_collect_tiles(group, tiles)
+	if tiles.size() < 2:
+		_fail("%s offers fewer than two choices, so a click cannot be proven." % description)
+		return
+	var originally_selected: Node = null
+	var unselected: Node = null
+	for tile in tiles:
+		if tile.get("Selected"):
+			originally_selected = tile
+		elif unselected == null:
+			unselected = tile
+	if unselected == null:
+		_fail("%s has every choice selected at once." % description)
+		return
+	unselected.call("Press")
+	_expect(unselected.get("Selected"), "%s did not react to a click." % description)
+	# The press goes through the real path, preferences included, so put the
+	# player's choice back rather than leaving the test's pick behind.
+	if originally_selected != null:
+		originally_selected.call("Press")
+
+
+func _collect_tiles(node: Node, into: Array[Node]) -> void:
+	if node.has_method("Press") and node.get("Selected") != null:
+		into.append(node)
+	for child in node.get_children():
+		_collect_tiles(child, into)
+
+
+## No panel may leave the window. Absolute offsets sized for one resolution are
+## how the shell used to spill outside its frame.
+func _check_nothing_overflows(root: Control) -> void:
+	var frame := Rect2(Vector2.ZERO, root.size)
+	for child in root.get_children():
+		if child is not Control:
+			continue
+		var control := child as Control
+		if not control.visible:
+			continue
+		var box := Rect2(control.position, control.size)
+		var fits := box.position.x >= -1.0 and box.position.y >= -1.0 \
+			and box.end.x <= frame.end.x + 1.0 and box.end.y <= frame.end.y + 1.0
+		_expect(fits, "%s leaves the window: %s is outside %s." % [control.name, box, frame])

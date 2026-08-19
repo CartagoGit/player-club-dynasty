@@ -64,8 +64,74 @@ public static class ManagerDesignTokens
     public const int RowHeightDense = 26;
 
     public const int RowHeightComfortable = 34;
-    public const int CornerRadius = 6;
+    /// <summary>
+    /// Plates are square. The classic look gets its relief from a bevel, not
+    /// from a radius; the only rounded thing in the shell is a crest.
+    /// </summary>
+    public const int CornerRadius = 0;
+
+    /// <summary>Radius used by the few genuinely round elements (crests, discs).</summary>
+    public const int DiscRadius = 999;
+
     public const float MinimumTextContrast = 4.5f;
+
+    /// <summary>Height of a caption bar: the coloured strip that names a plate.</summary>
+    public const int CaptionHeight = 24;
+
+    /// <summary>Height of the fixed command bar along the bottom of the screen.</summary>
+    public const int CommandBarHeight = 52;
+
+    /// <summary>Width of the rotated edge rail that names the area.</summary>
+    public const int EdgeRailWidth = 30;
+
+    /// <summary>The lit edge of a bevel: top and left.</summary>
+    public static Color BevelLight => new(1f, 1f, 1f, 0.16f);
+
+    /// <summary>The shadowed edge of a bevel: bottom and right.</summary>
+    public static Color BevelShadow => new(0f, 0f, 0f, 0.42f);
+
+    /// <summary>
+    /// The colour that identifies a functional area. Derived from the active
+    /// palette so a palette switch re-colours every area for free, and so no
+    /// screen has to know a literal.
+    /// </summary>
+    public static Color AreaColor(ShellArea area) => area switch
+    {
+        ShellArea.Tracking => Focus,
+        ShellArea.Technical => Mix(Focus, Navigation, 0.55f),
+        ShellArea.Market => Positive,
+        ShellArea.Finance => Warning,
+        ShellArea.World => Accent,
+        ShellArea.Settings => Mix(Focus, Accent, 0.5f),
+        _ => Border,
+    };
+
+    /// <summary>
+    /// The readable text colour to place on top of <paramref name="background"/>.
+    /// Either the darkest ink or the lightest, never a shade of the background:
+    /// a caption bar has to be read across the room, not squinted at.
+    /// </summary>
+    public static Color OnArea(Color background) =>
+        Luminance(background) > 0.42f ? Darken(Canvas, 0.7f) : TextPrimary;
+
+    /// <summary>Linear blend: 0 returns <paramref name="from"/>, 1 returns <paramref name="to"/>.</summary>
+    public static Color Mix(Color from, Color to, float amount)
+    {
+        float t = Math.Clamp(amount, 0f, 1f);
+        return new Color(
+            from.R + ((to.R - from.R) * t),
+            from.G + ((to.G - from.G) * t),
+            from.B + ((to.B - from.B) * t),
+            from.A + ((to.A - from.A) * t));
+    }
+
+    /// <summary>Multiplies the channels, keeping alpha. Used for pressed and disabled states.</summary>
+    public static Color Darken(Color color, float factor) =>
+        new(color.R * factor, color.G * factor, color.B * factor, color.A);
+
+    /// <summary>Perceptual luminance, used to decide whether text on a colour must be dark.</summary>
+    public static float Luminance(Color color) =>
+        (0.2126f * color.R) + (0.7152f * color.G) + (0.0722f * color.B);
 
     /// <summary>
     /// Replaces the active palette. The shell's <see cref="ThemePaletteApplier"/>

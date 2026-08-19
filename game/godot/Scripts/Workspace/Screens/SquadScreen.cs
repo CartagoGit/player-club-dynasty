@@ -68,7 +68,7 @@ internal sealed class SquadScreen
         }
         layout.AddChild(header);
 
-        var list = new ListSection { Name = "SquadList" };
+        var list = new ListSection { Name = "SquadList", Area = ShellArea.Technical };
         list.SetEmptyText(_texts.Empty);
         list.AddColumnHeader(_texts.Columns.Player, ColumnPlayer);
         list.AddColumnHeader(_texts.Columns.Nation, ColumnNation, HorizontalAlignment.Right);

@@ -18,7 +18,7 @@ public sealed partial class PaletteSwatch : Control
     public PaletteSwatch()
     {
         _palette = ManagerDesignTokens.ActivePalette;
-        CustomMinimumSize = new Vector2(132, 60);
+        CustomMinimumSize = new Vector2(104, 46);
         QueueRedraw();
     }
 

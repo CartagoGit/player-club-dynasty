@@ -47,7 +47,7 @@ internal sealed class WorldScreen
             });
         layout.AddChild(header);
 
-        var list = new ListSection { Name = "WorldCompetitions" };
+        var list = new ListSection { Name = "WorldCompetitions", Area = ShellArea.World };
         list.SetEmptyText(_texts.Empty);
         list.AddColumnHeader(_texts.Columns.Name, ColumnName);
         list.AddColumnHeader(_texts.Columns.Format, ColumnFormat);

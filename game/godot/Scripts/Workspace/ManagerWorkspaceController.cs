@@ -158,12 +158,43 @@ public partial class ManagerWorkspaceController : Control
             bool active = section == _selectedSection
                 || (_selectedSection == WorkspaceSection.History && section == WorkspaceSection.Competitions)
                 || (_selectedSection == WorkspaceSection.ClubPicker && section == WorkspaceSection.Overview);
-            entry.AddThemeStyleboxOverride("normal", ClassicChrome.RailEntry(active));
+            ShellArea area = AreaOf(section);
+            entry.AddThemeStyleboxOverride(
+                "normal",
+                ClassicChrome.AreaEntry(area, active ? ClassicChrome.State.Selected : ClassicChrome.State.Normal));
+            entry.AddThemeStyleboxOverride(
+                "hover",
+                ClassicChrome.AreaEntry(area, active ? ClassicChrome.State.Selected : ClassicChrome.State.Hovered));
+            entry.AddThemeStyleboxOverride(
+                "pressed",
+                ClassicChrome.AreaEntry(area, ClassicChrome.State.Pressed));
+            entry.AddThemeStyleboxOverride("focus", ClassicChrome.Focus());
+            entry.Alignment = HorizontalAlignment.Left;
             entry.AddThemeColorOverride(
                 "font_color",
                 active ? ManagerDesignTokens.TextPrimary : ManagerDesignTokens.TextSecondary);
         }
     }
+
+    /// <summary>
+    /// The colour family a rail entry belongs to. The classic desk grouped its
+    /// destinations into four coloured blocks and repeated each block's colour
+    /// inside the screens it opened, so the player always knew where they were
+    /// standing without reading the title.
+    /// </summary>
+    private static ShellArea AreaOf(WorkspaceSection section) => section switch
+    {
+        WorkspaceSection.Overview => ShellArea.Tracking,
+        WorkspaceSection.Competitions => ShellArea.Tracking,
+        WorkspaceSection.History => ShellArea.Tracking,
+        WorkspaceSection.Squad => ShellArea.Technical,
+        WorkspaceSection.Tactics => ShellArea.Technical,
+        WorkspaceSection.Market => ShellArea.Market,
+        WorkspaceSection.Finances => ShellArea.Finance,
+        WorkspaceSection.World => ShellArea.World,
+        WorkspaceSection.ClubPicker => ShellArea.World,
+        _ => ShellArea.None,
+    };
 
     private void Bind(Button button, Action handler)
     {

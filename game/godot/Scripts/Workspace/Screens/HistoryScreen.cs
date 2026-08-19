@@ -76,7 +76,7 @@ internal sealed class HistoryScreen
         layout.AddChild(BuildFilters(competitions, clubs));
         layout.AddChild(BuildAggregate(entries));
 
-        var list = new ListSection { Name = "MatchList" };
+        var list = new ListSection { Name = "MatchList", Area = ShellArea.Tracking };
         list.SetEmptyText(_texts.FilterEmpty);
         list.AddColumnHeader(_texts.Columns.When, ColumnWhen);
         list.AddColumnHeader(_texts.Columns.Competition, ColumnCompetition);

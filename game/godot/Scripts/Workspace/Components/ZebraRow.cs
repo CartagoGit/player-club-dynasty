@@ -4,10 +4,8 @@ using PCDynasty.Presentation.Theme;
 namespace PCDynasty.Presentation.Workspace.Components;
 
 /// <summary>
-/// A bordered row that follows the shell's design language: zebra background
-/// on odd indices, hover surface, gold edge when selected. Every colour
-/// resolves through <see cref="ManagerDesignTokens"/> so the f00043 palette
-/// switch re-skins rows for free.
+/// One line of a dense table: alternating background, hover surface, accent
+/// edge when selected.
 /// </summary>
 /// <remarks>
 /// The row is a <see cref="PanelContainer"/> wrapping an <c>HBoxContainer</c>
@@ -16,64 +14,8 @@ namespace PCDynasty.Presentation.Workspace.Components;
 /// width and alignment. The action area on the right is built by the row
 /// itself so every screen ends up with a consistent trailing-button zone.
 /// </remarks>
-public sealed partial class ZebraRow : PanelContainer
+public sealed partial class ZebraRow : PanelContainer, IPaletteAware
 {
-    private static readonly Color OddRowBackground = ManagerDesignTokens.Canvas;
-
-    private static StyleBoxFlat BaseStyle(Color background) => new()
-    {
-        BgColor = background,
-        BorderColor = ManagerDesignTokens.Border,
-        BorderWidthLeft = 1,
-        BorderWidthTop = 0,
-        BorderWidthRight = 1,
-        BorderWidthBottom = 1,
-        CornerRadiusTopLeft = 0,
-        CornerRadiusTopRight = 0,
-        CornerRadiusBottomRight = 0,
-        CornerRadiusBottomLeft = 0,
-        ContentMarginLeft = ManagerDesignTokens.Space8,
-        ContentMarginTop = ManagerDesignTokens.Space4,
-        ContentMarginRight = ManagerDesignTokens.Space8,
-        ContentMarginBottom = ManagerDesignTokens.Space4,
-    };
-
-    private static StyleBoxFlat HoverStyle() => new()
-    {
-        BgColor = ManagerDesignTokens.SurfaceRaised,
-        BorderColor = ManagerDesignTokens.Accent,
-        BorderWidthLeft = 2,
-        BorderWidthTop = 0,
-        BorderWidthRight = 1,
-        BorderWidthBottom = 1,
-        CornerRadiusTopLeft = 0,
-        CornerRadiusTopRight = 0,
-        CornerRadiusBottomRight = 0,
-        CornerRadiusBottomLeft = 0,
-        ContentMarginLeft = ManagerDesignTokens.Space8 - 1,
-        ContentMarginTop = ManagerDesignTokens.Space4,
-        ContentMarginRight = ManagerDesignTokens.Space8,
-        ContentMarginBottom = ManagerDesignTokens.Space4,
-    };
-
-    private static StyleBoxFlat SelectedStyle() => new()
-    {
-        BgColor = ManagerDesignTokens.SurfaceRaised,
-        BorderColor = ManagerDesignTokens.Accent,
-        BorderWidthLeft = 4,
-        BorderWidthTop = 0,
-        BorderWidthRight = 1,
-        BorderWidthBottom = 1,
-        CornerRadiusTopLeft = 0,
-        CornerRadiusTopRight = 0,
-        CornerRadiusBottomRight = 0,
-        CornerRadiusBottomLeft = 0,
-        ContentMarginLeft = ManagerDesignTokens.Space8,
-        ContentMarginTop = ManagerDesignTokens.Space4,
-        ContentMarginRight = ManagerDesignTokens.Space8,
-        ContentMarginBottom = ManagerDesignTokens.Space4,
-    };
-
     private readonly HBoxContainer _cells = new() { Name = "Cells" };
     private readonly HBoxContainer _actions = new() { Name = "Actions" };
     private bool _isHovered;
@@ -86,7 +28,8 @@ public sealed partial class ZebraRow : PanelContainer
     public ZebraRow(int index)
     {
         _index = index;
-        _cells.AddThemeConstantOverride("separation", ManagerDesignTokens.Space12);
+        CustomMinimumSize = new Vector2(0, ManagerDesignTokens.RowHeightDense);
+        _cells.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         _actions.AddThemeConstantOverride("separation", ManagerDesignTokens.Space8);
         _actions.Alignment = BoxContainer.AlignmentMode.End;
         MouseEntered += () => { _isHovered = true; RefreshStyle(); };
@@ -135,7 +78,8 @@ public sealed partial class ZebraRow : PanelContainer
             HorizontalAlignment = alignment,
         };
         label.AddThemeColorOverride("font_color", color);
-        label.AddThemeFontSizeOverride("font_size", 14);
+        label.AddThemeFontSizeOverride("font_size", 13);
+        label.ClipText = true;
         label.VerticalAlignment = VerticalAlignment.Center;
         _cells.AddChild(label);
         return label;
@@ -159,8 +103,10 @@ public sealed partial class ZebraRow : PanelContainer
             Text = text,
             TooltipText = tooltip ?? string.Empty,
             Disabled = !enabled,
-            CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
+            CustomMinimumSize = new Vector2(0, ManagerDesignTokens.RowHeightDense),
         };
+        ClassicChrome.StyleCommand(button);
+        button.AddThemeFontSizeOverride("font_size", 11);
         if (onPressed is not null)
         {
             int capturedIndex = _index;
@@ -183,19 +129,18 @@ public sealed partial class ZebraRow : PanelContainer
         }
     }
 
+    /// <inheritdoc />
+    public void OnPaletteChanged() => RefreshStyle();
+
     private void RefreshStyle()
     {
-        StyleBoxFlat style = _isSelected
-            ? SelectedStyle()
+        ClassicChrome.State state = _isSelected
+            ? ClassicChrome.State.Selected
             : _isHovered
-                ? HoverStyle()
-                : BaseStyle(BackgroundForIndex(_index));
-        AddThemeStyleboxOverride("panel", style);
+                ? ClassicChrome.State.Hovered
+                : ClassicChrome.State.Normal;
+        AddThemeStyleboxOverride("panel", ClassicChrome.TableRow(_index, state));
     }
-
-    /// <summary>Even rows use the surface; odd rows use the canvas as a faint zebra striping.</summary>
-    private static Color BackgroundForIndex(int index) =>
-        (index & 1) == 0 ? ManagerDesignTokens.Surface : OddRowBackground;
 
     private void OnGuiInput(InputEvent @event)
     {

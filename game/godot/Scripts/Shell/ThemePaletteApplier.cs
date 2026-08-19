@@ -56,37 +56,49 @@ public static class ThemePaletteApplier
     {
         ArgumentNullException.ThrowIfNull(tree);
         ArgumentNullException.ThrowIfNull(palette);
-        ManagerDesignTokens.SetPalette(palette);
+        // The match is made against the palette that is being replaced: a
+        // StyleBox still holds the *previous* colours at this point, so
+        // comparing it with the incoming palette would recognise nothing.
+        ThemePalette previous = ManagerDesignTokens.SetPalette(palette);
         Node? root = tree.Root;
         if (root is null)
         {
             return;
         }
 
-        ApplyToNode(root, palette);
+        ApplyToNode(root, previous, palette);
     }
 
-    private static void ApplyToNode(Node node, ThemePalette palette)
+    private static void ApplyToNode(Node node, ThemePalette previous, ThemePalette palette)
     {
         if (node is Control control)
         {
-            ApplyToControl(control, palette);
+            ApplyToControl(control, previous, palette);
+        }
+
+        // A control that derives a colour the applier cannot recognise — a
+        // blend, an area tint — repaints itself. Teaching the applier every
+        // blend the shell might invent would put the design system inside this
+        // file; letting the control own its repaint keeps it where it belongs.
+        if (node is IPaletteAware aware)
+        {
+            aware.OnPaletteChanged();
         }
 
         foreach (Node child in node.GetChildren())
         {
-            ApplyToNode(child, palette);
+            ApplyToNode(child, previous, palette);
         }
     }
 
-    private static void ApplyToControl(Control control, ThemePalette palette)
+    private static void ApplyToControl(Control control, ThemePalette previous, ThemePalette palette)
     {
         foreach (string key in StyleKeys)
         {
             StyleBox? style = control.GetThemeStylebox(key);
             if (style is StyleBoxFlat flat)
             {
-                RepaintStyleBox(flat, palette);
+                RepaintStyleBox(flat, previous, palette);
             }
         }
 
@@ -104,13 +116,13 @@ public static class ThemePaletteApplier
         }
     }
 
-    private static void RepaintStyleBox(StyleBoxFlat flat, ThemePalette palette)
+    private static void RepaintStyleBox(StyleBoxFlat flat, ThemePalette previous, ThemePalette palette)
     {
-        if (ClosestToken(flat.BgColor) is ThemeToken bg)
+        if (ClosestToken(flat.BgColor, previous) is ThemeToken bg)
         {
             flat.BgColor = TokenColour(bg, palette);
         }
-        if (ClosestToken(flat.BorderColor) is ThemeToken border)
+        if (ClosestToken(flat.BorderColor, previous) is ThemeToken border)
         {
             flat.BorderColor = TokenColour(border, palette);
         }
@@ -160,10 +172,9 @@ public static class ThemePaletteApplier
         _ => ManagerDesignTokens.ToGodot(palette.Canvas),
     };
 
-    private static ThemeToken? ClosestToken(Color colour)
+    private static ThemeToken? ClosestToken(Color colour, ThemePalette p)
     {
         const float tolerance = 1f / 255f;
-        ThemePalette p = ManagerDesignTokens.ActivePalette;
         ThemeToken? Best(Color candidate, ThemeToken token)
         {
             float d = (candidate.R - colour.R) * (candidate.R - colour.R)
