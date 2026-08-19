@@ -96,6 +96,7 @@
     "noticeAcceptedFormat": "DEAL CLOSED · {0} · {1}",
     "noticeRejectedFormat": "OFFER REJECTED · {0}",
     "empty": "No players available.",
+    "truncatedFormat": "SHOWING THE TOP {0} OF {1} CANDIDATES",
     "columns": {
       "player": "PLAYER",
       "sellingClub": "SELLING CLUB",
@@ -220,6 +221,16 @@
     "actions": {
       "choose": "CHOOSE",
       "chooseTooltip": "Explore this club"
+    }
+  },
+  "career": {
+    "exit": {
+      "title": "LEAVE THE CAREER",
+      "message": "You are about to return to the main menu. Save the career first, or leave it as it stands?",
+      "saveAndLeave": "SAVE AND LEAVE",
+      "leaveWithoutSaving": "LEAVE WITHOUT SAVING",
+      "stay": "STAY",
+      "savedFormat": "Career saved · {0}"
     }
   }
 }

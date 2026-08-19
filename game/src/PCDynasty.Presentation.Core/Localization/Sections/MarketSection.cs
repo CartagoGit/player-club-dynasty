@@ -8,6 +8,11 @@ namespace PCDynasty.Presentation.Core.Localization;
 /// matched reason key, and the rejection reason block is a
 /// sub-section so the translator can group every translation under
 /// <c>market.reasons</c>.
+///
+/// <c>TruncatedFormat</c> is the line under a capped list. The market
+/// is the whole transfer-listed population of the world, and drawing a
+/// row per candidate is what made the screen slow; the screen shows the
+/// strongest and says so rather than pretending the list is complete.
 /// </summary>
 public sealed record MarketSection(
     HeaderSection Header,
@@ -16,6 +21,7 @@ public sealed record MarketSection(
     string NoticeAcceptedFormat,
     string NoticeRejectedFormat,
     string Empty,
+    string TruncatedFormat,
     MarketColumnsSection Columns,
     MarketActionsSection Actions,
     MarketReasonsSection Reasons);

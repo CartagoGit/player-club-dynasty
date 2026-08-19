@@ -83,6 +83,7 @@ public static class ShippedLocaleFiles
             NoticeAcceptedFormat: "DEAL CLOSED · {0} · {1}",
             NoticeRejectedFormat: "OFFER REJECTED · {0}",
             Empty: "No players available.",
+            TruncatedFormat: "SHOWING THE TOP {0} OF {1} CANDIDATES",
             Columns: new MarketColumnsSection(
                 Player: "PLAYER", SellingClub: "SELLING CLUB", Age: "AGE", Tec: "TEC",
                 Val: "RAT", Price: "PRICE", Action: "ACTION"),
@@ -142,7 +143,15 @@ public static class ShippedLocaleFiles
             Columns: new PickerColumnsSection(
                 Club: "CLUB", Country: "COUNTRY", Founded: "FD.", Prestige: "PRE.",
                 Fanbase: "FAN", Squad: "SQUAD", Action: "ACTION"),
-            Actions: new PickerActionsSection(Choose: "CHOOSE", ChooseTooltip: "Explore this club")));
+            Actions: new PickerActionsSection(Choose: "CHOOSE", ChooseTooltip: "Explore this club")),
+        Career: new CareerSection(
+            Exit: new CareerExitSection(
+                Title: "LEAVE THE CAREER",
+                Message: "You are about to return to the main menu. Save the career first, or leave it as it stands?",
+                SaveAndLeave: "SAVE AND LEAVE",
+                LeaveWithoutSaving: "LEAVE WITHOUT SAVING",
+                Stay: "STAY",
+                SavedFormat: "Career saved · {0}")));
 
     /// <summary>The Spanish record (the canonical fixture used by the unit tests).</summary>
     public static LocaleFile BuildSpanish() => new(
@@ -205,6 +214,7 @@ public static class ShippedLocaleFiles
             NoticeAcceptedFormat: "FICHAJE CERRADO · {0} · {1}",
             NoticeRejectedFormat: "OFERTA RECHAZADA · {0}",
             Empty: "No hay jugadores disponibles.",
+            TruncatedFormat: "MOSTRANDO LOS {0} MEJORES DE {1} CANDIDATOS",
             Columns: new MarketColumnsSection(
                 Player: "JUGADOR", SellingClub: "CLUB VENDEDOR", Age: "EDAD", Tec: "TEC",
                 Val: "MED", Price: "PRECIO", Action: "ACCIÓN"),
@@ -264,5 +274,13 @@ public static class ShippedLocaleFiles
             Columns: new PickerColumnsSection(
                 Club: "CLUB", Country: "PAÍS", Founded: "FUND.", Prestige: "PRES.",
                 Fanbase: "AFIC.", Squad: "PLANT.", Action: "ACCIÓN"),
-            Actions: new PickerActionsSection(Choose: "ELEGIR", ChooseTooltip: "Explorar este club")));
+            Actions: new PickerActionsSection(Choose: "ELEGIR", ChooseTooltip: "Explorar este club")),
+        Career: new CareerSection(
+            Exit: new CareerExitSection(
+                Title: "SALIR DE LA CARRERA",
+                Message: "Vas a volver al menú principal. ¿Guardas la carrera antes de salir, o la dejas como está?",
+                SaveAndLeave: "GUARDAR Y SALIR",
+                LeaveWithoutSaving: "SALIR SIN GUARDAR",
+                Stay: "SEGUIR JUGANDO",
+                SavedFormat: "Carrera guardada · {0}")));
 }

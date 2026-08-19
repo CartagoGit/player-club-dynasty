@@ -68,6 +68,14 @@ func _run() -> void:
 		finances.emit_signal("pressed")
 		await _settle(40)
 		await _shot(out_dir, "06-workspace-finances")
+		var market := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market") as Button
+		market.emit_signal("pressed")
+		await _settle(60)
+		await _shot(out_dir, "07-workspace-market")
+		var leave := scene.get_node("Workspace/Frame/CommandBar/CommandRow/MainMenu") as Button
+		leave.emit_signal("pressed")
+		await _settle(30)
+		await _shot(out_dir, "08-career-exit-question")
 
 	print("capture-shots: wrote PNGs to ", out_dir)
 	quit(0)

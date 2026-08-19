@@ -96,6 +96,7 @@
     "noticeAcceptedFormat": "FICHAJE CERRADO · {0} · {1}",
     "noticeRejectedFormat": "OFERTA RECHAZADA · {0}",
     "empty": "No hay jugadores disponibles.",
+    "truncatedFormat": "MOSTRANDO LOS {0} MEJORES DE {1} CANDIDATOS",
     "columns": {
       "player": "JUGADOR",
       "sellingClub": "CLUB VENDEDOR",
@@ -220,6 +221,16 @@
     "actions": {
       "choose": "ELEGIR",
       "chooseTooltip": "Explorar este club"
+    }
+  },
+  "career": {
+    "exit": {
+      "title": "SALIR DE LA CARRERA",
+      "message": "Vas a volver al menú principal. ¿Guardas la carrera antes de salir, o la dejas como está?",
+      "saveAndLeave": "GUARDAR Y SALIR",
+      "leaveWithoutSaving": "SALIR SIN GUARDAR",
+      "stay": "SEGUIR JUGANDO",
+      "savedFormat": "Carrera guardada · {0}"
     }
   }
 }

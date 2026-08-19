@@ -10,6 +10,7 @@ using PCDynasty.Presentation.Careers;
 using PCDynasty.Presentation.Core;
 using PCDynasty.Presentation.Core.Localization;
 using PCDynasty.Presentation.Shell;
+using PCDynasty.Presentation.Theme;
 using PCDynasty.Presentation.Workspace;
 
 namespace PCDynasty.Presentation;
@@ -29,6 +30,8 @@ public partial class PresentationBootstrap : Control
         new CompetitionSimulationService(TimeProvider.System);
     private SqliteCareerProfileStore? _careerProfileStore;
     private CareerRuntimeFactory? _careerRuntimeFactory;
+    private string? _openCareerClubId;
+    private CareerExitGuard? _exitGuard;
     private ContentSourcePreference? _contentSourcePreference;
     private ContentSourceSection? _contentSourceSection;
     private PresentationPreferencesStore? _preferencesStore;
@@ -452,14 +455,26 @@ public partial class PresentationBootstrap : Control
             runtime.Squad,
             runtime.Calendar,
             _localeSession!.ActiveFile);
-        _workspaceController.MainMenuRequested += CloseWorkspace;
+        _openCareerClubId = clubId;
+        _workspaceController.MainMenuRequested += AskBeforeLeavingCareer;
         AddChild(_workspaceController);
+    }
+
+    /// <summary>Ask before the career is left; the guard owns the question.</summary>
+    private void AskBeforeLeavingCareer()
+    {
+        _exitGuard ??= new CareerExitGuard(this, _careerProfileStore!, TimeProvider.System);
+        _exitGuard.Ask(
+            _localeSession!.ActiveFile.Career.Exit,
+            _openCareerClubId ?? string.Empty,
+            CloseWorkspace);
     }
 
     private void CloseWorkspace()
     {
         _workspaceController?.QueueFree();
         _workspaceController = null;
+        _openCareerClubId = null;
         Workspace.Visible = false;
         MainMenu.Visible = true;
         _mainMenuController?.ShowMainMenu();

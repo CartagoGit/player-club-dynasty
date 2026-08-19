@@ -17,6 +17,16 @@ internal sealed class MarketScreen
     private const int ColumnPrice = 120;
     private const int ColumnAction = 110;
 
+    /// <summary>
+    /// How many candidates the table draws. Every row is a plate with six
+    /// cells and a button, so a listing of the whole transfer-listed
+    /// population built tens of thousands of nodes on a screen nobody can
+    /// read past the first page. The strongest candidates are the ones a
+    /// manager scans first, and the count below the table says what is
+    /// hidden.
+    /// </summary>
+    private const int MaxVisibleCandidates = 60;
+
     private readonly ICareerTransferMarketService _market;
     private readonly ManagedClubContext _managed;
     private readonly CareerCalendar _calendar;
@@ -103,19 +113,36 @@ internal sealed class MarketScreen
         list.AddColumnHeader(_texts.Columns.Price, ColumnPrice, HorizontalAlignment.Right);
         list.AddColumnHeader(_texts.Columns.Action, ColumnAction, HorizontalAlignment.Right);
 
+        int visible = Math.Min(candidates.Count, MaxVisibleCandidates);
         if (candidates.Count == 0)
         {
             list.RefreshEmptyState();
         }
         else
         {
-            for (int index = 0; index < candidates.Count; index++)
+            for (int index = 0; index < visible; index++)
             {
                 list.AddRow(BuildRow(candidates[index]));
             }
         }
 
         market.AddChild(list);
+
+        if (candidates.Count > visible)
+        {
+            var truncated = new Label
+            {
+                Name = "Truncated",
+                Text = string.Format(
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    _texts.TruncatedFormat,
+                    visible,
+                    candidates.Count),
+            };
+            truncated.AddThemeColorOverride("font_color", ManagerDesignTokens.TextSecondary);
+            truncated.AddThemeFontSizeOverride("font_size", 12);
+            market.AddChild(truncated);
+        }
     }
 
     private ZebraRow BuildRow(TransferCandidate candidate)

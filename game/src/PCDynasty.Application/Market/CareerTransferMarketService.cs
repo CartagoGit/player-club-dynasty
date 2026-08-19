@@ -15,6 +15,16 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
     private readonly ICareerFinanceStore _financeStore;
     private readonly TimeProvider _timeProvider;
 
+    // The candidate universe is every player of every club the career does
+    // not own, valued and sorted. On the target-scale world that is 160,000
+    // people, and the screen asked for it on every render — including the
+    // re-render that follows an offer. It only changes when a transfer
+    // settles, so it is computed once per settle and kept.
+    private ImmutableArray<TransferCandidate> _candidates;
+    private ImmutableArray<PlayerRow> _managedSquad;
+    private string? _cachedForClub;
+    private bool _cacheIsWarm;
+
     public CareerTransferMarketService(
         IManagerWorld world,
         ICareerTransferStore transferStore,
@@ -30,7 +40,44 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
     public IReadOnlyList<TransferCandidate> ListCandidates(ManagedClubContext managed)
     {
         ArgumentNullException.ThrowIfNull(managed);
-        string managedClubExternalId = managed.ClubExternalId;
+        EnsureCache(managed.ClubExternalId);
+        return _candidates;
+    }
+
+    public IReadOnlyList<PlayerRow> ListManagedSquad(ManagedClubContext managed)
+    {
+        ArgumentNullException.ThrowIfNull(managed);
+        EnsureCache(managed.ClubExternalId);
+        return _managedSquad;
+    }
+
+    /// <summary>
+    /// Rebuild the two projections unless they already answer for this club
+    /// and no transfer has settled since. Invalidation has exactly one
+    /// trigger — <see cref="Invalidate"/> after a settle — so there is no
+    /// second rule to keep in step.
+    /// </summary>
+    private void EnsureCache(string managedClubExternalId)
+    {
+        if (_cacheIsWarm && string.Equals(_cachedForClub, managedClubExternalId, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        _candidates = BuildCandidates(managedClubExternalId);
+        _managedSquad = BuildManagedSquad(managedClubExternalId);
+        _cachedForClub = managedClubExternalId;
+        _cacheIsWarm = true;
+    }
+
+    /// <summary>Drop the projections after a settle changes who is available.</summary>
+    private void Invalidate()
+    {
+        _cacheIsWarm = false;
+    }
+
+    private ImmutableArray<TransferCandidate> BuildCandidates(string managedClubExternalId)
+    {
         HashSet<string> unavailablePlayers = _world
             .ListPlayers(managedClubExternalId)
             .Select(player => player.ExternalId)
@@ -51,10 +98,8 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
             .ToImmutableArray();
     }
 
-    public IReadOnlyList<PlayerRow> ListManagedSquad(ManagedClubContext managed)
+    private ImmutableArray<PlayerRow> BuildManagedSquad(string managedClubExternalId)
     {
-        ArgumentNullException.ThrowIfNull(managed);
-        string managedClubExternalId = managed.ClubExternalId;
         IEnumerable<PlayerRow> originalSquad = _world.ListPlayers(managedClubExternalId);
         HashSet<string> acquiredIds = _transferStore
             .ListForClub(managedClubExternalId)
@@ -123,9 +168,15 @@ public sealed class CareerTransferMarketService : ICareerTransferMarketService, 
             finance.Currency,
             completedAt);
         CareerFinanceState updatedFinance = Debit(finance, offeredMinorUnits, completedAt);
-        return _transferStore.TrySettle(transfer, finance, updatedFinance)
-            ? TransferOfferResult.Success(transfer, updatedFinance.TransferBudget)
-            : TransferOfferResult.Rejected("stale-or-duplicate", finance.TransferBudget);
+        if (!_transferStore.TrySettle(transfer, finance, updatedFinance))
+        {
+            return TransferOfferResult.Rejected("stale-or-duplicate", finance.TransferBudget);
+        }
+
+        // The signed player leaves the market and joins the squad, so both
+        // projections are stale from here.
+        Invalidate();
+        return TransferOfferResult.Success(transfer, updatedFinance.TransferBudget);
     }
 
     private static TransferCandidate ToCandidate(ClubRow club, PlayerRow player)

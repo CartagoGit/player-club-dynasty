@@ -181,7 +181,10 @@ func _run() -> void:
 		_fail("An affordable one-click transfer was not settled. Notice still reads: " + (_label_text(scene, market_notice_path) if scene.has_node(market_notice_path) else "<no notice node>"))
 		return
 	_expect(not _label_text(scene, market_notice_path).begins_with("MARKET_"), "The settlement notice must be a sentence, not a translation key.")
-	_expect(_row_count(_content(scene), "CandidateRows") == candidate_count - 1, "The acquired player must leave the transfer candidate list.")
+	# The table shows the strongest candidates, not all of them, so the row
+	# count stays put when one leaves and another takes its place. What must
+	# be true is that the signed player is no longer on offer.
+	_expect(not _contains_label_text(_rows_of(_content(scene), "CandidateRows"), signed_player), "The acquired player must leave the transfer candidate list.")
 
 	finances.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return scene.has_node(cash_path)):
@@ -276,8 +279,30 @@ func _run() -> void:
 	var lineup_status := lineup.get_node("Margin/Content/ActionRow/Status") as Label
 	_expect(lineup_status.text == "Selección enviada.", "The lineup plan was not accepted and persisted.")
 
+	# Leaving the career is guarded: the command opens a question instead of
+	# closing the desk, so a mis-click can no longer end the session.
 	var main_menu_button := scene.get_node("Workspace/Frame/CommandBar/CommandRow/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return _find_node(scene, "ConfirmDialog") != null):
+		_fail("Leaving the career must ask before it closes the desk.")
+		return
+	var exit_dialog := _find_node(scene, "ConfirmDialog")
+	_expect(workspace.visible, "The desk must stay open while the question is on screen.")
+	var stay := _find_node(exit_dialog, "Stay") as Button
+	_expect(stay != null, "The exit question must offer a way back.")
+	stay.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return _find_node(scene, "ConfirmDialog") == null):
+		_fail("Declining the exit question did not dismiss it.")
+		return
+	_expect(workspace.visible and scene.has_node("WorkspaceController"), "Declining the exit question must leave the career open.")
+
+	main_menu_button.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return _find_node(scene, "ConfirmDialog") != null):
+		_fail("The exit question did not reopen.")
+		return
+	var save_and_leave := _find_node(_find_node(scene, "ConfirmDialog"), "SaveAndLeave") as Button
+	_expect(save_and_leave != null, "The exit question must offer to save the career.")
+	save_and_leave.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning from a career did not restore the main menu cleanly.")
 		return
@@ -314,6 +339,10 @@ func _run() -> void:
 
 	main_menu_button = scene.get_node("Workspace/Frame/CommandBar/CommandRow/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
+	if not await _wait_until(func() -> bool: return _find_node(scene, "ConfirmDialog") != null):
+		_fail("The exit question did not appear on the way out of the continued career.")
+		return
+	(_find_node(_find_node(scene, "ConfirmDialog"), "SaveAndLeave") as Button).emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning before a second new career did not clean up the workspace.")
 		return

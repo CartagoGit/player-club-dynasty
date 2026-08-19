@@ -11,6 +11,7 @@ namespace PCDynasty.Presentation.Core;
 public sealed class WorldService : IManagerWorld
 {
     private readonly WorldContentCatalog _catalog;
+    private WorldProjectionCache? _projections;
 
     /// <summary>Reads the world shipped with the game.</summary>
     public WorldService(IContentReader reader, string contentRoot)
@@ -36,39 +37,55 @@ public sealed class WorldService : IManagerWorld
     /// </summary>
     public string ContentHash => _catalog.GetSnapshot().ContentHash;
 
-    public IReadOnlyList<ClubRow> ListClubs() =>
-        WorldClubProjection.ListClubs(_catalog.GetSnapshot());
+    public IReadOnlyList<ClubRow> ListClubs() => Projections().Clubs;
 
     public IReadOnlyList<PlayerRow> ListPlayers(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldPeopleProjection.ListPlayers(_catalog.GetSnapshot(), clubExternalId);
+        return Projections().PlayersOf(clubExternalId);
     }
 
     public IReadOnlyList<ManagerRow> ListManagers(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldPeopleProjection.ListManagers(_catalog.GetSnapshot(), clubExternalId);
+        return Projections().ManagersOf(clubExternalId);
     }
 
     public IReadOnlyList<StaffRow> ListStaff(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldPeopleProjection.ListStaff(_catalog.GetSnapshot(), clubExternalId);
+        return Projections().StaffOf(clubExternalId);
     }
 
     public IReadOnlyList<CompetitionRow> ListCompetitionsForClub(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldCompetitionProjection.ListForClub(_catalog.GetSnapshot(), clubExternalId);
+        return Projections().CompetitionsOf(clubExternalId);
     }
 
-    public IReadOnlyList<CompetitionRow> ListAllCompetitions() =>
-        WorldCompetitionProjection.ListAll(_catalog.GetSnapshot());
+    public IReadOnlyList<CompetitionRow> ListAllCompetitions() => Projections().AllCompetitions;
 
     public ClubRow? FindClub(string clubExternalId)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clubExternalId);
-        return WorldClubProjection.FindClub(_catalog.GetSnapshot(), clubExternalId);
+        return Projections().FindClub(clubExternalId);
+    }
+
+    /// <summary>
+    /// The cache for the snapshot currently loaded. A reload installs a new
+    /// snapshot instance, so comparing identity is the whole invalidation
+    /// rule: the cache for the previous world simply stops being reachable.
+    /// </summary>
+    private WorldProjectionCache Projections()
+    {
+        WorldSnapshot snapshot = _catalog.GetSnapshot();
+        WorldProjectionCache? cache = _projections;
+        if (cache is null || !ReferenceEquals(cache.Snapshot, snapshot))
+        {
+            cache = new WorldProjectionCache(snapshot);
+            _projections = cache;
+        }
+
+        return cache;
     }
 }

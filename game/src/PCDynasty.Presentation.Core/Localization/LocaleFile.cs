@@ -29,7 +29,8 @@ public sealed record LocaleFile(
     HistorySection History,
     CompetitionsSection Competitions,
     WorldSection World,
-    PickerSection Picker)
+    PickerSection Picker,
+    CareerSection Career)
 {
     /// <summary>
     /// Deserialises a <c>xx.json</c> document into a <see cref="LocaleFile"/>.

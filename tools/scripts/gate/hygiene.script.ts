@@ -4,14 +4,20 @@
  *
  * Replaces `game/scripts/check-repository-hygiene.sh`. Fails when the
  * Git index contains generated or local-only artefacts (build outputs,
- * save data, settings caches, etc.) or when no `*.uid` metadata is
- * tracked.
+ * save data, settings caches, etc.), when no `*.uid` metadata is
+ * tracked, or when a tracked C# file is indented with tabs.
+ *
+ * The tab check is here because the same file has been re-committed with
+ * tabs four times, each time turning CI red at its very first step and
+ * skipping every job behind it. `dotnet format` catches it, but only in
+ * CI and only after a six-minute build; this catches it locally in a
+ * second and names the file.
  *
  * Usage:
  *   bun tools/scripts/gate/hygiene.script.ts
  */
 
-import { readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { execSync } from 'node:child_process';
@@ -71,7 +77,20 @@ if (uidCount === 0) {
 	process.exit(1);
 }
 
-process.stdout.write('Repository hygiene passed: no generated artifacts are tracked.\n');
+// `.editorconfig` says four spaces for `*.cs`; an editor that ignores it
+// produces a diff `dotnet format` rejects before anything else can run.
+const tabbed = trackedFiles
+	.filter((path) => path.endsWith('.cs'))
+	.filter((path) => /^\t/m.test(readFileSync(join(paths.workspaceRoot, path), 'utf8')));
+
+if (tabbed.length > 0) {
+	process.stderr.write('C# files are indented with tabs; .editorconfig asks for four spaces:\n');
+	for (const path of tabbed) process.stderr.write(`  ${path}\n`);
+	process.stderr.write("fix: run `dotnet format` from game/, or `expand -t4` the file in place.\n");
+	process.exit(1);
+}
+
+process.stdout.write('Repository hygiene passed: no generated artifacts are tracked, no tabbed C#.\n');
 process.exit(0);
 
 /* `readdirSync` is intentionally retained so the import is non-trivial in
