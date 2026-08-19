@@ -9,6 +9,7 @@
 | `[prensa]` | Análisis y reportajes de medios especializados | Media — mezcla hecho y opinión; se marca cuál es cuál |
 | `[comunidad]` | Foros, guías y comunidades de jugadores | Baja-media — útil para prácticas reales de juego |
 | `[capturas]` | Análisis de capturas de pantalla del producto original | Alta para estructura visual, nula para intención |
+| `[jugado]` | Observado ejecutando el original, con fecha | **Máxima** — es la única etiqueta que cubre hover, tiempos, sonido y número de clics |
 | **inferencia** | Deducción propia | Ninguna autoridad externa; se puede discutir |
 
 ## Documento primario
@@ -64,6 +65,34 @@ Catalogadas una a una, con lo que muestra cada imagen, en
 
 > Estas páginas alojan las capturas que sostienen los wireframes del capítulo 13.
 > **Ninguna de esas imágenes está en el repositorio**; se enlazan y se describen.
+
+## Ejecutar el original
+
+- **Dinamic Multimedia Online** — <https://online.dinamicmultimedia.es/juegos.html>
+  (raíz: <https://online.dinamicmultimedia.es/>)
+
+  Proyecto personal de preservación, sin ánimo de lucro, que sirve los clásicos
+  de Dinamic **emulados dentro del navegador**. Es la vía más barata que
+  conocemos para *jugar* al original en vez de leer sobre él: sin instalar nada,
+  sin buscar una imagen de disco y sin pelearse con Wine.
+
+  > **Fuente de primera magnitud para esta wiki.** Todo lo que el capítulo
+  > [`05`](05-interaccion-y-controles.md) afirma sobre interacción está deducido
+  > de capturas fijas y del manual de 4.0. Una captura no dice cuántos clics hay
+  > entre dos pantallas, qué cambia al pasar el ratón por encima, qué se ve
+  > mientras carga ni qué suena al pulsar. Eso sólo lo da ejecutar el juego.
+
+  Advertencias registradas el **2026-08-19**:
+
+  - El sitio se declara **experimental** y no garantiza disponibilidad. Ese día
+    devolvía «Estamos haciendo mejoras. Volvemos enseguida»; el catálogo de
+    juegos no era visible, así que **no está verificado qué versiones ofrece**.
+  - Recomienda escritorio (Windows/macOS/Linux); en táctil funciona a medias.
+  - No hay copia en Wayback Machine, luego no se puede consultar cuando cae.
+  - **Un agente no puede usarlo directamente**: la emulación ocurre en el
+    navegador de la persona. Para que sirva a un agente hay que o bien mirarlo
+    una persona y contarlo, o bien ejecutar el juego localmente
+    ([`../pc-dynasty/como-mirar-el-juego.md`](../pc-dynasty/como-mirar-el-juego.md) §5).
 
 ## Comunidad
 

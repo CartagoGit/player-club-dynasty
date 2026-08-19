@@ -104,8 +104,57 @@ Para lo que un plan no alcanza está `bun run game:play`: lo abres tú y lo mira
 
 ## 5. Mirar el original
 
-Las capturas de PC Fútbol que sostienen las decisiones de esta wiki están
-catalogadas en [`../pcfutbol/14-catalogo-visual.md`](../pcfutbol/14-catalogo-visual.md)
+### 5.1 Jugarlo en el navegador (lo más barato)
+
+**<https://online.dinamicmultimedia.es/juegos.html>**
+
+Proyecto de preservación sin ánimo de lucro que sirve los clásicos de Dinamic
+**emulados dentro del navegador**: sin instalar, sin buscar imagen de disco, sin
+Wine. Es la vía más rápida para *jugar* al original en lugar de leer sobre él.
+
+Es también la única forma práctica de responder a lo que ninguna captura dice:
+cuántos clics hay entre dos pantallas, qué cambia al pasar el ratón por encima,
+qué se ve mientras carga y qué suena al pulsar. Todo lo que el capítulo
+[`05`](../pcfutbol/05-interaccion-y-controles.md) afirma sobre interacción está
+**deducido** de imágenes fijas y del manual de 4.0; esto permite comprobarlo.
+
+> **Lo tiene que mirar una persona.** La emulación corre en el navegador de
+> quien abre la página, así que un agente no puede pulsar ahí. El reparto útil:
+> tú juegas y cuentas (o grabas), y yo lo escribo en la wiki y lo convierto en
+> componentes. Para que un agente toque el original por su cuenta hace falta la
+> ruta local de §5.2.
+>
+> Comprobado el **2026-08-19**: el sitio estaba en mantenimiento y no se pudo
+> ver qué versiones ofrece. Se declara experimental, no garantiza disponibilidad
+> y no tiene copia en Wayback Machine.
+
+### 5.2 Ejecutarlo en local (lo que un agente puede conducir)
+
+WSLg **no se puede capturar**: `import -window root` falla y capturar una
+ventana por su id, también. Bajo WSLg cada aplicación es una superficie Wayland
+y no hay mapa de píxeles X11 que leer. Por eso las capturas de PC Dynasty salen
+de que *Godot se fotografía a sí mismo*, cosa que un juego de 1997 no va a hacer.
+
+La salida es un display virtual propio:
+
+```bash
+sudo apt-get install -y xvfb xdotool p7zip-full   # wine y ffmpeg ya están
+
+Xvfb :99 -screen 0 1024x768x16 &                  # 16 bits: son juegos de esa época
+DISPLAY=:99 wine "/ruta/al/PCFutbol.exe" &
+DISPLAY=:99 import -window root paso-01.png       # fotografiar
+DISPLAY=:99 xdotool mousemove 320 240 click 1     # pulsar
+```
+
+Con eso un agente recorre menús, pulsa y fotografía cada estado. Añade `x11vnc`
+si quieres ver en directo lo que está tocando.
+
+**Tiene que correr dentro de WSL.** Una instalación en Windows nativo es
+invisible desde aquí.
+
+### 5.3 Las capturas ya catalogadas
+
+Están en [`../pcfutbol/14-catalogo-visual.md`](../pcfutbol/14-catalogo-visual.md)
 y leídas una por una en [`../pcfutbol/16-lectura-de-capturas.md`](../pcfutbol/16-lectura-de-capturas.md).
 
 **No se descargan al repositorio.** Para trabajar con una:

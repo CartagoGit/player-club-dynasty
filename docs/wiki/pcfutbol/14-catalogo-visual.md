@@ -140,6 +140,25 @@ cambiaron de 5.0 a 6.0 mientras la agrupación se mantuvo intacta
 ([`16`](16-lectura-de-capturas.md) §3). Por eso el invariante que defendemos es
 «cuatro áreas separadas por color», no una paleta concreta.
 
+## 3 bis. Capturas nuevas: sácalas del juego, no de Google
+
+Las referencias de §2 son las que había publicadas. Cuando haga falta una
+pantalla que nadie ha subido —y hacen falta: faltan pretemporada, ver rival,
+vender jugador, decisiones económicas, estadio y entrenamiento— la forma de
+conseguirla es **ejecutar el original y fotografiarlo**, no seguir rebuscando.
+
+- Emulado en el navegador: <https://online.dinamicmultimedia.es/juegos.html>
+- En local bajo Wine, que es la vía que un agente puede conducir solo
+
+Las dos están explicadas en
+[`../pc-dynasty/como-mirar-el-juego.md`](../pc-dynasty/como-mirar-el-juego.md) §5.
+
+Una captura sacada así es **nuestra**, así que no la limita la política de §1;
+aun así **tampoco entra al repositorio**, porque sigue mostrando obra ajena. Se
+mira, se describe en [`16`](16-lectura-de-capturas.md) y se dibuja el wireframe.
+
+---
+
 ## 4. Cómo añadir una referencia nueva
 
 1. Localiza la captura y **anota su URL exacta**.

@@ -1,5 +1,20 @@
 # 05 · Interacción y controles
 
+> **Este capítulo está deducido, no observado.** Todo lo que afirma sale del
+> manual de 4.0 y de capturas fijas. Una imagen quieta no dice cuántos clics hay
+> entre dos pantallas, qué cambia al pasar el ratón por encima, qué se ve
+> mientras carga ni qué suena al pulsar.
+>
+> Para comprobarlo hay dos vías, ambas en
+> [`../pc-dynasty/como-mirar-el-juego.md`](../pc-dynasty/como-mirar-el-juego.md) §5:
+> **jugarlo emulado en el navegador** en
+> <https://online.dinamicmultimedia.es/juegos.html>, o **ejecutarlo en local**
+> bajo Wine en un display virtual, que es la única de las dos que un agente
+> puede conducir por su cuenta.
+>
+> Cada afirmación que se confirme jugando debería pasar de `[manual 4.0]` o
+> `[capturas]` a una etiqueta nueva, `[jugado]`, con la fecha.
+
 ## 1. El entorno GFX™ y sus reglas
 
 PC Fútbol 4.0 declaraba su capa de interfaz como un producto con nombre propio,
