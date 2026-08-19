@@ -150,6 +150,26 @@ list of the concrete implementation traps this codebase has already fallen into.
     the wrong one by accident."
   - "Every host pointer names the objective chapter, not only the grammar."
 
+### S7 — Catalogue the market variants as context
+- **Status**: done
+- **DependsOn**: [S6]
+- **Files**: `docs/wiki/pcfutbol/15-variantes-argentina-y-selecciones.md`, `docs/wiki/pcfutbol/14-catalogo-visual.md`, `docs/wiki/pcfutbol/99-fuentes.md`, `docs/wiki/pcfutbol/12-mejoras-para-pc-dynasty.md`, `docs/wiki/README.md`
+- **Gate**: unit
+- acceptance:
+  - "The Argentine line and the national-team line are documented as context, with
+    the target version restated so neither is mistaken for a second objective."
+  - "The Argentine main menu is recorded as proof that the rule is 'every
+    destination visible and grouped by colour', not 'tiles': the same grammar
+    resolved as a numbered list with the index digit coloured by family."
+  - "The Argentine club-history screen is recorded for the idea it contributes —
+    a table that draws the comparison's empty column before there is anything to
+    put in it — and for proving the grammar survives a light palette, which is
+    what makes our alternative palettes legitimate."
+  - "PC Selección '96 is recorded for the two mechanics it contributes: a short
+    tournament as a secondary mode over the same engine, and a call-up as a
+    decision distinct from a transfer."
+  - "Seven named takeaways are routed to the chapter that will implement each."
+
 ## acceptance
 
 - An agent that has never seen this repository can, from `mcp-vertex_docs_search`

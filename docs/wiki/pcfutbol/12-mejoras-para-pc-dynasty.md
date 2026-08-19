@@ -63,6 +63,10 @@ Leyenda: `[hecho]` · `[en curso]` · `[pendiente]` · `[descartado]`
 | C12 | **Comparador libre** de hasta 4 entidades sobre cualquier tabla | Copiado de goleadores y clasificación | `[pendiente]` |
 | C13 | **Resumen de jornada** legible: lo importante primero, el detalle a un clic | Evolución del seguimiento | `[pendiente]` |
 | C14 | **Empleados con una mecánica exclusiva cada uno** (si contratarlo no mueve un número visible, no existe) | Lección de 2001 vs 2005 | `[pendiente]` |
+| C15 | **Un torneo corto como modo secundario** sobre el mismo motor: convocatoria, cuadro y siete partidos, sin mercado ni finanzas | PC Selección '96 | `[pendiente]` |
+| C16 | **La convocatoria como mecánica propia**, distinta de fichar: elegir N de entre cientos sin dinero de por medio | PC Selección '96 | `[pendiente]` |
+| C17 | **Vídeo en los momentos que se recuerdan** — apertura, antesala del partido, trofeo — todos desactivables | — | `[en curso]` |
+| C18 | **Audio con música y efectos separados**, cada uno con su nivel | Pantalla de configuración clásica | `[en curso]` |
 
 ## D · Descartado explícitamente
 

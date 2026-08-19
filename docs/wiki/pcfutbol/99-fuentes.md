@@ -55,6 +55,13 @@ Catalogadas una a una, con lo que muestra cada imagen, en
 - **PC Fútbol 7 — Temporada 98-99** (Micromanía 79, PCManía 90; valoración CEZ 9,1) — <https://computeremuzone.com/ficha/253/pc-futbol-7-temporada-98-99>
 - Índice de la saga en Computer Emuzone — <https://computeremuzone.com/pc/saga/pc-futbol>
 
+### Variantes (contexto, no objetivo)
+
+- **PC Fútbol Argentina 4.0 — Apertura '96** — <https://computeremuzone.com/ficha/848/pc-futbol-argentina-40-apertura--96>
+- **PC Selección Española de Fútbol — Eurocopa '96** — <https://computeremuzone.com/ficha/627/pc-seleccion-espanola-de-futbol-eurocopa--96>
+- Kodro Magazine sobre las ediciones argentinas — <https://www.kodromagazine.com/pc-futbol-argentina-4-0-apertura-96/>
+- MobyGames, ficha de PC Selección '96 — <https://www.mobygames.com/game/19942/pc-seleccion-espanola-de-futbol-eurocopa-96/>
+
 > Estas páginas alojan las capturas que sostienen los wireframes del capítulo 13.
 > **Ninguna de esas imágenes está en el repositorio**; se enlazan y se describen.
 

@@ -62,7 +62,20 @@ Página de la ficha con todas las capturas y las notas de prensa de la época:
 
 Ficha completa: <https://computeremuzone.com/ficha/253/pc-futbol-7-temporada-98-99>
 
-### 2.3 Pantallas de la línea Liga Manager (6.0/7.0 y contemporáneas)
+### 2.3 Variantes: Argentina y selecciones
+
+Contexto, no objetivo. Descritas en [`15`](15-variantes-argentina-y-selecciones.md).
+
+| # | Pantalla | Fuente | Wireframe |
+|---|---|---|---|
+| V19 | **Menú principal argentino** — destinos numerados con cifra coloreada por familia, rejilla de escudos en el raíl | [CEZ 848-pc-futbol-argentina-40-2.png](https://computeremuzone.com/fichas-pantallas/p/848-pc-futbol-argentina-40-2.png) | [`15` §1.1](15-variantes-argentina-y-selecciones.md) |
+| V20 | **Historial de club** — tabla con el hueco de la comparación ya dibujado, cromo gris claro | [CEZ 848-pc-futbol-argentina-40-1.png](https://computeremuzone.com/fichas-pantallas/p/848-pc-futbol-argentina-40-1.png) | [`15` §1.2](15-variantes-argentina-y-selecciones.md) |
+| V21 | **Simulador argentino** | [CEZ 848-pc-futbol-argentina-40-3.png](https://computeremuzone.com/fichas-pantallas/p/848-pc-futbol-argentina-40-3.png) | Fuera de alcance |
+
+Fichas: <https://computeremuzone.com/ficha/848/pc-futbol-argentina-40-apertura--96> ·
+<https://computeremuzone.com/ficha/627/pc-seleccion-espanola-de-futbol-eurocopa--96>
+
+### 2.4 Pantallas de la línea Liga Manager (6.0/7.0 y contemporáneas)
 
 Referencias aportadas al proyecto y descritas en [`03`](03-mapa-de-pantallas.md).
 No tienen URL pública catalogada; su descripción estructural es la fuente.

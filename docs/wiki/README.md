@@ -52,6 +52,7 @@ salir de la intuición de quien toque el fichero ese día.
 0. [Objetivo y alcance](pcfutbol/00-objetivo-y-alcance.md) — **normativo**: la versión objetivo, qué papel juega cada entrega y las reglas de decisión.
 13. [La versión objetivo: 6.0 y 7.0](pcfutbol/13-version-objetivo-6-0-y-7-0.md) — pantalla a pantalla, con wireframes.
 14. [Catálogo visual](pcfutbol/14-catalogo-visual.md) — referencias originales enlazadas, y la política de por qué no se copian.
+15. [Variantes: Argentina y selecciones](pcfutbol/15-variantes-argentina-y-selecciones.md) — la misma gramática resuelta de otra forma, y qué nos llevamos de ella.
 
 ### Referencia del clásico
 
