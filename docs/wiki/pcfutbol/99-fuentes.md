@@ -10,6 +10,7 @@
 | `[comunidad]` | Foros, guías y comunidades de jugadores | Baja-media — útil para prácticas reales de juego |
 | `[capturas]` | Análisis de capturas de pantalla del producto original | Alta para estructura visual, nula para intención |
 | `[jugado]` | Observado ejecutando el original, con fecha | **Máxima** — es la única etiqueta que cubre hover, tiempos, sonido y número de clics |
+| `[catálogo]` | Leído del registro de títulos de un archivo de preservación | Alta para qué existió, sus años y sus variantes; nula sobre cómo se jugaba |
 | **inferencia** | Deducción propia | Ninguna autoridad externa; se puede discutir |
 
 ## Documento primario
@@ -82,17 +83,31 @@ Catalogadas una a una, con lo que muestra cada imagen, en
   > entre dos pantallas, qué cambia al pasar el ratón por encima, qué se ve
   > mientras carga ni qué suena al pulsar. Eso sólo lo da ejecutar el juego.
 
+  **Qué ofrece** (leído del registro del sitio el 2026-08-19): **35 títulos**,
+  con la línea principal española completa —PC Fútbol 4.0, 5.0, 6.0 y 7.0— más
+  las líneas italiana, inglesa, francesa, argentina, de selecciones y de club.
+  El catálogo entero y lo que demuestra están en
+  [`01-historia-y-versiones.md`](01-historia-y-versiones.md).
+
+  **Cómo funciona.** Arranca una imagen de disco de Windows 98 dentro de un
+  emulador x86 en el navegador. Cada título son entre 0,5 y 2,3 GB de imágenes
+  servidas desde `discos.dinamicmultimedia.es`.
+
   Advertencias registradas el **2026-08-19**:
 
-  - El sitio se declara **experimental** y no garantiza disponibilidad. Ese día
-    devolvía «Estamos haciendo mejoras. Volvemos enseguida»; el catálogo de
-    juegos no era visible, así que **no está verificado qué versiones ofrece**.
+  - El sitio se declara **experimental** y no garantiza disponibilidad. Lleva un
+    aviso de mantenimiento que se enciende por configuración; una lectura
+    automática del HTML lo confunde con que el sitio esté caído, porque el aviso
+    está siempre en el marcado y se muestra u oculta desde el panel.
   - Recomienda escritorio (Windows/macOS/Linux); en táctil funciona a medias.
   - No hay copia en Wayback Machine, luego no se puede consultar cuando cae.
-  - **Un agente no puede usarlo directamente**: la emulación ocurre en el
-    navegador de la persona. Para que sirva a un agente hay que o bien mirarlo
-    una persona y contarlo, o bien ejecutar el juego localmente
-    ([`../pc-dynasty/como-mirar-el-juego.md`](../pc-dynasty/como-mirar-el-juego.md) §5).
+  - **Un agente no puede usarlo**, y por tres motivos independientes, cada uno
+    suficiente por sí solo: la emulación necesita un navegador con JavaScript
+    que un agente no tiene; las imágenes son de un sistema operativo entero, así
+    que harían falta QEMU y no Wine; y el servidor de discos responde **403** a
+    cualquier petición que no venga del propio navegador, con o sin cabeceras de
+    origen. Para que un agente toque el original hay que instalarlo en local
+    ([`../pc-dynasty/como-mirar-el-juego.md`](../pc-dynasty/como-mirar-el-juego.md) §5.2).
 
 ## Comunidad
 

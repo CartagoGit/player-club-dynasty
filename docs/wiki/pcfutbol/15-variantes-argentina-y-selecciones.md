@@ -12,6 +12,14 @@ manera**, y saber por tanto qué parte es esencial y qué parte es decoración.
 
 ---
 
+> **Alcance ampliado (2026-08-19).** Este capítulo se escribió conociendo sólo
+> PC Fútbol Argentina 4.0 y PC Selección '96. El catálogo preservado
+> ([`01`](01-historia-y-versiones.md) §"El catálogo preservado") demuestra que
+> ambas líneas siguieron: la argentina llegó a **5.0 Apertura '97** y **6.0
+> Apertura '98**, y hubo un segundo título de selecciones, **PC Selección
+> Mundial '98**. Lo que sigue vale para las versiones que sí se han leído; las
+> otras cuatro están sin describir y son trabajo pendiente.
+
 ## 1. La línea argentina
 
 | Entrega | Torneo | Notas `[wiki]` `[comunidad]` |

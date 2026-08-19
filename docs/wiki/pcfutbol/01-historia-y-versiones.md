@@ -47,6 +47,40 @@ Ventas acumuladas de la saga: aproximadamente **un millón de copias**. `[wiki]`
   Prueba de que la gramática era **portable entre dominios** — dato relevante para
   nosotros, que también queremos un armazón reutilizable. `[wiki]`
 
+### El catálogo preservado, y lo que demuestra `[catálogo]`
+
+El registro de <https://online.dinamicmultimedia.es/> conserva **35 títulos** con
+sus años. Leído entero, dice más sobre el diseño de la saga que cualquier
+análisis, porque enseña **cuántas veces se reutilizó el mismo armazón**:
+
+| Familia | Títulos preservados |
+|---|---|
+| **España, línea principal** | PC Fútbol 4.0 (1995), 5.0 (1996), 6.0 (1997), 7.0 (1998) |
+| **Italia** | PC Calcio 4.0 (1996), 5 (1997), 6 (1998), 7 (1999), más ediciones «Versión Española» de 4.0, 5.0 y 6.0 |
+| **Inglaterra** | PC Premier 5.0 (1997), PC Premier 6.0 (1998) |
+| **Francia** | PC France 5.0 (1997) |
+| **Internacional** | Premier Manager 97, 98, 99 |
+| **Argentina** | PC Fútbol 4.0 Apertura '96, 5.0 Apertura '97, 6.0 Apertura '98, PC River (2000) |
+| **Selecciones** | PC Selección Eurocopa '96, PC Selección **Mundial '98** |
+| **Ediciones de club** | PC Real Madrid 99, PC Barça '99, PC Atlético de Madrid 2000 |
+| **Otros deportes** | PC Basket 4.0, PC Basket 6.5, PC Real Madrid Basket '99, PC Barça Basket '99, EuroTour Cycling (2001) |
+| **Fuera de la gestión** | Igor: Objetivo Uikokahonia (1994), Hollywood Monsters, Los Justicieros, Combat Chess |
+
+> **La inferencia que más nos sirve.** La misma interfaz se publicó como PC
+> Fútbol, PC Calcio, PC Premier, PC France y Premier Manager, y además con la
+> marca de tres clubes distintos. Eso convierte en **hecho comprobado** lo que
+> el capítulo [`04`](04-gramatica-visual.md) §4 sostenía por inferencia: la
+> gramática es **separable del contenido y de la marca**. Si aguantó cinco
+> idiomas, cuatro ligas y tres escudos corporativos, aguanta que PC Dynasty le
+> ponga su propio mundo y su propia paleta.
+
+Dos entradas corrigen lo que esta wiki daba por cerrado:
+
+- **PC Selección Mundial '98** existe. El capítulo
+  [`15`](15-variantes-argentina-y-selecciones.md) sólo conocía la Eurocopa '96.
+- La línea argentina llegó hasta **6.0 Apertura '98**, no se quedó en la 4.0 que
+  el capítulo 15 describe.
+
 ## Las cuatro claves del éxito
 
 1. **Híbrido gestión + arcade en el mismo producto.** El jugador podía delegar el
