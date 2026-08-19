@@ -216,6 +216,46 @@ pantalla nunca cambia de altura y el jugador ve de un vistazo cuánto le queda.
 Barritas en el extremo de una barra de rótulo que dicen cuántos elementos hay y
 en cuál estás. Más barato y más legible que "3 de 6" cuando el total es pequeño.
 
+### 3.21 Par de campo (`FieldPair`) — **normativo**
+
+El patrón de dato más repetido de toda la saga, y el que más se echa en falta al
+comparar nuestras pantallas con las suyas. **Un dato nunca se escribe como
+`Etiqueta: valor` en una línea.** Son dos barras apiladas:
+
+```
+┌────────────────────────────────┐
+│ ESTADIO                        │  barra clara, etiqueta en mayúsculas oscuras
+├────────────────────────────────┤
+│ Santiago Bernabéu              │  barra saturada, valor en blanco
+└────────────────────────────────┘
+```
+
+Reglas:
+
+- La barra de valor va **saturada**, y su color **agrupa por familia de dato**
+  (los datos del estadio comparten color; los del club, otro; el nombre, el
+  patrocinador y el equipador, otro). El color clasifica, no decora.
+- Los pares se disponen en **rejilla de dos columnas**; un valor largo ocupa el
+  ancho completo en lugar de encogerse.
+- La etiqueta va siempre en mayúsculas y el valor en caja normal: la forma de la
+  palabra distingue metadato de dato antes de leerlos.
+
+Fuente: ficha de club de 6.0, leída en [`16` §6](16-lectura-de-capturas.md).
+
+### 3.22 Celda de mapa de calor (`HeatCell`) — **normativo**
+
+En las tablas de atributos, **cada celda va teñida por su propio valor** (verde
+alto → rojo bajo) y **la fila entera va teñida por demarcación**. Las dos capas
+conviven, y ninguna sustituye al texto: la columna `DEM` sigue diciendo `POR`,
+`DEF`, `MED`, `DEL`.
+
+El principio es el de [`§1`](#1-los-ocho-principios): el color **duplica** el
+dato para poder leer la tabla de un vistazo, y nunca lo reemplaza — quien no
+distinga los tintes sigue teniendo el número y la palabra.
+
+Fuente: alineación de 6.0 y ver rival de 5.0, leídas en
+[`16` §4 y §5](16-lectura-de-capturas.md).
+
 ---
 
 ## 4. Color
@@ -242,6 +282,18 @@ paleta es propia, pero adopta la **estructura**:
   revés.
 - Las paletas alternativas (claro/oscuro/alto contraste) **sólo** redefinen estos
   roles; ninguna pantalla codifica un color literal.
+- **El color nunca es el único portador de un dato.** Donde hay tinte hay también
+  texto: la demarcación se tiñe *y* se escribe, el atributo se tiñe *y* se
+  numera.
+
+> **Por qué la paleta puede ser nuestra.** Al comparar 5.0 con 6.0 se ve que los
+> colores concretos de las cuatro áreas **cambiaron** de una versión a la
+> siguiente mientras la agrupación y el reparto de destinos se mantuvieron
+> intactos ([`16` §3](16-lectura-de-capturas.md)). El invariante de la gramática
+> es «cuatro áreas separadas por color, y el color se repite dentro de las
+> pantallas que abre», no una paleta concreta. La variante argentina lo confirma
+> desde el otro extremo: el mismo esqueleto sobrevive a un cromo gris claro
+> ([`15`](15-variantes-argentina-y-selecciones.md)).
 
 ---
 

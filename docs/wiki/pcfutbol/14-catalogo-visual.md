@@ -89,23 +89,56 @@ No tienen URL pública catalogada; su descripción estructural es la fuente.
 | V16 | **Opciones de configuración** — seis placas rotuladas en una pantalla | [`03` §Q](03-mapa-de-pantallas.md) |
 | V17 | **Campeón / subcampeón** — pantalla ceremonial | [`03` §R](03-mapa-de-pantallas.md) |
 | V18 | **Despacho por cuadrantes** (línea posterior: Argentina / 2000 / 2005) | [`03` §D](03-mapa-de-pantallas.md) — **no es la referencia objetivo**, ver §3 |
+### 2.5 Capturas leídas componente a componente
+
+Las siguientes se descargaron, se miraron una por una y se describieron en
+[`16-lectura-de-capturas.md`](16-lectura-de-capturas.md). Son la base de las
+correcciones de §3.
+
+| # | Pantalla | Versión | Fuente | Lectura |
+|---|---|---|---|---|
+| V22 | **Menú principal** — rejilla 3×3, extensiones en gris, raíl inferior | 6.0 | [devuego 624_1.jpg](https://cdn.devuego.es/capturas/624_1.jpg) | [`16` §1](16-lectura-de-capturas.md) |
+| V23 | **Pretemporada Promanager** — mapa, cinco ranuras fijas, comandos por intención | 6.0 | [devuego 624_2.jpg](https://cdn.devuego.es/capturas/624_2.jpg) | [`16` §7](16-lectura-de-capturas.md) |
+| V24 | **Ficha de club** — el patrón `FieldPair` en toda su extensión | 6.0 | [devuego 624_3.jpg](https://cdn.devuego.es/capturas/624_3.jpg) | [`16` §6](16-lectura-de-capturas.md) |
+| V25 | **Simulador** — marcador permanente arriba, glifo de evento | 6.0 | [devuego 624_4.jpg](https://cdn.devuego.es/capturas/624_4.jpg) | Fuera de alcance |
+| V26 | **Despacho por cuadrantes** — cintillo de noticias, columnas de retratos | 6.0 | [devuego 624_5.jpg](https://cdn.devuego.es/capturas/624_5.jpg) | [`16` §3](16-lectura-de-capturas.md) |
+| V27 | **Alineación** — bloques, mapa de calor, raíl reactivo completo | 6.0 | [devuego 624_6.jpg](https://cdn.devuego.es/capturas/624_6.jpg) | [`16` §4](16-lectura-de-capturas.md) |
+| V28 | **Menú Manager** — la misma agrupación con otra paleta | 5.0 | [myabandonware pc-futbol-5-0_2.png](https://www.myabandonware.com/media/screenshots/p/pc-futbol-5-0-q6n/pc-futbol-5-0_2.png) | [`16` §2](16-lectura-de-capturas.md) |
+| V29 | **Ver rival** — conmutador de vista, tarjeta de jugador, placa de asistente | 5.0 | [myabandonware pc-futbol-5-0_8.png](https://www.myabandonware.com/media/screenshots/p/pc-futbol-5-0-q6n/pc-futbol-5-0_8.png) | [`16` §5](16-lectura-de-capturas.md) |
+
+Fichas con la galería completa:
+<https://www.devuego.es/presskit/pc-futbol-60> ·
+<https://www.myabandonware.com/game/pc-futbol-5-0-gzl> (30 capturas) ·
+<https://www.myabandonware.com/game/pc-futbol-6-0-gzu>
 
 ---
 
-## 3. Cuidado: dos linajes de interfaz distintos
+## 3. Los dos registros conviven en la misma versión
 
-Circulan capturas de dos familias que se confunden con facilidad:
+> **Corrección (2026-08-19).** Este apartado decía que el «despacho por
+> cuadrantes» pertenecía a una línea posterior (Argentina, 2000, 2005+) y que
+> **no** era nuestra referencia. Es falso. Al leer las capturas originales de
+> 5.0 y 6.0 ([`16`](16-lectura-de-capturas.md) §2 y §3) se ve que el despacho
+> por cuadrantes **es** el eje de la carrera en ambas, con su barra inferior
+> `SALIR / GRABAR LIGA / NOTICIAS / SEGUIR`. Se corrige aquí para que nadie
+> construya el despacho a partir de la premisa equivocada.
 
-| Linaje | Aspecto | Versiones | ¿Es nuestro objetivo? |
+No son dos linajes rivales: son **dos registros de una misma interfaz**, y cada
+uno tiene su trabajo.
+
+| Registro | Aspecto | Dónde se usa | Su trabajo |
 |---|---|---|---|
-| **Liga Manager clásico** | Banda cromada con título centrado, tabla maestra con raíl derecho, placa de calendario | 4.0 → 7.0 | **Sí** |
-| **Despacho por cuadrantes** | Fondo negro, cuatro grupos de tres botones, raíles verticales con el nombre del área, barra inferior `SALIR / GRABAR / NOTICIAS / SEGUIR` | PC Fútbol Argentina, 2000, 2005+ | **No**, pero su idea de agrupar destinos por área con color propio sí se adopta |
+| **Despacho por cuadrantes** | Cuatro áreas alrededor del próximo partido, raíles con el nombre del área, barra inferior `SALIR / GRABAR LIGA / NOTICIAS / SEGUIR` | El **eje** de la carrera, 5.0 y 6.0 | Elegir a dónde vas, y recordarte qué viene después |
+| **Liga Manager clásico** | Banda cromada con título centrado, tabla maestra densa, raíl derecho reactivo, placa de calendario | Cada **pantalla de trabajo** que el despacho abre | Enseñar y dejar decidir |
 
-Lo tomamos así: **la piel es la del Liga Manager de 6.0**; de los cuadrantes
-tomamos únicamente el principio de **agrupar los destinos por área y darle a cada
-área su color**, que es lo que ya aplicamos al raíl del despacho.
+La consecuencia práctica: PC Dynasty necesita **los dos**. Hoy sólo tiene el
+segundo — un raíl lateral que abre pantallas de trabajo — y le falta el primero,
+que es la pantalla a la que el jugador vuelve entre decisión y decisión.
 
----
+Lo que sí varía entre versiones es la **paleta**: los colores de las cuatro áreas
+cambiaron de 5.0 a 6.0 mientras la agrupación se mantuvo intacta
+([`16`](16-lectura-de-capturas.md) §3). Por eso el invariante que defendemos es
+«cuatro áreas separadas por color», no una paleta concreta.
 
 ## 4. Cómo añadir una referencia nueva
 

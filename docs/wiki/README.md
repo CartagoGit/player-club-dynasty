@@ -34,6 +34,7 @@ salir de la intuición de quien toque el fichero ese día.
 | Diseñar o retocar **cualquier** pantalla | [`04-gramatica-visual.md`](pcfutbol/04-gramatica-visual.md) — **normativo** — y [`13`](pcfutbol/13-version-objetivo-6-0-y-7-0.md) §7 |
 | Reproducir una pantalla concreta del objetivo | [`13-version-objetivo-6-0-y-7-0.md`](pcfutbol/13-version-objetivo-6-0-y-7-0.md) |
 | Buscar la captura original de referencia | [`14-catalogo-visual.md`](pcfutbol/14-catalogo-visual.md) |
+| Saber qué se ve exactamente en una captura, sin abrirla | [`16-lectura-de-capturas.md`](pcfutbol/16-lectura-de-capturas.md) |
 | Decidir dónde vive un botón o cómo se navega | [`05-interaccion-y-controles.md`](pcfutbol/05-interaccion-y-controles.md) |
 | Crear una pantalla nueva | [`03-mapa-de-pantallas.md`](pcfutbol/03-mapa-de-pantallas.md) |
 | Implementar una regla de simulación | [`06-sistemas-deportivos.md`](pcfutbol/06-sistemas-deportivos.md) |
@@ -53,6 +54,7 @@ salir de la intuición de quien toque el fichero ese día.
 13. [La versión objetivo: 6.0 y 7.0](pcfutbol/13-version-objetivo-6-0-y-7-0.md) — pantalla a pantalla, con wireframes.
 14. [Catálogo visual](pcfutbol/14-catalogo-visual.md) — referencias originales enlazadas, y la política de por qué no se copian.
 15. [Variantes: Argentina y selecciones](pcfutbol/15-variantes-argentina-y-selecciones.md) — la misma gramática resuelta de otra forma, y qué nos llevamos de ella.
+16. [Lectura de capturas](pcfutbol/16-lectura-de-capturas.md) — ocho pantallas originales leídas zona por zona, y qué componente exige cada una.
 
 ### Referencia del clásico
 

@@ -58,7 +58,7 @@ Descritas con wireframe en [`13`](../pcfutbol/13-version-objetivo-6-0-y-7-0.md).
 | `CommandButton` | ✔ con intención y estados | `Theme/ClassicChrome.cs`, `Theme/CommandBar.cs` |
 | `AreaButton` | ✔ `ClassicChrome.AreaEntry` por `ShellArea` | `Theme/ClassicChrome.cs` |
 | `BreakdownWindow` | **No existe** | — |
-| `Dialog` | **No existe** | — |
+| `Dialog` | ✔ `ConfirmDialog` — fondo modal, Escape a la respuesta segura, foco en ella | `Theme/ConfirmDialog.cs` |
 | `Stepper` | **No existe** | — |
 | `StarRating` | **No existe** | — |
 | `PitchDiagram` | Parcial en selección de once | `Matches/` |
@@ -66,12 +66,26 @@ Descritas con wireframe en [`13`](../pcfutbol/13-version-objetivo-6-0-y-7-0.md).
 | `CrestGrid` | **No existe** (hay `CrestPlaceholder` suelto) | `Theme/ClassicChrome.cs` |
 | `EdgeRail` | ✔ rotado, con color de área | `Theme/EdgeRail.cs` |
 | `DestinationTile` | Parcial — los destinos del menú son tiles con color de área | `Scripts/Shell/ShellChrome.cs` |
-| `TabStrip` | **No existe** | — |
+| `TabStrip` | ✔ usado por los ajustes; falta aplicarlo fuera de ellos | `Theme/TabStrip.cs` |
 | `RowTab` | **No existe** | — |
 | `ViewSwitch` | **No existe** | — |
 | `StaffPlate` | **No existe** | — |
 | `SlotList` | **No existe** | — |
 | `SegmentIndicator` | **No existe** | — |
+| `FieldPair` **(normativo)** | **No existe** — y es el patrón de dato más repetido del original | — |
+| `HeatCell` **(normativo)** | **No existe** — las tablas no tiñen ni la celda por valor ni la fila por demarcación | — |
+| `NewsTicker` | **No existe** — la noticia más reciente debería alcanzar al jugador en el eje | — |
+| `SkillGrid` | **No existe** — seis destrezas nombradas en 2×3, número y estrellas a la vez | — |
+| `NextFixturePlate` | **No existe** — el centro del despacho es el próximo partido, no un menú | — |
+| `ModeBadge` | **No existe** — el modo se declara permanentemente en pantalla | — |
+| `HoverReadout` | **No existe** — renglón de estado dedicado a lo que señala el puntero | — |
+
+> Los siete últimos salen de leer las capturas originales una por una en
+> [`16`](../pcfutbol/16-lectura-de-capturas.md). `FieldPair` y `HeatCell` son
+> los que más distancia explican entre nuestras pantallas y las suyas: no es que
+> nos falte adorno, es que escribimos los datos en una línea donde el original
+> los ponía en dos barras, y dejamos las tablas en gris donde el original las
+> teñía.
 
 ## Defectos abiertos de interfaz
 
