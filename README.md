@@ -56,6 +56,9 @@ player-club-dynasty/
 │  ├─ REPO-RULES.md                     workspace-level repo rules
 │  ├─ host-hints/agent-instructions.generated.md  auto-generated catalog fragment
 │  └─ proposals/                        proposals store (8 status folders)
+├─ docs/wiki/                           design knowledge base (classic-manager reference)
+│  ├─ pcfutbol/04-gramatica-visual.md   NORMATIVE visual grammar — read before any UI change
+│  └─ pc-dynasty/mapa-de-equivalencias.md  our screens vs the classic, with the open gaps
 ├─ plugins/player-club/                 @player-club/plugin (project-scoped MCP plugin)
 ├─ scripts/                             workspace-local helpers
 └─ .cache/mcp-vertex/                   per-plugin scratch dirs (gitignored)
@@ -125,5 +128,11 @@ rm .mcp-vertex-root
 - [`docs/mcp-vertex/REPO-RULES.md`](docs/mcp-vertex/REPO-RULES.md) —
   the workspace-specific repo rules (commands, hard rules, plugin
   prefixes).
+- [`docs/wiki/`](docs/wiki/README.md) — the **design knowledge base**: how the
+  classic desktop managers structured their screens, interactions and systems,
+  and what PC Dynasty takes from them. Served to agents through the `docs`
+  plugin, so `mcp-vertex_docs_search` finds it without crawling the repo.
+  [`docs/wiki/pcfutbol/04-gramatica-visual.md`](docs/wiki/pcfutbol/04-gramatica-visual.md)
+  is **normative** for every UI change.
 - Local mcp-vertex README — `$(bun run mcp-vertex:resolve-root)/README.md`
   — the upstream monorepo layout.

@@ -29,10 +29,34 @@ required and no machine-specific path is committed.
 | `docs/mcp-vertex/AGENT-BOOTSTRAP.md` | Vendored copy of the canonical universal bootstrap (refresh with `bun scripts/sync-bootstrap.script.ts`). |
 | `docs/mcp-vertex/host-hints/agent-instructions.generated.md` | Auto-generated hint fragment, regenerated with `bun run mcp-vertex:hints`. |
 | `docs/mcp-vertex/proposals/` | The proposals store (`blocked/`, `done/`, `in-progress/`, `paused/`, `ready/`, `retired/`, `review/`, `legacy/`). |
+| `docs/wiki/` | **Design knowledge base.** Reference on how the classic desktop football managers structured screens, interaction and systems, plus what PC Dynasty adopts. Served through the `docs` plugin (`mcp-vertex_docs_search`). |
 | `plugins/player-club/` | The project's own MCP plugin (`@player-club/plugin`). |
 | `scripts/` | Workspace-local helpers (build, dev, sync-bootstrap, root resolver). |
 | `.cache/mcp-vertex/` | Scratch root, per-plugin subdirectories created on first boot. |
 | `.mcp-vertex-root` | Pointer file consumed by `scripts/mcp-vertex-root.script.ts`. Holds a path relative to the workspace; overridable via `MCP_VERTEX_ROOT`. |
+
+## Design knowledge base — read before touching the UI
+
+`docs/wiki/` is not background reading; it is the source the interface work is
+held to.
+
+| Before you… | Read |
+|---|---|
+| change **any** screen, panel, table or control | [`docs/wiki/pcfutbol/04-gramatica-visual.md`](../wiki/pcfutbol/04-gramatica-visual.md) — **normative**, with a checklist at the end |
+| add a screen or decide where a control lives | [`docs/wiki/pcfutbol/03-mapa-de-pantallas.md`](../wiki/pcfutbol/03-mapa-de-pantallas.md) and [`05-interaccion-y-controles.md`](../wiki/pcfutbol/05-interaccion-y-controles.md) |
+| implement a simulation, economy or market rule | [`06`](../wiki/pcfutbol/06-sistemas-deportivos.md), [`07`](../wiki/pcfutbol/07-economia-y-club.md), [`08`](../wiki/pcfutbol/08-mercado-y-fichajes.md) |
+| propose new scope | [`12-mejoras-para-pc-dynasty.md`](../wiki/pcfutbol/12-mejoras-para-pc-dynasty.md) — the backlog with its rationale |
+
+Hard rules that come from it:
+
+- **No absolute offsets.** Anchors and containers only. A panel that leaves the
+  window at any resolution is a defect, not a cosmetic issue.
+- **No interactive control with `Control` children that swallow the click.**
+  `Button` is not a container; see `05` §5.1.
+- **Shared components never call `tr()`** — they render the text they are handed.
+- **Every colour resolves through the palette**, never a literal.
+- The checklist at the end of `04` is the acceptance bar for any UI slice.
+
 
 ## Commands (the only ones you need)
 

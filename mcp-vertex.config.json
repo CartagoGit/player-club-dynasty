@@ -31,7 +31,7 @@
 		},
 		"docs": {
 			"options": {
-				"roots": ["docs/mcp-vertex", "README.md"],
+				"roots": ["docs/mcp-vertex", "docs/wiki", "docs/design", "README.md"],
 				"extensions": ["md", "mdx"],
 				"ignoreDirs": ["node_modules", ".cache", "dist"]
 			}

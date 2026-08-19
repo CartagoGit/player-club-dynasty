@@ -5,6 +5,11 @@
 > (Claude Code appendix — keep the main thread cheap).
 >
 > This file is a pointer. All content lives in the bootstrap.
+
+> **Before changing any user interface**, read
+> [`docs/wiki/pcfutbol/04-gramatica-visual.md`](docs/wiki/pcfutbol/04-gramatica-visual.md).
+> It is normative. The whole design knowledge base lives in
+> [`docs/wiki/`](docs/wiki/README.md) and is served by `mcp-vertex_docs_search`.
 >
 > When the `mcp-vertex` server is connected, ALWAYS start a session with
 > `mcp-vertex_overview { compact: true }` instead of crawling the repo.

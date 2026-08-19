@@ -10,6 +10,11 @@
 
 This file is a pointer. All content lives in the bootstrap.
 
+> **Before changing any user interface**, read
+> [`docs/wiki/pcfutbol/04-gramatica-visual.md`](docs/wiki/pcfutbol/04-gramatica-visual.md).
+> It is normative. The whole design knowledge base lives in
+> [`docs/wiki/`](docs/wiki/README.md) and is served by `mcp-vertex_docs_search`.
+
 <!-- mcp-vertex:begin -->
 
 # mcp-vertex host hints (auto-generated)
