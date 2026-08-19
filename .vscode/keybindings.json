@@ -1,0 +1,17 @@
+[
+	{
+		"key": "ctrl+alt+v",
+		"command": "workbench.action.terminal.sendSequence",
+		"when": "editorLangId == markdown || activeEditorIsMarkdown",
+		"args": {
+			"text": "bun run game:audio:open '${file}'\n"
+		}
+	},
+	{
+		"key": "ctrl+alt+shift+v",
+		"command": "workbench.action.terminal.sendSequence",
+		"args": {
+			"text": "bun run game:audio:open docs/audios/REVIEW-CHECKLIST.md\n"
+		}
+	}
+]

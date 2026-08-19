@@ -77,10 +77,10 @@ and surfaces failures as `isError: true`.
 >
 > **Agent:** `player-club-dynasty_audio_stage { fullKey: "music.matchday.matchday_goal" }`
 >
-> **Tool response:** `{ fullKey: "music.matchday.matchday_goal", variantId: "v_1692345678", wavPath: "/.../.audio-staging/music.matchday/matchday_goal/v_1692345678.wav", listenCommand: "bun scripts/generate-audio.script.ts listen ..." }`
+> **Tool response:** `{ fullKey: "music.matchday.matchday_goal", variantId: "v_1692345678", wavPath: "/.../.generate/audios/staging/music.matchday/matchday_goal/v_1692345678.wav", listenCommand: "bun scripts/generate-audio.script.ts listen ..." }`
 >
 > **Agent:** "Generated a new variant at
-> `/.../.audio-staging/music.matchday/matchday_goal/v_1692345678.wav`.
+> `/.../.generate/audios/staging/music.matchday/matchday_goal/v_1692345678.wav`.
 > Listen with `xdg-open <path>` and tell me if you want to approve it
 > or replace it."
 >

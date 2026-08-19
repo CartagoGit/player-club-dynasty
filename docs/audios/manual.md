@@ -6,8 +6,8 @@
 ## TL;DR
 
 ```bash
-bun run game:audio:stage sfx.ui.ui_click   # 1. candidate goes to .audio-staging/
-xdg-open .audio-staging/sfx.ui/ui_click/v_<ts>.wav   # 2. listen
+bun run game:audio:stage sfx.ui.ui_click   # 1. candidate goes to .generate/audios/staging/
+xdg-open .generate/audios/staging/sfx.ui/ui_click/v_<ts>.wav   # 2. listen
 bun run game:audio:approve sfx.ui.ui_click --variant v_<ts>   # 3. ship it
 ```
 
@@ -30,7 +30,7 @@ The runner **fails fast** with a clear message when either is missing.
 
 | Command | What it does |
 |---|---|
-| `bun run game:audio:stage <slot> [--variant <id>]` | Generate a candidate wav in `.audio-staging/`. Spinner shows elapsed seconds; the slot id is `group.entry`, e.g. `sfx.ui.ui_click`. |
+| `bun run game:audio:stage <slot> [--variant <id>]` | Generate a candidate wav in `.generate/audios/staging/`. Spinner shows elapsed seconds; the slot id is `group.entry`, e.g. `sfx.ui.ui_click`. |
 | `bun run game:audio:list --all` | Markdown table of every slot with its approved / staged / deprecated variants. |
 | `bun run game:audio:list <slot>` | Same, restricted to one slot. |
 | `bun run game:audio:listen <slot> --variant <id>` | Print the absolute path of a staged wav so you can open it with any player. |
@@ -55,13 +55,13 @@ bun run game:audio:stage sfx.ui.ui_click --variant darker
 # → ✓ staged sfx.ui.ui_click variant darker (2.1 MB wav)
 
 # 2. Listen to both
-xdg-open .audio-staging/sfx.ui/ui_click/v_1692345678.wav
+xdg-open .generate/audios/staging/sfx.ui/ui_click/v_1692345678.wav
 xdg-open .audio/staging/sfx.ui/ui_click/darker.wav
 
 # 3. Approve the one you like; the other stays in staging (or you deprecate it).
 bun run game:audio:approve sfx.ui.ui_click --variant darker
 # → ✓ approved sfx.ui.ui_click variant darker
-# →   wav:   .audio-staging/sfx.ui/ui_click/darker.wav (2.1 MB)
+# →   wav:   .generate/audios/staging/sfx.ui/ui_click/darker.wav (2.1 MB)
 # →   final: game/godot/Audio/SFX/ui_click.ogg (96.4 KB ogg)
 # →   ratio: 4.5% of the wav
 
@@ -77,7 +77,7 @@ If you change your mind later:
 
 ```bash
 bun run game:audio:stage sfx.ui.ui_click --variant crisper
-xdg-open .audio-staging/sfx.ui/ui_click/crisper.wav
+xdg-open .generate/audios/staging/sfx.ui/ui_click/crisper.wav
 bun run game:audio:approve sfx.ui.ui_click --variant crisper
 # → the previously approved (darker) is auto-archived in
 #   .deprecated/assets/sounds/sfx.ui/ui_click/darker__2026-08-18T21-03-04Z__ui_click.ogg

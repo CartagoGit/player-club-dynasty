@@ -7,7 +7,7 @@
  *   - validate() rejects orphan status slots
  *   - list/status commands never crash even when no variants exist
  *   - the runner refuses approve/deprecate/listen on a non-existent variant
- *   - the staging dir (.audio-staging) and deprecation dir (.deprecated)
+ *   - the staging dir (.generate/audios/staging) and deprecation dir (.deprecated)
  *     are created on demand and stay isolated from git (via .gitignore)
  */
 
@@ -78,7 +78,7 @@ describe('generate-audio.script.ts (variant workflow)', () => {
 			sandboxRoot = null;
 		}
 		// keep the audio-staging/deprecation dirs out of test runs
-		const staging = resolve(workspaceRoot, '.audio-staging');
+		const staging = resolve(workspaceRoot, '.generate/audios/staging');
 		const deprecated = resolve(workspaceRoot, '.deprecated');
 		if (existsSync(staging)) rmSync(staging, { recursive: true, force: true });
 		if (existsSync(deprecated)) rmSync(deprecated, { recursive: true, force: true });

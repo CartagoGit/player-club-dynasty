@@ -24,7 +24,7 @@ import {
 } from '../contracts/interfaces/audio-spec.interface.ts';
 
 export const SPEC_RELATIVE = join('game', 'content', 'audio', 'audio-spec.json');
-export const DEFAULT_STAGING_RELATIVE = '.audio-staging';
+export const DEFAULT_STAGING_RELATIVE = '.generate/audios/staging';
 export const DEFAULT_DEPRECATED_RELATIVE = '.deprecated/assets/sounds';
 
 export const STALE_ERROR = (message: string): Error => {

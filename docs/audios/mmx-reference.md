@@ -12,7 +12,7 @@
 | `--quiet` | Strip spinners / progress; stdout stays pure data so the plugin can parse it. |
 | `--model <id>` | Slot-declared. `music-3.0` for music, `speech-2.8-hd` for SFX. |
 | `--format wav` | **The runner always asks for wav on staging** — wav is uncompressed and is what ffmpeg encodes downstream. The slot's final format (ogg/opus/mp3) is decided at approve time. |
-| `--out <abs-path>` | Absolute path inside `.audio-staging/<group>/<entry>/v_<ts>.wav`. |
+| `--out <abs-path>` | Absolute path inside `.generate/audios/staging/<group>/<entry>/v_<ts>.wav`. |
 | `--prompt <text>` | Per-entry prompt from `audio-spec.json`. |
 
 ## `mmx music generate` flags the runner uses

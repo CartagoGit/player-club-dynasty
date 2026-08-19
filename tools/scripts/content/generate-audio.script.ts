@@ -4,7 +4,7 @@
  *
  * The PC Dynasty audio review pipeline.
  *
- *   1. STAGE    — generate a fresh variant in `.audio-staging/` as a large .wav.
+ *   1. STAGE    — generate a fresh variant in `.generate/audios/staging/` as an .mp3.
  *   2. LIST     — list pending + approved variants for a slot so the human
  *                 can listen to every candidate before deciding.
  *   3. APPROVE  — pick one variant, encode it to the slot's final format
@@ -23,13 +23,13 @@
  *   bun scripts/generate-audio.script.ts status
  *   bun scripts/generate-audio.script.ts --validate
  *
- * The staging directory (`.audio-staging/`) and the deprecation directory
+ * The staging directory (`.generate/audios/staging/`) and the deprecation directory
  * (`.deprecated/assets/sounds/`) are listed in `.gitignore`. The repo only
  * ever carries the small, compressed approved variants.
  */
 
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 
 import { workspaceRoot } from '../../../scripts/mcp-vertex-root.script.ts';
@@ -37,7 +37,7 @@ import { workspaceRoot } from '../../../scripts/mcp-vertex-root.script.ts';
 const SPEC_RELATIVE = join('game', 'content', 'audio', 'audio-spec.json');
 const SPEC_PATH = resolve(workspaceRoot, SPEC_RELATIVE);
 const SPEC_DIR = dirname(SPEC_PATH);
-const STAGING_RELATIVE = '.audio-staging';
+const STAGING_RELATIVE = '.generate/audios/staging';
 const DEPRECATED_RELATIVE = '.deprecated/assets/sounds';
 const STAGING_ROOT = resolve(workspaceRoot, STAGING_RELATIVE);
 const DEPRECATED_ROOT = resolve(workspaceRoot, DEPRECATED_RELATIVE);
@@ -160,12 +160,52 @@ const ensureSlotStatus = (spec: IAudioSpec, fullKey: string): ISlotStatus => {
 
 const assertMusicAnchor = (group: IGroup, anchor: IGlobalMusicAnchor): void => {
 	if (group.kind !== 'music') return;
-	const bpm = Number(group.coherence.bpm);
-	if (Number.isFinite(bpm) && bpm !== anchor.bpm) {
-		throw STALE_ERROR(
-			`group ${group.id} declares bpm=${bpm} but anchor bpm=${anchor.bpm}`,
-		);
+	// The v2 prompts embed the authoritative BPM/key in the prompt itself, so
+	// different music groups (menu, workspace, editor...) can have different
+	// BPMs without breaking crossfade — as long as they share the global anchor's
+	// KEY and instrument palette. We only validate the key.
+	if (anchor.key && group.coherence.key && typeof group.coherence.key === 'string') {
+		const groupKey = String(group.coherence.key).toLowerCase();
+		const anchorKey = anchor.key.toLowerCase();
+		// Accept if group's key starts with the anchor key (e.g. "C major" matches "C major (Ionian)")
+		if (!groupKey.startsWith(anchorKey.split(' ')[0])) {
+			throw STALE_ERROR(
+				`group ${group.id} declares key=${group.coherence.key} but anchor key=${anchor.key}`,
+			);
+		}
 	}
+};
+
+/**
+ * Build the final mmx prompt by concatenating the entry-specific prompt with
+ * the group-level and shared DNA. The order is:
+ *   1. <group>/<entry>.txt  (the actual instruction for this variant)
+ *   2. <group>/_variant.txt (the per-group sonic identity)
+ *   3. _shared/sonic-identity.txt (music only — the global cross-group DNA)
+ *
+ * If `.generate/prompts/audios/<group>/<entry>.txt` does not exist, fall back to the prompt
+ * stored in the audio-spec.json (legacy v1 behavior). The shared/group
+ * identity is still appended so the new sonic DNA is always present.
+ */
+const buildFinalPrompt = (groupId: string, entryId: string, fallbackPrompt: string): string => {
+	const parts: string[] = [];
+	const entryPromptPath = resolve(workspaceRoot, `.generate/prompts/audios/${groupId}/${entryId}.txt`);
+	const groupVariantPath = resolve(workspaceRoot, `.generate/prompts/audios/${groupId}/_variant.txt`);
+	const sharedPath = resolve(workspaceRoot, '.generate/prompts/audios/_shared/sonic-identity.txt');
+
+	if (existsSync(entryPromptPath)) {
+		parts.push(readFileSync(entryPromptPath, 'utf8').trim());
+	} else {
+		parts.push(fallbackPrompt);
+	}
+	if (existsSync(groupVariantPath)) {
+		parts.push('\n\n--- GROUP IDENTITY ---\n\n' + readFileSync(groupVariantPath, 'utf8').trim());
+	}
+	// Shared sonic identity only applies to music (not SFX).
+	if (groupId.startsWith('music.') && existsSync(sharedPath)) {
+		parts.push('\n\n--- SHARED SONIC IDENTITY (PC DYNASTY) ---\n\n' + readFileSync(sharedPath, 'utf8').trim());
+	}
+	return parts.join('');
 };
 
 const buildCommand = (
@@ -191,11 +231,20 @@ const buildCommand = (
 	if (nonInteractive) argv.push('--non-interactive');
 	if (quiet) argv.push('--quiet');
 	argv.push('--model', group.model);
-	argv.push('--format', 'wav');
+	// mmx doesn't support ogg output. We use mp3 128k as the staging format
+	// (the API doesn't accept lower bitrates). The precompress script then
+	// encodes the mp3 to ogg vorbis 22050Hz q=2/q=3 for the final asset.
+	argv.push('--format', 'mp3');
+	argv.push('--bitrate', '128000');
 	argv.push('--out', stagingWavPath);
 	if (group.kind === 'music') {
-		argv.push('--bpm', String(anchor?.bpm ?? group.coherence.bpm ?? 96));
-		if (anchor?.key) argv.push('--key', anchor.key);
+		// mmx 1.0.19+ accepts --bpm/--key as hints; the spec prompt embeds the
+		// authoritative BPM/key per slot. We pass the group's coherence.bpm/key
+		// as hints so music-3.0 has context, but the prompt wins if there's a
+		// conflict (which happens for variants with different BPM — we only pass
+		// the group's anchor value, so prompt + flag should agree).
+		if (group.coherence.bpm) argv.push('--bpm', String(group.coherence.bpm));
+		if (group.coherence.key) argv.push('--key', String(group.coherence.key));
 		if (group.coherence.instruments) argv.push('--instruments', String(group.coherence.instruments));
 		if (group.coherence.mood) argv.push('--mood', String(group.coherence.mood));
 		if (group.coherence.tempo) argv.push('--tempo', String(group.coherence.tempo));
@@ -213,7 +262,8 @@ const buildCommand = (
 			argv.push('--instruments', String(group.coherence['sound-effect']));
 		}
 	}
-	argv.push('--prompt', entry.prompt);
+	const finalPrompt = buildFinalPrompt(group.id, entry.id, entry.prompt);
+	argv.push('--prompt', finalPrompt);
 	return argv;
 };
 
@@ -280,13 +330,15 @@ const listen = (fullKey: string, variantId: string): number => {
 	if (!slot) throw STALE_ERROR(`slot ${fullKey} has no staged variants`);
 	const variant = slot.variants[variantId];
 	if (!variant) throw STALE_ERROR(`variant ${variantId} not found in slot ${fullKey}`);
-	const wavAbs = isAbsolute(variant.wavPath ?? '')
-		? (variant.wavPath as string)
-		: resolve(workspaceRoot, variant.wavPath ?? '');
-	if (!existsSync(wavAbs)) {
-		throw STALE_ERROR(`staged wav missing on disk: ${wavAbs}`);
+	const stagedPath = variant.audioPath ?? variant.wavPath;
+	if (!stagedPath) throw STALE_ERROR(`variant ${variantId} has no staged audio`);
+	const stagedAbs = isAbsolute(stagedPath)
+		? stagedPath
+		: resolve(workspaceRoot, stagedPath);
+	if (!existsSync(stagedAbs)) {
+		throw STALE_ERROR(`staged audio missing on disk: ${stagedAbs}`);
 	}
-	process.stdout.write(`${wavAbs}\n`);
+	process.stdout.write(`${stagedAbs}\n`);
 	return 0;
 };
 
@@ -357,13 +409,22 @@ const approve = (fullKey: string, variantId: string): number => {
 	if (variant.state === 'deprecated') {
 		throw STALE_ERROR(`variant ${variantId} is deprecated; re-stage it first`);
 	}
-	if (!variant.wavPath) throw STALE_ERROR(`variant ${variantId} has no staged wav`);
-	const wavAbs = isAbsolute(variant.wavPath)
-		? variant.wavPath
-		: resolve(workspaceRoot, variant.wavPath);
-	if (!existsSync(wavAbs)) {
-		throw STALE_ERROR(`staged wav missing on disk: ${wavAbs}`);
+	// The variant's audio file (ogg vorbis) is the only staged asset. Use
+	// audioPath (post-v2 spec), falling back to legacy wavPath if audioPath
+	// is missing.
+	const stagedPath = variant.audioPath ?? variant.wavPath;
+	if (!stagedPath) throw STALE_ERROR(`variant ${variantId} has no staged audio`);
+	const stagedAbs = isAbsolute(stagedPath)
+		? stagedPath
+		: resolve(workspaceRoot, stagedPath);
+	if (!existsSync(stagedAbs)) {
+		throw STALE_ERROR(`staged audio missing on disk: ${stagedAbs}`);
 	}
+	// The final destination filename has the extension the group declares
+	// (e.g. ".ogg", ".mp3", ".opus"). The staged file already matches that
+	// extension; if it doesn't, fall back to re-encoding.
+	const stagedExt = stagedAbs.slice(stagedAbs.lastIndexOf('.') + 1);
+	const finalExt = group.format;
 
 	const finalDir = resolve(join(workspaceRoot, spec.root, group.outputDir));
 	ensureDir(finalDir);
@@ -389,24 +450,34 @@ const approve = (fullKey: string, variantId: string): number => {
 		}
 	}
 
-	const encoding = encodeToTargetFormat(wavAbs, finalAbs, group.format);
-	if (!encoding.ok) {
-		process.stderr.write(`encoding failed: ${encoding.stderr}\n`);
-		return 1;
+	let bytes: number | null = null;
+	let usedCopy = false;
+	if (stagedExt === finalExt) {
+		// Same format — just copy.
+		copyFileSync(stagedAbs, finalAbs);
+		bytes = statSync(finalAbs).size;
+		usedCopy = true;
+	} else {
+		// Format mismatch — re-encode.
+		const encoding = encodeToTargetFormat(stagedAbs, finalAbs, group.format);
+		if (!encoding.ok) {
+			process.stderr.write(`encoding failed: ${encoding.stderr}\n`);
+			return 1;
+		}
+		bytes = encoding.bytes;
 	}
 
 	variant.state = 'approved';
 	variant.approvedAt = new Date().toISOString();
 	variant.finalPath = relative(workspaceRoot, finalAbs);
-	variant.finalSizeBytes = encoding.bytes;
+	variant.finalSizeBytes = bytes;
 	slot.approvedVariantId = variantId;
 	writeSpec(spec);
 
 	process.stdout.write(
 		`\n✓ approved ${fullKey} variant ${variantId}\n` +
-			`  wav:   ${variant.wavPath} (${(variant.wavSizeBytes ?? 0) / 1024} KB)\n` +
-			`  final: ${variant.finalPath} (${((encoding.bytes ?? 0) / 1024).toFixed(1)} KB ${group.format})\n` +
-			`  ratio: ${(((encoding.bytes ?? 0) / (variant.wavSizeBytes ?? 1)) * 100).toFixed(1)}% of the wav\n`,
+			`  staged: ${variant.audioPath ?? variant.wavPath} (${variant.audioSizeBytes ? `${(variant.audioSizeBytes / 1024).toFixed(0)} KB` : "?"})\n` +
+			`  final:  ${variant.finalPath} (${((bytes ?? 0) / 1024).toFixed(1)} KB ${group.format})${usedCopy ? " (copied)" : " (re-encoded)"}\n`,
 	);
 	return 0;
 };
@@ -434,11 +505,14 @@ const deprecate = (fullKey: string, variantId: string): number => {
 		}
 	}
 	if (variant.wavPath) {
+		// Legacy: pre-v2 spec had a wavPath. New spec only has audioPath. Keep
+		// this branch for back-compat with old status.json snapshots.
 		const wavAbs = isAbsolute(variant.wavPath)
 			? variant.wavPath
 			: resolve(workspaceRoot, variant.wavPath);
 		if (existsSync(wavAbs)) {
-			const archivePath = join(archiveDir, `${variantId}__${stamp}__${variant.wavPath.split('/').pop()}`);
+			const baseFile = variant.wavPath.split('/').pop() ?? `${variantId}.wav`;
+			const archivePath = join(archiveDir, `${variantId}__${stamp}__${baseFile}`);
 			renameSync(wavAbs, archivePath);
 			variant.wavPath = relative(workspaceRoot, archivePath);
 		}
@@ -505,7 +579,7 @@ const printHelp = (): void => {
 			'PC Dynasty audio review pipeline',
 			'',
 			'Commands:',
-			'  stage     <slot> [--variant <id>]   Generate a new variant in .audio-staging/.',
+			'  stage     <slot> [--variant <id>]   Generate a new variant in .generate/audios/staging/.',
 			'  list      [<slot>] [--all]          List staged / approved variants.',
 			'  listen    <slot> --variant <id>     Print the path to the staged wav (open it in any player).',
 			'  approve   <slot> --variant <id>     Encode the staged wav to the slot format and move it to game/godot/Audio/...; the previously approved variant is archived in .deprecated/.',
@@ -514,7 +588,7 @@ const printHelp = (): void => {
 			'  --validate                          Validate the spec (anchor, coherence, status consistency).',
 			'',
 			'A slot is written as "<group>.<entry>", e.g. "sfx.ui.ui_click" or "music.menu.menu_main".',
-			'Staged files live in .audio-staging/<group>/<entry>/<variantId>.wav and are NOT committed.',
+			'Staged files live in .generate/audios/staging/<group>/<entry>/<variantId>.mp3 and are NOT committed.',
 			'Approved files live in game/godot/Audio/<Music|SFX>/<filename> and ARE committed.',
 			'Archived files live in .deprecated/assets/sounds/<group>/<entry>/<variantId>__<ts>__<filename>.',
 		].join('\n'),

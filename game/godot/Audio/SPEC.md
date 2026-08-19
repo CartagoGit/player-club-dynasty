@@ -20,7 +20,7 @@ A **slot** is the semantic concept the game cares about — `sfx.ui.ui_click`,
 
 | State        | Meaning                                                                                                                |
 |--------------|------------------------------------------------------------------------------------------------------------------------|
-| `staged`     | A fresh wav in `.audio-staging/` waiting for the human to listen.                                                       |
+| `staged`     | A fresh mp3 in `.generate/audios/staging/` waiting for the human to listen.                                              |
 | `approved`   | The single variant that ships. Its encoded file lives in `game/godot/Audio/<Music|SFX>/<filename>`.                  |
 | `deprecated` | A previously approved variant now archived in `.deprecated/assets/sounds/<group>/<entry>/` so we can resurrect it later. |
 
@@ -37,7 +37,7 @@ the listen step: it must wait for the human to call `approve` or
 
 The agent runs `bun run game:audio:stage -- sfx.ui.ui_click`. The runner
 invokes `mmx` and writes the **uncompressed wav** to
-`.audio-staging/sfx.ui/ui_click/v_<timestamp>.wav`. The variant is recorded
+`.generate/audios/staging/sfx.ui/ui_click/v_<timestamp>.mp3`. The variant is recorded
 in `audio-spec.json#status` with `state: "staged"`.
 
 The runner prints a "listen" hint pointing at the staged wav. The agent

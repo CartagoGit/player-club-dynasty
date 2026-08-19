@@ -10,7 +10,7 @@
 interface IAudioSpec {
   version: number;
   root: string;                 // "game/godot/Audio" — relative to workspace root
-  stagingDir?: string;          // defaults to ".audio-staging"
+  stagingDir?: string;          // defaults to ".generate/audios/staging"
   deprecatedDir?: string;       // defaults to ".deprecated/assets/sounds"
   tool: { command: string; nonInteractive: boolean; quiet: boolean };
   globalMusicAnchor?: IAudioGlobalMusicAnchor;
@@ -23,7 +23,7 @@ interface IAudioSpec {
 |---|---|---|---|
 | `version` | yes | — | Bump when the schema changes in a breaking way. |
 | `root` | yes | — | Where the *approved* assets live (`game/godot/Audio/`). |
-| `stagingDir` | no | `.audio-staging` | Where raw wavs queue for review. **Must be gitignored.** |
+| `stagingDir` | no | `.generate/audios/staging` | Where raw wavs queue for review. **Must be gitignored.** |
 | `deprecatedDir` | no | `.deprecated/assets/sounds` | Where superseded variants are archived. **Must be gitignored.** |
 | `tool.command` | yes | — | Path to the audio CLI. Almost always `mmx`. |
 | `tool.nonInteractive` | yes | — | Runner always passes `--non-interactive`. |
