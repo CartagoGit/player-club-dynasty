@@ -2,7 +2,7 @@
 id: f00049
 title: "Ship the video pipeline and rebuild settings as tabs"
 kind: feat
-status: in-progress
+status: review
 type: proposal
 track: product
 date: 2026-08-19
@@ -134,7 +134,7 @@ ships its consumer first and its clips second.
     reviewed by looking at it."
 
 ### S7 — Document the pipeline
-- **Status**: pending
+- **Status**: done
 - **DependsOn**: [S4]
 - **Files**: `docs/videos/README.md`, `docs/videos/spec-format.md`
 - **Gate**: unit
