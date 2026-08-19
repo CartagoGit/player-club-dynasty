@@ -438,7 +438,7 @@ public partial class PresentationBootstrap : Control
             MarketButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Market"),
             FinancesButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Finances"),
             WorldButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/World"),
-            MainMenuButtonPath = new NodePath("../Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu"),
+            MainMenuButtonPath = new NodePath("../Workspace/Frame/CommandBar/CommandRow/MainMenu"),
         };
         _workspaceController.Configure(
             service,

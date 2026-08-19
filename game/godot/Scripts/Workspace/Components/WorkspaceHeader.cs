@@ -16,7 +16,7 @@ namespace PCDynasty.Presentation.Workspace.Components;
 public sealed partial class WorkspaceHeader : PanelContainer
 {
     private Label? _club;
-    private Label? _date;
+    private DatePlate? _date;
     private Label? _money;
     private Control? _crest;
     private HBoxContainer? _row;
@@ -29,15 +29,18 @@ public sealed partial class WorkspaceHeader : PanelContainer
         AddChild(_row);
 
         _club = Caption("Club", 18, ManagerDesignTokens.TextPrimary);
+        _club.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         _row.AddChild(_club);
 
-        var spacer = new Control { Name = "HeaderSpacer", SizeFlagsHorizontal = SizeFlags.ExpandFill };
-        _row.AddChild(spacer);
-
-        _date = Caption("Date", 14, ManagerDesignTokens.TextSecondary);
+        // Club on the left, the calendar in the middle, the treasury on the
+        // right: the three questions a manager asks constantly, always in the
+        // same three places.
+        _date = new DatePlate();
         _row.AddChild(_date);
-        _row.AddChild(new VSeparator());
-        _money = Caption("Money", 14, ManagerDesignTokens.Accent);
+
+        _money = Caption("Money", 16, ManagerDesignTokens.Accent);
+        _money.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        _money.HorizontalAlignment = HorizontalAlignment.Right;
         _row.AddChild(_money);
     }
 
@@ -62,8 +65,7 @@ public sealed partial class WorkspaceHeader : PanelContainer
         _row.MoveChild(_crest, 0);
 
         _club.Text = $"{club.DisplayName.ToUpperInvariant()} · {club.City}";
-        _date.Text = calendar.CurrentDate.ToString("dd MMM yyyy", WorkspaceUiFactory.InvariantCulture)
-            .ToUpperInvariant();
+        _date.Show(calendar.CurrentDate, System.Globalization.CultureInfo.CurrentCulture);
         _money.Text = money;
     }
 

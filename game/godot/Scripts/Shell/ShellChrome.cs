@@ -59,14 +59,14 @@ public sealed partial class ShellChrome : Node, IPaletteAware
         Text("MainMenu/MenuFrame/MenuContent/Title", ManagerDesignTokens.TextPrimary);
         Text("MainMenu/MenuFrame/MenuContent/Description", ManagerDesignTokens.TextSecondary);
 
-        // The action list is the main menu's command bar: the destinations sit
-        // in the order a career is lived, the exit is the only destructive one
-        // and starting a career is the only advance.
-        Command("MainMenu/MenuFrame/MenuContent/Actions/NewCareer", ClassicChrome.Intent.Advance);
-        Command("MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer", ClassicChrome.Intent.Neutral);
-        Command("MainMenu/MenuFrame/MenuContent/Actions/LoadCareer", ClassicChrome.Intent.Neutral);
-        Command("MainMenu/MenuFrame/MenuContent/Actions/DataEditor", ClassicChrome.Intent.Neutral);
-        Command("MainMenu/MenuFrame/MenuContent/Actions/Options", ClassicChrome.Intent.Neutral);
+        // The destinations are a board, not a list: every one of them is on
+        // screen at once, each carrying the colour of the area it opens, the
+        // way the classic main menu laid its modes out as tiles.
+        Destination("MainMenu/MenuFrame/MenuContent/Actions/NewCareer", ShellArea.Technical);
+        Destination("MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer", ShellArea.Tracking);
+        Destination("MainMenu/MenuFrame/MenuContent/Actions/LoadCareer", ShellArea.Tracking);
+        Destination("MainMenu/MenuFrame/MenuContent/Actions/DataEditor", ShellArea.World);
+        Destination("MainMenu/MenuFrame/MenuContent/Actions/Options", ShellArea.Settings);
         Command("MainMenu/MenuFrame/MenuContent/Actions/Exit", ClassicChrome.Intent.Destructive);
 
         Panel("MainMenu/Hero", ClassicChrome.Plate(ManagerDesignTokens.Space16));
@@ -99,6 +99,9 @@ public sealed partial class ShellChrome : Node, IPaletteAware
         Text("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/Desk", ManagerDesignTokens.TextSecondary);
         Panel("Workspace/Frame/StatusBar", ClassicChrome.StatusStrip());
         Text("Workspace/Frame/StatusBar/StatusText", ManagerDesignTokens.TextSecondary);
+        Panel("Workspace/Frame/CommandBar", ClassicChrome.CommandBar());
+        Command("Workspace/Frame/CommandBar/CommandRow/MainMenu", ClassicChrome.Intent.Neutral);
+        Text("Workspace/Frame/CommandBar/CommandRow/Advance", ManagerDesignTokens.TextSecondary);
         Text("Workspace/Frame/Layout/ContentMargin/ContentScroll/Content/Loading", ManagerDesignTokens.TextSecondary);
     }
 
@@ -128,6 +131,27 @@ public sealed partial class ShellChrome : Node, IPaletteAware
         {
             label.AddThemeColorOverride("font_color", color);
         }
+    }
+
+    /// <summary>Styles a button as a destination tile carrying its area colour.</summary>
+    private void Destination(string path, ShellArea area)
+    {
+        if (_root.GetNodeOrNull<Button>(path) is not Button button)
+        {
+            return;
+        }
+
+        button.AddThemeStyleboxOverride("normal", ClassicChrome.AreaEntry(area, ClassicChrome.State.Normal));
+        button.AddThemeStyleboxOverride("hover", ClassicChrome.AreaEntry(area, ClassicChrome.State.Hovered));
+        button.AddThemeStyleboxOverride("pressed", ClassicChrome.AreaEntry(area, ClassicChrome.State.Pressed));
+        button.AddThemeStyleboxOverride("disabled", ClassicChrome.AreaEntry(area, ClassicChrome.State.Disabled));
+        button.AddThemeStyleboxOverride("focus", ClassicChrome.Focus());
+        button.AddThemeColorOverride("font_color", ManagerDesignTokens.TextPrimary);
+        button.AddThemeColorOverride("font_hover_color", ManagerDesignTokens.TextPrimary);
+        button.AddThemeColorOverride("font_pressed_color", ManagerDesignTokens.TextPrimary);
+        button.AddThemeColorOverride("font_disabled_color", ManagerDesignTokens.TextSecondary);
+        button.AddThemeFontSizeOverride("font_size", 14);
+        button.Alignment = HorizontalAlignment.Left;
     }
 
     private void Command(string path, ClassicChrome.Intent intent)

@@ -1,3 +1,4 @@
+using System.Globalization;
 using PCDynasty.Presentation.Core.Localization;
 
 namespace PCDynasty.Presentation.Shell;
@@ -35,10 +36,12 @@ public sealed class LocaleSession
             case LocaleActivationOutcome.Activated activated:
                 _activeFile = activated.File;
                 _activeSource = activated.Source;
+                AdoptCulture();
                 break;
             case LocaleActivationOutcome.Recovered recovered:
                 _activeFile = recovered.File;
                 _activeSource = recovered.Source;
+                AdoptCulture();
                 break;
             default:
                 throw new ArgumentException(
@@ -55,5 +58,30 @@ public sealed class LocaleSession
     {
         _activeFile = ok.File;
         _activeSource = ok.Source;
+        AdoptCulture();
+    }
+
+    /// <summary>
+    /// Points .NET's current culture at the active locale, so anything the
+    /// framework formats — weekday and month names on the date plate, decimal
+    /// separators, currency — follows the language the player chose instead of
+    /// the language the operating system happens to run in.
+    /// </summary>
+    private void AdoptCulture()
+    {
+        CultureInfo culture;
+        try
+        {
+            culture = CultureInfo.GetCultureInfo(_activeFile.Lang);
+        }
+        catch (CultureNotFoundException)
+        {
+            // A locale id the runtime does not know is still a valid game
+            // language; it just formats with the invariant rules.
+            culture = CultureInfo.InvariantCulture;
+        }
+
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentCulture = culture;
     }
 }

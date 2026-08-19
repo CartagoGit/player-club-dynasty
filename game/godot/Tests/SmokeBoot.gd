@@ -236,7 +236,7 @@ func _run() -> void:
 	var lineup_status := lineup.get_node("Margin/Content/ActionRow/Status") as Label
 	_expect(lineup_status.text == "Selección enviada.", "The lineup plan was not accepted and persisted.")
 
-	var main_menu_button := scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
+	var main_menu_button := scene.get_node("Workspace/Frame/CommandBar/CommandRow/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning from a career did not restore the main menu cleanly.")
@@ -272,7 +272,7 @@ func _run() -> void:
 	_expect(_label_text(scene, market_scope_path) == managed_market_scope, "Continuing must restore the managed market scope.")
 	_expect(not _contains_label_text(scene.get_node(market_path + "/CandidateRows"), signed_player), "Continuing must keep an acquired player out of the market.")
 
-	main_menu_button = scene.get_node("Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent/MainMenu") as Button
+	main_menu_button = scene.get_node("Workspace/Frame/CommandBar/CommandRow/MainMenu") as Button
 	main_menu_button.emit_signal("pressed")
 	if not await _wait_until(func() -> bool: return main_menu.visible and not workspace.visible and not scene.has_node("WorkspaceController")):
 		_fail("Returning before a second new career did not clean up the workspace.")

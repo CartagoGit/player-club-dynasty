@@ -101,43 +101,51 @@ text = "Gestiona plantilla, táctica, mercado y patrimonio. Cada temporada conse
 [node name="Separator" type="HSeparator" parent="MainMenu/MenuFrame/MenuContent"]
 layout_mode = 2
 
-[node name="Actions" type="VBoxContainer" parent="MainMenu/MenuFrame/MenuContent"]
+[node name="Actions" type="GridContainer" parent="MainMenu/MenuFrame/MenuContent"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 6
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 
 [node name="NewCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 46)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "NUEVA CARRERA"
 alignment = 0
 
 [node name="ContinueCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "CONTINUAR"
 alignment = 0
 
 [node name="LoadCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "CARGAR CARRERA"
 alignment = 0
 
 [node name="DataEditor" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "EDITOR DE DATOS"
 alignment = 0
 
 [node name="Options" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "OPCIONES"
 alignment = 0
 
 [node name="Exit" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
 layout_mode = 2
 text = "SALIR"
 alignment = 0
@@ -410,12 +418,6 @@ layout_mode = 2
 text = "MUNDO"
 alignment = 0
 
-[node name="MainMenu" type="Button" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-text = "MENÚ PRINCIPAL"
-alignment = 0
-
 [node name="SidebarSpacer" type="Control" parent="Workspace/Frame/Layout/Sidebar/SidebarMargin/SidebarContent"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -451,3 +453,26 @@ layout_mode = 2
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 13
 text = "Listo."
+
+[node name="CommandBar" type="PanelContainer" parent="Workspace/Frame"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="CommandRow" type="HBoxContainer" parent="Workspace/Frame/CommandBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MainMenu" type="Button" parent="Workspace/Frame/CommandBar/CommandRow"]
+custom_minimum_size = Vector2(190, 40)
+layout_mode = 2
+text = "MENÚ PRINCIPAL"
+
+[node name="CommandSpacer" type="Control" parent="Workspace/Frame/CommandBar/CommandRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Advance" type="Label" parent="Workspace/Frame/CommandBar/CommandRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "AVANZAR LA TEMPORADA LLEGA CON EL CALENDARIO"
+vertical_alignment = 1

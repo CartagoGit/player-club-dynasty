@@ -116,16 +116,19 @@ Three defects make it worse than plain:
     between them never changes the position of the bands."
 
 ### S5 — Colour-code the workspace and give it a command bar
-- **Status**: partial — the rail is colour-coded and the context band stands; the workspace command bar and the date plate are still owed
+- **Status**: done
 - **DependsOn**: [S1]
-- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceHeader.cs`
+- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Workspace/ManagerWorkspaceController.cs`, `game/godot/Scripts/Workspace/Components/WorkspaceHeader.cs`, `game/godot/Theme/DatePlate.cs`, `game/godot/Scripts/Shell/LocaleSession.cs`
 - **Gate**: e2e
 - acceptance:
   - "Every area in the rail carries its area colour, and the active one carries it at
     full strength; the same colour appears in the caption bar of the screen it opens."
   - "The context band shows crest, club, a date plate and the treasury, and stays put
     across every screen."
-  - "A command bar sits under the status strip with the exit to the main menu."
+  - "A command bar sits under the status strip with the exit to the main menu.
+    The advance command it reserves on the right lands with the calendar
+    orchestrator (f00033); until then the slot says so rather than offering a
+    button that does nothing."
 
 ### S6 — Prove it in the smoke test
 - **Status**: done
@@ -170,3 +173,9 @@ was visible from the code alone:
 - `CaptureShots.gd` renders the shell to PNG per route, so a change of chrome can
   be reviewed by looking at it rather than by describing it:
   `godot --path game/godot --script res://Tests/CaptureShots.gd`.
+- The exit moved out of the area rail and into the command bar. It was never an
+  area, and the classic desk always kept leaving on the bottom strip.
+- The date plate exposed a second defect: weekday and month names came out in
+  the operating system's language, because nothing ever pointed .NET's culture
+  at the chosen locale. `LocaleSession` now adopts it, so every framework-
+  formatted value — dates, separators, currency — follows the game's language.
