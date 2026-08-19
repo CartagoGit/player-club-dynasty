@@ -12,7 +12,7 @@
  * the URLs as data, not as prose.
  *
  * **Nothing here enters the repository.** The downloads land in
- * `.generate/reference/`, which is gitignored. These are references, the
+ * `.generate/games/`, which is gitignored. These are references, the
  * same as the screenshots catalogued in `docs/wiki/pcfutbol/14`: we look
  * at them, we describe what we see, and we commit only our own words and
  * our own wireframes.
@@ -405,4 +405,4 @@ export const REFERENCE_GAMES = {
 export const DEFAULT_SELECTION: readonly string[] = ['pcf6', 'pcf7', 'pcbasket65'];
 
 /** Where downloads land. Relative to the workspace root, and gitignored. */
-export const REFERENCE_DIR = '.generate/reference';
+export const REFERENCE_DIR = '.generate/games';

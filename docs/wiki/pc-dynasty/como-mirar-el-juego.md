@@ -144,13 +144,13 @@ bun run download:catalog          # ¿sigue vigente el registro?
 
 El registro de títulos, con los identificadores y sus URLs, está en
 [`tools/contracts/constants/reference/dinamic-catalogue.constants.ts`](../../../tools/contracts/constants/reference/dinamic-catalogue.constants.ts).
-Las descargas caen en `.generate/reference/`, que está en `.gitignore`: **nada
+Las descargas caen en `.generate/games/`, que está en `.gitignore`: **nada
 de esto entra al repositorio**, igual que las capturas.
 
 > **El archivo responde 403 a clientes que no son un navegador.** Comprobado con
 > User-Agent de navegador, con referer, con cookies y con petición por rangos.
 > Si `bun run download` falla desde tu máquina también, bájalos desde el
-> navegador y déjalos en `.generate/reference/` **con estos nombres exactos**,
+> navegador y déjalos en `.generate/games/` **con estos nombres exactos**,
 > que es lo único que el resto del flujo necesita:
 >
 > | Juego | Ficheros |
@@ -166,9 +166,9 @@ de esto entra al repositorio**, igual que las capturas.
 
 ```bash
 qemu-system-i386 -m 256 \
-  -hda .generate/reference/win98_pcf7.bin \
-  -hdb .generate/reference/win98_pcf7_data.bin \
-  -cdrom .generate/reference/PCF7.bin \
+  -hda .generate/games/win98_pcf7.bin \
+  -hdb .generate/games/win98_pcf7_data.bin \
+  -cdrom .generate/games/PCF7.bin \
   -display none -qmp unix:qmp.sock,server,nowait
 ```
 

@@ -11,7 +11,7 @@
  *   bun run download:catalog               # refresh the registry and report drift
  *   bun run download:all-dynamic-multimedia-games --yes
  *
- *   --out <dir>    where to put them (default `.generate/reference/`, gitignored)
+ *   --out <dir>    where to put them (default `.generate/games/`, gitignored)
  *   --dry-run      print the plan and the total, fetch nothing
  *   --yes          required by --all, which is ~41 GB
  *
