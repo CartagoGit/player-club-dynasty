@@ -111,6 +111,7 @@ markdown checklist or a terminal walker, approval transcodes with ffmpeg into
 | **A9** | **The runner re-declares the manifest types locally** instead of importing the contract that names it as a consumer, which is the drift the contract exists to prevent. | `tools/scripts/content/generate-audio.script.ts` lines 50–70 | Audio agent |
 | **A10** | **A stray `test-audio.html` sits at the repository root.** | `ls test-audio.html` | Audio agent |
 | **A11** | **`a00040` declares `kind: audio`, which is not one of the fourteen known kinds**, so `bun run lint:proposals` — and therefore `bun run validate` — fails on it. The filename prefix says `audit`. | `bun run lint:proposals` | Audio agent, in flight |
+| **A12** | **`game/godot/Scripts/Careers/CareerRuntime.cs` was committed with tab indentation for the third time**, in `a677f73`, a commit about audio staging. It fails `Verify formatting`, which is the first CI step, so the Godot smoke and the benchmark jobs are skipped and the whole run goes red for everyone. The file has nothing to do with audio; it is being swept in by a broad `git add`. | GitHub Actions run 32260688038; `dotnet format --verify-no-changes` | **Fixed here**, third time. The durable fix is on the author's side: stage explicit paths, and run `dotnet format` before committing |
 
 ## scoreboard
 
