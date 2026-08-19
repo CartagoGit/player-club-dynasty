@@ -1,7 +1,7 @@
 # `audio-spec.json` format reference
 
 > The full TypeScript types live in
-> [`tools/contracts/interfaces/audio-spec.interface.ts`](../../tools/contracts/interfaces/audio-spec.interface.ts).
+> [`tools/contracts/interfaces/content/audio-spec.interface.ts`](../../tools/contracts/interfaces/content/audio-spec.interface.ts).
 > This document explains the *why* and the runtime semantics.
 
 ## Top-level shape
@@ -180,7 +180,7 @@ that the runner projects into mmx flags:
 
 Adding a new coherence key is safe — the runner just skips unknown
 ones. Adding a key that **must** flow into an mmx flag is a small
-change in [`tools/helpers/audio-spec.helper.ts`](../../tools/helpers/audio-spec.helper.ts) →
+change in [`tools/helpers/content/audio/spec.helper.ts`](../../tools/helpers/content/audio/spec.helper.ts) →
 `buildCommand`.
 
 ## Status lifecycle

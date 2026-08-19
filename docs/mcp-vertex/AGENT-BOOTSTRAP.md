@@ -3,7 +3,7 @@
 > **Source of truth:** this file is a vendored copy of the canonical
 > `docs/mcp-vertex/AGENT-BOOTSTRAP.md` shipped by the local mcp-vertex
 > checkout at `/home/cartago/_projects/mcp-vertex`. When that file
-> changes upstream, re-run `bun scripts/sync-bootstrap.script.ts` to
+> changes upstream, re-run `bun tools/scripts/workspace/sync-bootstrap.script.ts` to
 > refresh this copy. Until then, treat this copy as authoritative —
 > it is what host instruction files (`AGENTS.md`, `CLAUDE.md`,
 > `.github/copilot-instructions.md`, `.cursor/rules/mcp-vertex.md`,

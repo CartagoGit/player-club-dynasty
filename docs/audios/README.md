@@ -49,15 +49,15 @@ game/godot/Audio/<Music|SFX>/<file>    .deprecated/assets/sounds/<group>/<entry>
 | Component | File | Role |
 |---|---|---|
 | **Manifest (data)** | `game/content/audio/audio-spec.json` | The declarative spec — groups, slots, `globalMusicAnchor`. Sibling of `game/content/starter-world/`. |
-| Manifest types (TS) | `tools/contracts/interfaces/audio-spec.interface.ts` | The single source of truth — types + zod schemas. |
-| Manifest loader | `tools/helpers/audio-spec.helper.ts` | Read/write the spec, resolve slots, find groups. Reusable from any content pipeline. |
-| Encoder | `tools/helpers/audio-encoder.helper.ts` | ffmpeg wrapper, picks codec per slot format. |
-| Progress indicator | `tools/helpers/progress.helper.ts` | Spinner + elapsed timer for slow CLI calls. |
-| Runner | `tools/scripts/content/generate-audio.script.ts` | The `stage / list / listen / approve / deprecate / status / --validate` CLI. Sibling of `generate-world.script.ts`. |
-| Checklist builder | `tools/scripts/content/build-audio-checklist.script.ts` | Regenerates `docs/audios/REVIEW-CHECKLIST.md` from the spec + on-disk staging state. |
-| Interactive review | `tools/scripts/content/review-audio-interactive.script.ts` | Walks every staged ogg, plays it, prompts `o/b/r/s`, optionally commits decisions. |
-| Open in OS player | `tools/scripts/content/open-audio.script.ts` | Cross-platform open: on WSL → cmd.exe + Windows file association; on Linux → xdg-open. |
-| Pre-compress wav→ogg | `tools/scripts/content/precompress-audio.script.ts` | Encodes staged wavs to libvorbis q=5 oggs in place. Use `--delete-wavs` after to clean up. |
+| Manifest types (TS) | `tools/contracts/interfaces/content/audio-spec.interface.ts` | The single source of truth — types + zod schemas. |
+| Manifest loader | `tools/helpers/content/audio/spec.helper.ts` | Read/write the spec, resolve slots, find groups. Reusable from any content pipeline. |
+| Encoder | `tools/helpers/content/audio/encoder.helper.ts` | ffmpeg wrapper, picks codec per slot format. |
+| Progress indicator | `tools/helpers/system/progress.helper.ts` | Spinner + elapsed timer for slow CLI calls. |
+| Runner | `tools/scripts/content/audio/generate.script.ts` | The `stage / list / listen / approve / deprecate / status / --validate` CLI. Sibling of `generate-world.script.ts`. |
+| Checklist builder | `tools/scripts/content/audio/checklist.script.ts` | Regenerates `docs/audios/REVIEW-CHECKLIST.md` from the spec + on-disk staging state. |
+| Interactive review | `tools/scripts/content/audio/review.script.ts` | Walks every staged ogg, plays it, prompts `o/b/r/s`, optionally commits decisions. |
+| Open in OS player | `tools/scripts/content/audio/open.script.ts` | Cross-platform open: on WSL → cmd.exe + Windows file association; on Linux → xdg-open. |
+| Pre-compress wav→ogg | `tools/scripts/content/audio/precompress.script.ts` | Encodes staged wavs to libvorbis q=5 oggs in place. Use `--delete-wavs` after to clean up. |
 | Plugin | `plugins/mcp-vertex_player-club-dynasty/src/lib/audio-manifest.helper.ts` + `src/index.ts` | MCP tools `audio_stage / audio_list_variants / audio_listen / audio_approve / audio_deprecate`. |
 | Runtime location | `game/godot/Audio/{Music,SFX}/` | Where Godot reads approved files (committed). |
 | Runtime README | `game/godot/Audio/SPEC.md` | Godot-side rationale (link to `docs/audios/`). |

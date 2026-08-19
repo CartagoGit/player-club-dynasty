@@ -10,12 +10,12 @@
  *   bun tools/scripts/game/doctor.script.ts --resolve  # JSON for chains
  */
 
-import { PCDYNASTY_TOOLS_DIR_ENV_VAR } from '../../contracts/constants/godot.constants.ts';
-import { GODOT_VERSION } from '../../contracts/constants/godot.constants.ts';
-import { locateDotnet, probeDotnet8Sync } from '../../helpers/dotnet.helper.ts';
-import { godotVersion, locateGodot } from '../../helpers/godot.helper.ts';
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { runSync } from '../../helpers/process.helper.ts';
+import { PCDYNASTY_TOOLS_DIR_ENV_VAR } from '../../contracts/constants/engine/godot.constants.ts';
+import { GODOT_VERSION } from '../../contracts/constants/engine/godot.constants.ts';
+import { locateDotnet, probeDotnet8Sync } from '../../helpers/engine/dotnet.helper.ts';
+import { godotVersion, locateGodot } from '../../helpers/engine/godot.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { runSync } from '../../helpers/system/process.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 

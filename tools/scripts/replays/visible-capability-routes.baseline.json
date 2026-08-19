@@ -1,0 +1,12 @@
+{
+	"waived": [
+		{
+			"id": "f00047",
+			"why": "Knowledge base only. It writes docs/wiki/** and ships no presentation route; the marker words ('menu', 'screen') are the subject it documents, not a promise."
+		},
+		{
+			"id": "p00001",
+			"why": "Tooling refactor under tools/ and plugins/. It names Godot only because the scripts it moves are the ones that launch Godot."
+		}
+	]
+}

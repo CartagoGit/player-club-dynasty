@@ -71,10 +71,10 @@ mp4 plays everywhere and the review copy is never the shipped copy.
 | Component | File | Role |
 |---|---|---|
 | Manifest (data) | `game/content/video/video-spec.json` | Groups, entries, the look anchor, the status map. |
-| Manifest types | `tools/contracts/interfaces/video-spec.interface.ts` | Types + zod schemas, the single source of truth. |
-| Manifest loader | `tools/helpers/video-spec.helper.ts` | Read, write, resolve, find a slot, assert the anchor. |
-| Encoder | `tools/helpers/video-encoder.helper.ts` | ffmpeg wrapper; refuses clearly when `libtheora` is missing. |
-| Runner | `tools/scripts/content/generate-video.script.ts` | `stage / fetch / list / approve / deprecate / status / --validate`. |
+| Manifest types | `tools/contracts/interfaces/content/video-spec.interface.ts` | Types + zod schemas, the single source of truth. |
+| Manifest loader | `tools/helpers/content/video/spec.helper.ts` | Read, write, resolve, find a slot, assert the anchor. |
+| Encoder | `tools/helpers/content/video/encoder.helper.ts` | ffmpeg wrapper; refuses clearly when `libtheora` is missing. |
+| Runner | `tools/scripts/content/video/generate.script.ts` | `stage / fetch / list / approve / deprecate / status / --validate`. |
 | Runtime | `game/godot/Scripts/Shell/VideoStage.cs` | Plays a clip for a moment, skippable, missing file is normal. |
 | Preference | `game/src/PCDynasty.Presentation.Core/PresentationPreferences.cs` | `PlaysVideo(moment)` — the runtime's only question. |
 

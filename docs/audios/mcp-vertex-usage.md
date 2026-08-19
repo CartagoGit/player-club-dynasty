@@ -63,7 +63,7 @@ and surfaces failures as `isError: true`.
    anchor's `bpm`, `key`, `instruments`, `loopSeconds` exactly into the
    group's `coherence` block.
 5. **When extending `audio-spec.json`, run `audio_validate`-equivalent
-   first** (or call the CLI `bun scripts/generate-audio.script.ts
+   first** (or call the CLI `bun tools/scripts/content/audio/generate.script.ts
    --validate`). The runner rejects orphan status slots, groups that
    drift from the anchor, etc.
 
@@ -77,7 +77,7 @@ and surfaces failures as `isError: true`.
 >
 > **Agent:** `player-club-dynasty_audio_stage { fullKey: "music.matchday.matchday_goal" }`
 >
-> **Tool response:** `{ fullKey: "music.matchday.matchday_goal", variantId: "v_1692345678", wavPath: "/.../.generate/audios/staging/music.matchday/matchday_goal/v_1692345678.wav", listenCommand: "bun scripts/generate-audio.script.ts listen ..." }`
+> **Tool response:** `{ fullKey: "music.matchday.matchday_goal", variantId: "v_1692345678", wavPath: "/.../.generate/audios/staging/music.matchday/matchday_goal/v_1692345678.wav", listenCommand: "bun tools/scripts/content/audio/generate.script.ts listen ..." }`
 >
 > **Agent:** "Generated a new variant at
 > `/.../.generate/audios/staging/music.matchday/matchday_goal/v_1692345678.wav`.
@@ -104,15 +104,15 @@ agent
 mcp-vertex host
   │ (spawns)
   ▼
-bun tools/scripts/content/generate-audio.script.ts <sub-command> ...
+bun tools/scripts/content/audio/generate.script.ts <sub-command> ...
   │ (uses)
-  ├── tools/helpers/audio-spec.helper.ts    ── read / write / findSlot
-  ├── tools/helpers/audio-encoder.helper.ts ── ffmpeg encode
-  └── tools/helpers/progress.helper.ts      ── spinner for the slow bits
+  ├── tools/helpers/content/audio/spec.helper.ts    ── read / write / findSlot
+  ├── tools/helpers/content/audio/encoder.helper.ts ── ffmpeg encode
+  └── tools/helpers/system/progress.helper.ts      ── spinner for the slow bits
 ```
 
 The plugin tools themselves are thin shells over the runner — they
-spawn `bun tools/scripts/content/generate-audio.script.ts` with the
+spawn `bun tools/scripts/content/audio/generate.script.ts` with the
 matching sub-command and parse stdout / stderr.
 
 ## Common pitfalls

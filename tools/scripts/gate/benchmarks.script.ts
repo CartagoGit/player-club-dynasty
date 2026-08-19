@@ -17,9 +17,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { BENCHMARK_BUDGET_FILES } from '../../contracts/constants/fs.constants.ts';
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { runInherit } from '../../helpers/run.helper.ts';
+import { BENCHMARK_BUDGET_FILES } from '../../contracts/constants/system/fs.constants.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { runInherit } from '../../helpers/system/run.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 

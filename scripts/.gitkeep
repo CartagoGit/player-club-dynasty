@@ -1,4 +1,0 @@
-# Workspace-local bun scripts. The `*.script.ts` naming follows the mcp-vertex convention.
-# This file is kept so the folder survives a clean checkout; the actual scripts
-# (mcp-vertex-root.script.ts, dev.script.ts, build-plugin.script.ts, build.script.ts,
-# sync-bootstrap.script.ts) live next to it.

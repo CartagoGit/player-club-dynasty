@@ -10,8 +10,8 @@
  *   bun tools/scripts/gate/tests.script.ts --no-restore
  */
 
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { runInherit } from '../../helpers/run.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { runInherit } from '../../helpers/system/run.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 

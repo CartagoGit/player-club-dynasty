@@ -9,8 +9,8 @@
  *   bun tools/scripts/gate/architecture.script.ts
  */
 
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { runInherit } from '../../helpers/run.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { runInherit } from '../../helpers/system/run.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 

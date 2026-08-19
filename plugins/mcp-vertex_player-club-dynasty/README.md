@@ -45,7 +45,7 @@ is auto-created with an empty fixture on first read.
 
 ```bash
 # Build the dist/ the mcp-vertex host imports at runtime
-bun scripts/build-plugin.script.ts mcp-vertex_player-club-dynasty
+bun tools/scripts/builder/plugin.script.ts mcp-vertex_player-club-dynasty
 
 # Typecheck + tests
 cd plugins/mcp-vertex_player-club-dynasty && bun run typecheck && bun test

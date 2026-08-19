@@ -89,7 +89,7 @@ the human is reviewing. Once approved, the encoded `ogg` lands in git and
 the wav can be deleted with:
 
 ```bash
-bun tools/scripts/content/generate-audio.script.ts deprecate <slot> --variant <id>
+bun tools/scripts/content/audio/generate.script.ts deprecate <slot> --variant <id>
 ```
 
 …which moves it into the deprecation dir rather than just `rm`'ing it, so

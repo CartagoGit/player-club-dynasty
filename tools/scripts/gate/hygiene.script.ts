@@ -16,7 +16,7 @@ import { join } from 'node:path';
 
 import { execSync } from 'node:child_process';
 
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 

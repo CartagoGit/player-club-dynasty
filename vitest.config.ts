@@ -5,7 +5,6 @@ export default defineConfig({
 		globals: true,
 		environment: 'node',
 		include: [
-			'scripts/**/*.spec.ts',
 			'tools/scripts/**/*.spec.ts',
 			'tools/helpers/**/*.spec.ts',
 		],

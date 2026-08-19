@@ -5,7 +5,7 @@ A football-manager simulation scaffolded for AI-assisted development with
 
 > **Local-only mode.** This workspace does **not** publish to npm. The
 > mcp-vertex core + every first-party plugin we use is loaded from a
-> **local checkout** discovered by `scripts/mcp-vertex-root.script.ts`, not from
+> **local checkout** discovered by `tools/scripts/workspace/root.script.ts`, not from
 > the npm registry. The pointer file is `.mcp-vertex-root` (override
 > with `MCP_VERTEX_ROOT`).
 
@@ -15,13 +15,13 @@ A football-manager simulation scaffolded for AI-assisted development with
 
 ```bash
 # 1. Confirm the host can locate the local mcp-vertex checkout
-bun scripts/mcp-vertex-root.script.ts --check
+bun tools/scripts/workspace/root.script.ts --check
 
 # 2. Validate the configuration + plugin surface (no serve)
 bun run mcp-vertex:doctor
 
 # 3. Build the project plugin
-bun scripts/build-plugin.script.ts player-club
+bun tools/scripts/builder/plugin.script.ts player-club
 
 # 4. Boot the MCP server (stdio; blocks)
 bun run mcp-vertex:serve
@@ -76,9 +76,9 @@ player-club-dynasty/
 | Print agent catalog (compact mode) | `bun run mcp-vertex:catalog` |
 | Regenerate typed tool-outputs SDK | `bun run mcp-vertex:types` |
 | Regenerate host-hints fragment | `bun run mcp-vertex:hints` |
-| Sync vendored `AGENT-BOOTSTRAP.md` from upstream | `bun scripts/sync-bootstrap.script.ts` |
+| Sync vendored `AGENT-BOOTSTRAP.md` from upstream | `bun tools/scripts/workspace/sync-bootstrap.script.ts` |
 | Build every plugin in `plugins/` | `bun run build` |
-| Build a single plugin | `bun scripts/build-plugin.script.ts <name>` |
+| Build a single plugin | `bun tools/scripts/builder/plugin.script.ts <name>` |
 | Create a new plugin skeleton | `bun run plugin:create <name>` |
 | Full gate (typecheck + lint + tests + drift guards) | `bun run validate` |
 

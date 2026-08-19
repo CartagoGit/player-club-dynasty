@@ -20,6 +20,6 @@
 			"@mcp-vertex/core": ["./node_modules/@mcp-vertex/core/src/index.ts"]
 		}
 	},
-	"include": ["src/**/*", "scripts/**/*"],
+	"include": ["tools/**/*"],
 	"exclude": ["node_modules", "dist", "build", ".cache", "plugins/**/node_modules"]
 }

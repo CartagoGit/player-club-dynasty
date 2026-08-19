@@ -19,10 +19,10 @@
  *   PCDYNASTY_PROVISION_GODOT=1 bun tools/scripts/game/run-godot-smoke.script.ts
  */
 
-import { PCDYNASTY_ALLOW_MULTIPLE_ENV_VAR, GODOT_SMOKE_ERROR_REGEX } from '../../contracts/constants/godot.constants.ts';
-import { obtainGodot, refreshCurrentSymlink } from '../../helpers/godot.helper.ts';
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { disposeLog, logMatches, runInherit, runTee } from '../../helpers/run.helper.ts';
+import { PCDYNASTY_ALLOW_MULTIPLE_ENV_VAR, GODOT_SMOKE_ERROR_REGEX } from '../../contracts/constants/engine/godot.constants.ts';
+import { obtainGodot, refreshCurrentSymlink } from '../../helpers/engine/godot.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { disposeLog, logMatches, runInherit, runTee } from '../../helpers/system/run.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 const argv = process.argv.slice(2);

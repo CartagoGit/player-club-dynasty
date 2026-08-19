@@ -208,8 +208,10 @@ export default definePlugin({
 		const AudioVariantViewSchema = z.object({
 			variantId: z.string(),
 			state: AudioVariantStateSchema,
+			audioPath: z.string().nullable(),
 			wavPath: z.string().nullable(),
 			finalPath: z.string().nullable(),
+			audioSizeBytes: z.number().int().nullable(),
 			wavSizeBytes: z.number().int().nullable(),
 			finalSizeBytes: z.number().int().nullable(),
 			stagedAt: z.string().nullable(),
@@ -235,8 +237,8 @@ export default definePlugin({
 		const AudioStageOutputSchema = z.object({
 			fullKey: z.string(),
 			variantId: z.string(),
-			wavPath: z.string(),
-			wavSizeBytes: z.number().int().nullable(),
+			audioPath: z.string(),
+			audioSizeBytes: z.number().int().nullable(),
 			listenCommand: z.string(),
 		});
 		const audioStageRegistration = {
@@ -246,7 +248,7 @@ export default definePlugin({
 					`${prefix}_audio_stage`,
 					{
 						description:
-							'Generate a new audio variant for a slot (e.g. "sfx.ui.ui_click") into .audio-staging/. Returns the wav path and a "listen" command the human can use to preview the variant.',
+							'Generate a new audio variant for a slot (e.g. "sfx.ui.ui_click") into .generate/audios/staging/. Returns the staged audio path and a "listen" command the human can use to preview the variant.',
 						inputSchema: AudioStageInputSchema,
 						outputSchema: AudioStageOutputSchema,
 					},
@@ -258,13 +260,14 @@ export default definePlugin({
 							return { content: [{ type: 'text', text: result.stderr || result.stdout }], isError: true };
 						}
 						const variantIdMatch = result.stdout.match(/variant (v_\d+)/);
-						const wavMatch = result.stdout.match(/stage \S+ → (\S+)/);
-						const listenCommand = `bun tools/scripts/content/generate-audio.script.ts listen ${fullKey} --variant ${variantIdMatch?.[1] ?? '?'}`;
+						const audioMatch = result.stdout.match(/stage \S+ → (\S+)/);
+						const sizeMatch = result.stdout.match(/\(([\d.]+)\s+KB\s+(?:mp3|wav|ogg)\)/);
+						const listenCommand = `bun tools/scripts/content/audio/generate.script.ts listen ${fullKey} --variant ${variantIdMatch?.[1] ?? '?'}`;
 						const payload = {
 							fullKey,
 							variantId: variantIdMatch?.[1] ?? '?',
-							wavPath: wavMatch?.[1] ?? '',
-							wavSizeBytes: null,
+							audioPath: audioMatch?.[1] ?? '',
+							audioSizeBytes: sizeMatch?.[1] ? Math.round(Number(sizeMatch[1]) * 1024) : null,
 							listenCommand,
 						};
 						return { content: [{ type: 'text', text: JSON.stringify(payload) }], structuredContent: payload };
@@ -311,9 +314,11 @@ export default definePlugin({
 										? {
 												variantId: variant.variantId,
 												state: variant.state,
-												wavPath: variant.wavPath,
+												audioPath: variant.audioPath ?? null,
+												wavPath: variant.wavPath ?? null,
 												finalPath: variant.finalPath,
-												wavSizeBytes: variant.wavSizeBytes,
+												audioSizeBytes: variant.audioSizeBytes ?? null,
+												wavSizeBytes: variant.wavSizeBytes ?? null,
 												finalSizeBytes: variant.finalSizeBytes,
 												stagedAt: variant.stagedAt,
 												approvedAt: variant.approvedAt,
@@ -352,7 +357,7 @@ export default definePlugin({
 		const AudioListenOutputSchema = z.object({
 			fullKey: z.string(),
 			variantId: z.string(),
-			wavPath: z.string(),
+			audioPath: z.string(),
 			playbackHint: z.string(),
 		});
 		const audioListenRegistration = {
@@ -362,7 +367,7 @@ export default definePlugin({
 					`${prefix}_audio_listen`,
 					{
 						description:
-							'Return the absolute path of a staged wav variant. The human opens that path in their audio player of choice.',
+							'Return the absolute path of a staged audio variant. The human opens that path in their audio player of choice.',
 						inputSchema: AudioListenInputSchema,
 						outputSchema: AudioListenOutputSchema,
 					},
@@ -373,19 +378,20 @@ export default definePlugin({
 						if (!variant) {
 							return { content: [{ type: 'text', text: `variant ${variantId} not found` }], isError: true };
 						}
-						if (!variant.wavPath) {
+						const storedPath = variant.audioPath ?? variant.wavPath;
+						if (!storedPath) {
 							return {
-								content: [{ type: 'text', text: `variant ${variantId} has no wav path on disk` }],
+								content: [{ type: 'text', text: `variant ${variantId} has no staged audio path on disk` }],
 								isError: true,
 							};
 						}
-						const wavPath = isAbsolute(variant.wavPath)
-							? variant.wavPath
-							: join(ctx.workspace.root, variant.wavPath);
+						const audioPath = isAbsolute(storedPath)
+							? storedPath
+							: join(ctx.workspace.root, storedPath);
 						const payload = {
 							fullKey,
 							variantId,
-							wavPath,
+							audioPath,
 							playbackHint:
 								'open the file with your audio player, e.g. `xdg-open <path>` or `mpv <path>`',
 						};
@@ -402,7 +408,7 @@ export default definePlugin({
 			fullKey: z.string(),
 			variantId: z.string(),
 			finalPath: z.string(),
-			wavSizeBytes: z.number().int().nullable(),
+			audioSizeBytes: z.number().int().nullable(),
 			finalSizeBytes: z.number().int().nullable(),
 			archivedPreviousVariantId: z.string().nullable(),
 		});
@@ -423,7 +429,7 @@ export default definePlugin({
 							return { content: [{ type: 'text', text: result.stderr || result.stdout }], isError: true };
 						}
 						const finalMatch = result.stdout.match(/final:\s+(\S+)/);
-						const wavSizeMatch = result.stdout.match(/wav:\s+\S+\s+\((\d+)\s+KB\)/);
+						const audioSizeMatch = result.stdout.match(/staged:\s+\S+\s+\((\d+)\s+KB\)/);
 						const finalSizeMatch = result.stdout.match(/final:\s+\S+\s+\(([\d.]+)\s+KB/);
 						const manifest = loadAudioManifest(ctx.workspace.root);
 						const slot = findSlot(manifest, fullKey);
@@ -435,7 +441,7 @@ export default definePlugin({
 							fullKey,
 							variantId,
 							finalPath: finalMatch?.[1] ?? '',
-							wavSizeBytes: wavSizeMatch?.[1] ? Number(wavSizeMatch[1]) * 1024 : null,
+							audioSizeBytes: audioSizeMatch?.[1] ? Number(audioSizeMatch[1]) * 1024 : null,
 							finalSizeBytes: finalSizeMatch?.[1] ? Number(finalSizeMatch[1]) * 1024 : null,
 							archivedPreviousVariantId: previousId,
 						};
@@ -476,7 +482,7 @@ export default definePlugin({
 						const payload = {
 							fullKey,
 							variantId,
-							archivedPath: variant?.finalPath ?? variant?.wavPath ?? null,
+							archivedPath: variant?.finalPath ?? variant?.audioPath ?? variant?.wavPath ?? null,
 							slotNowEmpty: slot.approvedVariant === null,
 						};
 						return { content: [{ type: 'text', text: JSON.stringify(payload) }], structuredContent: payload };

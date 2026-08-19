@@ -14,10 +14,10 @@
 
 import { spawn } from 'node:child_process';
 
-import { PCDYNASTY_ALLOW_MULTIPLE_ENV_VAR } from '../../contracts/constants/godot.constants.ts';
-import { acquireLock } from '../../helpers/lock.helper.ts';
-import { resolveProjectPaths } from '../../helpers/path.helper.ts';
-import { run } from '../../helpers/process.helper.ts';
+import { PCDYNASTY_ALLOW_MULTIPLE_ENV_VAR } from '../../contracts/constants/engine/godot.constants.ts';
+import { acquireLock } from '../../helpers/system/lock.helper.ts';
+import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
+import { run } from '../../helpers/system/process.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
 
@@ -34,8 +34,8 @@ const main = async (): Promise<number> => {
 		// launch when the owner is detected as dead.
 	}
 
-	const { locateDotnet, probeDotnet8, buildDotnetConfig } = await import('../../helpers/dotnet.helper.ts');
-	const { locateGodot } = await import('../../helpers/godot.helper.ts');
+	const { locateDotnet, probeDotnet8, buildDotnetConfig } = await import('../../helpers/engine/dotnet.helper.ts');
+	const { locateGodot } = await import('../../helpers/engine/godot.helper.ts');
 
 	const install = locateDotnet({ workspaceRoot: paths.workspaceRoot });
 	if (!install) {

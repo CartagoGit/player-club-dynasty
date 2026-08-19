@@ -1,7 +1,7 @@
 # The shape of `video-spec.json`
 
 The manifest lives at `game/content/video/video-spec.json`. Its types and zod
-validators are in `tools/contracts/interfaces/video-spec.interface.ts`; that file
+validators are in `tools/contracts/interfaces/content/video-spec.interface.ts`; that file
 is the source of truth and this page explains it.
 
 ## Top level

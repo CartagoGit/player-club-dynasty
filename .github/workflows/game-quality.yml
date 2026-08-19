@@ -134,7 +134,7 @@ jobs:
 
       - name: Compare results against the versioned budgets
         working-directory: .
-        run: bun scripts/compare-benchmark-budgets.script.ts
+        run: bun tools/scripts/replays/benchmark-budgets.script.ts
 
       - name: Publish benchmark comparison inputs and reports
         if: always()

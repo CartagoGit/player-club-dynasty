@@ -32,7 +32,7 @@
 	"scripts": {
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit -p tsconfig.json",
-		"build": "bun ../../scripts/build-plugin.script.ts mcp-vertex_player-club-dynasty"
+		"build": "bun ../../tools/scripts/builder/plugin.script.ts mcp-vertex_player-club-dynasty"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.29.0",

@@ -73,7 +73,7 @@ ignored `.tools/` directory.
 Compare benchmark results against the versioned budgets after a run:
 
 ```shell
-bun scripts/compare-benchmark-budgets.script.ts
+bun tools/scripts/replays/benchmark-budgets.script.ts
 ```
 
 Every budget names the benchmark that measures it. A result without a budget,
