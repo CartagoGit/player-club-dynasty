@@ -81,6 +81,9 @@ player-club-dynasty/
 | Build a single plugin | `bun tools/scripts/builder/plugin.script.ts <name>` |
 | Create a new plugin skeleton | `bun run plugin:create <name>` |
 | Full gate (typecheck + lint + tests + drift guards) | `bun run validate` |
+| Launch the game (add `--quit-after N` so it ends by itself) | `bun run game:play` |
+| Walk a route and photograph every step | `bun run game:explore --tour` |
+| Print the running node tree | `bun run game:explore '[{"dump":"*"}]'` |
 
 ## Plugins
 

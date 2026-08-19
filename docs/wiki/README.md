@@ -35,6 +35,7 @@ salir de la intuición de quien toque el fichero ese día.
 | Reproducir una pantalla concreta del objetivo | [`13-version-objetivo-6-0-y-7-0.md`](pcfutbol/13-version-objetivo-6-0-y-7-0.md) |
 | Buscar la captura original de referencia | [`14-catalogo-visual.md`](pcfutbol/14-catalogo-visual.md) |
 | Saber qué se ve exactamente en una captura, sin abrirla | [`16-lectura-de-capturas.md`](pcfutbol/16-lectura-de-capturas.md) |
+| **Comprobar cómo se ve el juego ahora mismo** | [`pc-dynasty/como-mirar-el-juego.md`](pc-dynasty/como-mirar-el-juego.md) |
 | Decidir dónde vive un botón o cómo se navega | [`05-interaccion-y-controles.md`](pcfutbol/05-interaccion-y-controles.md) |
 | Crear una pantalla nueva | [`03-mapa-de-pantallas.md`](pcfutbol/03-mapa-de-pantallas.md) |
 | Implementar una regla de simulación | [`06-sistemas-deportivos.md`](pcfutbol/06-sistemas-deportivos.md) |

@@ -37,6 +37,7 @@
 		"game:smoke": "bun tools/scripts/game/run-godot-smoke.script.ts",
 		"game:smoke:provision": "bun tools/scripts/game/run-godot-smoke.script.ts --provision",
 		"game:doctor": "bun tools/scripts/game/doctor.script.ts",
+		"game:explore": "bun tools/scripts/game/explore.script.ts",
 		"game:resolve": "bun tools/scripts/game/doctor.script.ts --resolve",
 		"game:video:stage": "bun tools/scripts/content/video/generate.script.ts stage",
 		"game:video:fetch": "bun tools/scripts/content/video/generate.script.ts fetch",
