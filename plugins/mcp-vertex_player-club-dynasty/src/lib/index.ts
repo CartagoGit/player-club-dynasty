@@ -16,8 +16,8 @@
 export type { AudioSpec, AudioGroup, AudioEntryDef, AudioSlotStatus, AudioVariantRecord, AudioVariantState } from './domain/audio/audio-spec.types';
 export { assertMusicAnchor, findSlot, loadAudioManifest } from './domain/audio/audio-manifest.helper';
 export type { IDataFile, IClub, IPlayer } from './domain/game-data/game-data.types';
-export { FILE_CONVENTIONS, SOLID_PRINCIPLES, WORKSPACE_RULES, CONVENTION_BRIEF } from './conventions/file-conventions.constant';
-export type { FileKind } from './conventions/file-conventions.constant';
+export { FILE_CONVENTIONS, SOLID_PRINCIPLES, WORKSPACE_RULES, CONVENTION_BRIEF } from './conventions/file-conventions.constants';
+export type { FileKind } from './conventions/file-conventions.constants';
 export { validatePath } from './conventions/file-conventions.helper';
 export type { IPathValidation } from './conventions/file-conventions.helper';
 export { renderTemplate, templateFor } from './conventions/file-assistant.helper';

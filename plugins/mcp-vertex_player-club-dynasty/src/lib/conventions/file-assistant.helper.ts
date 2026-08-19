@@ -7,7 +7,7 @@
  * typing the file by hand.
  */
 
-import { type FileKind, FILE_CONVENTIONS } from './file-conventions.constant';
+import { type FileKind, FILE_CONVENTIONS } from './file-conventions.constants';
 
 export const TEMPLATE_LICENSE_HEADER = `/**`;
 

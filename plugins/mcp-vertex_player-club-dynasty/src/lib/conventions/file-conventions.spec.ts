@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { FILE_CONVENTIONS, SOLID_PRINCIPLES, WORKSPACE_RULES } from './file-conventions.constant';
+import { FILE_CONVENTIONS, SOLID_PRINCIPLES, WORKSPACE_RULES } from './file-conventions.constants';
 import { validatePath } from './file-conventions.helper';
 import { renderTemplate, templateFor } from './file-assistant.helper';
 

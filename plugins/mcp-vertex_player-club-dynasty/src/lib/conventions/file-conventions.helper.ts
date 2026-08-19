@@ -6,7 +6,7 @@
  * convention the file-conventions.spec.ts enforces.
  */
 
-import { FILE_CONVENTIONS, type FileKind } from './file-conventions.constant';
+import { FILE_CONVENTIONS, type FileKind } from './file-conventions.constants';
 
 export interface IPathValidation {
 	readonly ok: boolean;
