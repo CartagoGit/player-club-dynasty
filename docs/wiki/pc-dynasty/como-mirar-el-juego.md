@@ -128,7 +128,54 @@ qué se ve mientras carga y qué suena al pulsar. Todo lo que el capítulo
 > ver qué versiones ofrece. Se declara experimental, no garantiza disponibilidad
 > y no tiene copia en Wayback Machine.
 
-### 5.2 Ejecutarlo en local (lo que un agente puede conducir)
+### 5.2 Traerse las imágenes de disco
+
+Un ISO de PCF 6.0 o 7.0 **no arranca solo**: son aplicaciones de Windows 95/98 y
+el CD es un instalador, no un sistema. Lo que sí arranca son las **imágenes de
+disco** del archivo de preservación, que llevan un Windows 98 con el juego ya
+instalado dentro.
+
+```bash
+bun run download                  # 6.0, 7.0 y Basket 6.5 — 5,99 GB
+bun run download --game=pcf7      # sólo uno
+bun run download --dry-run        # qué bajaría y cuánto pesa
+bun run download:catalog          # ¿sigue vigente el registro?
+```
+
+El registro de títulos, con los identificadores y sus URLs, está en
+[`tools/contracts/constants/reference/dinamic-catalogue.constants.ts`](../../../tools/contracts/constants/reference/dinamic-catalogue.constants.ts).
+Las descargas caen en `.generate/reference/`, que está en `.gitignore`: **nada
+de esto entra al repositorio**, igual que las capturas.
+
+> **El archivo responde 403 a clientes que no son un navegador.** Comprobado con
+> User-Agent de navegador, con referer, con cookies y con petición por rangos.
+> Si `bun run download` falla desde tu máquina también, bájalos desde el
+> navegador y déjalos en `.generate/reference/` **con estos nombres exactos**,
+> que es lo único que el resto del flujo necesita:
+>
+> | Juego | Ficheros |
+> |---|---|
+> | PC Fútbol 7.0 | `win98_pcf7.bin` · `win98_pcf7_data.bin` · `PCF7.bin` |
+> | PC Fútbol 6.0 | `win98_pcf6.bin` · `win98_pcf6_data.bin` · `PCF6.bin` |
+> | PC Basket 6.5 | `win98_pcb65.bin` · `win98_pcb65_data.bin` · `PCB65.bin` |
+>
+> Los `*_state.bin` del sitio son puntos de guardado de su emulador y QEMU no
+> los entiende: no hacen falta.
+
+### 5.3 Arrancarlas con QEMU
+
+```bash
+qemu-system-i386 -m 256 \
+  -hda .generate/reference/win98_pcf7.bin \
+  -hdb .generate/reference/win98_pcf7_data.bin \
+  -cdrom .generate/reference/PCF7.bin \
+  -display none -qmp unix:qmp.sock,server,nowait
+```
+
+Sin pantalla y sin Xvfb: QEMU captura con `screendump` por QMP y acepta teclas
+y ratón por el mismo canal. Probado de punta a punta contra su propia BIOS.
+
+### 5.4 Ejecutarlo en local sin imagen de disco
 
 WSLg **no se puede capturar**: `import -window root` falla y capturar una
 ventana por su id, también. Bajo WSLg cada aplicación es una superficie Wayland
@@ -152,7 +199,7 @@ si quieres ver en directo lo que está tocando.
 **Tiene que correr dentro de WSL.** Una instalación en Windows nativo es
 invisible desde aquí.
 
-### 5.3 Las capturas ya catalogadas
+### 5.5 Las capturas ya catalogadas
 
 Están en [`../pcfutbol/14-catalogo-visual.md`](../pcfutbol/14-catalogo-visual.md)
 y leídas una por una en [`../pcfutbol/16-lectura-de-capturas.md`](../pcfutbol/16-lectura-de-capturas.md).

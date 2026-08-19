@@ -84,6 +84,9 @@ player-club-dynasty/
 | Launch the game (add `--quit-after N` so it ends by itself) | `bun run game:play` |
 | Walk a route and photograph every step | `bun run game:explore --tour` |
 | Print the running node tree | `bun run game:explore '[{"dump":"*"}]'` |
+| Fetch the reference games we study (6.0, 7.0, Basket 6.5) | `bun run download` |
+| Fetch one of them by id | `bun run download --game=pcf7` |
+| Check the reference registry against its source | `bun run download:catalog` |
 
 ## Plugins
 
