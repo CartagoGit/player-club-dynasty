@@ -30,13 +30,29 @@
     "themeHint": "Cambia la paleta de la interfaz.",
     "languageHeader": "IDIOMA",
     "languageHint": "La interfaz del juego; el contenido no cambia.",
-    "displayHeader": "PANTALLA",
+    "displayHeader": "GRÁFICOS",
     "dataHeader": "DATOS",
+    "audio": {
+      "header": "AUDIO",
+      "hint": "Música y efectos, cada uno con su nivel.",
+      "music": "Música",
+      "musicVolume": "Nivel de música",
+      "effects": "Efectos de sonido",
+      "effectsVolume": "Nivel de efectos"
+    },
+    "video": {
+      "header": "VÍDEO",
+      "hint": "Secuencias que se reproducen en los momentos de abajo.",
+      "enabled": "Reproducir vídeos",
+      "intro": "Secuencia de apertura",
+      "matchIntro": "Antesala del partido",
+      "celebrations": "Celebraciones de trofeo y título"
+    },
     "actions": {
       "saveAndClose": "GUARDAR Y CERRAR",
       "revert": "RESTAURAR"
     },
-    "hint": "La escala de interfaz y el audio se añadirán cuando existan assets definitivos.",
+    "hint": "La escala de interfaz se añadirá cuando existan assets definitivos.",
     "rejectionMessage": {
       "title": "Cambio no aplicado",
       "body": "El valor seleccionado no se pudo aplicar."

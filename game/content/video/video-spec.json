@@ -1,0 +1,135 @@
+{
+  "$schema": "./video-spec.schema.json",
+  "version": 1,
+  "root": "game/godot/Video",
+  "stagingDir": ".generate/videos/staging",
+  "deprecatedDir": ".deprecated/assets/videos",
+  "tool": {
+    "command": "mmx",
+    "nonInteractive": true,
+    "quiet": true
+  },
+  "_comment": "Every clip belongs to a moment the settings board can switch off. Prompts describe an original, fictional football world: no real club, competition, sponsor, badge or person may appear, and no legible text of any kind, because burnt-in words cannot be translated.",
+  "globalLookAnchor": {
+    "palette": "deep navy and steel blue, warm gold highlights, floodlit whites",
+    "camera": "slow deliberate moves, locked or gentle dolly, no handheld shake, no whip pans",
+    "grade": "high contrast, slightly crushed blacks, cool shadows with warm key light",
+    "avoid": "any legible text, letters or numbers, real club badges, sponsor logos, recognisable faces, modern UI overlays, cartoon styling, lens flares",
+    "ratio": "16:9"
+  },
+  "groups": [
+    {
+      "id": "video.brand",
+      "moment": "intro",
+      "outputDir": "Brand",
+      "format": "ogv",
+      "model": "MiniMax-H3",
+      "ratio": "16:9",
+      "styleAnchor": "The three seconds that say what kind of game this is: sober, dense, made of paper and floodlights.",
+      "coherence": {
+        "subject": "abstract, no people in focus",
+        "motion": "one continuous move, no cuts",
+        "ending": "settles to a still frame the title can sit on"
+      },
+      "entries": [
+        {
+          "id": "logo_sting",
+          "filename": "logo_sting",
+          "prompt": "Slow dolly across a dark desk under a single warm lamp: a stack of paper league tables, a fountain pen, a folded newspaper with unreadable blurred type. Dust in the light beam. The camera settles on empty desk space in the centre of frame. Deep navy shadows, warm gold key light. No text, no logos, no faces.",
+          "durationSeconds": 6
+        },
+        {
+          "id": "studio_presentation",
+          "filename": "studio_presentation",
+          "prompt": "Locked wide shot of an empty floodlit stadium at night seen from the tunnel mouth, rain drifting through the light beams, empty stands in deep blue shadow, the pitch glowing green-white. Nothing moves but the rain. No text, no logos, no crowd, no players.",
+          "durationSeconds": 8
+        }
+      ]
+    },
+    {
+      "id": "video.frontend",
+      "moment": "intro",
+      "outputDir": "Frontend",
+      "format": "ogv",
+      "model": "MiniMax-H3",
+      "ratio": "16:9",
+      "styleAnchor": "A backdrop that can loop behind the main menu for minutes without ever asking for attention.",
+      "coherence": {
+        "subject": "environment only",
+        "motion": "almost still, loopable",
+        "ending": "matches the first frame closely enough to loop"
+      },
+      "entries": [
+        {
+          "id": "menu_backdrop",
+          "filename": "menu_backdrop",
+          "prompt": "Very slow drift across the upper tier of an empty stadium at dusk, floodlights warming up, deep navy sky, seats in shadow. Almost no movement. The shot begins and ends on nearly the same framing so it can loop. No text, no logos, no people.",
+          "durationSeconds": 10
+        }
+      ]
+    },
+    {
+      "id": "video.match",
+      "moment": "match",
+      "outputDir": "Match",
+      "format": "ogv",
+      "model": "MiniMax-H3",
+      "ratio": "16:9",
+      "styleAnchor": "The last thirty seconds before kick-off, from the manager's point of view.",
+      "coherence": {
+        "subject": "tunnel, touchline and pitch, players anonymous and out of focus",
+        "motion": "walking pace forward",
+        "ending": "opens onto the pitch"
+      },
+      "entries": [
+        {
+          "id": "match_walkout",
+          "filename": "match_walkout",
+          "prompt": "Walking pace forward through a dim concrete tunnel toward a bright rectangle of floodlit pitch, silhouetted anonymous figures ahead in plain unbranded kit, shallow depth of field, the noise implied by the light. No text, no logos, no recognisable faces.",
+          "durationSeconds": 7
+        },
+        {
+          "id": "match_kickoff",
+          "filename": "match_kickoff",
+          "prompt": "Locked wide shot from high in the stand of a floodlit pitch at night, two teams in plain unbranded kit taking their positions in the centre circle, seen small and anonymous. Slight camera drift. Cool blue night, warm floodlights. No text, no logos, no close faces.",
+          "durationSeconds": 6
+        }
+      ]
+    },
+    {
+      "id": "video.celebration",
+      "moment": "celebration",
+      "outputDir": "Celebration",
+      "format": "ogv",
+      "model": "MiniMax-H3",
+      "ratio": "16:9",
+      "styleAnchor": "The reward. Brighter, warmer and slower than anything else in the game.",
+      "coherence": {
+        "subject": "trophy, confetti, light — people anonymous and backlit",
+        "motion": "slow rise or slow push in",
+        "ending": "holds on the trophy"
+      },
+      "entries": [
+        {
+          "id": "trophy_lift",
+          "filename": "trophy_lift",
+          "prompt": "Slow upward tilt following an unmarked silver trophy being raised against stadium floodlights, backlit anonymous silhouettes, gold confetti drifting through the beams, everything else in deep blue shadow. The shot holds on the trophy against the light. No text, no logos, no recognisable faces.",
+          "durationSeconds": 8
+        },
+        {
+          "id": "league_champion",
+          "filename": "league_champion",
+          "prompt": "Slow push in across a floodlit pitch covered in drifting gold confetti at night, blurred anonymous celebrating silhouettes in the background, empty foreground grass catching the light. Warm highlights over deep navy shadow. No text, no logos, no recognisable faces.",
+          "durationSeconds": 8
+        },
+        {
+          "id": "promotion",
+          "filename": "promotion",
+          "prompt": "Slow rise from pitch level in a small floodlit ground at night, modest stands packed with blurred anonymous silhouettes, scarves raised, warm amber light against deep blue. Rougher and more intimate than a big-stadium celebration. No text, no logos, no recognisable faces.",
+          "durationSeconds": 7
+        }
+      ]
+    }
+  ],
+  "status": {}
+}

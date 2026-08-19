@@ -99,9 +99,13 @@ public partial class MainMenuController : Node
         // configuration screen laid out match, resolution, sound and timing.
         _optionsMenu.SetAnchorsPreset(Control.LayoutPreset.FullRect);
         options.AddChild(_optionsMenu);
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.LanguageHeader, languageSection, "SectionLanguage");
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.ThemeHeader, themeSection, "SectionTheme");
-        _optionsMenu.AddSection(_localeSession.ActiveFile.Options.DisplayHeader, BuildDisplaySection(preferences), "SectionDisplay");
+        OptionsSection copy = _localeSession.ActiveFile.Options;
+        var sections = new SettingsSections(_preferencesStore, copy);
+        _optionsMenu.AddSection(copy.LanguageHeader, languageSection, "SectionLanguage");
+        _optionsMenu.AddSection(copy.ThemeHeader, themeSection, "SectionTheme");
+        _optionsMenu.AddSection(copy.DisplayHeader, sections.BuildGraphics(preferences), "SectionDisplay");
+        _optionsMenu.AddSection(copy.Audio.Header, sections.BuildAudio(preferences), "SectionAudio");
+        _optionsMenu.AddSection(copy.Video.Header, sections.BuildVideo(preferences), "SectionVideo");
 
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(preferences.ThemeId));
     }
@@ -151,64 +155,6 @@ public partial class MainMenuController : Node
             .WithTheme(id);
         _preferencesStore.Save(preferences);
         ThemePaletteApplier.Apply(_tree, _palettes.Resolve(id));
-    }
-
-    /// <summary>
-    /// The display area: one row per preference, each mirroring what will be
-    /// restored on the next launch.
-    /// </summary>
-    private VBoxContainer BuildDisplaySection(PresentationPreferences preferences)
-    {
-        var section = new VBoxContainer { Name = "DisplaySection" };
-        section.AddThemeConstantOverride("separation", ManagerDesignTokens.Space4);
-        section.AddChild(Toggle("Fullscreen", _localeSession!.ActiveFile.Options.Fullscreen, preferences.Fullscreen, OnFullscreenToggled));
-        section.AddChild(Toggle("ReducedMotion", _localeSession.ActiveFile.Options.ReducedMotion, preferences.ReducedMotion, OnReducedMotionToggled));
-        section.AddChild(Toggle("DenseTables", _localeSession.ActiveFile.Options.DenseTables, preferences.DenseTables, OnDenseTablesToggled));
-        return section;
-    }
-
-    private static CheckButton Toggle(
-        string name,
-        string text,
-        bool pressed,
-        CheckButton.ToggledEventHandler onToggled)
-    {
-        var toggle = new CheckButton
-        {
-            Name = name,
-            Text = text,
-            ButtonPressed = pressed,
-            CustomMinimumSize = new Vector2(0, ManagerDesignTokens.MinimumPointerTarget),
-        };
-        toggle.Toggled += onToggled;
-        return toggle;
-    }
-
-    private void OnFullscreenToggled(bool pressed)
-    {
-        if (_preferencesStore is null)
-        {
-            return;
-        }
-        _preferencesStore.Save(_preferencesStore.Load().WithFullscreen(pressed));
-    }
-
-    private void OnReducedMotionToggled(bool pressed)
-    {
-        if (_preferencesStore is null)
-        {
-            return;
-        }
-        _preferencesStore.Save(_preferencesStore.Load().WithReducedMotion(pressed));
-    }
-
-    private void OnDenseTablesToggled(bool pressed)
-    {
-        if (_preferencesStore is null)
-        {
-            return;
-        }
-        _preferencesStore.Save(_preferencesStore.Load().WithDenseTables(pressed));
     }
 
     /// <summary>
@@ -444,15 +390,4 @@ public partial class MainMenuController : Node
             : "Continuar la última carrera.";
     }
 
-    private static void ToggleFullscreen(bool enabled)
-    {
-        if (DisplayServer.GetName() == "headless")
-        {
-            return;
-        }
-
-        DisplayServer.WindowSetMode(enabled
-            ? DisplayServer.WindowMode.Fullscreen
-            : DisplayServer.WindowMode.Windowed);
-    }
 }

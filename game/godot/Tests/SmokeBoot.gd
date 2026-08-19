@@ -30,25 +30,65 @@ func _run() -> void:
 	if settings == null:
 		_fail("Settings did not open as a configuration board.")
 		return
-	var groups := _find_node(settings, "GroupsFlow")
-	_expect(groups.get_child_count() >= 4, "Settings must show every group of preferences at once.")
-	# Groups are addressed by node name: their titles are translated.
-	for group_name in ["SectionLanguage", "SectionTheme", "SectionDisplay", "SectionData"]:
-		var group := _find_node(settings, group_name)
-		if group == null:
-			_fail("The settings board has no %s group." % group_name)
-			return
-		_expect(group.visible, "Every settings group must be visible at once: %s was hidden." % group_name)
+	var tab_names := ["SectionLanguage", "SectionTheme", "SectionDisplay", "SectionAudio", "SectionVideo", "SectionData"]
+	# The data tab is registered by the composition root once the world has
+	# loaded, so the board is briefly short of one tab. Wait for the full set
+	# rather than racing it.
+	if not await _wait_until(func() -> bool: return _has_every_tab(settings, tab_names)):
+		_fail("The settings board never offered one tab per kind of option.")
+		return
+	var pages := _find_node(settings, "Pages")
+	_expect(pages.get_child_count() >= tab_names.size(), "Settings must offer one tab per kind of option.")
+	# Tabs are addressed by node name: their titles are translated. Opening one
+	# must show its plate and hide every other, or the strip is decorative.
+	for tab_name in tab_names:
+		settings.call("OpenSection", tab_name)
+		await process_frame
+		_expect((_find_node(settings, tab_name) as Control).visible, "Opening the %s tab did not show its plate." % tab_name)
+		for other_name in tab_names:
+			if other_name != tab_name:
+				_expect(not (_find_node(settings, other_name) as Control).visible, "%s stayed visible while %s was open." % [other_name, tab_name])
+
+	# Audio and video must persist, not just paint. Toggling writes through the
+	# same store the shell reloads from on the next launch.
+	settings.call("OpenSection", "SectionAudio")
+	await process_frame
+	var music := _find_node(settings, "MusicEnabled") as CheckButton
+	if music == null:
+		_fail("The audio tab has no music switch.")
+		return
+	_expect(_find_node(settings, "MusicVolume") != null, "The audio tab has no music level.")
+	_expect(_find_node(settings, "EffectsVolume") != null, "The audio tab has no effects level.")
+
+	settings.call("OpenSection", "SectionVideo")
+	await process_frame
+	var video_master := _find_node(settings, "VideoEnabled") as CheckButton
+	var intro := _find_node(settings, "IntroVideo") as CheckButton
+	if video_master == null or intro == null:
+		_fail("The video tab is missing its switches.")
+		return
+	_expect(not intro.disabled, "The per-moment video switches must start enabled when video is on.")
+	video_master.emit_signal("toggled", false)
+	await process_frame
+	_expect(intro.disabled, "Turning video off must grey out the per-moment switches.")
+	video_master.emit_signal("toggled", true)
+	await process_frame
 
 	# The language and the theme pickers must actually accept a click. They are
 	# tiles, not buttons: a Button with Control children swallows its own input.
+	settings.call("OpenSection", "SectionLanguage")
+	await process_frame
 	_check_picker_is_clickable(settings, "SectionLanguage", "the language picker")
+	settings.call("OpenSection", "SectionTheme")
+	await process_frame
 	_check_picker_is_clickable(settings, "SectionTheme", "the theme picker")
 	_expect(not _contains_label_text(settings, "OPTIONS_THEME_HEADER"), "The theme group is rendering a raw translation key.")
 
+	settings.call("OpenSection", "SectionData")
+	await process_frame
 	var source_node := _find_node(settings, "ContentSource")
 	if source_node == null:
-		_fail("The data group did not show the content source controls.")
+		_fail("The data tab did not show the content source controls.")
 		return
 	var source_path := String(scene.get_path_to(source_node))
 	if not await _wait_until(func() -> bool: return scene.has_node(source_path)):
@@ -458,3 +498,13 @@ func _check_nothing_overflows(root: Control) -> void:
 		var fits := box.position.x >= -1.0 and box.position.y >= -1.0 \
 			and box.end.x <= frame.end.x + 1.0 and box.end.y <= frame.end.y + 1.0
 		_expect(fits, "%s leaves the window: %s is outside %s." % [control.name, box, frame])
+
+
+## True when every named tab and its button are in the board.
+func _has_every_tab(settings: Node, tab_names: Array) -> bool:
+	for tab_name in tab_names:
+		if _find_node(settings, tab_name) == null:
+			return false
+		if _find_node(settings, "Tab" + String(tab_name)) == null:
+			return false
+	return true

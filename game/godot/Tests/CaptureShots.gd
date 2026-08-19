@@ -29,6 +29,17 @@ func _run() -> void:
 	options.emit_signal("pressed")
 	await _settle(30)
 	await _shot(out_dir, "02-settings")
+	var board := _find(scene, "OptionsBoard")
+	if board != null:
+		for tab in ["SectionGraphicsShot", "SectionAudio", "SectionVideo"]:
+			if _find(board, tab) == null:
+				continue
+			board.call("OpenSection", tab)
+			await _settle(12)
+			await _shot(out_dir, "02-settings-%s" % tab.to_lower())
+		board.call("OpenSection", "SectionDisplay")
+		await _settle(12)
+		await _shot(out_dir, "02-settings-graphics")
 
 	var back := _find(scene, "Back")
 	if back != null:

@@ -30,13 +30,29 @@
     "themeHint": "Swap the interface palette.",
     "languageHeader": "LANGUAGE",
     "languageHint": "Game interface language; content does not change.",
-    "displayHeader": "DISPLAY",
+    "displayHeader": "GRAPHICS",
     "dataHeader": "DATA",
+    "audio": {
+      "header": "AUDIO",
+      "hint": "Music and effects, each with its own level.",
+      "music": "Music",
+      "musicVolume": "Music level",
+      "effects": "Sound effects",
+      "effectsVolume": "Effects level"
+    },
+    "video": {
+      "header": "VIDEO",
+      "hint": "Clips played at the moments below.",
+      "enabled": "Play video clips",
+      "intro": "Opening sequence",
+      "matchIntro": "Run-up to a match",
+      "celebrations": "Trophy and title celebrations"
+    },
     "actions": {
       "saveAndClose": "SAVE AND CLOSE",
       "revert": "REVERT"
     },
-    "hint": "Interface scaling and audio will land once the assets are final.",
+    "hint": "Interface scaling lands once the assets are final.",
     "rejectionMessage": {
       "title": "Change not applied",
       "body": "The selected value could not be applied."

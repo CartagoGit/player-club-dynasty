@@ -17,9 +17,38 @@ public sealed record OptionsSection(
     string LanguageHint,
     string DisplayHeader,
     string DataHeader,
+    OptionsAudioSection Audio,
+    OptionsVideoSection Video,
     OptionsActionsSection Actions,
     string Hint,
     OptionsRejectionMessage RejectionMessage);
+
+/// <summary>
+/// The audio tab: one switch and one level per bus. Music and effects are
+/// separate because the classic configuration screen separated them, and
+/// because a player who wants silence during a match rarely wants silence in
+/// the menus too.
+/// </summary>
+public sealed record OptionsAudioSection(
+    string Header,
+    string Hint,
+    string Music,
+    string MusicVolume,
+    string Effects,
+    string EffectsVolume);
+
+/// <summary>
+/// The video tab: the master switch plus one per moment that plays a clip.
+/// Every one of them can be turned off, because a cinematic the player has
+/// seen forty times stops being a reward and becomes a wait.
+/// </summary>
+public sealed record OptionsVideoSection(
+    string Header,
+    string Hint,
+    string Enabled,
+    string Intro,
+    string MatchIntro,
+    string Celebrations);
 
 /// <summary>The two action buttons on the options panel.</summary>
 public sealed record OptionsActionsSection(string SaveAndClose, string Revert);

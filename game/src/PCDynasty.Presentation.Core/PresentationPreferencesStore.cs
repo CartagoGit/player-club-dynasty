@@ -74,13 +74,31 @@ public sealed class PresentationPreferencesStore
         File.WriteAllText(_filePath, JsonSerializer.Serialize(ToStored(preferences), JsonOptions));
     }
 
-    private PresentationPreferences Normalise(StoredPreferences stored) =>
-        new(
-            fullscreen: stored.Fullscreen ?? PresentationPreferences.Default.Fullscreen,
-            reducedMotion: stored.ReducedMotion ?? PresentationPreferences.Default.ReducedMotion,
-            denseTables: stored.DenseTables ?? PresentationPreferences.Default.DenseTables,
-            themeId: _palettes.Resolve(stored.ThemeId).Id,
-            localeId: _locales.Resolve(stored.LocaleId).Id);
+    /// <remarks>
+    /// Every field falls back to its default, so a file written by an older
+    /// build — one that never heard of audio or video — loads without a
+    /// migration step and simply gains the new preferences at their defaults.
+    /// </remarks>
+    private PresentationPreferences Normalise(StoredPreferences stored)
+    {
+        PresentationPreferences defaults = PresentationPreferences.Default;
+        return defaults with
+        {
+            Fullscreen = stored.Fullscreen ?? defaults.Fullscreen,
+            ReducedMotion = stored.ReducedMotion ?? defaults.ReducedMotion,
+            DenseTables = stored.DenseTables ?? defaults.DenseTables,
+            ThemeId = _palettes.Resolve(stored.ThemeId).Id,
+            LocaleId = _locales.Resolve(stored.LocaleId).Id,
+            MusicEnabled = stored.MusicEnabled ?? defaults.MusicEnabled,
+            MusicVolume = stored.MusicVolume ?? defaults.MusicVolume,
+            EffectsEnabled = stored.EffectsEnabled ?? defaults.EffectsEnabled,
+            EffectsVolume = stored.EffectsVolume ?? defaults.EffectsVolume,
+            VideoEnabled = stored.VideoEnabled ?? defaults.VideoEnabled,
+            IntroVideoEnabled = stored.IntroVideoEnabled ?? defaults.IntroVideoEnabled,
+            MatchVideoEnabled = stored.MatchVideoEnabled ?? defaults.MatchVideoEnabled,
+            CelebrationVideoEnabled = stored.CelebrationVideoEnabled ?? defaults.CelebrationVideoEnabled,
+        };
+    }
 
     private static StoredPreferences ToStored(PresentationPreferences preferences)
     {
@@ -91,6 +109,14 @@ public sealed class PresentationPreferencesStore
             DenseTables = preferences.DenseTables,
             ThemeId = preferences.ThemeId.Value,
             LocaleId = preferences.LocaleId.Value,
+            MusicEnabled = preferences.MusicEnabled,
+            MusicVolume = preferences.MusicVolume,
+            EffectsEnabled = preferences.EffectsEnabled,
+            EffectsVolume = preferences.EffectsVolume,
+            VideoEnabled = preferences.VideoEnabled,
+            IntroVideoEnabled = preferences.IntroVideoEnabled,
+            MatchVideoEnabled = preferences.MatchVideoEnabled,
+            CelebrationVideoEnabled = preferences.CelebrationVideoEnabled,
         };
         return stored;
     }
@@ -103,5 +129,13 @@ public sealed class PresentationPreferencesStore
         public bool? DenseTables { get; set; }
         public string? ThemeId { get; set; }
         public string? LocaleId { get; set; }
+        public bool? MusicEnabled { get; set; }
+        public int? MusicVolume { get; set; }
+        public bool? EffectsEnabled { get; set; }
+        public int? EffectsVolume { get; set; }
+        public bool? VideoEnabled { get; set; }
+        public bool? IntroVideoEnabled { get; set; }
+        public bool? MatchVideoEnabled { get; set; }
+        public bool? CelebrationVideoEnabled { get; set; }
     }
 }

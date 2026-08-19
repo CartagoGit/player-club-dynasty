@@ -4,28 +4,25 @@ using PCDynasty.Presentation.Theme;
 namespace PCDynasty.Presentation.Shell;
 
 /// <summary>
-/// Settings as one configuration screen: every group of preferences is a
-/// captioned plate and all of them are on screen at once.
+/// Settings as a configuration screen with one tab per kind of option.
 /// </summary>
 /// <remarks>
-/// The classic configuration screen never buried a preference behind
-/// navigation. It grouped them into rotulated plates — match, resolution,
-/// sound, timing — laid them out on a single surface, put the screen's name on
-/// a vertical rail and gave the player one way out. Everything was one glance
-/// and one click away, and nothing scrolled.
+/// The classic configuration screen grouped preferences into rotulated plates
+/// and put every group on one surface. That works while there are four groups;
+/// with language, look, graphics, audio, video and data it stops working, and
+/// the shape the original itself used for exactly this problem is the tab strip
+/// of its dossier — one strip, every option named, only one open at a time.
 ///
-/// The board owns navigation and chrome only. It never knows what a group
-/// contains: callers register a title and a control, which keeps language,
-/// look, display and data independent of each other and of this file. Groups
-/// are addressed by a stable node name, never by index, so a test or a
-/// shortcut survives a reordering.
+/// The board owns navigation and chrome only. It never knows what a tab
+/// contains: callers register a title and a control, which keeps every area
+/// independent of the others and of this file. Tabs are addressed by a stable
+/// node name, never by index, so a test or a shortcut survives a reordering.
 /// </remarks>
 public sealed partial class OptionsBoard : VBoxContainer, IPaletteAware
 {
-    private const int GroupMinimumWidth = 420;
-
     private readonly EdgeRail _rail = new("OPCIONES", ShellArea.Settings);
-    private readonly GridContainer _groups = new() { Name = "GroupsFlow", Columns = 2 };
+    private readonly TabStrip _tabs = new();
+    private readonly VBoxContainer _pages = new() { Name = "Pages" };
     private readonly CommandBar _commands = new();
     private readonly List<CaptionPlate> _plates = [];
     private Button? _back;
@@ -44,6 +41,19 @@ public sealed partial class OptionsBoard : VBoxContainer, IPaletteAware
         AddChild(body);
         body.AddChild(_rail);
 
+        var column = new VBoxContainer
+        {
+            Name = "BoardColumn",
+            SizeFlagsHorizontal = SizeFlags.ExpandFill,
+            SizeFlagsVertical = SizeFlags.ExpandFill,
+        };
+        column.AddThemeConstantOverride("separation", 0);
+        body.AddChild(column);
+
+        _tabs.Area = ShellArea.Settings;
+        _tabs.TabSelected += ShowPage;
+        column.AddChild(_tabs);
+
         var scroll = new ScrollContainer
         {
             Name = "BoardScroll",
@@ -51,7 +61,7 @@ public sealed partial class OptionsBoard : VBoxContainer, IPaletteAware
             SizeFlagsVertical = SizeFlags.ExpandFill,
             HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled,
         };
-        body.AddChild(scroll);
+        column.AddChild(scroll);
 
         var margin = new MarginContainer { Name = "BoardMargin", SizeFlagsHorizontal = SizeFlags.ExpandFill };
         foreach (string side in new[] { "margin_left", "margin_right", "margin_top", "margin_bottom" })
@@ -60,13 +70,10 @@ public sealed partial class OptionsBoard : VBoxContainer, IPaletteAware
         }
         scroll.AddChild(margin);
 
-        _groups.AddThemeConstantOverride("h_separation", ManagerDesignTokens.Space16);
-        _groups.AddThemeConstantOverride("v_separation", ManagerDesignTokens.Space16);
-        _groups.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-        margin.AddChild(_groups);
-        // One column when two would not fit: the grammar forbids a plate that
-        // leaves its frame far more strongly than it asks for two columns.
-        margin.Resized += () => Reflow(margin.Size.X);
+        _pages.AddThemeConstantOverride("separation", ManagerDesignTokens.Space16);
+        _pages.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        _pages.SizeFlagsVertical = SizeFlags.ExpandFill;
+        margin.AddChild(_pages);
 
         AddChild(_commands);
         _back = _commands.AddLeading("Back", _backLabel, () => Closed?.Invoke());
@@ -90,52 +97,68 @@ public sealed partial class OptionsBoard : VBoxContainer, IPaletteAware
     }
 
     /// <summary>
-    /// Registers one group of preferences. The control is reparented into the
-    /// group's plate and stays visible: this screen shows everything at once.
+    /// Registers one kind of option. It becomes a tab, and its control becomes
+    /// the plate the tab opens.
     /// </summary>
     /// <param name="name">
-    /// Stable node name for the group. The title is translated, so anything
-    /// that needs to address a group — a test, a shortcut — uses this instead.
+    /// Stable node name for the tab and its plate. The title is translated, so
+    /// anything that needs to address an area uses this instead.
     /// </param>
     public void AddSection(string title, Control content, string name = "")
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
         ArgumentNullException.ThrowIfNull(content);
 
+        string stableName = string.IsNullOrWhiteSpace(name) ? $"Section{_plates.Count + 1}" : name;
+        // One plate is on screen at a time, so it takes the whole page: a tab
+        // whose body floats in the top eighth of the screen reads as a mistake.
         var plate = new CaptionPlate(title, ShellArea.Settings)
         {
-            Name = string.IsNullOrWhiteSpace(name) ? $"Section{_plates.Count + 1}" : name,
-            CustomMinimumSize = new Vector2(GroupMinimumWidth, 0),
+            Name = stableName,
             SizeFlagsHorizontal = SizeFlags.ExpandFill,
-            SizeFlagsVertical = SizeFlags.ShrinkBegin,
+            SizeFlagsVertical = SizeFlags.ExpandFill,
+            Visible = _plates.Count == 0,
+            FillHeight = true,
         };
 
         content.Visible = true;
         content.GetParent()?.RemoveChild(content);
         plate.Add(content);
 
-        _groups.AddChild(plate);
+        _pages.AddChild(plate);
         _plates.Add(plate);
+        _tabs.AddTab(title, $"Tab{stableName}");
+    }
+
+    /// <summary>Opens the tab whose plate carries the given node name.</summary>
+    public void OpenSection(string name)
+    {
+        for (int index = 0; index < _plates.Count; index++)
+        {
+            if (_plates[index].Name == name)
+            {
+                _tabs.Select(index);
+                return;
+            }
+        }
     }
 
     /// <summary>Leaves settings. Kept as a method so a shortcut can call it.</summary>
     public void GoBack() => Closed?.Invoke();
 
-    private void Reflow(float availableWidth)
-    {
-        int columns = availableWidth >= (GroupMinimumWidth * 2) + ManagerDesignTokens.Space16 ? 2 : 1;
-        if (_groups.Columns != columns)
-        {
-            _groups.Columns = columns;
-        }
-    }
-
     /// <inheritdoc />
     public void OnPaletteChanged()
     {
-        // The rail, the plates and the bar are palette-aware themselves; the
-        // applier reaches them on its own walk. Nothing extra is needed here,
-        // but the board still declares the contract so a future derived colour
-        // has an obvious home.
+        // The rail, the strip, the plates and the bar are palette-aware
+        // themselves; the applier reaches them on its own walk. The contract
+        // stays declared so a future derived colour has an obvious home.
+    }
+
+    private void ShowPage(int index)
+    {
+        for (int position = 0; position < _plates.Count; position++)
+        {
+            _plates[position].Visible = position == index;
+        }
     }
 }
