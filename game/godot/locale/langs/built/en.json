@@ -15,6 +15,45 @@
       "dataEditor": "DATA EDITOR",
       "options": "OPTIONS",
       "exit": "EXIT"
+    },
+    "board": {
+      "comingSoon": "On the way",
+      "manager": {
+        "title": "League Manager",
+        "hint": "Pick a club and run all of it: squad, tactics, market and books."
+      },
+      "coach": {
+        "title": "League Coach",
+        "hint": "Only the football. The board signs and spends for you."
+      },
+      "proManager": {
+        "title": "League Pro-Manager",
+        "hint": "You do not pick the club. Offers arrive by reputation."
+      },
+      "resume": {
+        "title": "Continue",
+        "hint": "Pick up the career where you left it."
+      },
+      "load": {
+        "title": "Load career",
+        "hint": "Open a career saved on this machine."
+      },
+      "friendly": {
+        "title": "Friendly match",
+        "hint": "Two clubs, no competition, nothing written down."
+      },
+      "database": {
+        "title": "Database",
+        "hint": "Every club, player and competition in the loaded world."
+      },
+      "archive": {
+        "title": "Archive",
+        "hint": "Titles, tables and the history of the world so far."
+      },
+      "world": {
+        "title": "World",
+        "hint": "Countries, divisions and competitions, without opening a career."
+      }
     }
   },
   "options": {

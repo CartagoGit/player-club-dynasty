@@ -62,23 +62,16 @@ public sealed partial class ShellChrome : Node, IPaletteAware
         // The destinations are a board, not a list: every one of them is on
         // screen at once, each carrying the colour of the area it opens, the
         // way the classic main menu laid its modes out as tiles.
-        Destination("MainMenu/MenuFrame/MenuContent/Actions/NewCareer", ShellArea.Technical);
-        Destination("MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer", ShellArea.Tracking);
-        Destination("MainMenu/MenuFrame/MenuContent/Actions/LoadCareer", ShellArea.Tracking);
-        Destination("MainMenu/MenuFrame/MenuContent/Actions/DataEditor", ShellArea.World);
-        Destination("MainMenu/MenuFrame/MenuContent/Actions/Options", ShellArea.Settings);
-        Command("MainMenu/MenuFrame/MenuContent/Actions/Exit", ClassicChrome.Intent.Destructive);
+        // The menu destinations dress themselves: DestinationBoard builds
+        // DestinationTile instances that carry their own area colour and
+        // their own availability state.
 
+        // The main surface carries the board; the marketing copy that used to
+        // sit here was replaced by the destinations themselves.
         Panel("MainMenu/Hero", ClassicChrome.Plate(ManagerDesignTokens.Space16));
-        Text("MainMenu/Hero/HeroContent/HeroEyebrow", ManagerDesignTokens.Focus);
-        Text("MainMenu/Hero/HeroContent/HeroTitle", ManagerDesignTokens.TextPrimary);
-        Text("MainMenu/Hero/HeroContent/HeroText", ManagerDesignTokens.TextSecondary);
         Text("MainMenu/Hero/HeroContent/Legal", ManagerDesignTokens.TextSecondary);
-        foreach (string metric in new[] { "Metric1", "Metric2", "Metric3" })
-        {
-            Panel($"MainMenu/Hero/HeroContent/{metric}", ClassicChrome.RaisedPlate());
-            Text($"MainMenu/Hero/HeroContent/{metric}/Text", ManagerDesignTokens.TextPrimary);
-        }
+        Panel("MainMenu/Hero/HeroContent/Metric1", ClassicChrome.RaisedPlate());
+        Text("MainMenu/Hero/HeroContent/Metric1/Text", ManagerDesignTokens.TextPrimary);
 
         Panel("MainMenu/CareerSetup", ClassicChrome.Plate(ManagerDesignTokens.Space16));
         Text("MainMenu/CareerSetup/SetupContent/Eyebrow", ManagerDesignTokens.Accent);

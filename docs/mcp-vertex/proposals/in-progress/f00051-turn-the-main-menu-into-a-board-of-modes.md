@@ -2,7 +2,7 @@
 id: f00051
 title: "Turn the main menu into a board of modes, and ship the responsibility ladder"
 kind: feat
-status: ready
+status: in-progress
 type: proposal
 track: product
 date: 2026-08-19
@@ -89,8 +89,8 @@ you get are the ones you earned.
   - "The smoke opens a career in each mode and asserts the rail carries exactly the areas that mode commands."
 
 ### S3 — Build the destination board
-- **Status**: ready
-- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/DestinationBoard.cs`, `game/godot/Theme/DestinationTile.cs`
+- **Status**: done
+- **Files**: `game/godot/Scenes/Main.tscn`, `game/godot/Scripts/Shell/MainMenuController.cs`, `game/godot/Scripts/Shell/DestinationBoard.cs`, `game/godot/Theme/DestinationTile.cs`, `game/src/PCDynasty.Presentation.Core/Localization/Sections/MenuSection.cs`
 - **Gate**: e2e
 - acceptance:
   - "The menu is a grid of destination plates, each with its own caption colour by family, over a bottom rail of small commands (options, credits, exit) — the shape chapter 13 records, in our grammar."

@@ -30,9 +30,9 @@ public partial class MainMenuController : Node
     private VBoxContainer ClubList => GetNode<VBoxContainer>("../MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList");
     private Label SelectedClub => GetNode<Label>("../MainMenu/CareerSetup/SetupContent/SelectedClub");
     private Button StartCareer => GetNode<Button>("../MainMenu/CareerSetup/SetupContent/SetupActions/StartCareer");
-    private Button ContinueCareer => GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer");
-    private Button LoadCareer => GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/LoadCareer");
-    private Button DataEditor => GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/DataEditor");
+    private Control Actions => GetNode<Control>("../MainMenu/Hero/HeroContent/Actions");
+
+    private DestinationBoard? _board;
 
     public void Configure(
         IManagerWorld world,
@@ -225,21 +225,34 @@ public partial class MainMenuController : Node
         ShowMainMenu();
     }
 
+    /// <summary>
+    /// The destinations this build actually opens. Everything else declared
+    /// on the board is drawn greyed with "on the way", so making a mode real
+    /// means adding its name here — not editing the board's layout.
+    /// </summary>
+    private static readonly HashSet<string> BuiltDestinations =
+    [
+        "NewCareer",
+        "ContinueCareer",
+    ];
+
     private void BindActions()
     {
-        GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/NewCareer").Pressed += BeginNewCareer;
-        ContinueCareer.Pressed += ContinueSavedCareer;
-        GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/Options").Pressed += OpenOptions;
-        GetNode<Button>("../MainMenu/MenuFrame/MenuContent/Actions/Exit").Pressed += () => GetTree().Quit();
+        MenuSection menu = _localeSession?.ActiveFile.Menu ?? ShippedLocaleFiles.BuildSpanish().Menu;
+        _board = new DestinationBoard();
+        _board.Build(menu.Board, menu.Actions, BuiltDestinations);
+        Actions.AddChild(_board);
+
+        _board.Tile("NewCareer")!.Pressed += BeginNewCareer;
+        _board.Tile("ContinueCareer")!.Pressed += ContinueSavedCareer;
+        Button? options = _board.Command("Options");
+        if (options is not null) options.Pressed += OpenOptions;
+        Button? exit = _board.Command("Exit");
+        if (exit is not null) exit.Pressed += () => GetTree().Quit();
         GetNode<Button>("../MainMenu/CareerSetup/SetupContent/SetupActions/Back").Pressed += ShowMainMenu;
         StartCareer.Pressed += ConfirmCareer;
 
         RefreshCareerActions();
-
-        LoadCareer.Disabled = true;
-        LoadCareer.TooltipText = "La gestión de múltiples carreras llegará con el selector de guardados.";
-        DataEditor.Disabled = true;
-        DataEditor.TooltipText = "El editor declarativo está disponible como herramienta separada durante esta fase.";
     }
 
     private void BeginNewCareer()
@@ -384,10 +397,19 @@ public partial class MainMenuController : Node
 
     private void RefreshCareerActions()
     {
-        ContinueCareer.Disabled = !_shell!.State.CanContinue;
-        ContinueCareer.TooltipText = ContinueCareer.Disabled
-            ? "No existe todavía una carrera guardada."
-            : "Continuar la última carrera.";
+        if (_board is null)
+        {
+            return;
+        }
+
+        MenuSection menu = _localeSession?.ActiveFile.Menu ?? ShippedLocaleFiles.BuildSpanish().Menu;
+        // "Continue" is the one destination whose availability changes while
+        // the menu is open, so it is refreshed rather than fixed at build.
+        _board.SetAvailable(
+            "ContinueCareer",
+            _shell!.State.CanContinue,
+            menu.Board.Resume,
+            menu.Board.ComingSoon);
     }
 
 }

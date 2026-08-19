@@ -23,7 +23,20 @@ func _run() -> void:
 	_expect(_label_text(scene, "MainMenu/MenuFrame/MenuContent/Eyebrow") == "PC DYNASTY · DIRECCIÓN DEPORTIVA", "The original PC Dynasty identity is missing.")
 
 	# Data source: load the shipped world through the external path and put it back.
-	var options_button := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/Options") as Button
+	# The menu is a board of destinations now: a 3x3 grid of tiles over a rail
+	# carrying options and exit. Every destination is on it, including the ones
+	# that are not built yet.
+	var board := _find_node(scene, "Board")
+	if board == null:
+		_fail("The main menu did not build its board of destinations.")
+		return
+	var grid := _find_node(board, "Grid") as Control
+	_expect(grid.get_child_count() == 9, "The board must show every destination at once, built or not.")
+	for missing in ["CoachCareer", "ProManagerCareer", "FriendlyMatch", "Archive", "WorldBrowser"]:
+		var tile := _find_node(grid, missing)
+		_expect(tile != null, "A destination that is not built yet must stay on the board: " + missing)
+
+	var options_button := _find_node(board, "Options") as Button
 	options_button.emit_signal("pressed")
 	await process_frame
 	var settings := _find_node(scene, "OptionsBoard")
@@ -117,8 +130,8 @@ func _run() -> void:
 	_expect(main_menu.visible, "Leaving settings must return to the main menu.")
 	_check_nothing_overflows(main_menu)
 
-	var new_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/NewCareer") as Button
-	new_career.emit_signal("pressed")
+	var new_career := _find_node(scene, "NewCareer")
+	new_career.call("Press")
 	await process_frame
 
 	var club_list := scene.get_node("MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList") as VBoxContainer
@@ -307,9 +320,9 @@ func _run() -> void:
 		_fail("Returning from a career did not restore the main menu cleanly.")
 		return
 
-	var continue_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/ContinueCareer") as Button
-	_expect(not continue_career.disabled, "The career created in this session must be immediately resumable.")
-	continue_career.emit_signal("pressed")
+	var continue_career := _find_node(scene, "ContinueCareer")
+	_expect(continue_career.get("Available"), "The career created in this session must be immediately resumable.")
+	continue_career.call("Press")
 	if not await _wait_until(func() -> bool: return workspace.visible and scene.has_node("WorkspaceController")):
 		_fail("Continuing a career did not create a fresh manager workspace.")
 		return
@@ -347,7 +360,7 @@ func _run() -> void:
 		_fail("Returning before a second new career did not clean up the workspace.")
 		return
 
-	new_career.emit_signal("pressed")
+	new_career.call("Press")
 	await process_frame
 	club_list = scene.get_node("MainMenu/CareerSetup/SetupContent/ClubScroll/ClubList") as VBoxContainer
 	if not await _wait_until(func() -> bool: return _row_count(club_list, "ClubTable") > 0):

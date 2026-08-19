@@ -68,7 +68,7 @@ vertical_alignment = 1
 [node name="MenuFrame" type="PanelContainer" parent="MainMenu"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.44
+anchor_right = 0.3
 anchor_bottom = 1.0
 offset_left = 24.0
 offset_top = 88.0
@@ -101,59 +101,10 @@ text = "Gestiona plantilla, táctica, mercado y patrimonio. Cada temporada conse
 [node name="Separator" type="HSeparator" parent="MainMenu/MenuFrame/MenuContent"]
 layout_mode = 2
 
-[node name="Actions" type="GridContainer" parent="MainMenu/MenuFrame/MenuContent"]
-layout_mode = 2
-size_flags_vertical = 3
-columns = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
-
-[node name="NewCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "NUEVA CARRERA"
-alignment = 0
-
-[node name="ContinueCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "CONTINUAR"
-alignment = 0
-
-[node name="LoadCareer" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "CARGAR CARRERA"
-alignment = 0
-
-[node name="DataEditor" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "EDITOR DE DATOS"
-alignment = 0
-
-[node name="Options" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "OPCIONES"
-alignment = 0
-
-[node name="Exit" type="Button" parent="MainMenu/MenuFrame/MenuContent/Actions"]
-custom_minimum_size = Vector2(0, 64)
-size_flags_horizontal = 3
-layout_mode = 2
-text = "SALIR"
-alignment = 0
-
 [node name="Hero" type="PanelContainer" parent="MainMenu"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.44
+anchor_left = 0.3
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
@@ -167,23 +118,9 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="HeroEyebrow" type="Label" parent="MainMenu/Hero/HeroContent"]
+[node name="Actions" type="VBoxContainer" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
-text = "UN MUNDO QUE RECUERDA"
-
-[node name="HeroTitle" type="Label" parent="MainMenu/Hero/HeroContent"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-autowrap_mode = 3
-text = "DECISIONES DE DESPACHO.
-CONSECUENCIAS EN EL CAMPO."
-
-[node name="HeroText" type="Label" parent="MainMenu/Hero/HeroContent"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-autowrap_mode = 3
-text = "Una experiencia de gestión original, densa y rápida: la información importante a un clic, el detalle cuando lo necesitas."
+size_flags_vertical = 3
 
 [node name="HeroSeparator" type="HSeparator" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2
@@ -195,26 +132,6 @@ layout_mode = 2
 layout_mode = 2
 autowrap_mode = 3
 text = "CARGANDO CLUBES Y COMPETICIONES..."
-
-[node name="Metric2" type="PanelContainer" parent="MainMenu/Hero/HeroContent"]
-layout_mode = 2
-
-[node name="Text" type="Label" parent="MainMenu/Hero/HeroContent/Metric2"]
-layout_mode = 2
-autowrap_mode = 3
-text = "PARTIDOS Y TEMPORADAS REPRODUCIBLES"
-
-[node name="Metric3" type="PanelContainer" parent="MainMenu/Hero/HeroContent"]
-layout_mode = 2
-
-[node name="Text" type="Label" parent="MainMenu/Hero/HeroContent/Metric3"]
-layout_mode = 2
-autowrap_mode = 3
-text = "DATOS Y CARRERAS EXTERNOS · SQLITE"
-
-[node name="HeroSpacer" type="Control" parent="MainMenu/Hero/HeroContent"]
-layout_mode = 2
-size_flags_vertical = 3
 
 [node name="Legal" type="Label" parent="MainMenu/Hero/HeroContent"]
 layout_mode = 2

@@ -65,7 +65,7 @@ Descritas con wireframe en [`13`](../pcfutbol/13-version-objetivo-6-0-y-7-0.md).
 | `DatePlate` | ✔ en la banda de contexto | `Theme/DatePlate.cs` |
 | `CrestGrid` | **No existe** (hay `CrestPlaceholder` suelto) | `Theme/ClassicChrome.cs` |
 | `EdgeRail` | ✔ rotado, con color de área | `Theme/EdgeRail.cs` |
-| `DestinationTile` | Parcial — los destinos del menú son tiles con color de área | `Scripts/Shell/ShellChrome.cs` |
+| `DestinationTile` | ✔ placa con barra de rótulo, cifra de familia, nombre, línea de qué es, y estado «en camino» | `Theme/DestinationTile.cs`, `Scripts/Shell/DestinationBoard.cs` |
 | `TabStrip` | ✔ usado por los ajustes; falta aplicarlo fuera de ellos | `Theme/TabStrip.cs` |
 | `RowTab` | **No existe** | — |
 | `ViewSwitch` | **No existe** | — |

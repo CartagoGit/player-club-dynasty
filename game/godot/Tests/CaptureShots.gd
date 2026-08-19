@@ -25,7 +25,7 @@ func _run() -> void:
 	await _settle(90)
 	await _shot(out_dir, "01-main-menu")
 
-	var options := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/Options") as Button
+	var options := _find(scene, "Options") as Button
 	options.emit_signal("pressed")
 	await _settle(30)
 	await _shot(out_dir, "02-settings")
@@ -46,8 +46,8 @@ func _run() -> void:
 		back.emit_signal("pressed")
 	await _settle(20)
 
-	var new_career := scene.get_node("MainMenu/MenuFrame/MenuContent/Actions/NewCareer") as Button
-	new_career.emit_signal("pressed")
+	var new_career := _find(scene, "NewCareer")
+	new_career.call("Press")
 	await _settle(60)
 	await _shot(out_dir, "03-career-setup")
 

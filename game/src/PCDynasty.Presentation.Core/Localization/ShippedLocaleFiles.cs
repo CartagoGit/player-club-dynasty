@@ -34,7 +34,27 @@ public static class ShippedLocaleFiles
                 Load: "LOAD CAREER",
                 DataEditor: "DATA EDITOR",
                 Options: "OPTIONS",
-                Exit: "EXIT")),
+                Exit: "EXIT"),
+            Board: new MenuBoardSection(
+                ComingSoon: "On the way",
+                Manager: new MenuDestinationSection(
+                    "League Manager", "Pick a club and run all of it: squad, tactics, market and books."),
+                Coach: new MenuDestinationSection(
+                    "League Coach", "Only the football. The board signs and spends for you."),
+                ProManager: new MenuDestinationSection(
+                    "League Pro-Manager", "You do not pick the club. Offers arrive by reputation."),
+                Resume: new MenuDestinationSection(
+                    "Continue", "Pick up the career where you left it."),
+                Load: new MenuDestinationSection(
+                    "Load career", "Open a career saved on this machine."),
+                Friendly: new MenuDestinationSection(
+                    "Friendly match", "Two clubs, no competition, nothing written down."),
+                Database: new MenuDestinationSection(
+                    "Database", "Every club, player and competition in the loaded world."),
+                Archive: new MenuDestinationSection(
+                    "Archive", "Titles, tables and the history of the world so far."),
+                World: new MenuDestinationSection(
+                    "World", "Countries, divisions and competitions, without opening a career."))),
         Options: new OptionsSection(
             Header: new HeaderSection("SETTINGS", "PRESENTATION OPTIONS", ""),
             Fullscreen: "Fullscreen",
@@ -165,7 +185,27 @@ public static class ShippedLocaleFiles
                 Summary: "Gestiona plantilla, táctica, mercado y patrimonio."),
             Actions: new MenuActionsSection(
                 NewCareer: "NUEVA CARRERA", Continue: "CONTINUAR", Load: "CARGAR CARRERA",
-                DataEditor: "EDITOR DE DATOS", Options: "OPCIONES", Exit: "SALIR")),
+                DataEditor: "EDITOR DE DATOS", Options: "OPCIONES", Exit: "SALIR"),
+            Board: new MenuBoardSection(
+                ComingSoon: "En camino",
+                Manager: new MenuDestinationSection(
+                    "Liga Manager", "Eliges club y lo llevas todo: plantilla, táctica, mercado y caja."),
+                Coach: new MenuDestinationSection(
+                    "Liga Entrenador", "Sólo el fútbol. La directiva ficha y gasta por ti."),
+                ProManager: new MenuDestinationSection(
+                    "Liga Promanager", "No eliges club. Las ofertas llegan según tu prestigio."),
+                Resume: new MenuDestinationSection(
+                    "Continuar", "Retoma la carrera donde la dejaste."),
+                Load: new MenuDestinationSection(
+                    "Cargar carrera", "Abre una carrera guardada en este equipo."),
+                Friendly: new MenuDestinationSection(
+                    "Partido amistoso", "Dos equipos, sin competición y sin consecuencias."),
+                Database: new MenuDestinationSection(
+                    "Base de datos", "Todos los clubes, jugadores y competiciones del mundo cargado."),
+                Archive: new MenuDestinationSection(
+                    "Archivo", "Palmarés, clasificaciones e historia del mundo hasta hoy."),
+                World: new MenuDestinationSection(
+                    "Mundo", "Países, divisiones y competiciones, sin abrir una carrera."))),
         Options: new OptionsSection(
             Header: new HeaderSection("CONFIGURACIÓN", "OPCIONES DE PRESENTACIÓN", ""),
             Fullscreen: "Pantalla completa",

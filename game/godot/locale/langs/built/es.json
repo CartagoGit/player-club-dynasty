@@ -15,6 +15,45 @@
       "dataEditor": "EDITOR DE DATOS",
       "options": "OPCIONES",
       "exit": "SALIR"
+    },
+    "board": {
+      "comingSoon": "En camino",
+      "manager": {
+        "title": "Liga Manager",
+        "hint": "Eliges club y lo llevas todo: plantilla, táctica, mercado y caja."
+      },
+      "coach": {
+        "title": "Liga Entrenador",
+        "hint": "Sólo el fútbol. La directiva ficha y gasta por ti."
+      },
+      "proManager": {
+        "title": "Liga Promanager",
+        "hint": "No eliges club. Las ofertas llegan según tu prestigio."
+      },
+      "resume": {
+        "title": "Continuar",
+        "hint": "Retoma la carrera donde la dejaste."
+      },
+      "load": {
+        "title": "Cargar carrera",
+        "hint": "Abre una carrera guardada en este equipo."
+      },
+      "friendly": {
+        "title": "Partido amistoso",
+        "hint": "Dos equipos, sin competición y sin consecuencias."
+      },
+      "database": {
+        "title": "Base de datos",
+        "hint": "Todos los clubes, jugadores y competiciones del mundo cargado."
+      },
+      "archive": {
+        "title": "Archivo",
+        "hint": "Palmarés, clasificaciones e historia del mundo hasta hoy."
+      },
+      "world": {
+        "title": "Mundo",
+        "hint": "Países, divisiones y competiciones, sin abrir una carrera."
+      }
     }
   },
   "options": {
