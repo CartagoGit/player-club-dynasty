@@ -59,6 +59,36 @@ Notes:
 
 ---
 
+#### `v_1787140280097`
+
+<audio id="aud-v_1787140280097" controls preload="none" src="../../.generate/audios/staging/music.menu/menu_main/v_1787140280097.ogg" style="width:100%;max-width:600px;height:32px;"></audio>
+
+<div id="viz-v_1787140280097" style="height:6px;background:#222;border-radius:3px;margin:4px 0 8px;width:100%;max-width:600px;overflow:hidden"><div id="bar-v_1787140280097" style="height:100%;width:0%;background:linear-gradient(90deg,#4caf50,#8bc34a);transition:width 0.1s linear"></div></div>
+
+<a href="../../.generate/audios/staging/music.menu/menu_main/v_1787140280097.ogg" download="v_1787140280097.ogg">⬇ 880 KB</a> &nbsp; 
+<small>ogg: 880 KB &nbsp;·&nbsp; <strong>Para oír:</strong> copia el comando <code>listen</code> de abajo y ejecútalo en una terminal (sale por WSLg → speakers Windows). El preview muestra el progreso pero no emite audio (limitación del sandbox de VS Code en WSL).</small>
+
+
+<form>
+<label><input type="checkbox" name="v_1787140280097-ok"> OK</label> &nbsp;
+<label><input type="checkbox" name="v_1787140280097-bad"> Bad</label> &nbsp;
+<label><input type="checkbox" name="v_1787140280097-restage"> Re-stage</label>
+</form>
+
+Commands (copy-paste into terminal):
+
+- ▶ listen (browser, recomendado): abre [esta URL](http://172.21.118.36:7333/track/music.menu/menu_main/v_1787140280097.ogg) en Brave/Chrome/Edge — necesita que el server esté corriendo con `bun run game:audio:review:ui`
+- ▶ listen (terminal):  `PULSE_SERVER=unix:/mnt/wslg/PulseServer ffplay -nodisp -autoexit .generate/audios/staging/music.menu/menu_main/v_1787140280097.ogg`
+- approve:   `bun run game:audio:approve music.menu.menu_main --variant v_1787140280097`
+- deprecate: `bun run game:audio:deprecate music.menu.menu_main --variant v_1787140280097`
+- re-stage:  `bun run game:audio:stage music.menu.menu_main`
+
+Notes:
+
+```
+
+---
+
 ### `music.menu.menu_credits`
 
 > Créditos finales. Melancólico pero resuelto.

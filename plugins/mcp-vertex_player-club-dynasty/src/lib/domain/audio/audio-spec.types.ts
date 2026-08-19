@@ -17,10 +17,12 @@ export const AudioVariantRecordSchema = z.object({
 	stagedAt: z.string().nullable(),
 	approvedAt: z.string().nullable(),
 	deprecatedAt: z.string().nullable(),
-	wavPath: z.string().nullable(),
+	audioPath: z.string().nullable().optional(),
+	wavPath: z.string().nullable().optional(),
 	finalPath: z.string().nullable(),
 	finalSizeBytes: z.number().int().nullable(),
-	wavSizeBytes: z.number().int().nullable(),
+	audioSizeBytes: z.number().int().nullable().optional(),
+	wavSizeBytes: z.number().int().nullable().optional(),
 	lastPrompt: z.string(),
 });
 
