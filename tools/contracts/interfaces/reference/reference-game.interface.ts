@@ -52,3 +52,19 @@ export interface IReferenceDownloadResult {
 	readonly bytes: number;
 	readonly error: string | null;
 }
+
+/** One file a kiosk-browser session is asked to land on disk. */
+export interface IKioskDownloadFile {
+	readonly filename: string;
+	readonly targetPath: string;
+	readonly expectedBytes: number | null;
+}
+
+/** What happened to one file fetched through the kiosk-browser path. */
+export interface IKioskDownloadResult {
+	readonly filename: string;
+	readonly ok: boolean;
+	readonly skipped: boolean;
+	readonly bytes: number;
+	readonly error: string | null;
+}

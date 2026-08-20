@@ -55,6 +55,38 @@ export const specPathFor = (workspaceRoot: string): string =>
 	resolve(workspaceRoot, SPEC_RELATIVE);
 
 /**
+ * Legacy audio-spec snapshots may omit nullable bookkeeping fields on old
+ * variants. Normalize them before zod validation so maintenance commands such
+ * as `rebuild-all --clean` can recover a partially-migrated manifest instead of
+ * failing before they get a chance to clear `status`.
+ */
+const normalizeLegacyAudioSpec = (raw: unknown): unknown => {
+	if (typeof raw !== 'object' || raw === null) return raw;
+	const spec = raw as Record<string, unknown>;
+	const status = spec.status;
+	if (typeof status !== 'object' || status === null) return raw;
+	for (const slot of Object.values(status as Record<string, unknown>)) {
+		if (typeof slot !== 'object' || slot === null) continue;
+		const mutableSlot = slot as Record<string, unknown>;
+		const variants = mutableSlot.variants;
+		if (typeof variants !== 'object' || variants === null) continue;
+		for (const variant of Object.values(variants as Record<string, unknown>)) {
+			if (typeof variant !== 'object' || variant === null) continue;
+			const v = variant as Record<string, unknown>;
+			if (v.stagedAt === undefined) v.stagedAt = null;
+			if (v.approvedAt === undefined) v.approvedAt = null;
+			if (v.deprecatedAt === undefined) v.deprecatedAt = null;
+			if (v.finalPath === undefined) v.finalPath = null;
+			if (v.finalSizeBytes === undefined) v.finalSizeBytes = null;
+			if (v.audioPath === undefined && v.wavPath === undefined) v.audioPath = null;
+			if (v.audioSizeBytes === undefined && v.wavSizeBytes === undefined) v.audioSizeBytes = null;
+			if (v.lastPrompt === undefined) v.lastPrompt = '';
+		}
+	}
+	return raw;
+};
+
+/**
  * Read the manifest from disk, validate it with zod, and apply the
  * runtime defaults that the runner relies on (empty status, default
  * staging/deprecated dirs). Throws AudioSpecError on missing/invalid.
@@ -64,7 +96,7 @@ export const readAudioSpec = (workspaceRoot: string): MutableAudioSpec => {
 	if (!existsSync(specPath)) {
 		throw STALE_ERROR(`audio spec missing at ${specPath}`);
 	}
-	const raw = JSON.parse(readFileSync(specPath, 'utf8')) as unknown;
+	const raw = normalizeLegacyAudioSpec(JSON.parse(readFileSync(specPath, 'utf8')) as unknown);
 	const parsed = AudioSpecSchema.safeParse(raw);
 	if (!parsed.success) {
 		throw STALE_ERROR(

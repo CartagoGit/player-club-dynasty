@@ -1,1444 +1,560 @@
 {
-	"$schema": "./audio-spec.schema.json",
-	"version": 3,
-	"root": "game/godot/Audio",
-	"stagingDir": ".generate/audios/staging",
-	"deprecatedDir": ".deprecated/assets/sounds",
-	"tool": {
-		"command": "mmx",
-		"nonInteractive": true,
-		"quiet": true
-	},
-	"_comment": "See game/godot/Audio/SPEC.md for the human-readable workflow. Each entry is a SLOT (the semantic concept, e.g. 'ui_click'). Inside the slot, 'approved' holds the single variant that ships; 'variants' is the review queue of freshly generated alternatives that the human can listen to, approve or deprecate.",
-	"globalMusicAnchor": {
-		"bpm": 96,
-		"key": "C major (Ionian)",
-		"scaleNotes": [
-			"C",
-			"D",
-			"E",
-			"F",
-			"G",
-			"A",
-			"B"
-		],
-		"instruments": "warm analog synth pads, electric piano (Rhodes), pizzicato strings, soft brushed snare, no drums on menu tracks",
-		"palette": "warm 1990s synthwave — muted oranges, deep blues, soft creams. No bright leads, no distorted guitars.",
-		"loopSeconds": 30,
-		"transitionRules": [
-			"Every track MUST begin and end on the C major tonic chord (C-E-G) so any two tracks can be crossfaded without harmonic clash.",
-			"Every track MUST contain a 4-bar bridge at the loop point whose chord progression resolves back to C major, enabling seamless A→B or B→A transitions.",
-			"No track introduces chromatic notes, modulations outside the C major scale, or borrowed chords.",
-			"No track uses percussion beyond a soft brushed snare — drums belong only to the matchday stingers, which are short non-looping accents.",
-			"Every music track MUST use the shared 4-note ascending motif (C-E-G-A or its transpositions) so any two tracks can crossfade without seam.",
-			"Every track MUST loop seamlessly: same energy at bar 64 as bar 1, no final cadence, no fade in/out, forward-motion bass into bar 1.",
-			"Every music track MUST use the shared 4-note ascending motif (C-E-G-A or its transpositions) so any two tracks can crossfade without seam.",
-			"Every track MUST loop seamlessly: same energy at bar 64 as bar 1, no final cadence, no fade in/out, forward-motion bass into bar 1."
-		]
-	},
-	"groups": [
-		{
-			"id": "music.menu",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro late-1990s Spanish football management PC game menu music. Warm, slightly nostalgic, optimistic but never saccharine.",
-			"coherence": {
-				"bpm": 114,
-				"key": "C major",
-				"instruments": "warm analog synth pads, light electric piano (Rhodes), pizzicato strings",
-				"mood": "optimistic, nostalgic, catchy, playful, confident",
-				"intensity": 0.3,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{
-					"id": "menu_main",
-					"filename": "menu_main.ogg",
-					"prompt": "Title screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 114 BPM. shared 4-note ascending motif (C-E-G-A), with restrained variations. Extremely memorable 4-to-6-note melodic hook during the first 5 seconds. The feeling of starting a new season, choosing a club and spending the night managing transfers, tactics and league tables on a PC around the year 2000. Catchy, charming and unmistakably menu music. Avoid: vocals, cinematic orchestra, epic trailer music, trap drums, EDM drops, aggressive bass, dark ambient, flamenco clichés, modern club production."
-				},
-				{
-					"id": "menu_credits",
-					"filename": "menu_credits.ogg",
-					"prompt": "End credits theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 98 BPM. F major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to F-A-C-D). Reflective, gently building, melancholic but resolved. Avoid: vocals, dramatic builds, heavy drums."
-				},
-				{
-					"id": "menu_loadsave",
-					"filename": "menu_loadsave.ogg",
-					"prompt": "Save/load screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Suspended, ambient, almost minimalist. Designed to invite thinking. Avoid: vocals, percussion, busy arrangements."
-				}
-			]
-		},
-		{
-			"id": "music.matchday",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro late-1990s Spanish football management PC game matchday music. Driving, tense, stadium atmosphere. Every track is harmonically compatible with the menu group.",
-			"coherence": {
-				"bpm": 108,
-				"key": "C major",
-				"instruments": "warm analog synth pad, electric piano (Rhodes), pizzicato strings, soft brushed snare, light synth bass",
-				"mood": "anticipation, focused, building",
-				"intensity": 0.6,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{
-					"id": "matchday_warmup",
-					"filename": "matchday_warmup.ogg",
-					"prompt": "Pre-match warmup theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Steady building rhythm, crowd murmurs growing. Avoid: vocals, sudden drops."
-				},
-				{
-					"id": "matchday_kickoff",
-					"filename": "matchday_kickoff.ogg",
-					"prompt": "Kickoff whistle moment for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 124 BPM. E minor. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to E-G-B-C, with blue note for tension). Explosive but warm, anthemic but restrained. Last 8 bars form a bridge that resolves back to C major so it can crossfade into any other music track. Avoid: vocals, cinematic orchestra."
-				},
-				{
-					"id": "matchday_goal",
-					"filename": "matchday_goal.ogg",
-					"prompt": "Goal celebration stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 112 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Short triumphant motif. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, stadium crowd audio."
-				},
-				{
-					"id": "matchday_fulltime",
-					"filename": "matchday_fulltime.ogg",
-					"prompt": "Full time whistle stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 100 BPM. F major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to F-A-C-D). Relieved exhale, gentle resolution. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, dramatic stings."
-				},
-				{
-					"id": "matchday_victory",
-					"filename": "matchday_victory.ogg",
-					"prompt": "Manager of the month victory stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 118 BPM. D major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to D-F#-A-B). Short brass-like synth lead, triumphant but warm. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, epic orchestral."
-				},
-				{
-					"id": "matchday_defeat",
-					"filename": "matchday_defeat.ogg",
-					"prompt": "Defeat stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 94 BPM. A minor. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C-E-F). Short sustained warm chord, mournful but gentle. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, dark cinematic."
-				}
-			]
-		},
-		{
-			"id": "sfx.ui",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro 1990s PC speaker UI sound. Short, crisp, synthesized, dry. Should sound like they all came from the same sound chip.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.9,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{
-					"id": "ui_click",
-					"filename": "ui_click.ogg",
-					"prompt": "soft UI click — short and dry, like a finger tapping a membrane keyboard"
-				},
-				{
-					"id": "ui_hover",
-					"filename": "ui_hover.ogg",
-					"prompt": "subtle hover tick — even shorter than the click, almost subliminal"
-				},
-				{
-					"id": "ui_confirm",
-					"filename": "ui_confirm.ogg",
-					"prompt": "positive confirmation — a short two-note ascending chirp"
-				},
-				{
-					"id": "ui_cancel",
-					"filename": "ui_cancel.ogg",
-					"prompt": "negative cancel — a short two-note descending chirp"
-				},
-				{
-					"id": "ui_error",
-					"filename": "ui_error.ogg",
-					"prompt": "error buzz — short buzzy reject tone"
-				},
-				{
-					"id": "ui_notify",
-					"filename": "ui_notify.ogg",
-					"prompt": "incoming notification — soft bell-like ping, ~250ms"
-				}
-			]
-		},
-		{
-			"id": "sfx.match",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Retro 1990s football management PC game stadium sound effects. Should sound lo-fi but unmistakable — they are what the manager hears from the stands.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.95
-			},
-			"entries": [
-				{
-					"id": "whistle_short",
-					"filename": "whistle_short.ogg",
-					"prompt": "referee short whistle — single sharp blast, ~600ms"
-				},
-				{
-					"id": "whistle_long",
-					"filename": "whistle_long.ogg",
-					"prompt": "referee long whistle — sustained blast, ~1.5 seconds"
-				},
-				{
-					"id": "whistle_penalty",
-					"filename": "whistle_penalty.ogg",
-					"prompt": "penalty award whistle — three short sharp blasts in quick succession"
-				},
-				{
-					"id": "crowd_cheer",
-					"filename": "crowd_cheer.ogg",
-					"prompt": "stadium crowd short cheer — quick roar that decays in ~2 seconds"
-				},
-				{
-					"id": "crowd_groan",
-					"filename": "crowd_groan.ogg",
-					"prompt": "stadium crowd disappointed groan — short communal 'ohhh', ~1.5 seconds"
-				},
-				{
-					"id": "crowd_chant",
-					"filename": "crowd_chant.ogg",
-					"prompt": "stadium crowd rhythmic clapping chant — repeated claps with low vocal roar, ~3 seconds"
-				},
-				{
-					"id": "kick",
-					"filename": "kick.ogg",
-					"prompt": "football kick impact — leather thud with a touch of boot-on-ball squeak"
-				},
-				{
-					"id": "ball_bounce",
-					"filename": "ball_bounce.ogg",
-					"prompt": "football bouncing on grass — two quick soft bounces"
-				},
-				{
-					"id": "post_hit",
-					"filename": "post_hit.ogg",
-					"prompt": "ball hitting the goalpost — sharp metallic clang"
-				}
-			]
-		},
-		{
-			"id": "music.workspace",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Sub-views of the club management workspace (Overview / Market / Stadium / Standings). Same warm 1990s synthwave palette as music.menu but each sub-view has a slightly different mood so the manager feels the context shift.",
-			"coherence": {
-				"bpm": 108,
-				"key": "C major",
-				"instruments": "warm analog synth pad, soft Rhodes electric piano, pizzicato strings, occasional muted electric bass",
-				"mood": "steady, productive, 'home managing'",
-				"intensity": 0.4,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{
-					"id": "workspace_hub_01",
-					"filename": "workspace_hub_01.ogg",
-					"prompt": "Workspace hub (Overview tab) — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 1: open with ascending pizzicato motif."
-				},
-				{
-					"id": "workspace_hub_02",
-					"filename": "workspace_hub_02.ogg",
-					"prompt": "Workspace hub (Overview tab) — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 2: open with descending Rhodes arpeggio. Same loop DNA as variant 1."
-				},
-				{
-					"id": "workspace_hub_03",
-					"filename": "workspace_hub_03.ogg",
-					"prompt": "Workspace hub (Overview tab) — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 3: open with sustained synth pad chord then Rhodes melody enters. Same loop DNA as variants 1 and 2."
-				},
-				{
-					"id": "market_browsing_01",
-					"filename": "market_browsing_01.ogg",
-					"prompt": "Transfer market browsing theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 1: bass-led walking line. Same loop DNA as workspace_hub so it crossfades cleanly."
-				},
-				{
-					"id": "market_browsing_02",
-					"filename": "market_browsing_02.ogg",
-					"prompt": "Transfer market browsing theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 2: Rhodes-led melodic counter-melody."
-				},
-				{
-					"id": "market_browsing_03",
-					"filename": "market_browsing_03.ogg",
-					"prompt": "Transfer market browsing theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 3: alternating pad-Rhodes pattern."
-				},
-				{
-					"id": "stadium_management_01",
-					"filename": "stadium_management_01.ogg",
-					"prompt": "Stadium management theme (merchandising, expansions, facilities) — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 1: ascending pizzicato ostinato."
-				},
-				{
-					"id": "stadium_management_02",
-					"filename": "stadium_management_02.ogg",
-					"prompt": "Stadium management theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 2: warm chord stabs on each beat."
-				},
-				{
-					"id": "stadium_management_03",
-					"filename": "stadium_management_03.ogg",
-					"prompt": "Stadium management theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 3: legato Rhodes melody over slow pad."
-				},
-				{
-					"id": "standings_review_01",
-					"filename": "standings_review_01.ogg",
-					"prompt": "League tables and standings review theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 1: slow pad with sparse Rhodes chords."
-				},
-				{
-					"id": "standings_review_02",
-					"filename": "standings_review_02.ogg",
-					"prompt": "League tables and standings review theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 2: single Rhodes melody line, no chords."
-				},
-				{
-					"id": "standings_review_03",
-					"filename": "standings_review_03.ogg",
-					"prompt": "League tables and standings review theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 3: alternating pad-Rhodes alternating every 4 bars."
-				}
-			]
-		},
-		{
-			"id": "music.editor",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Pack editor / creative mode. Sparse and minimal so the player can think — no busy motifs, lots of air. Same warm 1990s synthwave palette as the menu group.",
-			"coherence": {
-				"bpm": 96,
-				"key": "C major",
-				"instruments": "warm analog synth pad, soft Rhodes electric piano, sparse pizzicato strings",
-				"mood": "very sparse, focused, contemplative",
-				"intensity": 0.25,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{
-					"id": "editor_focus_01",
-					"filename": "editor_focus_01.ogg",
-					"prompt": "Pack editor theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 1: held pad with single Rhodes note every 2 bars."
-				},
-				{
-					"id": "editor_focus_02",
-					"filename": "editor_focus_02.ogg",
-					"prompt": "Pack editor theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 2: slow ascending Rhodes arpeggio every 8 bars."
-				},
-				{
-					"id": "editor_focus_03",
-					"filename": "editor_focus_03.ogg",
-					"prompt": "Pack editor theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 3: pad chord changes every 4 bars with sparse Rhodes stabs."
-				}
-			]
-		},
-		{
-			"id": "music.trophy",
-			"kind": "music",
-			"outputDir": "Music",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Trophy / winners screen (league titles, promotions, manager of the month). Same warm 1990s synthwave palette but with a contained brass-like synth lead so it feels triumphant without being bombastic.",
-			"coherence": {
-				"bpm": 116,
-				"key": "C major",
-				"instruments": "warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead, soft brushed snare",
-				"mood": "triumphant but warm, contained",
-				"intensity": 0.6,
-				"loopSeconds": 30
-			},
-			"entries": [
-				{
-					"id": "trophy_lift_01",
-					"filename": "trophy_lift_01.ogg",
-					"prompt": "Trophy lift theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 1: brass lead melody over pizzicato ostinato. Compatible with menu_main for crossfade."
-				},
-				{
-					"id": "trophy_lift_02",
-					"filename": "trophy_lift_02.ogg",
-					"prompt": "Trophy lift theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 2: Rhodes melody carries the lead, brass plays sustained harmony. Compatible with menu_main for crossfade."
-				},
-				{
-					"id": "trophy_lift_03",
-					"filename": "trophy_lift_03.ogg",
-					"prompt": "Trophy lift theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 3: call-and-response between brass and Rhodes. Compatible with menu_main for crossfade."
-				}
-			]
-		},
-		{
-			"id": "sfx.workspace",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Section navigation in the workspace sidebar (Overview / Squad / Tactics / Competitions / Market / Finances / World). Should feel cohesive with sfx.ui but slightly more deliberate — these are larger transitions.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.9,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{
-					"id": "section_change",
-					"filename": "section_change.ogg",
-					"prompt": "workspace sidebar section change — short sweeping whoosh with soft tap, ~400ms"
-				},
-				{
-					"id": "section_hover",
-					"filename": "section_hover.ogg",
-					"prompt": "workspace sidebar button hover — subtle wood-block tick, very short, almost subliminal"
-				},
-				{
-					"id": "section_pin",
-					"filename": "section_pin.ogg",
-					"prompt": "workspace sidebar button pinned / focused — soft positive two-note ping"
-				}
-			]
-		},
-		{
-			"id": "sfx.editor",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Pack editor — placing, rotating and removing tiles / cards / stickers on the canvas. Crispy, satisfying, retro-gamey.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.9,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{
-					"id": "tile_place",
-					"filename": "tile_place.ogg",
-					"prompt": "pack editor tile placed — chunky satisfying snap, like a stamp hitting paper, ~150ms"
-				},
-				{
-					"id": "tile_remove",
-					"filename": "tile_remove.ogg",
-					"prompt": "pack editor tile removed — soft click-pop, like a suction cup detaching, ~120ms"
-				},
-				{
-					"id": "tile_rotate",
-					"filename": "tile_rotate.ogg",
-					"prompt": "pack editor tile rotated — quick wooden tick, very short, ~80ms"
-				},
-				{
-					"id": "canvas_save",
-					"filename": "canvas_save.ogg",
-					"prompt": "pack editor canvas saved — ascending two-note confirmation, slightly brighter than ui_confirm, ~300ms"
-				}
-			]
-		},
-		{
-			"id": "sfx.match_extended",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Extended match commentary stingers: cards, fouls, shots, saves, substitutions. Each event needs a short, identifiable sting that the manager associates with that exact play.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.95
-			},
-			"entries": [
-				{
-					"id": "match_start",
-					"filename": "match_start.ogg",
-					"prompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second"
-				},
-				{
-					"id": "half_time",
-					"filename": "half_time.ogg",
-					"prompt": "half time whistle — two long sustained blasts, ~1.5 seconds"
-				},
-				{
-					"id": "yellow_card",
-					"filename": "yellow_card.ogg",
-					"prompt": "yellow card sting — single sharp whistle beep plus a short plastic card flick, ~800ms"
-				},
-				{
-					"id": "red_card",
-					"filename": "red_card.ogg",
-					"prompt": "red card sting — sharp whistle plus a louder plastic card flick with a low ominous tone underneath, ~1 second"
-				},
-				{
-					"id": "foul",
-					"filename": "foul.ogg",
-					"prompt": "foul whistle — single medium whistle with a short crowd ohh, ~700ms"
-				},
-				{
-					"id": "shot_on_target",
-					"filename": "shot_on_target.ogg",
-					"prompt": "shot on target — leather strike followed by a glove save slap, ~1 second"
-				},
-				{
-					"id": "shot_off_target",
-					"filename": "shot_off_target.ogg",
-					"prompt": "shot off target — leather strike followed by a thud against advertising board, ~1 second"
-				},
-				{
-					"id": "substitution",
-					"filename": "substitution.ogg",
-					"prompt": "substitution sting — board-up electronic ping plus short crowd murmur, ~900ms"
-				}
-			]
-		},
-		{
-			"id": "sfx.transfer",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Transfer market stingers — incoming offer, scout report, completed deal. Lo-fi retro chime-ish to fit the 1990s chip aesthetic but with a cash-register undertone for deals.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.9,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{
-					"id": "offer_received",
-					"filename": "offer_received.ogg",
-					"prompt": "transfer offer received — soft incoming message chime, ~400ms"
-				},
-				{
-					"id": "scout_report",
-					"filename": "scout_report.ogg",
-					"prompt": "scout report delivered — paper unfolding rustle plus a soft bell ping, ~600ms"
-				},
-				{
-					"id": "transfer_complete",
-					"filename": "transfer_complete.ogg",
-					"prompt": "transfer deal complete — vintage cash register ka-ching plus a short crowd cheer, ~1.2 seconds"
-				},
-				{
-					"id": "transfer_rejected",
-					"filename": "transfer_rejected.ogg",
-					"prompt": "transfer offer rejected — soft descending two-note decline, ~300ms"
-				}
-			]
-		},
-		{
-			"id": "sfx.achievement",
-			"kind": "sfx",
-			"outputDir": "SFX",
-			"format": "ogg",
-			"model": "music-3.0",
-			"styleAnchor": "Career achievement stingers — manager of the month, season complete, promotion, relegation, trophy lift. Each is a short fanfare that complements music.trophy.trophy_lift without overshadowing it.",
-			"coherence": {
-				"speed": 1,
-				"volume": 0.95,
-				"sound-effect": "ui_chime"
-			},
-			"entries": [
-				{
-					"id": "manager_of_month",
-					"filename": "manager_of_month.ogg",
-					"prompt": "manager of the month sting — short three-note ascending brass-like fanfare, ~1.2 seconds"
-				},
-				{
-					"id": "season_complete",
-					"filename": "season_complete.ogg",
-					"prompt": "season complete sting — soft bell sequence (ding-ding-ding) with a crowd swell, ~1.5 seconds"
-				},
-				{
-					"id": "promotion",
-					"filename": "promotion.ogg",
-					"prompt": "promotion sting — bright ascending brass fanfare with crowd roar, ~2 seconds"
-				},
-				{
-					"id": "relegation",
-					"filename": "relegation.ogg",
-					"prompt": "relegation sting — soft descending minor-ish chime plus a quiet crowd groan, ~1.5 seconds"
-				}
-			]
-		}
-	],
-	"status": {
-		"music.workspace.workspace_hub_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100006926": {
-					"variantId": "v_1787100006926",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/workspace_hub_01/v_1787100006926.ogg",
-					"audioSizeBytes": 825344
-				}
-			}
-		},
-		"music.workspace.market_browsing_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100170011": {
-					"variantId": "v_1787100170011",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/market_browsing_01/v_1787100170011.ogg",
-					"audioSizeBytes": 538325
-				}
-			}
-		},
-		"music.workspace.stadium_management_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100331920": {
-					"variantId": "v_1787100331920",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/stadium_management_01/v_1787100331920.ogg",
-					"audioSizeBytes": 987740
-				}
-			}
-		},
-		"music.workspace.stadium_management_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100331922": {
-					"variantId": "v_1787100331922",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:48:02.405Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Stadium management theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 3: legato Rhodes melody over slow pad.",
-					"audioPath": ".generate/audios/staging/music.workspace/stadium_management_03/v_1787100331922.ogg",
-					"audioSizeBytes": 1090074
-				}
-			}
-		},
-		"music.workspace.standings_review_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100488828": {
-					"variantId": "v_1787100488828",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/standings_review_03/v_1787100488828.ogg",
-					"audioSizeBytes": 884168
-				}
-			}
-		},
-		"music.editor.editor_focus_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100650393": {
-					"variantId": "v_1787100650393",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:54:14.952Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Pack editor theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 2: slow ascending Rhodes arpeggio every 8 bars.",
-					"audioPath": ".generate/audios/staging/music.editor/editor_focus_02/v_1787100650393.ogg",
-					"audioSizeBytes": 1612314
-				}
-			}
-		},
-		"music.trophy.trophy_lift_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100854985": {
-					"variantId": "v_1787100854985",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.trophy/trophy_lift_02/v_1787100854985.ogg",
-					"audioSizeBytes": 798199
-				}
-			}
-		},
-		"sfx.workspace.section_change": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094127955": {
-					"variantId": "v_1787094127955",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:03:34.171Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "workspace sidebar section change — short sweeping whoosh with soft tap, ~400ms",
-					"audioPath": ".generate/audios/staging/sfx.workspace/section_change/v_1787094127955.ogg",
-					"audioSizeBytes": 482151
-				},
-				"v_1787094058314": {
-					"variantId": "v_1787094058314",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.workspace/section_change/v_1787094058314.ogg",
-					"audioSizeBytes": 508266
-				}
-			}
-		},
-		"sfx.editor.tile_place": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094226565": {
-					"variantId": "v_1787094226565",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:06:22.295Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "pack editor tile placed — chunky satisfying snap, like a stamp hitting paper, ~150ms",
-					"audioPath": ".generate/audios/staging/sfx.editor/tile_place/v_1787094226565.ogg",
-					"audioSizeBytes": 771056
-				}
-			}
-		},
-		"sfx.editor.tile_rotate": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094386564": {
-					"variantId": "v_1787094386564",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:08:29.173Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "pack editor tile rotated — quick wooden tick, very short, ~80ms",
-					"audioPath": ".generate/audios/staging/sfx.editor/tile_rotate/v_1787094386564.ogg",
-					"audioSizeBytes": 609236
-				}
-			}
-		},
-		"sfx.match_extended.match_start": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094513248": {
-					"variantId": "v_1787094513248",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:11:20.562Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/match_start/v_1787094513248.ogg",
-					"audioSizeBytes": 935453
-				}
-			}
-		},
-		"sfx.match_extended.foul": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094685521": {
-					"variantId": "v_1787094685521",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:13:35.903Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "foul whistle — single medium whistle with a short crowd ohh, ~700ms",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/foul/v_1787094685521.ogg",
-					"audioSizeBytes": 693295
-				}
-			}
-		},
-		"sfx.match_extended.substitution": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094819661": {
-					"variantId": "v_1787094819661",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:15:40.991Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "substitution sting — board-up electronic ping plus short crowd murmur, ~900ms",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/substitution/v_1787094819661.ogg",
-					"audioSizeBytes": 731506
-				}
-			}
-		},
-		"sfx.transfer.transfer_rejected": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094951110": {
-					"variantId": "v_1787094951110",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:17:56.900Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "transfer offer rejected — soft descending two-note decline, ~300ms",
-					"audioPath": ".generate/audios/staging/sfx.transfer/transfer_rejected/v_1787094951110.ogg",
-					"audioSizeBytes": 750555
-				}
-			}
-		},
-		"sfx.achievement.season_complete": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787095137927": {
-					"variantId": "v_1787095137927",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:21:14.098Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "season complete sting — soft bell sequence (ding-ding-ding) with a crowd swell, ~1.5 seconds",
-					"audioPath": ".generate/audios/staging/sfx.achievement/season_complete/v_1787095137927.ogg",
-					"audioSizeBytes": 697559
-				}
-			}
-		},
-		"sfx.transfer.transfer_complete": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787095279647": {
-					"variantId": "v_1787095279647",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:22:42.325Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "transfer deal complete — vintage cash register ka-ching plus a short crowd cheer, ~1.2 seconds",
-					"audioPath": ".generate/audios/staging/sfx.transfer/transfer_complete/v_1787095279647.ogg",
-					"audioSizeBytes": 400411
-				}
-			}
-		},
-		"sfx.achievement.relegation": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787095507980": {
-					"variantId": "v_1787095507980",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:27:23.089Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "relegation sting — soft descending minor-ish chime plus a quiet crowd groan, ~1.5 seconds",
-					"audioPath": ".generate/audios/staging/sfx.achievement/relegation/v_1787095507980.ogg",
-					"audioSizeBytes": 774979
-				},
-				"v_1787095363924": {
-					"variantId": "v_1787095363924",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.achievement/relegation/v_1787095363924.ogg",
-					"audioSizeBytes": 1316489
-				}
-			}
-		},
-		"music.menu.menu_main": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099553943": {
-					"variantId": "v_1787099553943",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:34:27.953Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Title screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 114 BPM. shared 4-note ascending motif (C-E-G-A), with restrained variations. Extremely memorable 4-to-6-note melodic hook during the first 5 seconds. The feeling of starting a new season, choosing a club and spending the night managing transfers, tactics and league tables on a PC around the year 2000. Catchy, charming and unmistakably menu music. Avoid: vocals, cinematic orchestra, epic trailer music, trap drums, EDM drops, aggressive bass, dark ambient, flamenco clichés, modern club production.",
-					"audioPath": ".generate/audios/staging/music.menu/menu_main/v_1787099553943.ogg",
-					"audioSizeBytes": 782797
-				},
-				"v_1787140280097": {
-					"variantId": "v_1787140280097",
-					"state": "staged",
-					"stagedAt": "2026-08-19T11:53:18.631Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"audioPath": ".generate/audios/staging/music.menu/menu_main/v_1787140280097.ogg",
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"audioSizeBytes": 901186,
-					"lastPrompt": "Title screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 114 BPM. shared 4-note ascending motif (C-E-G-A), with restrained variations. Extremely memorable 4-to-6-note melodic hook during the first 5 seconds. The feeling of starting a new season, choosing a club and spending the night managing transfers, tactics and league tables on a PC around the year 2000. Catchy, charming and unmistakably menu music. Avoid: vocals, cinematic orchestra, epic trailer music, trap drums, EDM drops, aggressive bass, dark ambient, flamenco clichés, modern club production."
-				}
-			}
-		},
-		"sfx.ui.ui_notify": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096871687": {
-					"variantId": "v_1787096871687",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:50:22.787Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "incoming notification — soft bell-like ping, ~250ms",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_notify/v_1787096871687.ogg",
-					"audioSizeBytes": 974126
-				}
-			}
-		},
-		"sfx.match.crowd_groan": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075017": {
-					"variantId": "v_1787097075017",
-					"state": "staged",
-					"stagedAt": "2026-08-18T23:53:40.753Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "stadium crowd disappointed groan — short communal 'ohhh', ~1.5 seconds",
-					"audioPath": ".generate/audios/staging/sfx.match/crowd_groan/v_1787097075017.ogg",
-					"audioSizeBytes": 912620
-				}
-			}
-		},
-		"music.matchday.matchday_warmup": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099674023": {
-					"variantId": "v_1787099674023",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_warmup/v_1787099674023.ogg",
-					"audioSizeBytes": 930088
-				}
-			}
-		},
-		"music.matchday.matchday_victory": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099828677": {
-					"variantId": "v_1787099828677",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:40:02.453Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Manager of the month victory stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 118 BPM. D major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to D-F#-A-B). Short brass-like synth lead, triumphant but warm. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, epic orchestral.",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_victory/v_1787099828677.ogg",
-					"audioSizeBytes": 1310546
-				}
-			}
-		},
-		"music.matchday.matchday_fulltime": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099828673": {
-					"variantId": "v_1787099828673",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_fulltime/v_1787099828673.ogg",
-					"audioSizeBytes": 1095264
-				}
-			}
-		},
-		"music.menu.menu_credits": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099383649": {
-					"variantId": "v_1787099383649",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:32:30.139Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "End credits theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 98 BPM. F major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to F-A-C-D). Reflective, gently building, melancholic but resolved. Avoid: vocals, dramatic builds, heavy drums.",
-					"audioPath": ".generate/audios/staging/music.menu/menu_credits/v_1787099383649.ogg",
-					"audioSizeBytes": 1260420
-				}
-			}
-		},
-		"music.matchday.matchday_goal": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099674023": {
-					"variantId": "v_1787099674023",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:36:55.974Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Goal celebration stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 112 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Short triumphant motif. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, stadium crowd audio.",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_goal/v_1787099674023.ogg",
-					"audioSizeBytes": 1004017
-				}
-			}
-		},
-		"music.workspace.workspace_hub_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100006926": {
-					"variantId": "v_1787100006926",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:42:42.534Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Workspace hub (Overview tab) — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 2: open with descending Rhodes arpeggio. Same loop DNA as variant 1.",
-					"audioPath": ".generate/audios/staging/music.workspace/workspace_hub_02/v_1787100006926.ogg",
-					"audioSizeBytes": 1123112
-				}
-			}
-		},
-		"music.workspace.market_browsing_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100170010": {
-					"variantId": "v_1787100170010",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:45:26.912Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Transfer market browsing theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 2: Rhodes-led melodic counter-melody.",
-					"audioPath": ".generate/audios/staging/music.workspace/market_browsing_02/v_1787100170010.ogg",
-					"audioSizeBytes": 1255371
-				}
-			}
-		},
-		"music.workspace.standings_review_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100488826": {
-					"variantId": "v_1787100488826",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:50:40.386Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "League tables and standings review theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 1: slow pad with sparse Rhodes chords.",
-					"audioPath": ".generate/audios/staging/music.workspace/standings_review_01/v_1787100488826.ogg",
-					"audioSizeBytes": 1145673
-				}
-			}
-		},
-		"music.trophy.trophy_lift_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100904821": {
-					"variantId": "v_1787100904821",
-					"state": "staged",
-					"stagedAt": "2026-08-19T00:58:08.093Z",
-					"approvedAt": null,
-					"deprecatedAt": null,
-					"finalPath": null,
-					"finalSizeBytes": null,
-					"lastPrompt": "Trophy lift theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 3: call-and-response between brass and Rhodes. Compatible with menu_main for crossfade.",
-					"audioPath": ".generate/audios/staging/music.trophy/trophy_lift_03/v_1787100904821.ogg",
-					"audioSizeBytes": 1520943
-				},
-				"v_1787100854984": {
-					"variantId": "v_1787100854984",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.trophy/trophy_lift_03/v_1787100854984.ogg",
-					"audioSizeBytes": 1063792
-				}
-			}
-		},
-		"music.menu.menu_loadsave": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099383649": {
-					"variantId": "v_1787099383649",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.menu/menu_loadsave/v_1787099383649.ogg",
-					"audioSizeBytes": 1177731
-				}
-			}
-		},
-		"music.matchday.matchday_kickoff": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099674024": {
-					"variantId": "v_1787099674024",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_kickoff/v_1787099674024.ogg",
-					"audioSizeBytes": 967014
-				}
-			}
-		},
-		"music.matchday.matchday_defeat": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787099828674": {
-					"variantId": "v_1787099828674",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.matchday/matchday_defeat/v_1787099828674.ogg",
-					"audioSizeBytes": 1144553
-				}
-			}
-		},
-		"sfx.ui.ui_click": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096672270": {
-					"variantId": "v_1787096672270",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_click/v_1787096672270.ogg",
-					"audioSizeBytes": 527754
-				}
-			}
-		},
-		"sfx.ui.ui_hover": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096672275": {
-					"variantId": "v_1787096672275",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_hover/v_1787096672275.ogg",
-					"audioSizeBytes": 86198
-				}
-			}
-		},
-		"sfx.ui.ui_confirm": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096672274": {
-					"variantId": "v_1787096672274",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_confirm/v_1787096672274.ogg",
-					"audioSizeBytes": 688716
-				}
-			}
-		},
-		"sfx.ui.ui_cancel": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097583086": {
-					"variantId": "v_1787097583086",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_cancel/v_1787097583086.ogg",
-					"audioSizeBytes": 536546
-				}
-			}
-		},
-		"sfx.ui.ui_error": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096871691": {
-					"variantId": "v_1787096871691",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.ui/ui_error/v_1787096871691.ogg",
-					"audioSizeBytes": 549800
-				}
-			}
-		},
-		"sfx.match.whistle_short": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096871692": {
-					"variantId": "v_1787096871692",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/whistle_short/v_1787096871692.ogg",
-					"audioSizeBytes": 495182
-				}
-			}
-		},
-		"sfx.match.whistle_long": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096871695": {
-					"variantId": "v_1787096871695",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/whistle_long/v_1787096871695.ogg",
-					"audioSizeBytes": 227460
-				}
-			}
-		},
-		"sfx.match.whistle_penalty": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787096871691": {
-					"variantId": "v_1787096871691",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/whistle_penalty/v_1787096871691.ogg",
-					"audioSizeBytes": 67351
-				}
-			}
-		},
-		"sfx.match.crowd_cheer": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075010": {
-					"variantId": "v_1787097075010",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/crowd_cheer/v_1787097075010.ogg",
-					"audioSizeBytes": 381182
-				}
-			}
-		},
-		"sfx.match.crowd_chant": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075011": {
-					"variantId": "v_1787097075011",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/crowd_chant/v_1787097075011.ogg",
-					"audioSizeBytes": 792679
-				}
-			}
-		},
-		"sfx.match.kick": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075023": {
-					"variantId": "v_1787097075023",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/kick/v_1787097075023.ogg",
-					"audioSizeBytes": 202727
-				}
-			}
-		},
-		"sfx.match.ball_bounce": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075012": {
-					"variantId": "v_1787097075012",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/ball_bounce/v_1787097075012.ogg",
-					"audioSizeBytes": 904621
-				}
-			}
-		},
-		"sfx.match.post_hit": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787097075013": {
-					"variantId": "v_1787097075013",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match/post_hit/v_1787097075013.ogg",
-					"audioSizeBytes": 507237
-				}
-			}
-		},
-		"music.workspace.workspace_hub_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100006926": {
-					"variantId": "v_1787100006926",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/workspace_hub_03/v_1787100006926.ogg",
-					"audioSizeBytes": 966418
-				}
-			}
-		},
-		"music.workspace.market_browsing_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100170011": {
-					"variantId": "v_1787100170011",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/market_browsing_03/v_1787100170011.ogg",
-					"audioSizeBytes": 1168647
-				}
-			}
-		},
-		"music.workspace.stadium_management_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100331923": {
-					"variantId": "v_1787100331923",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/stadium_management_02/v_1787100331923.ogg",
-					"audioSizeBytes": 699537
-				}
-			}
-		},
-		"music.workspace.standings_review_02": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100488827": {
-					"variantId": "v_1787100488827",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.workspace/standings_review_02/v_1787100488827.ogg",
-					"audioSizeBytes": 1094485
-				}
-			}
-		},
-		"music.editor.editor_focus_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100650393": {
-					"variantId": "v_1787100650393",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.editor/editor_focus_01/v_1787100650393.ogg",
-					"audioSizeBytes": 662257
-				}
-			}
-		},
-		"music.editor.editor_focus_03": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100650394": {
-					"variantId": "v_1787100650394",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.editor/editor_focus_03/v_1787100650394.ogg",
-					"audioSizeBytes": 1125593
-				}
-			}
-		},
-		"music.trophy.trophy_lift_01": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787100854985": {
-					"variantId": "v_1787100854985",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.trophy/trophy_lift_01/v_1787100854985.ogg",
-					"audioSizeBytes": 526005
-				},
-				"v_1787100904822": {
-					"variantId": "v_1787100904822",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/music.trophy/trophy_lift_01/v_1787100904822.ogg",
-					"audioSizeBytes": 934584
-				}
-			}
-		},
-		"sfx.workspace.section_hover": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094226566": {
-					"variantId": "v_1787094226566",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.workspace/section_hover/v_1787094226566.ogg",
-					"audioSizeBytes": 631086
-				}
-			}
-		},
-		"sfx.workspace.section_pin": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094226562": {
-					"variantId": "v_1787094226562",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.workspace/section_pin/v_1787094226562.ogg",
-					"audioSizeBytes": 116681
-				}
-			}
-		},
-		"sfx.editor.tile_remove": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094386565": {
-					"variantId": "v_1787094386565",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.editor/tile_remove/v_1787094386565.ogg",
-					"audioSizeBytes": 654621
-				}
-			}
-		},
-		"sfx.editor.canvas_save": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094386566": {
-					"variantId": "v_1787094386566",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.editor/canvas_save/v_1787094386566.ogg",
-					"audioSizeBytes": 651033
-				}
-			}
-		},
-		"sfx.match_extended.half_time": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094513233": {
-					"variantId": "v_1787094513233",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/half_time/v_1787094513233.ogg",
-					"audioSizeBytes": 262069
-				}
-			}
-		},
-		"sfx.match_extended.yellow_card": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094513252": {
-					"variantId": "v_1787094513252",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/yellow_card/v_1787094513252.ogg",
-					"audioSizeBytes": 285733
-				}
-			}
-		},
-		"sfx.match_extended.red_card": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094685518": {
-					"variantId": "v_1787094685518",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/red_card/v_1787094685518.ogg",
-					"audioSizeBytes": 224253
-				}
-			}
-		},
-		"sfx.match_extended.shot_on_target": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094685529": {
-					"variantId": "v_1787094685529",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/shot_on_target/v_1787094685529.ogg",
-					"audioSizeBytes": 630331
-				}
-			}
-		},
-		"sfx.match_extended.shot_off_target": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094819663": {
-					"variantId": "v_1787094819663",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.match_extended/shot_off_target/v_1787094819663.ogg",
-					"audioSizeBytes": 655486
-				}
-			}
-		},
-		"sfx.transfer.offer_received": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094819660": {
-					"variantId": "v_1787094819660",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.transfer/offer_received/v_1787094819660.ogg",
-					"audioSizeBytes": 12996
-				}
-			}
-		},
-		"sfx.transfer.scout_report": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787094951114": {
-					"variantId": "v_1787094951114",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.transfer/scout_report/v_1787094951114.ogg",
-					"audioSizeBytes": 704779
-				}
-			}
-		},
-		"sfx.achievement.manager_of_month": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787095137928": {
-					"variantId": "v_1787095137928",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.achievement/manager_of_month/v_1787095137928.ogg",
-					"audioSizeBytes": 683618
-				}
-			}
-		},
-		"sfx.achievement.promotion": {
-			"approvedVariantId": null,
-			"variants": {
-				"v_1787095137927": {
-					"variantId": "v_1787095137927",
-					"state": "staged",
-					"audioPath": ".generate/audios/staging/sfx.achievement/promotion/v_1787095137927.ogg",
-					"audioSizeBytes": 737389
-				}
-			}
-		}
-	}
+  "$schema": "./audio-spec.schema.json",
+  "version": 3,
+  "root": "game/godot/Audio",
+  "stagingDir": ".generate/audios/staging",
+  "deprecatedDir": ".deprecated/assets/sounds",
+  "tool": {
+    "command": "mmx",
+    "nonInteractive": true,
+    "quiet": true
+  },
+  "_comment": "See game/godot/Audio/SPEC.md for the human-readable workflow. Each entry is a SLOT (the semantic concept, e.g. 'ui_click'). Inside the slot, 'approved' holds the single variant that ships; 'variants' is the review queue of freshly generated alternatives that the human can listen to, approve or deprecate.",
+  "globalMusicAnchor": {
+    "bpm": 96,
+    "key": "C major (Ionian)",
+    "scaleNotes": [
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B"
+    ],
+    "instruments": "warm analog synth pads, electric piano (Rhodes), pizzicato strings, soft brushed snare, no drums on menu tracks",
+    "palette": "warm 1990s synthwave — muted oranges, deep blues, soft creams. No bright leads, no distorted guitars.",
+    "loopSeconds": 30,
+    "transitionRules": [
+      "Every track MUST begin and end on the C major tonic chord (C-E-G) so any two tracks can be crossfaded without harmonic clash.",
+      "Every track MUST contain a 4-bar bridge at the loop point whose chord progression resolves back to C major, enabling seamless A→B or B→A transitions.",
+      "No track introduces chromatic notes, modulations outside the C major scale, or borrowed chords.",
+      "No track uses percussion beyond a soft brushed snare — drums belong only to the matchday stingers, which are short non-looping accents.",
+      "Every music track MUST use the shared 4-note ascending motif (C-E-G-A or its transpositions) so any two tracks can crossfade without seam.",
+      "Every track MUST loop seamlessly: same energy at bar 64 as bar 1, no final cadence, no fade in/out, forward-motion bass into bar 1.",
+      "Every music track MUST use the shared 4-note ascending motif (C-E-G-A or its transpositions) so any two tracks can crossfade without seam.",
+      "Every track MUST loop seamlessly: same energy at bar 64 as bar 1, no final cadence, no fade in/out, forward-motion bass into bar 1."
+    ]
+  },
+  "groups": [
+    {
+      "id": "music.menu",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro late-1990s Spanish football management PC game menu music. Warm, slightly nostalgic, optimistic but never saccharine.",
+      "coherence": {
+        "bpm": 114,
+        "key": "C major",
+        "instruments": "warm analog synth pads, light electric piano (Rhodes), pizzicato strings",
+        "mood": "optimistic, nostalgic, catchy, playful, confident",
+        "intensity": 0.3,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "menu_main",
+          "filename": "menu_main.ogg",
+          "prompt": "Title screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 114 BPM. shared 4-note ascending motif (C-E-G-A), with restrained variations. Extremely memorable 4-to-6-note melodic hook during the first 5 seconds. The feeling of starting a new season, choosing a club and spending the night managing transfers, tactics and league tables on a PC around the year 2000. Catchy, charming and unmistakably menu music. Avoid: vocals, cinematic orchestra, epic trailer music, trap drums, EDM drops, aggressive bass, dark ambient, flamenco clichés, modern club production."
+        },
+        {
+          "id": "menu_credits",
+          "filename": "menu_credits.ogg",
+          "prompt": "End credits theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 98 BPM. F major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to F-A-C-D). Reflective, gently building, melancholic but resolved. Avoid: vocals, dramatic builds, heavy drums."
+        },
+        {
+          "id": "menu_loadsave",
+          "filename": "menu_loadsave.ogg",
+          "prompt": "Save/load screen theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Suspended, ambient, almost minimalist. Designed to invite thinking. Avoid: vocals, percussion, busy arrangements."
+        }
+      ]
+    },
+    {
+      "id": "music.matchday",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro late-1990s Spanish football management PC game matchday music. Driving, tense, stadium atmosphere. Every track is harmonically compatible with the menu group.",
+      "coherence": {
+        "bpm": 108,
+        "key": "C major",
+        "instruments": "warm analog synth pad, electric piano (Rhodes), pizzicato strings, soft brushed snare, light synth bass",
+        "mood": "anticipation, focused, building",
+        "intensity": 0.6,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "matchday_warmup",
+          "filename": "matchday_warmup.ogg",
+          "prompt": "Pre-match warmup theme for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Steady building rhythm, crowd murmurs growing. Avoid: vocals, sudden drops."
+        },
+        {
+          "id": "matchday_kickoff",
+          "filename": "matchday_kickoff.ogg",
+          "prompt": "Kickoff whistle moment for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 124 BPM. E minor. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to E-G-B-C, with blue note for tension). Explosive but warm, anthemic but restrained. Last 8 bars form a bridge that resolves back to C major so it can crossfade into any other music track. Avoid: vocals, cinematic orchestra."
+        },
+        {
+          "id": "matchday_goal",
+          "filename": "matchday_goal.ogg",
+          "prompt": "Goal celebration stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 112 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Short triumphant motif. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, stadium crowd audio."
+        },
+        {
+          "id": "matchday_fulltime",
+          "filename": "matchday_fulltime.ogg",
+          "prompt": "Full time whistle stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 100 BPM. F major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to F-A-C-D). Relieved exhale, gentle resolution. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, dramatic stings."
+        },
+        {
+          "id": "matchday_victory",
+          "filename": "matchday_victory.ogg",
+          "prompt": "Manager of the month victory stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 118 BPM. D major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to D-F#-A-B). Short brass-like synth lead, triumphant but warm. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, epic orchestral."
+        },
+        {
+          "id": "matchday_defeat",
+          "filename": "matchday_defeat.ogg",
+          "prompt": "Defeat stinger for a retro Spanish football management PC game. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 94 BPM. A minor. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C-E-F). Short sustained warm chord, mournful but gentle. Final 8 bars form a bridge that resolves back to C major. Avoid: vocals, dark cinematic."
+        }
+      ]
+    },
+    {
+      "id": "sfx.ui",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro 1990s PC speaker UI sound. Short, crisp, synthesized, dry. Should sound like they all came from the same sound chip.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "ui_click",
+          "filename": "ui_click.ogg",
+          "prompt": "soft UI click — short and dry, like a finger tapping a membrane keyboard"
+        },
+        {
+          "id": "ui_hover",
+          "filename": "ui_hover.ogg",
+          "prompt": "subtle hover tick — even shorter than the click, almost subliminal"
+        },
+        {
+          "id": "ui_confirm",
+          "filename": "ui_confirm.ogg",
+          "prompt": "positive confirmation — a short two-note ascending chirp"
+        },
+        {
+          "id": "ui_cancel",
+          "filename": "ui_cancel.ogg",
+          "prompt": "negative cancel — a short two-note descending chirp"
+        },
+        {
+          "id": "ui_error",
+          "filename": "ui_error.ogg",
+          "prompt": "error buzz — short buzzy reject tone"
+        },
+        {
+          "id": "ui_notify",
+          "filename": "ui_notify.ogg",
+          "prompt": "incoming notification — soft bell-like ping, ~250ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.match",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Retro 1990s football management PC game stadium sound effects. Should sound lo-fi but unmistakable — they are what the manager hears from the stands.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95
+      },
+      "entries": [
+        {
+          "id": "whistle_short",
+          "filename": "whistle_short.ogg",
+          "prompt": "referee short whistle — single sharp blast, ~600ms"
+        },
+        {
+          "id": "whistle_long",
+          "filename": "whistle_long.ogg",
+          "prompt": "referee long whistle — sustained blast, ~1.5 seconds"
+        },
+        {
+          "id": "whistle_penalty",
+          "filename": "whistle_penalty.ogg",
+          "prompt": "penalty award whistle — three short sharp blasts in quick succession"
+        },
+        {
+          "id": "crowd_cheer",
+          "filename": "crowd_cheer.ogg",
+          "prompt": "stadium crowd short cheer — quick roar that decays in ~2 seconds"
+        },
+        {
+          "id": "crowd_groan",
+          "filename": "crowd_groan.ogg",
+          "prompt": "stadium crowd disappointed groan — short communal 'ohhh', ~1.5 seconds"
+        },
+        {
+          "id": "crowd_chant",
+          "filename": "crowd_chant.ogg",
+          "prompt": "stadium crowd rhythmic clapping chant — repeated claps with low vocal roar, ~3 seconds"
+        },
+        {
+          "id": "kick",
+          "filename": "kick.ogg",
+          "prompt": "football kick impact — leather thud with a touch of boot-on-ball squeak"
+        },
+        {
+          "id": "ball_bounce",
+          "filename": "ball_bounce.ogg",
+          "prompt": "football bouncing on grass — two quick soft bounces"
+        },
+        {
+          "id": "post_hit",
+          "filename": "post_hit.ogg",
+          "prompt": "ball hitting the goalpost — sharp metallic clang"
+        }
+      ]
+    },
+    {
+      "id": "music.workspace",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Sub-views of the club management workspace (Overview / Market / Stadium / Standings). Same warm 1990s synthwave palette as music.menu but each sub-view has a slightly different mood so the manager feels the context shift.",
+      "coherence": {
+        "bpm": 108,
+        "key": "C major",
+        "instruments": "warm analog synth pad, soft Rhodes electric piano, pizzicato strings, occasional muted electric bass",
+        "mood": "steady, productive, 'home managing'",
+        "intensity": 0.4,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "workspace_hub_01",
+          "filename": "workspace_hub_01.ogg",
+          "prompt": "Workspace hub (Overview tab) — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 1: open with ascending pizzicato motif."
+        },
+        {
+          "id": "workspace_hub_02",
+          "filename": "workspace_hub_02.ogg",
+          "prompt": "Workspace hub (Overview tab) — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 2: open with descending Rhodes arpeggio. Same loop DNA as variant 1."
+        },
+        {
+          "id": "workspace_hub_03",
+          "filename": "workspace_hub_03.ogg",
+          "prompt": "Workspace hub (Overview tab) — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 108 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Steady, productive, 'you are home managing your club'. Variant 3: open with sustained synth pad chord then Rhodes melody enters. Same loop DNA as variants 1 and 2."
+        },
+        {
+          "id": "market_browsing_01",
+          "filename": "market_browsing_01.ogg",
+          "prompt": "Transfer market browsing theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 1: bass-led walking line. Same loop DNA as workspace_hub so it crossfades cleanly."
+        },
+        {
+          "id": "market_browsing_02",
+          "filename": "market_browsing_02.ogg",
+          "prompt": "Transfer market browsing theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 2: Rhodes-led melodic counter-melody."
+        },
+        {
+          "id": "market_browsing_03",
+          "filename": "market_browsing_03.ogg",
+          "prompt": "Transfer market browsing theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 120 BPM. A major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to A-C#-E-F#). Slightly tense, appraising, 'every signing counts'. Variant 3: alternating pad-Rhodes pattern."
+        },
+        {
+          "id": "stadium_management_01",
+          "filename": "stadium_management_01.ogg",
+          "prompt": "Stadium management theme (merchandising, expansions, facilities) — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 1: ascending pizzicato ostinato."
+        },
+        {
+          "id": "stadium_management_02",
+          "filename": "stadium_management_02.ogg",
+          "prompt": "Stadium management theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 2: warm chord stabs on each beat."
+        },
+        {
+          "id": "stadium_management_03",
+          "filename": "stadium_management_03.ogg",
+          "prompt": "Stadium management theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 104 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Hopeful, building, industrial-light, 'you are expanding your home'. Variant 3: legato Rhodes melody over slow pad."
+        },
+        {
+          "id": "standings_review_01",
+          "filename": "standings_review_01.ogg",
+          "prompt": "League tables and standings review theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 1: slow pad with sparse Rhodes chords."
+        },
+        {
+          "id": "standings_review_02",
+          "filename": "standings_review_02.ogg",
+          "prompt": "League tables and standings review theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 2: single Rhodes melody line, no chords."
+        },
+        {
+          "id": "standings_review_03",
+          "filename": "standings_review_03.ogg",
+          "prompt": "League tables and standings review theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 102 BPM. G major. shared 4-note ascending motif (C-E-G-A), with restrained variations (transposed to G-B-D-E). Quiet, reflective, 'study the table'. Variant 3: alternating pad-Rhodes alternating every 4 bars."
+        }
+      ]
+    },
+    {
+      "id": "music.editor",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Pack editor / creative mode. Sparse and minimal so the player can think — no busy motifs, lots of air. Same warm 1990s synthwave palette as the menu group.",
+      "coherence": {
+        "bpm": 96,
+        "key": "C major",
+        "instruments": "warm analog synth pad, soft Rhodes electric piano, sparse pizzicato strings",
+        "mood": "very sparse, focused, contemplative",
+        "intensity": 0.25,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "editor_focus_01",
+          "filename": "editor_focus_01.ogg",
+          "prompt": "Pack editor theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 1: held pad with single Rhodes note every 2 bars."
+        },
+        {
+          "id": "editor_focus_02",
+          "filename": "editor_focus_02.ogg",
+          "prompt": "Pack editor theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 2: slow ascending Rhodes arpeggio every 8 bars."
+        },
+        {
+          "id": "editor_focus_03",
+          "filename": "editor_focus_03.ogg",
+          "prompt": "Pack editor theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 96 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Very sparse, focused, contemplative, 'you are crafting'. Variant 3: pad chord changes every 4 bars with sparse Rhodes stabs."
+        }
+      ]
+    },
+    {
+      "id": "music.trophy",
+      "kind": "music",
+      "outputDir": "Music",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Trophy / winners screen (league titles, promotions, manager of the month). Same warm 1990s synthwave palette but with a contained brass-like synth lead so it feels triumphant without being bombastic.",
+      "coherence": {
+        "bpm": 116,
+        "key": "C major",
+        "instruments": "warm analog synth pad, Rhodes electric piano, pizzicato strings, brass-like synth lead, soft brushed snare",
+        "mood": "triumphant but warm, contained",
+        "intensity": 0.6,
+        "loopSeconds": 30
+      },
+      "entries": [
+        {
+          "id": "trophy_lift_01",
+          "filename": "trophy_lift_01.ogg",
+          "prompt": "Trophy lift theme — variant 1 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 1: brass lead melody over pizzicato ostinato. Compatible with menu_main for crossfade."
+        },
+        {
+          "id": "trophy_lift_02",
+          "filename": "trophy_lift_02.ogg",
+          "prompt": "Trophy lift theme — variant 2 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 2: Rhodes melody carries the lead, brass plays sustained harmony. Compatible with menu_main for crossfade."
+        },
+        {
+          "id": "trophy_lift_03",
+          "filename": "trophy_lift_03.ogg",
+          "prompt": "Trophy lift theme — variant 3 of 3. Retro late-1990s to early-2000s European PC game music, synth funk, light acid jazz, FM synth era. Warm, slightly nostalgic, optimistic but never saccharine. Designed for seamless looping in a Spanish football management PC game (year 2000 aesthetic, PC Fútbol lineage without copying specific tracks). No vocals. Crisp digital mix, low-fi but punchy. Suitable for long listening sessions (10+ minutes) without listener fatigue. The track must loop seamlessly: same energy and instrumentation at start and end, no fade in/out, no final cadence, no climactic ending. Bass note at bar 64 must create forward motion into bar 1. Subtle variation every 8-16 bars to mask repetition. Memorable 4-6 note motif. Approximately 30 seconds. 116 BPM. C major. shared 4-note ascending motif (C-E-G-A), with restrained variations. Triumphant but warm, contained celebration. Variant 3: call-and-response between brass and Rhodes. Compatible with menu_main for crossfade."
+        }
+      ]
+    },
+    {
+      "id": "sfx.workspace",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Section navigation in the workspace sidebar (Overview / Squad / Tactics / Competitions / Market / Finances / World). Should feel cohesive with sfx.ui but slightly more deliberate — these are larger transitions.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "section_change",
+          "filename": "section_change.ogg",
+          "prompt": "workspace sidebar section change — short sweeping whoosh with soft tap, ~400ms"
+        },
+        {
+          "id": "section_hover",
+          "filename": "section_hover.ogg",
+          "prompt": "workspace sidebar button hover — subtle wood-block tick, very short, almost subliminal"
+        },
+        {
+          "id": "section_pin",
+          "filename": "section_pin.ogg",
+          "prompt": "workspace sidebar button pinned / focused — soft positive two-note ping"
+        }
+      ]
+    },
+    {
+      "id": "sfx.editor",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Pack editor — placing, rotating and removing tiles / cards / stickers on the canvas. Crispy, satisfying, retro-gamey.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "tile_place",
+          "filename": "tile_place.ogg",
+          "prompt": "pack editor tile placed — chunky satisfying snap, like a stamp hitting paper, ~150ms"
+        },
+        {
+          "id": "tile_remove",
+          "filename": "tile_remove.ogg",
+          "prompt": "pack editor tile removed — soft click-pop, like a suction cup detaching, ~120ms"
+        },
+        {
+          "id": "tile_rotate",
+          "filename": "tile_rotate.ogg",
+          "prompt": "pack editor tile rotated — quick wooden tick, very short, ~80ms"
+        },
+        {
+          "id": "canvas_save",
+          "filename": "canvas_save.ogg",
+          "prompt": "pack editor canvas saved — ascending two-note confirmation, slightly brighter than ui_confirm, ~300ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.match_extended",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Extended match commentary stingers: cards, fouls, shots, saves, substitutions. Each event needs a short, identifiable sting that the manager associates with that exact play.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95
+      },
+      "entries": [
+        {
+          "id": "match_start",
+          "filename": "match_start.ogg",
+          "prompt": "match kickoff stinger — single short whistle followed by a quick crowd swell, ~1 second"
+        },
+        {
+          "id": "half_time",
+          "filename": "half_time.ogg",
+          "prompt": "half time whistle — two long sustained blasts, ~1.5 seconds"
+        },
+        {
+          "id": "yellow_card",
+          "filename": "yellow_card.ogg",
+          "prompt": "yellow card sting — single sharp whistle beep plus a short plastic card flick, ~800ms"
+        },
+        {
+          "id": "red_card",
+          "filename": "red_card.ogg",
+          "prompt": "red card sting — sharp whistle plus a louder plastic card flick with a low ominous tone underneath, ~1 second"
+        },
+        {
+          "id": "foul",
+          "filename": "foul.ogg",
+          "prompt": "foul whistle — single medium whistle with a short crowd ohh, ~700ms"
+        },
+        {
+          "id": "shot_on_target",
+          "filename": "shot_on_target.ogg",
+          "prompt": "shot on target — leather strike followed by a glove save slap, ~1 second"
+        },
+        {
+          "id": "shot_off_target",
+          "filename": "shot_off_target.ogg",
+          "prompt": "shot off target — leather strike followed by a thud against advertising board, ~1 second"
+        },
+        {
+          "id": "substitution",
+          "filename": "substitution.ogg",
+          "prompt": "substitution sting — board-up electronic ping plus short crowd murmur, ~900ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.transfer",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Transfer market stingers — incoming offer, scout report, completed deal. Lo-fi retro chime-ish to fit the 1990s chip aesthetic but with a cash-register undertone for deals.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.9,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "offer_received",
+          "filename": "offer_received.ogg",
+          "prompt": "transfer offer received — soft incoming message chime, ~400ms"
+        },
+        {
+          "id": "scout_report",
+          "filename": "scout_report.ogg",
+          "prompt": "scout report delivered — paper unfolding rustle plus a soft bell ping, ~600ms"
+        },
+        {
+          "id": "transfer_complete",
+          "filename": "transfer_complete.ogg",
+          "prompt": "transfer deal complete — vintage cash register ka-ching plus a short crowd cheer, ~1.2 seconds"
+        },
+        {
+          "id": "transfer_rejected",
+          "filename": "transfer_rejected.ogg",
+          "prompt": "transfer offer rejected — soft descending two-note decline, ~300ms"
+        }
+      ]
+    },
+    {
+      "id": "sfx.achievement",
+      "kind": "sfx",
+      "outputDir": "SFX",
+      "format": "ogg",
+      "model": "music-3.0",
+      "styleAnchor": "Career achievement stingers — manager of the month, season complete, promotion, relegation, trophy lift. Each is a short fanfare that complements music.trophy.trophy_lift without overshadowing it.",
+      "coherence": {
+        "speed": 1,
+        "volume": 0.95,
+        "sound-effect": "ui_chime"
+      },
+      "entries": [
+        {
+          "id": "manager_of_month",
+          "filename": "manager_of_month.ogg",
+          "prompt": "manager of the month sting — short three-note ascending brass-like fanfare, ~1.2 seconds"
+        },
+        {
+          "id": "season_complete",
+          "filename": "season_complete.ogg",
+          "prompt": "season complete sting — soft bell sequence (ding-ding-ding) with a crowd swell, ~1.5 seconds"
+        },
+        {
+          "id": "promotion",
+          "filename": "promotion.ogg",
+          "prompt": "promotion sting — bright ascending brass fanfare with crowd roar, ~2 seconds"
+        },
+        {
+          "id": "relegation",
+          "filename": "relegation.ogg",
+          "prompt": "relegation sting — soft descending minor-ish chime plus a quiet crowd groan, ~1.5 seconds"
+        }
+      ]
+    }
+  ],
+  "status": {}
 }

@@ -16,10 +16,10 @@ PC Dynasty.
 ## The pipeline at a glance
 
 ```text
-                mmx (music-3.0 / speech-2.8-hd)
+                mmx (legacy Music API, if entitled)
                             │
                             ▼
-                .generate/audios/staging/<group>/<entry>/v_<ts>.wav  ← human listens
+                .generate/audios/staging/<group>/<entry>/v_<ts>.mp3  ← human listens
                             │
                             ▼
                 ffmpeg (libvorbis / libopus / libmp3lame)
@@ -40,7 +40,7 @@ game/godot/Audio/<Music|SFX>/<file>    .deprecated/assets/sounds/<group>/<entry>
 |---|---|---|
 | `game/godot/Audio/Music/` | ✅ yes | Approved music tracks (shipped to Godot). |
 | `game/godot/Audio/SFX/` | ✅ yes | Approved sound effects (shipped to Godot). |
-| `.generate/audios/staging/` | ❌ no | Raw, uncompressed wav queued for review. |
+| `.generate/audios/staging/` | ❌ no | Generated staging audio (currently mp3 from mmx, then ogg after precompress). |
 | `.deprecated/assets/sounds/` | ❌ no | Local archive of superseded variants. |
 | `game/content/audio/audio-spec.json` | ✅ yes | The declarative manifest (what we want, what we've shipped). |
 
@@ -57,7 +57,8 @@ game/godot/Audio/<Music|SFX>/<file>    .deprecated/assets/sounds/<group>/<entry>
 | Checklist builder | `tools/scripts/content/audio/checklist.script.ts` | Regenerates `docs/audios/REVIEW-CHECKLIST.md` from the spec + on-disk staging state. |
 | Interactive review | `tools/scripts/content/audio/review.script.ts` | Walks every staged ogg, plays it, prompts `o/b/r/s`, optionally commits decisions. |
 | Open in OS player | `tools/scripts/content/audio/open.script.ts` | Cross-platform open: on WSL → cmd.exe + Windows file association; on Linux → xdg-open. |
-| Pre-compress wav→ogg | `tools/scripts/content/audio/precompress.script.ts` | Encodes staged wavs to libvorbis q=5 oggs in place. Use `--delete-wavs` after to clean up. |
+| Pre-compress staged audio→ogg | `tools/scripts/content/audio/precompress.script.ts` | Encodes staged mp3/wav to ogg vorbis 22050 Hz (q=2 SFX / q=3 music). |
+| Batch rebuild | `tools/scripts/content/audio/rebuild-all.script.ts` | Rebuilds all selected slots end-to-end once the backend is available again. |
 | Plugin | `plugins/mcp-vertex_player-club-dynasty/src/lib/audio-manifest.helper.ts` + `src/index.ts` | MCP tools `audio_stage / audio_list_variants / audio_listen / audio_approve / audio_deprecate`. |
 | Runtime location | `game/godot/Audio/{Music,SFX}/` | Where Godot reads approved files (committed). |
 | Runtime README | `game/godot/Audio/SPEC.md` | Godot-side rationale (link to `docs/audios/`). |
@@ -117,3 +118,16 @@ The `~/.bashrc` already exports `PULSE_SERVER` automatically when the socket exi
 ### WSL preview: why `<audio>` still doesn't sound in VS Code
 
 The inline `<audio controls>` in the VS Code markdown preview is **always silent on WSL**, even with pulseaudio installed — the webview Chromium sandbox doesn't have access to the audio device. This is a VS Code / WSL limitation, not a config issue. For sound during review, use `game:audio:review` (terminal) or open the md in a real browser (`game:audio:open docs/audios/REVIEW-CHECKLIST.md`).
+
+## MiniMax music endpoint note (2026-08-20)
+
+The legacy `mmx music generate` endpoint changed on 2026-08-20.
+
+- Authentication can still be valid (`mmx auth status` OK)
+- general quota can still be available
+- but the music endpoint can return HTTP 410 for accounts that are not entitled to the old Music API
+
+When that happens, `game:audio:stage` and `game:audio:rebuild-all` now fail with
+an explicit entitlement message instead of a generic JSON error.
+
+If you hit that condition, the pipeline is blocked on the provider, not on the repo. The next migration target is MiniMax Audio or the open-source MiniMax-Music3 model.

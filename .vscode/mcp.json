@@ -4,7 +4,7 @@
 			"type": "stdio",
 			"command": "bun",
 			"args": [
-				"${workspaceFolder}/scripts/mcp-vertex-run.script.ts",
+				"${workspaceFolder}/tools/scripts/workspace/run.script.ts",
 				"tools/scripts/host/host-server.script.ts",
 				"--workspace=${workspaceFolder}",
 				"--config=${workspaceFolder}/mcp-vertex.config.json",

@@ -274,7 +274,22 @@ const runCommand = (argv: string[]): { ok: boolean; stderr: string } => {
 		stdio: ['ignore', 'inherit', 'pipe'],
 		env: process.env,
 	});
-	return { ok: result.status === 0, stderr: result.stderr ? result.stderr.toString() : '' };
+	const stderr = result.stderr ? result.stderr.toString() : '';
+	if (result.status !== 0 && stderr.includes('Music API is no longer available to new users')) {
+		return {
+			ok: false,
+			stderr:
+				'mmx auth is valid, but this account is not entitled to the legacy Music API (HTTP 410). Migrate this pipeline to MiniMax Audio or another backend before attempting stage again.',
+		};
+	}
+	if (result.status !== 0 && stderr.includes('Token Plan usage limit reached')) {
+		return {
+			ok: false,
+			stderr:
+				'mmx auth is valid, but the Token Plan for music is exhausted. Wait for reset or top up quota before attempting stage again.',
+		};
+	}
+	return { ok: result.status === 0, stderr };
 };
 
 const variantIdFor = (timestamp: number): string => `v_${timestamp}`;

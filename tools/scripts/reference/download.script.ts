@@ -18,6 +18,14 @@
  * Every game id is documented in
  * `tools/contracts/constants/reference/dinamic-catalogue.constants.ts`.
  *
+ * The archive signs its disk URLs with a token only a same-site
+ * `fetch()` receives — a direct HTTP request 403s even with a valid
+ * token. So a plain fetch is tried first (cheap, resumable, and still
+ * the right answer if that ever changes), and whatever it can't reach
+ * falls back to a real headless Chrome that asks the game's own kiosk
+ * page for a link the way its emulator would. See
+ * `tools/helpers/reference/kiosk-browser-download.helper.ts`.
+ *
  * The images stay out of the repository. They are references, like the
  * screenshots in `docs/wiki/pcfutbol/14`: we look at them, we describe
  * what we see, and only our own words and wireframes get committed.
@@ -36,6 +44,7 @@ import type {
 	ReferenceDiskSlot,
 } from '../../contracts/interfaces/reference/reference-game.interface.ts';
 import { downloadResumable, formatBytes } from '../../helpers/system/download.helper.ts';
+import { downloadGameViaKiosk } from '../../helpers/reference/kiosk-browser-download.helper.ts';
 import { resolveProjectPaths } from '../../helpers/system/path.helper.ts';
 
 const paths = resolveProjectPaths(import.meta.dirname);
@@ -202,9 +211,9 @@ const main = async (): Promise<number> => {
 		return 0;
 	}
 
-	let failures = 0;
-	for (const [index, item] of plan.entries()) {
-		const label = `[${index + 1}/${plan.length}] ${item.gameId}.${item.slot}`;
+	const stillNeeded: IReferenceDownload[] = [];
+	for (const item of plan) {
+		const label = `${item.gameId}.${item.slot}`;
 		const outcome = await downloadResumable(item.url, item.targetPath, {
 			expectedBytes: item.expectedBytes,
 			onProgress: (bytes, expected) => {
@@ -223,8 +232,44 @@ const main = async (): Promise<number> => {
 			continue;
 		}
 
-		failures += 1;
-		process.stdout.write(`\r${label}  FAILED: ${outcome.error}            \n`);
+		process.stdout.write(`\r${label}  direct fetch failed (${outcome.error}); will try via kiosk browser      \n`);
+		stillNeeded.push(item);
+	}
+
+	let failures = 0;
+	if (stillNeeded.length > 0) {
+		const byGame = new Map<string, IReferenceDownload[]>();
+		for (const item of stillNeeded) {
+			const list = byGame.get(item.gameId) ?? [];
+			list.push(item);
+			byGame.set(item.gameId, list);
+		}
+
+		for (const [gameId, items] of byGame) {
+			process.stdout.write(`\n${gameId}: opening a kiosk session for ${items.length} file(s)\n`);
+			const results = await downloadGameViaKiosk(
+				gameId,
+				items.map((item) => ({
+					filename: filenameFor(item.url),
+					targetPath: item.targetPath,
+					expectedBytes: item.expectedBytes,
+				})),
+				(filename, bytes, total) => {
+					const share = total ? ` (${Math.floor((bytes / total) * 100)}%)` : '';
+					process.stdout.write(`\r  ${filename}  ${formatBytes(bytes)}${share}      `);
+				},
+			);
+
+			for (const result of results) {
+				if (result.ok) {
+					process.stdout.write(`\r  ${result.filename}  done (${formatBytes(result.bytes)})            \n`);
+					continue;
+				}
+
+				failures += 1;
+				process.stdout.write(`\r  ${result.filename}  FAILED: ${result.error}            \n`);
+			}
+		}
 	}
 
 	if (failures > 0) {
