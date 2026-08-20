@@ -37,6 +37,7 @@ salir de la intuición de quien toque el fichero ese día.
 | Saber qué se ve exactamente en una captura, sin abrirla | [`16-lectura-de-capturas.md`](pcfutbol/16-lectura-de-capturas.md) |
 | **Comprobar cómo se ve el juego ahora mismo** | [`pc-dynasty/como-mirar-el-juego.md`](pc-dynasty/como-mirar-el-juego.md) |
 | **Jugar al original** para resolver una duda de interacción | [`pc-dynasty/como-mirar-el-juego.md`](pc-dynasty/como-mirar-el-juego.md) §5 — emulado en el navegador o en local bajo Wine |
+| Ver lo que el original mostró **de verdad** al arrancarlo (no una captura de archivo) | [`in-game/`](in-game/README.md) — PC Fútbol 6.0, 7 y PC Basket 6.5, `[jugado]` |
 | Decidir dónde vive un botón o cómo se navega | [`05-interaccion-y-controles.md`](pcfutbol/05-interaccion-y-controles.md) |
 | Crear una pantalla nueva | [`03-mapa-de-pantallas.md`](pcfutbol/03-mapa-de-pantallas.md) |
 | Implementar una regla de simulación | [`06-sistemas-deportivos.md`](pcfutbol/06-sistemas-deportivos.md) |
