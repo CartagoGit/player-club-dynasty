@@ -96,6 +96,47 @@ que se vuelve constantemente durante toda la carrera.
   se autocompleta y avanza al siguiente slot" ya se documentó en
   `05-liga-manager-nueva-partida.md` (incorporarlo también aquí en una
   próxima pasada).
+- **Orden real completo confirmado en una segunda pasada (2026-08-21,
+  segundo reinicio de VM)**: nombre y equipo → personalización → pretemporada
+  → **"Equipos en Competiciones"** (una pantalla de solo lectura, no un
+  formulario: seis competiciones europeas — Copa de Europa, Copa de la UEFA,
+  Recopa, Supercopa de España, Supercopa de Europa, Copa Intercontinental —
+  cada una con sus participantes reales de la temporada 97-98 y su
+  entrenador. **Confirmado en dos pasadas con equipos distintos**: si el
+  equipo elegido por el jugador ya tenía plaza real en alguna de estas
+  competiciones, su entrenador real se sustituye por el nombre del
+  mánager/slot del jugador (p. ej. eligiendo R. Betis B. se vio
+  "R. Betis B. / dynasty" en la Recopa); si el equipo elegido **no** tenía
+  plaza (p. ej. R. Racing), la pantalla se muestra sin ningún cambio, con
+  todos los entrenadores reales intactos — el juego no inventa una plaza
+  nueva, solo sustituye el nombre del técnico donde ya había una real) →
+  **un pop-up de resultado de temporada anterior** ("Campeón Supercopa de España": escudo+nombre+entrenador del
+  campeón y del subcampeón, con un único botón OK) → despacho.
+- **Anomalía reproducible, confirmada dos veces por separado (incluso tras
+  un ciclo completo de guardado/restauración de estado de la VM): el botón
+  OK de ese pop-up de Supercopa no responde a ningún método de entrada
+  probado.** Se probaron, con el cursor confirmado visualmente sobre el
+  botón en cada intento: ~8 variantes de coordenada (paso de 1-2 px),
+  doble clic, clic tras enfocar antes la barra de título del propio
+  diálogo, clic tras esperar 3s desde la aparición del diálogo (por si el
+  motor ignora clics durante los primeros frames de un modal), Enter
+  (`1c`/`9c`) y Espacio (`39`/`b9`) por scancode. Ninguno cerró el diálogo.
+  Mismo síntoma exacto que la anomalía de VOLVER en Clasificación (ver
+  [`09-clasificacion.md`](09-clasificacion.md) "Pendiente") — dos diálogos
+  distintos, en dos pantallas distintas, ambos con el mismo estilo visual
+  "caja azul/blanca con un solo botón rectangular", a diferencia de los
+  botones normales del juego que sí responden con el mismo mecanismo de
+  clic. **Hipótesis más plausible**: estos dos concretamente podrían ser
+  diálogos nativos de Windows (controles Win32 reales, no dibujados por el
+  motor DirectDraw del juego como el resto de la UI) que requieren mensajes
+  `WM_LBUTTONDOWN`/`WM_LBUTTONUP` dirigidos a su propio HWND — y aunque
+  `IMouse.PutMouseEvent` inyecta a nivel de dispositivo (como haría un
+  ratón físico), es posible que ese diálogo concreto no sea la ventana con
+  foco real de teclado/ratón dentro del proceso, o que necesite un
+  `WM_ACTIVATE` previo que un evento de dispositivo puro no dispara. No
+  descartado del todo — solo la hipótesis con más apoyo tras agotar lo
+  demás. Se salió de este punto reiniciando la VM (`poweroff` + `vm:start`)
+  para poder seguir explorando, sin resolver la causa real.
 
 ## Qué exige
 

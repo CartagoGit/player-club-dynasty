@@ -68,10 +68,45 @@ secundaria (3-7), neutro, promoción de descenso (17-18) y descenso directo
 resto normal, últimos 3 rojo" que es la simplificación habitual en juegos
 modernos.
 
+## Segunda División y Segunda B (2026-08-21, misma sesión)
+
+![Clasificación: Segunda División](screenshots/liga-manager/09-clasificacion-segunda.png)
+![Clasificación: 2ªB grupo I](screenshots/liga-manager/10-clasificacion-2bi.png)
+![Clasificación: 2ªB grupo II](screenshots/liga-manager/11-clasificacion-2bii.png)
+![Clasificación: 2ªB grupo III](screenshots/liga-manager/12-clasificacion-2biii.png)
+![Clasificación: 2ªB grupo IV](screenshots/liga-manager/13-clasificacion-2biv.png)
+
+- **Segunda División: 22 equipos**, mismas columnas que Primera. Zonas de
+  color distintas a las de Primera: **ASCIENDE** (posiciones altas,
+  ascenso directo), **PROMOCIÓN** (ascenso por playoff) y **DESCIENDE**
+  (descenso a 2ªB) — nombres de zona propios de esta categoría, no una
+  copia literal de las de Primera (no hay "EUROPA"/"UEFA" aquí, lógicamente).
+- **2ªB no es una cuarta categoría deportiva: son cuatro grupos regionales
+  de la misma categoría**, confirmado leyendo la plantilla real de cada
+  pestaña — **I** (norte/vasco), **II** (vasco/cantábrico), **III**
+  (Cataluña/Valencia/Canarias), **IV** (Andalucía/Murcia). El mapa de
+  equivalencias de PC Dynasty debe modelar 2ªB como "una división con N
+  grupos paralelos", no como una división más en la jerarquía vertical.
+- **Clicar una fila de equipo en la tabla es una acción pasiva**: solo
+  dibuja un marco de selección fino alrededor de la fila (highlight), no
+  navega a ninguna ficha de club ni abre ningún panel adicional — probado
+  en varias filas de Primera y de Segunda.
+- El selector de Jornada (`◄ 1 ►`) y el botón GOLEADORES no dieron señal de
+  respuesta en la Jornada 1 (liga recién creada, sin partidos jugados aún)
+  — pendiente de reprobar una vez haya al menos una jornada disputada,
+  porque puede ser un bloqueo por falta de datos, no un botón roto.
+
 ## Pendiente
 
 - GOLEADORES (máximos goleadores) no explorado.
-- Selector de jornada (`◄ ►`) no probado — no se vio si jornadas futuras
-  muestran algo o quedan bloqueadas.
-- VOLVER en esta pantalla no respondió al primer cálculo de coordenadas al
-  cerrar la sesión de exploración — recalibrar en la próxima pasada.
+- Selector de jornada (`◄ ►`) no probado con datos reales — no se vio si
+  jornadas futuras muestran algo o quedan bloqueadas.
+- **VOLVER en esta pantalla: anomalía reproducible, no una coordenada mal
+  calibrada.** Con el cursor confirmado visualmente sobre el botón, ni clic
+  simple, ni doble clic rápido, ni clic+jiggle, ni clic derecho, ni Escape,
+  ni Intro lograron cerrar la pantalla — en una sesión completa se probó
+  todo esto sin éxito y se tuvo que reiniciar la VM para continuar. Ver la
+  anomalía gemela del botón OK del pop-up "Campeón Supercopa de España" en
+  [`07-despacho.md`](07-despacho.md) "Pendiente / con comportamiento raro" —
+  mismo síntoma exacto en dos pantallas distintas, probablemente la misma
+  causa raíz (hipótesis en ese documento).
