@@ -165,14 +165,141 @@ a un jugador mucho antes de que esté disponible). PC Dynasty debería
 separar del mismo modo "quién está en venta ahora" de "a quién quiero
 seguir", con esta última sin restricción de disponibilidad actual.
 
+## OFERTAS: el cuarto botón, probado a fondo pero sin fichaje cerrado (sesión 5, 2026-08-22)
+
+`[jugado]` 2026-08-22. `OFERTAS` (distinto de `ESTADO OFERTAS`) abre el
+**mismo selector de equipo/jugador que `CARTERA` → `AÑADIR`** (mapa
+Europa/Sudamérica + rejilla de clubes de España): confirma que es otra
+puerta de entrada al mismo buscador universal de jugadores, no un mercado
+propio y separado.
+
+- Con **S.D. Compostela** seleccionado, un clic en una fila de su
+  plantilla solo selecciona (sin abrir nada); hace falta **doble clic**
+  para abrir la ficha completa del jugador — mismo patrón que en
+  `CARTERA`. Doble clic sobre **Dimitri Popov** (medio ruso, 28 años,
+  MEDIA 76) abrió su ficha de atributos junto a un panel inferior
+  **`HACER OFERTA`** nunca visto hasta ahora:
+
+  ![Ficha de Popov con el formulario HACER OFERTA](screenshots/plantilla-fichar/s5-08-doubleclick-popov.png)
+
+  - `DINERO DISPONIBLE` (2.568 millones en esta partida) y **`CANTIDAD`**
+    (oferta en millones *al club*, independiente de la oferta al
+    jugador) con selector `◄►`.
+  - `OFERTA AL JUGADOR`: `CLÁUSULA DE RESCISIÓN`, `FICHA ANUAL`, `AÑOS DE
+    CONTRATO`, `INCORPORACIÓN` (Inmediata/otra), todos con `◄►`.
+  - `CLÁUSULAS` opcionales: `Libertad por descenso`, `Partidos para
+    renovación`, `Primas por gol`, `Casa y coche`.
+  - Tres botones: `PEDIR CESIÓN`, `CANCELAR`, `HACER OFERTA` — el "pedir
+    cesión" como alternativa a comprar en firme, no probado.
+- **Pulsar `HACER OFERTA` registra la negociación en `ESTADO OFERTAS`**
+  con un mensaje fechado del motor: *"(07-09-1997) Has ofrecido al
+  jugador un contrato por 1 año con una ficha anual de 1 millón y una
+  clausula de rescisión de 1 millón."* — confirma que la oferta queda
+  como un proceso vivo, no un resultado inmediato de sí/no.
+
+  ![Estado de las Ofertas con la negociación de Popov registrada](screenshots/plantilla-fichar/s5-11-estado-ofertas.png)
+
+- **Avanzar de jornada (SEGUIR) hace que el club rival responda por su
+  cuenta**: en la Jornada 3 (una semana después), `ESTADO OFERTAS`
+  mostraba una respuesta nueva de S.D. Compostela: *"Estamos dispuestos a
+  negociar el traspaso de Popov, pero la cantidad ofrecida es muy
+  baja."* — la negociación por la ficha/cláusula del jugador y la
+  `CANTIDAD` ofrecida al club son evaluadas por separado, y el club
+  contesta con lenguaje natural fechado en vez de aceptar/rechazar sin
+  más.
+- Subir `CANTIDAD` (probado con clics repetidos, con `--hold-ms` y en
+  bucle) hasta **1.550 millones** y reenviar registra un nuevo mensaje:
+  *"(14-09-1997) Has ofrecido a su equipo 1.550 millones."* — pero **no
+  se llegó a comprobar la respuesta del club a esta oferta más alta**: el
+  intento de avanzar de jornada (`SEGUIR`) chocó con un aviso no
+  relacionado, *"La alineación no es correcta"* (con un jugador,
+  Kily González, sancionado y aparentemente aún alineado), que bloqueó
+  el avance de semana. Se descartó el aviso (`Aceptar`) pero la sesión
+  terminó sin volver a `ESTADO OFERTAS` ni sin comprobar si Popov llegó a
+  aparecer en `GESTIÓN DE LA PLANTILLA` — al revisar la plantilla más
+  tarde en la misma sesión, **Popov no aparecía** en el grupo de MEDIOS.
+  **El fichaje de Popov queda documentado como negociación en curso, no
+  como transferencia completada.**
+
+## SECRETARIO: la combinación de criterios que sí dispara la búsqueda (sesión 5, 2026-08-22)
+
+`[jugado]` 2026-08-22. La sesión anterior había dejado sin resolver qué
+combinación de criterios hace que `BUSCAR` deje de mostrar el aviso de
+"faltan criterios". Esta sesión prueba varias combinaciones sobre el
+mismo formulario y encuentra el patrón:
+
+- **Un solo selector numérico marcado (`EDAD` = 17-22) no basta** — sigue
+  el aviso *"Debes indicar criterios para que se realice la búsqueda."*
+- **Dos selectores numéricos (`EDAD` + `DEMARCACIÓN` = PORTERO) tampoco
+  bastan** — mismo aviso, contradiciendo la hipótesis anterior de que
+  "un numérico además del checkbox" sería suficiente.
+- **Solo al añadir además el checkbox booleano `JUGADORES SIN EQUIPO`
+  (con los dos numéricos ya fijados) `BUSCAR` arranca de verdad**: el
+  panel `JUGADORES ENCONTRADOS` cambia a *"Estoy buscando jugadores con
+  las características requeridas."*
+
+  ![Búsqueda en curso tras combinar EDAD + DEMARCACIÓN + SIN EQUIPO](screenshots/plantilla-fichar/s5-53-buscar-result3.png)
+
+- La búsqueda no llegó a producir una lista de resultados dentro de la
+  sesión (el mensaje "Estoy buscando..." seguía igual en la última
+  comprobación) — no se confirma si hace falta esperar a un `SEGUIR`
+  (como con las ofertas) o si simplemente no hubo candidatos que
+  encajaran.
+- **Conclusión más precisa que la de la sesión anterior**: el motor de
+  `BUSCAR` en SECRETARIO exige **al menos un criterio numérico Y al
+  menos un criterio booleano a la vez** — ni un numérico solo, ni dos
+  numéricos juntos, activan la búsqueda por sí solos.
+
+## JUVENILES: su propio BUSCAR, con un solo checkbox le basta (sesión 5, 2026-08-22)
+
+`[jugado]` 2026-08-22. El `BUSCAR` de `JUVENILES` (dentro del panel del
+`OJEADOR` de la cantera) usa un formulario más simple: **solo seis
+checkboxes por atributo** (`PORTERO`/`REGATE`/`ENTRADAS`/`PASE`/
+`REMATE`/`TIRO`), sin selectores numéricos.
+
+- Con ningún checkbox marcado, `BUSCAR` muestra el mismo aviso genérico
+  de "faltan criterios" que en SECRETARIO.
+- **Marcar un único checkbox (`PORTERO`) y pulsar `BUSCAR` ya activa la
+  búsqueda real** (*"Estoy buscando jugadores con las características
+  requeridas."*) — a diferencia de SECRETARIO, aquí **un solo criterio
+  booleano sí basta**, coherente con que este formulario no tiene
+  selectores numéricos con los que combinarlo.
+
+  ![Búsqueda de juveniles arrancada con solo PORTERO marcado](screenshots/plantilla-fichar/s5-66-jovenes-buscar2.png)
+
+- Tampoco aquí se llegó a ver una lista de resultados antes de que
+  terminara la sesión.
+
+## Qué exige
+
+Dos hallazgos de diseño nuevos esta sesión: primero, que **una oferta de
+fichaje separa explícitamente la negociación con el jugador (ficha,
+cláusula, años) de la negociación con el club vendedor (cantidad)**, y
+que el club responde con mensajes de texto fechados y con estado
+propio en vez de un resultado inmediato — el mercado de fichajes vive en
+el tiempo de partida, no se resuelve en el momento del clic. Segundo,
+que el motor de búsqueda de personal (`BUSCAR`) no es uniforme: la
+variante con selectores numéricos exige combinar tipos de criterio
+(numérico + booleano), mientras que la variante solo-booleana de
+juveniles se conforma con un único criterio. Un mapa de equivalencias
+para PC Dynasty debería reproducir esa asimetría de validación en vez de
+asumir una única regla de "mínimo de criterios" para todas las búsquedas
+de la saga.
+
 ## Pendiente
 
-- `OFERTAS` (el cuarto botón de FICHAR, distinto de `ESTADO OFERTAS`) no
-  se ha pulsado todavía.
-- No se ha completado un fichaje real (seleccionar jugador → hacer
-  oferta → confirmar) — solo se ha probado selección de fila y el flujo de
-  CARTERA.
-- No se ha confirmado qué combinación exacta de criterios hace que
-  `BUSCAR` (en SECRETARIO) produzca resultados en vez del aviso de "faltan
-  criterios" — probar fijando un selector numérico además del checkbox.
-- El `BUSCAR` propio de JUVENILES (ojeador) tampoco se ha pulsado.
+- El fichaje de Popov vía `OFERTAS` sigue **sin resolverse**: la última
+  oferta conocida (1.550 millones al club) no llegó a recibir respuesta
+  observada, y Popov no aparecía en la plantilla al cierre de la sesión.
+  Falta reabrir `ESTADO OFERTAS` tras avanzar más jornadas para ver si
+  se acepta, se rechaza definitivamente, o expira.
+- No se ha resuelto el aviso "La alineación no es correcta" que bloqueó
+  `SEGUIR` (aparentemente por un jugador sancionado, Kily González,
+  todavía en la alineación) — pendiente de corregir la alineación desde
+  fuera de FICHAR para poder seguir avanzando jornadas.
+- Ni SECRETARIO ni JUVENILES llegaron a mostrar una lista de resultados
+  con nombres — solo el mensaje intermedio "Estoy buscando...". No se
+  sabe si hace falta esperar (como con las ofertas) o si esta partida
+  concreta no tenía candidatos que encajasen con los criterios probados.
+- No se ha probado `PEDIR CESIÓN` (alternativa a `HACER OFERTA` en el
+  formulario de oferta a jugador).

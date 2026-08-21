@@ -135,10 +135,113 @@ nunca un único número editable — pero cada una aplica esa filosofía a un
 eje distinto (aforo, plantas de parking por esquina, potencia/calidad de
 instalación, nivel de servicio).
 
+## SERVICIOS: la sub-navegación sí funciona — era calibración, no un límite real (sesión 6, 2026-08-22)
+
+`[jugado]` 2026-08-22. Nota: esta sesión se jugó sobre una partida nueva
+(R. Zaragoza / La Romareda), no la del Real Madrid de sesiones previas —
+los números de aforo y personal difieren, pero el comportamiento de la
+UI es comparable.
+
+La sesión 3 había dejado sin resolver si el clic sobre `TIENDA DEL
+CLUB`/`CAFETERÍAS`/`W.C.` (dentro de `REMODELAR` → `SERVICIOS`) cambiaba
+de verdad el panel de detalle, o si había un límite real de la
+sub-navegación. **Esta sesión confirma que sí cambia, con las
+coordenadas bien calibradas**: las tres sub-líneas restantes abren cada
+una su propio panel de detalle, con su propio patrón de tramos —
+recalibrando el clic sobre la sub-línea concreta (no sobre la etiqueta
+completa) fue suficiente, sin necesidad de ningún otro ajuste.
+
+- **`TIENDA DEL CLUB`**: tramos `NINGUNA` / `1 TIENDA` / `5 TIENDAS` /
+  `10 TIENDAS`.
+
+  ![Panel de detalle de Tienda del Club con sus propios tramos](screenshots/estadio/s6-06-tienda-click.png)
+
+- **`CAFETERÍAS`**: tramos `1` / `5` / `10` / `20 CAFETERÍAS`.
+- **`W.C.`**: tramos `1 W.C.` / `10 W.C.` / `40 W.C.` / `80 W.C.`.
+
+  ![Panel de detalle de W.C. con sus propios tramos](screenshots/estadio/s6-08-wc.png)
+
+Con esto, las 4 sub-categorías de `SERVICIOS` (`ENFERMERÍA` incluida)
+quedan confirmadas con panel de detalle propio y tramos discretos
+propios — **la sospecha de un bug de sub-navegación queda descartada**,
+era un problema de precisión de clic en sesiones anteriores.
+
+## REMODELAR: marcar un tramo, confirmar, y comprobar que es reversible (sesión 6, 2026-08-22)
+
+`[jugado]` 2026-08-22. Primera vez que se marca un checkbox de
+remodelación real (tramo `GRADAS` → `+4.000 asientos / 1.500.000.000
+pesetas / 20 semanas`) y se sigue el flujo hasta el final, en vez de solo
+describirlo.
+
+- **Marcar el checkbox** lo resalta con una X roja, pero **el contador
+  `TOTAL REMODELACIÓN` al pie se queda en `0 mill.` y no sube** —
+  discrepancia visual entre "seleccionado" y "contabilizado" que no se
+  ha explicado.
+- **Pulsar `VOLVER` con el checkbox marcado dispara un aviso**, no una
+  pregunta de sí/no: *"Las obras comenzarán cuando termine la semana
+  actual."*, con un único botón `Aceptar` — es un anuncio, no una
+  confirmación cancelable en ese punto.
+
+  ![Aviso "Las obras comenzarán cuando termine la semana actual"](screenshots/estadio/s6-12-after-aceptar.png)
+
+- Tras aceptar el aviso, la navegación **salió de `ESTADIO` hasta el
+  despacho** (no se quedó en `ESTADIO`) — `VOLVER` sobre `GRADAS` con
+  cambios pendientes propaga la salida hasta el hub, no solo hasta la
+  pantalla anterior.
+- **Al volver a entrar en `ESTADIO` → `REMODELAR` → `GRADAS`, el
+  checkbox de `+4.000 asientos` seguía marcado** — sugiere que el
+  aviso sí registró algo, no fue un mensaje vacío.
+- **Se probó si ese checkbox se podía desmarcar de nuevo** (para ver si
+  la remodelación era reversible en esta fase): un clic más sobre el
+  mismo checkbox lo dejó vacío otra vez, y `VOLVER` mostró **el mismo
+  aviso de "las obras comenzarán..."** incluso con el checkbox ya
+  desmarcado — el aviso parece dispararse por haber tocado la pantalla
+  de `GRADAS` con algún cambio en la sesión, no por el estado final del
+  checkbox.
+- **La comprobación definitiva fue la tabla `ESTADO DE LAS OBRAS`**: al
+  final de toda la secuencia (marcar → volver → aceptar → reentrar →
+  desmarcar → volver → aceptar), la fila `GRADAS` aparece **vacía**
+  (sin `POR PAGAR` ni `SEM`) y `TOTAL REMODELACIÓN` sigue en `0 mill.` —
+  es decir, **la remodelación no quedó comprometida de forma
+  permanente**: el intento de marcarla se pudo revertir por completo
+  antes de que se contabilizara ninguna obra real.
+
+  ![Estado de las Obras al final: GRADAS vacío, nada comprometido](screenshots/estadio/s6-21-estadio-final.png)
+
+- No se llegó a comprobar `ESTADO DE LAS OBRAS` justo después del primer
+  `Aceptar` (con el checkbox aún marcado) — solo se comprobó al final,
+  con el checkbox ya desmarcado. No se puede confirmar con certeza si
+  hubo una ventana intermedia en la que la obra sí figuraba como
+  comprometida y luego se revirtió, o si nunca llegó a comprometerse
+  mientras la sesión siguiera abierta.
+
+## DÍA DE PARTIDO → vallas: intento sin completar, la sesión se cortó aquí
+
+`[jugado]` 2026-08-22. Se intentó volver a `DÍA DE PARTIDO` para
+completar por fin el `ACEPTAR` de la oferta de vallas publicitarias
+pendiente desde la sesión 2. **Dos clics sucesivos sobre el botón `DÍA
+DE PARTIDO`** (con recalibración entre uno y otro) **no consiguieron
+cambiar el panel**, que se quedó mostrando `ESTADO DE LAS OBRAS` en
+ambas capturas:
+
+![Clic sobre DÍA DE PARTIDO sin cambiar de panel (segundo intento)](screenshots/estadio/s6-23-diapartido2.png)
+
+La sesión se interrumpió inmediatamente después (límite de sesión de la
+API) sin más intentos. **No hay evidencia de que se llegara a ver el
+panel de `DÍA DE PARTIDO` en esta sesión**, y mucho menos de que se
+pulsara su `ACEPTAR` — a diferencia de lo planeado, esta parte de S6
+queda sin ejecutar, no solo sin confirmar.
+
 ## Pendiente
 
-- No se ha logrado cambiar el panel de detalle dentro de `SERVICIOS` más
-  allá de `ENFERMERÍA` (ver arriba).
-- No se ha marcado ningún checkbox de remodelación real ni pulsado
-  `ACEPTAR` en la oferta de vallas publicitarias de `DÍA DE PARTIDO`, para
-  no alterar el estado económico de la partida sin necesidad.
+- El botón `DÍA DE PARTIDO` no respondió a los dos clics intentados al
+  final de la sesión 6 (se quedó en `ESTADO DE LAS OBRAS`); sigue
+  pendiente comprobar si es otro caso de calibración fina o algo distinto,
+  y sigue sin pulsarse su oferta de vallas (`ACEPTAR`, 215 millones por
+  el resto de temporada).
+- La discrepancia entre "checkbox marcado" y "`TOTAL REMODELACIÓN` en 0
+  mill." en `REMODELAR` → `GRADAS` no se ha explicado.
+- No se comprobó `ESTADO DE LAS OBRAS` inmediatamente después del primer
+  `Aceptar` del aviso de obras (con el checkbox aún marcado) — solo al
+  final, ya desmarcado. Queda abierto si hubo una ventana real en la que
+  la obra estuvo comprometida.
