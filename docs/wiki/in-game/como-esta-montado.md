@@ -56,8 +56,26 @@ bun run vm:stop   --game=pcf6                       # savestate; seguro aunque y
 bun run vm:screenshot --game=pcf6 --out shots/01.png
 bun run vm:move   --game=pcf6 --reset --dx 150 --dy 300   # mover sin pulsar
 bun run vm:click  --game=pcf6 --reset --dx 150 --dy 300   # mover y pulsar
+bun run vm:drag   --game=pcf6 --reset --dx 150 --dy 300 --to-dx 200 --to-dy 260
+                                                            # pulsar en (dx,dy), arrastrar con
+                                                            # el botón sostenido hasta (to-dx,to-dy), soltar
 bun run vm:key    --game=pcf6 38 0f 8f b8                  # scancodes crudos (Alt+Tab)
 ```
+
+`vm:drag` se añadió en la sesión 4 (2026-08-21) porque `vm:click`/`vm:move`
+no bastan para probar arrastre (p. ej. mover una ficha de jugador sobre un
+minicampo): son un `PutMouseEvent` de movimiento sin botón, y otro con clic
+en el sitio final, nunca el botón sostenido *durante* el movimiento. Reutiliza
+el mismo `Move-Walked` de `vbox-mouse.ps1` (pasos de 3px, packet-safe) pero
+con `buttonState=1` en cada paquete del tramo de arrastre. Confirmado que
+funciona a nivel de mecanismo (el `PutMouseEvent` con botón sostenido se
+envía sin error), pero el primer uso real (arrastrar la ficha de un jugador
+en el minicampo de `TÁCTICAS`, ver
+[`pcf6/16-tacticas.md`](pcf6/16-tacticas.md)) confirmó que **ese minicampo
+concreto no responde al arrastre** — es un diagrama de solo lectura, no un
+editor de posiciones. La herramienta queda disponible para el próximo sitio
+donde sí haga falta arrastrar de verdad (p. ej. si aparece algún selector
+por rango/slider que no sea un simple clic).
 
 `--visible` abre la ventana normal de VirtualBox en el host Windows — útil
 para que una persona mire en directo mientras el agente pilota por API. Si

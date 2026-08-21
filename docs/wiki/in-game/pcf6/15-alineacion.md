@@ -130,10 +130,41 @@ en cualquier salida de ALINEACIÓN mientras haya un sancionado alineado.
 `Aceptar` respondió con normalidad. Ver también
 [`16-tacticas.md`](16-tacticas.md).
 
+## Clicar una fila de jugador muestra su ficha de atributos (confirmado, sesión 4)
+
+Clicar directamente sobre la fila de un jugador (no las columnas ROL/DEM)
+sustituye el panel `MEDIA EQUIPO` de la derecha por una **ficha individual**
+con sus seis atributos (`PORTERO`/`PASE`/`REGATE`/`REMATE`/`ENTRADAS`/
+`TIRO`, en estrellas) bajo su nombre, y marca su posición con un punto
+blanco sobre el minicampo — mismo componente ya visto en `TÁCTICAS PREDEF.`
+(ver [`16-tacticas.md`](16-tacticas.md)), confirmando que es una ficha
+reutilizada entre pantallas, no exclusiva de una de ellas. No hay foto de
+carné aquí (sí la hay en el `JUGADOR DEL PARTIDO` de `FINAL DE PARTIDO`,
+ver [`07-despacho.md`](07-despacho.md), y en la ficha de goleador de
+[`23-goles-de-la-liga.md`](23-goles-de-la-liga.md)) — esta ficha de
+`ALINEACIÓN`/`TÁCTICAS` es solo atributos, sin retrato. Un solo clic no
+reordena la lista ni mueve al jugador de sitio — confirmado con varios
+clics limpios sobre filas distintas, cada uno solo cambia qué ficha se
+muestra.
+
+## Cambiar la demarcación/rol de un jugador: no es aquí, es en TÁCTICAS
+
+Esta pantalla **no tiene** el desplegable de ~18 roles tácticos por
+jugador — eso vive en `TÁCTICAS` (columna `DEM` con flechita `◄`, ver
+["Cambio de demarcación/ROL" en `16-tacticas.md`](16-tacticas.md)).
+`ALINEACIÓN` solo alterna la vista PARÁMETROS/CALIFICACIÓN de la misma
+tabla de titulares/convocados; para reasignar de verdad dónde juega un
+jugador hay que entrar en `TÁCTICA`.
+
 ## Pendiente
 
 - Colocar/quitar jugadores del once titular arrastrando o clicando el
-  minicampo — no probado en esta sesión (se exploró solo lectura).
+  minicampo — probado el arrastre con la nueva `bun run vm:drag` (ver
+  `docs/wiki/in-game/como-esta-montado.md`) sobre el minicampo de
+  `TÁCTICAS` (mismo componente): la ficha del jugador no se movió, el
+  minicampo es de solo lectura. No se ha repetido la prueba de arrastre
+  específicamente sobre el minicampo de esta pantalla (`ALINEACIÓN`), pero
+  es razonable esperar el mismo resultado al ser el mismo componente.
 - `SEGUROS` en LESIONADOS no probado.
 - `AUTO` en ENTRENAMIENTO no probado (¿autoconfigura el foco de
   entrenamiento?).

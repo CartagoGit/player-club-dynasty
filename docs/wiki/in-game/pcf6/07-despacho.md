@@ -198,6 +198,54 @@ instrucción explícita de esta exploración — nunca "ver partido"):
    avanzada al día del siguiente partido y la cabecera con los equipos
    intercambiados si tocó jugar como visitante/local según corresponda.
 
+### Detalle a fondo de `FINAL PRIMERA PARTE`/`FINAL DE PARTIDO` (sesión 4, 2026-08-21)
+
+Se jugó un partido completo (R. Zaragoza 4 - 0 R.C. Celta, jornada 1, en
+modo `RESULTADO`) explorando cada elemento de ambas pantallas en vez de
+pulsar `SEGUIR` directamente:
+
+- **Dos tablas `TARJETAS`/`min` y `GOLES`/`min` por equipo**, no solo un
+  contador: cada tarjeta lleva el nombre del jugador y el minuto exacto
+  (`Sundgren 4'`, `Aguado 37'`, `Juanmi 43'`... — incluso el portero puede
+  ver tarjeta), cada gol lleva autoría y minuto (`Gustavo López 23'`,
+  `Kily González 59'` y `85'` — el mismo jugador puede repetir). Un
+  contador `TOTAL FALTAS` por equipo aparte de las tarjetas.
+- **Botones `ESTADÍSTICAS` (uno por equipo, no uno global)**: cada uno abre
+  la misma tabla ya documentada en
+  [`15-alineacion.md`](15-alineacion.md) ("ESTADÍSTICAS"), pero aquí
+  accesible **a mitad de partido** (no solo desde el despacho) y también
+  para el **equipo rival** — confirmado abriendo la de R.C. Celta con la
+  plantilla completa de titulares y su fila `TOTAL EQUIPO`. `VOLVER` navega
+  con normalidad de vuelta a `FINAL PRIMERA PARTE`.
+- **`TÁCTICAS`/`ALINEACIÓN` también son accesibles desde `FINAL PRIMERA
+  PARTE`** (mismos botones que en el despacho, mismas pantallas) — permite
+  ajustar el once o el esquema **en el descanso**, antes de que arranque la
+  segunda parte.
+- **Datos económicos del estadio en vivo, no solo aforo**: `AFORO` (31.990),
+  `ENTRADA` (asistentes reales + %), `RECAUDACIÓN` (taquilla), `VALLAS
+  CONTRATADAS` (% de publicidad estática vendida) y una **segunda
+  `RECAUDACIÓN` distinta** (ingreso de esas vallas, separado del de
+  taquilla) — dos fuentes de ingreso de matchday ya modeladas por partido,
+  no una única cifra agregada.
+- **`JUGADOR DEL PARTIDO` en `FINAL DE PARTIDO`** incluye foto de carné del
+  jugador, no solo el nombre (confirmado con Gustavo López, autor del
+  primer gol).
+
+## Confirmado: cambio de demarcación/ROL por jugador (sesión 4, 2026-08-21)
+
+Ver el detalle completo en [`16-tacticas.md`](16-tacticas.md) ("Cambio de
+demarcación/ROL"): la flechita junto a la columna `DEM` de cada jugador en
+`TÁCTICAS` abre un desplegable con ~18 roles específicos (no solo
+POR/DEF/MED/DEL) y **reasignarlo cambia de verdad el `ROL` mostrado y la
+`ME` (media efectiva) del jugador** — jugar fuera de posición penaliza la
+media. El `DEM` (especialización fija del jugador) no cambia con esto, solo
+el `ROL` (su asignación táctica actual) — son dos conceptos distintos en la
+misma fila. El editor de campo (arrastrar la ficha del jugador sobre el
+minicampo) **no respondió al arrastre** (confirmado con la nueva
+`vm:drag`, ver `docs/wiki/in-game/como-esta-montado.md`) — el minicampo es
+un diagrama de solo lectura que refleja la formación elegida en `TÁCTICAS
+PREDEF.`, no un editor de posiciones libre por arrastre.
+
 En ningún punto de este ciclo se mostró el pop-up de recap de Supercopa que
 sí bloqueó sesiones anteriores (ver más abajo) — no está claro si depende
 de si el equipo elegido tenía o no plaza real en la competición

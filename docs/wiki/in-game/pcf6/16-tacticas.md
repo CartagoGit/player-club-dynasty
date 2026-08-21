@@ -114,12 +114,57 @@ disparado por `VOLVER`; aquí se confirma que **también dispara al navegar
 a `TÁCTICA`**, no solo al salir de Alineación. `Aceptar` respondió con
 normalidad.
 
+## Cambio de demarcación/ROL: confirmado a fondo (sesión 4, 2026-08-21)
+
+![Desplegable de ROL: 18 posiciones específicas para Juanmi](screenshots/tacticas/06-dropdown-rol.png)
+
+Junto a la columna `DEM` de cada fila de jugador hay una **flechita
+`◄` clicable** (fácil de confundir con un simple indicador visual — no lo
+es). Clicarla abre un **desplegable con ~18 roles tácticos específicos**
+por jugador (no solo POR/DEF/MED/DEL): `PORTERO`, `LATERAL DERECHO`,
+`LATERAL IZQUIERDO`, `LIBERO`, `CENTRAL IZQUIERDO`, `CENTRAL DERECHO`,
+`CENTROCAMPISTA DERECHA`, `INTERIOR DERECHO`, `DELANTERO CENTRO`, `MEDIO
+CENTRO ORGANIZADOR`, `CENTROCAMPISTA IZQUIERDA`, `EXTREMO DERECHO`, `MEDIA
+PUNTA POR EL CENTRO`, `EXTREMO IZQUIERDO`, `MEDIO CENTRO DEFENSIVO`, `MEDIA
+PUNTA DERECHA`, `MEDIA PUNTA IZQUIERDA`, `INTERIOR IZQUIERDO`.
+
+- **Clicar una opción reasigna de verdad el `ROL` del jugador** —probado
+  con Juanmi (portero titular): elegir `DELANTERO CENTRO` cambió su columna
+  `ROL` de "PORTERO" a "DELANTERO CENTRO" **y su `ME` (media efectiva) bajó
+  de 76 a 66** — jugar fuera de la posición para la que está mejor
+  valorado penaliza la media calculada, no es un cambio cosmético.
+- **`DEM` no cambia con esto.** Tras reasignar a Juanmi como delantero, la
+  columna `DEM` de su fila siguió mostrando `POR` — `DEM` es la
+  especialización/demarcación de base del jugador (fija, ficha del
+  jugador), mientras que `ROL` es su **asignación táctica actual dentro de
+  la alineación** (editable, puede no coincidir con su `DEM`). Son dos
+  columnas con significado distinto, no una redundancia visual.
+  Revirtiendo la selección a `PORTERO` restauró la `ME` a 76 exactamente —
+  el cambio es reversible sin efecto colateral aparente.
+- **El minicampo NO es un editor de posiciones por arrastre.** Se probó
+  arrastrar la ficha de Juanmi (marcada `1`, en la portería) hacia el
+  centro del campo usando el nuevo comando `bun run vm:drag` (ver
+  `docs/wiki/in-game/como-esta-montado.md` — añadido esta sesión porque la
+  herramienta original solo soportaba clic/movimiento, no arrastre con
+  botón sostenido). **La ficha no se movió** tras el arrastre — el
+  minicampo es un diagrama de solo lectura que dibuja la formación elegida
+  en `TÁCTICAS PREDEF.`, no un editor de posiciones libre. El único
+  mecanismo confirmado para cambiar dónde juega un jugador es el
+  desplegable de `ROL` descrito arriba (que cambia su rol dentro del
+  esquema, no sus coordenadas x/y en el minicampo).
+
 ## Pendiente
 
 - `GRABAR` de `GRABAR TÁCTICA` sigue sin probarse (ver arriba, riesgo de
   bloqueo deliberadamente evitado).
 - No se ha completado una reasignación real de dorsal (seleccionar
   jugador → pulsar número → confirmar).
-- Confirmar si arrastrar una ficha sobre el campo (drag) cambia la
-  formación de forma más fina que elegir un preset completo, o si esa
-  interacción no existe en esta pantalla.
+- Un intento de doble-clic rápido sobre la misma fila de jugador produjo
+  una vez un reordenamiento inesperado de dos filas de la lista (Sundgren y
+  Acuña intercambiaron posición en la tabla) que no se pudo reproducir en
+  intentos posteriores controlados (clics limpios de una fila distinta cada
+  vez no reordenaron nada) — no se ha confirmado si es un mecanismo de
+  intercambio real disparado por doble-clic en la misma fila, o ruido/
+  artefacto de la inyección de eventos. Pendiente de un intento controlado
+  específico (doble-clic exacto, con captura entre cada clic) para
+  confirmar o descartar.

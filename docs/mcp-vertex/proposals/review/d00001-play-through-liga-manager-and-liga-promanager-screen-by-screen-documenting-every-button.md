@@ -2,7 +2,7 @@
 id: d00001
 title: "Play through Liga Manager and Liga Promanager screen by screen, documenting every button"
 kind: docs
-status: in-progress
+status: review
 type: proposal
 track: knowledge
 date: 2026-08-21
@@ -57,8 +57,8 @@ f00047 (in review) built the classic-manager knowledge base from written sources
   - "Lower priority than S1/S2 per explicit user instruction — only worked on once Liga Manager/Promanager's own checklist has no open item left to try with a new approach."
 
 ### S4 — Deep dive: demarcación/position changes, tactics editing, player profile, and the live match screen
-- **Status**: in-progress. Reopened per explicit user instruction (2026-08-21, session 4): previous slices covered navigation breadth but not depth on player-level and match-level interaction.
-- **Files**: `docs/wiki/in-game/pcf6/15-alineacion.md`, `docs/wiki/in-game/pcf6/16-tacticas.md`, new `docs/wiki/in-game/pcf6/25-ficha-jugador.md` (player profile card, if it's a distinct screen), `docs/wiki/in-game/pcf6/07-despacho.md` (live match screen detail)
+- **Status**: done. Demarcación/ROL change confirmed via a per-player dropdown of ~18 tactical roles in TÁCTICAS (changes ME, distinct from the fixed DEM column); minicampo drag confirmed as read-only (new `vm:drag` tool built and tested, no effect); player profile-on-row-click confirmed in both ALINEACIÓN and TÁCTICAS (shared component, attributes only, no photo — distinct from the JUGADOR DEL PARTIDO/goleador cards which do have photos); a full match played through with ESTADÍSTICAS/TÁCTICAS/ALINEACIÓN all confirmed reachable mid-match from FINAL PRIMERA PARTE, with per-goal/per-card minute detail and stadium matchday revenue documented.
+- **Files**: `docs/wiki/in-game/pcf6/15-alineacion.md`, `docs/wiki/in-game/pcf6/16-tacticas.md`, `docs/wiki/in-game/pcf6/07-despacho.md`, `docs/wiki/in-game/como-esta-montado.md` (new `vm:drag` tool)
 - **Gate**: none
 - acceptance:
   - "Changing a player's demarcación/position (drag on the minicampo in TÁCTICAS and/or ALINEACIÓN, or any other mechanism found) is confirmed working, or confirmed genuinely blocked with every method tried listed."
