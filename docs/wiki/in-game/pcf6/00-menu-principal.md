@@ -59,3 +59,24 @@ captura es la prueba de que el rumbo ya tomado es el correcto.
 
 Ver también [`01-submenu-y-ayuda.md`](01-submenu-y-ayuda.md) para lo que hay
 **detrás** de una de estas losetas.
+
+## Pendiente / anomalía
+
+- **PROQUINIELAS 2.0 no abre una pantalla propia: expulsa al escritorio de
+  Windows 98 directamente** (2026-08-21, bajo VirtualBox). Un solo clic
+  sobre la loseta, tras un frame en negro (transición normal en este
+  juego), deja ver el escritorio real de Windows con sus iconos
+  (`Mi PC`, `Mis documentos`, `Internet Explorer`, `Mozilla Firefox`,
+  `Papelera`, `Setup MSN...`) en vez de cualquier pantalla del juego —
+  ver captura abajo. Ningún otro botón de la rejilla 3×3 produjo este
+  comportamiento (los demás sí navegaron a una pantalla del propio juego).
+  Hipótesis más probable: PROQUINIELAS 2.0 lanza un `.exe` externo
+  (probablemente el propio "PCFÚTBOL PLUS 98-99" o una utilidad de
+  quinielas separada) que no está instalado o falla al arrancar en este
+  disco preservado, y el proceso padre del juego se cierra al intentar
+  cederle el control. No se ha intentado relanzar el juego desde este
+  estado (icono de acceso directo no localizado en el escritorio) — se
+  optó por un `vm:poweroff` + `vm:start` para continuar la exploración,
+  igual que con los diálogos atascados de despacho.
+
+  ![Escritorio de Windows tras pulsar Proquinielas 2.0](screenshots/00-crash-proquinielas.png)
