@@ -12,9 +12,14 @@
  *   bun run vm:start  --game=pcf6            # headless — no window at all
  *   bun run vm:start  --game=pcf6 --visible  # normal VirtualBox window
  *   bun run vm:stop   --game=pcf6            # savestate; safe if already off
+ *   bun run vm:poweroff --game=pcf6          # hard reset, discards state — use when a
+ *                                             # screen is genuinely stuck (savestate/resume
+ *                                             # reproduces the same stuck state identically)
  *   bun run vm:screenshot --game=pcf6 --out shots/01-menu.png
  *   bun run vm:move   --game=pcf6 --reset --dx 150 --dy 300  # hover, no click
  *   bun run vm:click  --game=pcf6 --dx 9 --dy -36             # relative move + click
+ *   bun run vm:click  --game=pcf6 --dx 9 --dy -36 --right      # right-click instead
+ *   bun run vm:click  --game=pcf6 --dx 9 --dy -36 --hold-ms 500 # longer button-down hold
  *   bun run vm:key    --game=pcf6 38 0f 8f b8                 # raw scancodes (Alt+Tab)
  *
  * Mouse/keyboard injection goes through VirtualBox's COM `IMouse` API and
@@ -38,6 +43,7 @@ import {
 	locatePowerShell,
 	locateVBoxManage,
 	moveMouse,
+	powerOffVm,
 	screenshot,
 	sendScancodes,
 	startVm,
@@ -128,6 +134,16 @@ const main = async (): Promise<number> => {
 			return 0;
 		}
 
+		case 'poweroff': {
+			process.stdout.write(`vm: hard power-off (discards state) for ${vmName}...\n`);
+			const ok = await powerOffVm(vboxPath, vmName);
+			if (!ok) {
+				process.stderr.write(`vm: failed to power off ${vmName}.\n`);
+				return 1;
+			}
+			return 0;
+		}
+
 		case 'screenshot': {
 			const outArg = flagValue(argv, '--out') ?? `.generate/vm-shots/${gameId}-${Date.now()}.png`;
 			const outPath = resolve(paths.workspaceRoot, outArg);
@@ -152,18 +168,25 @@ const main = async (): Promise<number> => {
 			const dx = Number(flagValue(argv, '--dx') ?? '0');
 			const dy = Number(flagValue(argv, '--dy') ?? '0');
 			const resetCorner = argv.includes('--reset');
+			const rightClick = argv.includes('--right');
+			const holdMsArg = flagValue(argv, '--hold-ms');
+			const holdMs = holdMsArg === null ? undefined : Number(holdMsArg);
 			const scriptWindowsPath = await toWindowsPath(MOUSE_SCRIPT_PATH);
 			const ok = await moveMouse(psPath, scriptWindowsPath, vmName, {
 				resetCorner,
 				dx,
 				dy,
-				click: command === 'click',
+				click: command === 'click' && !rightClick,
+				rightClick: command === 'click' && rightClick,
+				holdMs,
 			});
 			if (!ok) {
 				process.stderr.write(`vm: mouse ${command} failed against ${vmName}.\n`);
 				return 1;
 			}
-			process.stdout.write(`vm: ${command} reset=${resetCorner} dx=${dx} dy=${dy} on ${vmName}\n`);
+			process.stdout.write(
+				`vm: ${command} reset=${resetCorner} dx=${dx} dy=${dy} right=${rightClick} holdMs=${holdMs ?? 120} on ${vmName}\n`,
+			);
 			return 0;
 		}
 
@@ -184,8 +207,8 @@ const main = async (): Promise<number> => {
 
 		default:
 			process.stderr.write(
-				'vm: usage: bun run vm:<start|stop|status|screenshot|list|move|click|key> --game=<id> ' +
-					'[--visible] [--out <path>] [--dx N --dy N] [--reset]\n',
+				'vm: usage: bun run vm:<start|stop|poweroff|status|screenshot|list|move|click|key> --game=<id> ' +
+					'[--visible] [--out <path>] [--dx N --dy N] [--reset] [--right] [--hold-ms N]\n',
 			);
 			return 2;
 	}

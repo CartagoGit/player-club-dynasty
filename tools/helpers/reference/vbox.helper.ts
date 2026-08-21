@@ -49,6 +49,19 @@ export const stopVm = async (vboxPath: string, vmName: string): Promise<boolean>
 	return result.exitCode === 0;
 };
 
+/**
+ * Hard power-off (discards VM state, unlike `stopVm`'s savestate). Needed to
+ * escape a genuinely stuck screen — a save/resume cycle reproduces a stuck
+ * modal identically (confirmed in `docs/wiki/in-game/pcf6/07-despacho.md`),
+ * so only a real cold reboot clears it.
+ */
+export const powerOffVm = async (vboxPath: string, vmName: string): Promise<boolean> => {
+	const info = await vmInfo(vboxPath, vmName);
+	if (info.state !== 'running' && info.state !== 'paused') return true;
+	const result = await vboxManage(vboxPath, ['controlvm', vmName, 'poweroff']);
+	return result.exitCode === 0;
+};
+
 const parseState = (raw: string): VBoxVmState => {
 	const match = /^VMState="(\w+)"/m.exec(raw);
 	const state = match?.[1];
@@ -103,6 +116,8 @@ export const moveMouse = async (
 	if (action.dx) args.push('-Dx', String(action.dx));
 	if (action.dy) args.push('-Dy', String(action.dy));
 	if (action.click) args.push('-Click');
+	if (action.rightClick) args.push('-RightClick');
+	if (action.holdMs) args.push('-HoldMs', String(action.holdMs));
 	const result = await run(psPath, { args, timeoutMs: 20_000 });
 	return result.exitCode === 0;
 };

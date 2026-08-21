@@ -44,6 +44,7 @@
 		"vm:status": "bun tools/scripts/reference/vm.script.ts status",
 		"vm:start": "bun tools/scripts/reference/vm.script.ts start",
 		"vm:stop": "bun tools/scripts/reference/vm.script.ts stop",
+		"vm:poweroff": "bun tools/scripts/reference/vm.script.ts poweroff",
 		"vm:screenshot": "bun tools/scripts/reference/vm.script.ts screenshot",
 		"vm:move": "bun tools/scripts/reference/vm.script.ts move",
 		"vm:click": "bun tools/scripts/reference/vm.script.ts click",

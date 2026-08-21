@@ -33,7 +33,9 @@ param(
     [int]$Dx = 0,
     [int]$Dy = 0,
     [switch]$Click,
-    [int]$ClickDelayMs = 150
+    [switch]$RightClick,
+    [int]$ClickDelayMs = 150,
+    [int]$HoldMs = 120
 )
 
 $ErrorActionPreference = 'Stop'
@@ -72,7 +74,14 @@ try {
     if ($Click) {
         Start-Sleep -Milliseconds $ClickDelayMs
         $mouse.PutMouseEvent(0, 0, 0, 0, 1)
-        Start-Sleep -Milliseconds 120
+        Start-Sleep -Milliseconds $HoldMs
+        $mouse.PutMouseEvent(0, 0, 0, 0, 0)
+    }
+
+    if ($RightClick) {
+        Start-Sleep -Milliseconds $ClickDelayMs
+        $mouse.PutMouseEvent(0, 0, 0, 0, 2)
+        Start-Sleep -Milliseconds $HoldMs
         $mouse.PutMouseEvent(0, 0, 0, 0, 0)
     }
 }
@@ -80,4 +89,4 @@ finally {
     $session.UnlockMachine()
 }
 
-Write-Output "ok reset=$ResetCorner dx=$Dx dy=$Dy click=$Click"
+Write-Output "ok reset=$ResetCorner dx=$Dx dy=$Dy click=$Click rightClick=$RightClick holdMs=$HoldMs"

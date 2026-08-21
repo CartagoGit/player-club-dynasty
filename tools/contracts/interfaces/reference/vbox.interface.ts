@@ -26,4 +26,6 @@ export interface IVBoxMouseAction {
 	readonly dx?: number;
 	readonly dy?: number;
 	readonly click?: boolean;
+	readonly rightClick?: boolean;
+	readonly holdMs?: number;
 }
