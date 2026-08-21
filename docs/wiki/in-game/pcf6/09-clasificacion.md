@@ -96,17 +96,64 @@ modernos.
   — pendiente de reprobar una vez haya al menos una jornada disputada,
   porque puede ser un bloqueo por falta de datos, no un botón roto.
 
+## GOLEADORES: tabla de máximos goleadores con ficha por jugador y gráfico de progresión (sesión 4, 2026-08-21)
+
+![Goleadores: lista + gráfico de progresión de goles](screenshots/clasificacion/02-goleadores.png)
+
+Con al menos una jornada disputada, el botón `GOLEADORES` navega con
+normalidad (en la Jornada 1 sin jugar de sesiones previas no daba señal —
+confirmado que era por falta de datos, no un botón roto, tal como se
+sospechaba en el Pendiente original).
+
+- **Lista ordenada por goles** (`GOL.`/`JUGADOR`/`EQUIPO`), con scrollbar,
+  y un selector `JORNADAS 2` (`◄ ►`, no probado en profundidad) que
+  delimita hasta qué jornada se cuentan los goles.
+- **Clicar una fila de jugador abre una ficha modal por jugador**
+  (nombre completo, distinto del apellido corto de la lista — p. ej.
+  "Hilu González" en la lista es *Cristian Alberto GONZÁLEZ* en la ficha)
+  con una **tabla de cada gol marcado**: `JOR.` (jornada), `PARTIDO`
+  (ambos equipos) y `MIN.` (minuto exacto) — un log de goles por jugador,
+  no solo el total. Pie con `Datos hasta la JORNADA N` y `VOLVER`.
+
+  ![Ficha de goleador: log de goles con minuto exacto](screenshots/clasificacion/03-goleador-detalle.png)
+
+- **El gráfico grande de la izquierda (ejes `GOLES` 5-45 / `JORNADAS`
+  5-40) se rellena con un patrón de puntos mientras la ficha de un
+  jugador está abierta**, y **vuelve a quedar vacío al cerrar la ficha**
+  — es la progresión de goles de ese jugador concreto a lo largo de la
+  temporada, no una comparación simultánea de varios (aunque existen tres
+  franjas `COMPARA` con flechas ◄/► bajo la lista, sugiriendo que sí se
+  pueden fijar hasta tres jugadores a la vez para comparar sus curvas —
+  no se llegó a probar el flujo completo de "fijar" un jugador en un
+  slot de `COMPARA` en vez de solo abrir su ficha).
+- El botón `VOLVER` de la ficha modal (no el de la pantalla `GOLEADORES`)
+  necesitó una recalibración fina de coordenadas (estaba más a la
+  derecha/abajo de lo esperado por el cálculo geométrico ingenuo) — igual
+  que otros casos ya documentados de "no es una anomalía, es calibración"
+  en `16-tacticas.md`.
+
+## `VOLVER` de esta pantalla: la anomalía histórica no se reprodujo (sesión 4, 2026-08-21)
+
+Se repitió deliberadamente el mismo botón `VOLVER` de `CLASIFICACIÓN` que
+en una sesión anterior requirió reiniciar la VM (ver el Pendiente
+original más abajo, conservado como registro histórico). Esta vez, con
+`--reset` explícito en el clic, **`VOLVER` respondió a la primera** y
+devolvió limpiamente al despacho. Es coherente con el hallazgo más amplio
+de sesión 4 sobre pérdida de foco espontánea + omisión de `--reset` (ver
+[`como-esta-montado.md`](../como-esta-montado.md)): es plausible que la
+anomalía original de esta pantalla fuera ese mismo fenómeno mal
+diagnosticado como "botón atascado", en vez de un defecto real del juego.
+No se puede confirmar retroactivamente con certeza total (no se guardó
+una captura del escritorio de Windows en aquel momento), pero la
+reproducción limpia esta sesión reduce la confianza en que sea un bug
+del juego.
+
 ## Pendiente
 
-- GOLEADORES (máximos goleadores) no explorado.
-- Selector de jornada (`◄ ►`) no probado con datos reales — no se vio si
-  jornadas futuras muestran algo o quedan bloqueadas.
-- **VOLVER en esta pantalla: anomalía reproducible, no una coordenada mal
-  calibrada.** Con el cursor confirmado visualmente sobre el botón, ni clic
-  simple, ni doble clic rápido, ni clic+jiggle, ni clic derecho, ni Escape,
-  ni Intro lograron cerrar la pantalla — en una sesión completa se probó
-  todo esto sin éxito y se tuvo que reiniciar la VM para continuar. Ver la
-  anomalía gemela del botón OK del pop-up "Campeón Supercopa de España" en
-  [`07-despacho.md`](07-despacho.md) "Pendiente / con comportamiento raro" —
-  mismo síntoma exacto en dos pantallas distintas, probablemente la misma
-  causa raíz (hipótesis en ese documento).
+- Selector de jornada (`◄ ►`) en `CLASIFICACIÓN` no probado con datos
+  reales de varias jornadas ya jugadas (solo Jornada 1/2).
+- El selector `◄ JORNADAS N ►` de `GOLEADORES` no se probó a fondo
+  (cambiar de jornada, ver si recalcula la lista).
+- El mecanismo de las tres franjas `COMPARA` en `GOLEADORES` (fijar hasta
+  tres jugadores para comparar curvas en el mismo gráfico) no se
+  completó — solo se abrió la ficha individual de un jugador a la vez.

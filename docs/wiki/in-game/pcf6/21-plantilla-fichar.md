@@ -121,6 +121,40 @@ descartada.
   Alineación/Táctica — vacía en esta partida (0 canteranos promovibles
   aún). `VOLVER` (navegable, sin anomalía).
 
+### CARTERA: el flujo de "añadir jugador" completado de principio a fin (sesión 4, 2026-08-21)
+
+![Cartera con un jugador seguido: contacto en curso con Morientes](screenshots/fichar/03-cartera-fichajes-con-jugador.png)
+
+Sesión 2 solo había confirmado que `AÑADIR` abre el selector de
+equipo/jugador (mapa Europa/Sudamérica + rejilla de clubes de España).
+Esta sesión se completó el flujo entero:
+
+- Clicar un club en la rejilla (probado con **Real Madrid C.F.**) rellena
+  el panel derecho con **la plantilla real completa de ese club** (dorsal,
+  nombre, `ME`, `ROL`) — Suker, Raúl, Mijatovic, Morientes, Guti, Seedorf,
+  Redondo, Roberto Carlos, Hierro, etc., datos de la temporada 97-98 real.
+  Confirma que el buscador de fichajes puede consultar la plantilla de
+  **cualquier** club de **cualquier** país del mapa, no solo equipos ya
+  con jugadores "a la venta".
+- **Un solo clic sobre una fila de jugador solo la selecciona** (resaltado
+  naranja, sin cerrar el selector) — hace falta **doble clic** para
+  confirmar y añadirlo de verdad a la cartera (probado con Morientes).
+- Al añadirse, la fila de `CARTERA DE FICHAJES` deja de estar vacía y
+  muestra su **ficha de atributos completa** (`EN 99 VE 80 RE 78 AG 78
+  CA 84 EF 45 MO 99 ME 77`, `ROL`/`DEM` = `DEL`), el escudo de su club
+  actual (Real Madrid C.F.), y el texto **"Información del contrato no
+  disponible"** (a diferencia de un jugador ya fichable en "Jugadores a
+  la Venta", del que sí se conocen ficha/años/rescisión) — el motor
+  distingue entre datos públicos de mercado y datos de un jugador que
+  solo se está *vigilando*.
+- El botón de la fila cambia de `AÑADIR` a **`ELIMINAR`** una vez el
+  jugador está en la cartera — quitarlo no se probó, pero confirma que es
+  reversible.
+- El secretario técnico reacciona con una frase de estado propia:
+  **"Estoy entablando contactos con Morientes."** — sugiere que añadir a
+  la cartera dispara una gestión de fondo (el secretario "investiga" al
+  jugador), no es solo una lista estática de favoritos.
+
 ## Qué exige
 
 Que la cartera de fichajes permita añadir *cualquier* jugador de *cualquier*

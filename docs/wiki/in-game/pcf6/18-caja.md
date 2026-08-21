@@ -87,6 +87,37 @@ en esta versión concreta del juego. No hay más vías obvias que probar sin
 acceso a otro método de entrada (p. ej. un editor de memoria o los
 ficheros de recursos del ejecutable, fuera del alcance de esta propuesta).
 
+## Sesión 4 (2026-08-21): confirmado que el botón `CAJA` del despacho nunca estuvo roto — era pérdida de foco + un `--reset` omitido
+
+Al inicio de esta sesión, varios clics sobre el propio botón `CAJA` del
+despacho (el que abre esta pantalla, no las pestañas internas) dejaron de
+navegar pese a coordenadas ya usadas con éxito. Investigando con el
+protocolo revisado (ver
+[`como-esta-montado.md`](../como-esta-montado.md#el-foco-de-ventana-rara-vez-el-problema-real-pero-confirmado-que-sí-pasa-espontáneamente--sesión-4)),
+se confirmó que el escritorio de Windows había vuelto a aparecer de forma
+espontánea, y que los intentos de recuperación de foco fallaron porque
+varios clics de recuperación se hicieron **sin `--reset`** (moviendo el
+ratón de forma relativa a una posición ya desconocida, no a la coordenada
+absoluta calculada). Una vez repetido el clic sobre la entrada
+`PCFUTBOL 6.0` de la barra de tareas **con `--reset`**, el foco volvió al
+juego con normalidad, y el botón `CAJA` del despacho navegó **a la
+primera** con las mismas coordenadas de siempre. **No hay ninguna anomalía
+nueva en el botón de entrada a `CAJA`** — todo el episodio fue la misma
+familia de problema (pérdida de foco espontánea + omisión de `--reset` al
+recuperarlo), no un bug del juego.
+
+Reproduciendo el intento sobre las 4 pestañas alternativas
+(`INGRESOS`/`GASTOS`/`POR SEMANA`/`TEMPORADA`) en esta sesión, con
+cuidado de usar siempre `--reset`, **se obtuvo exactamente el mismo
+resultado que en sesiones 2 y 3**: la superposición `PCFUTBOL 6.0` cubre
+la fila de pestañas y el clic no cambia de vista, incluso probando varias
+`dy` distintas dentro del rectángulo visible del botón. Esto descarta
+definitivamente que el fallo de sesiones anteriores fuera por falta de
+`--reset` — es un problema distinto y ya bien caracterizado: la conclusión
+de sesión 3 (pestañas alternativas no implementadas/decorativas en esta
+build, o con un hotspot que cae siempre al manejador de la franja
+superior) se mantiene.
+
 ## Qué exige
 
 El desglose de ingresos/gastos en fuentes y categorías nombradas —no un

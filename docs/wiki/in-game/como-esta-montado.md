@@ -179,7 +179,7 @@ diálogo modal, volver al menú) pueden usar un área de contenido desplazada
 dentro de la misma resolución, así que conviene una foto de comprobación
 más que confiar ciegamente en la fórmula cuando el objetivo es pequeño.
 
-### El foco de ventana: rara vez el problema real
+### El foco de ventana: rara vez el problema real (pero confirmado que SÍ pasa espontáneamente — sesión 4)
 
 Durante la sesión se sospechó (y parcialmente confirmó) que los clics
 dejaban de registrarse por pérdida de foco real de Windows tras un Alt+Tab
@@ -189,6 +189,56 @@ nada pese a coordenadas correctas — pero la causa dominante de fallos en
 esta sesión fue el bug de calibración de arriba, no el foco. No asumir foco
 perdido sin antes descartar una coordenada mal calculada con el método del
 rectángulo de arrastre.
+
+**Sesión 4 (2026-08-21) confirma que la pérdida de foco ocurre de forma
+espontánea, sin que el agente haga nada que la provoque.** Varios clics
+seguidos sobre el botón `CAJA` del despacho (coordenadas ya usadas con
+éxito en sesiones anteriores, con la caja de ayuda contextual del asistente
+cambiando de texto en cada intento — es decir, el ratón sí estaba sobre el
+botón) no navegaron a ninguna pantalla nueva. Probar
+`bun run vm:key --game=pcf6 38 0f 8f b8` y hacer una captura reveló **el
+escritorio real de Windows 98** (resolución `800×600`, distinta de los
+`640×480` del juego en pantalla completa) con `PCFUTBOL 6.0` como única
+entrada en la barra de tareas — el juego seguía corriendo, pero ya no tenía
+el foco *antes* de que el agente pulsara Alt+Tab a propósito. Haciendo clic
+sobre esa entrada de la barra de tareas (recalculando `dx`/`dy` para la
+resolución de escritorio: mismo factor `px/2`, confirmado que la
+sensibilidad del ratón no depende de la resolución activa) devolvió el foco
+al juego con normalidad.
+
+**Implicación para las anomalías históricas de "diálogo que no responde"**
+(recap de Supercopa, `VOLVER` de Clasificación, ayuda de Historia, `GRABAR
+LIGA` — ver [`pcf6/07-despacho.md`](pcf6/07-despacho.md) "Pendiente"): en
+ninguno de esos episodios se comprobó con una captura si la ventana seguía
+en primer plano antes de concluir "no responde" y reiniciar la VM. Es
+plausible que al menos alguna de esas cuatro instancias fuera en realidad
+esto mismo — pérdida de foco espontánea, no un defecto del diálogo — y
+quedó mal diagnosticada porque el síntoma visual (el propio diálogo
+seguía dibujado en pantalla, ya que es la última imagen que quedó
+renderizada) es indistinguible de un diálogo genuinamente atascado sin
+comprobar explícitamente si hay un escritorio de Windows detrás.
+**Protocolo revisado para cualquier "no responde" futuro**: antes de
+concluir anomalía o reiniciar la VM, comprobar primero con
+`bun run vm:key --game=pcf6 38 0f 8f b8` + una captura si aparece el
+escritorio de Windows detrás — si aparece, el diálogo nunca estaba
+realmente atascado, solo sin foco.
+
+**Trampa confirmada al recuperar el foco (sesión 4): usar siempre `--reset`
+en el clic sobre la barra de tareas, y en el primer clic de vuelta al
+juego.** Al reproducir este mismo episodio con `VOLVER` (Resultados →
+Supercopa de Europa), varios clics de recuperación con `vm:click` **sin**
+`--reset` no hicieron nada — porque sin `--reset` el comando mueve el
+ratón *relativo a su posición actual*, no a la posición absoluta
+`dx`/`dy` calculada. Tras un Alt+Tab el ratón puede estar en cualquier
+sitio, así que un clic relativo aterriza en un punto impredecible (se
+confirmó con `vm:move --reset` + captura que el cursor realmente se
+salía de la pantalla). La solución fue trivial una vez identificada:
+repetir el clic con `--reset` explícito. Lección: **tras cualquier
+recuperación de foco (Alt+Tab o clic en la barra de tareas), el primer
+clic siguiente —y en general, cualquier clic cuya coordenada objetivo se
+calculó desde cero— debe llevar `--reset`**; omitirlo puede simular una
+anomalía de "botón atascado" que en realidad es solo desplazamiento
+acumulado del ratón.
 
 ## Qué queda abierto
 
