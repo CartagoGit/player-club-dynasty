@@ -9,6 +9,54 @@ abajo), se llega aquí: el **despacho**, la pantalla desde la que se juega
 toda la temporada. No es una pantalla más del flujo inicial — es el hub al
 que se vuelve constantemente durante toda la carrera.
 
+## Instrucciones permanentes para cualquier agente que continúe esta exploración
+
+Esto forma parte de la propuesta
+[`d00001`](../../../mcp-vertex/proposals/in-progress/d00001-play-through-liga-manager-and-liga-promanager-screen-by-screen-documenting-every-button.md).
+Léelas antes de tocar la VM:
+
+1. **Modo RESULTADO, nunca visionado.** Cualquier pantalla de configuración
+   de partido/simulación debe dejarse siempre en modo "simulación por
+   resultado" (checkbox `RESULTADO` marcado, `VISIONADO` desmarcado — son
+   mutuamente excluyentes). Nunca elegir "ver partido". Esto es una
+   instrucción explícita del usuario, no una preferencia de estilo — ver
+   la sección "El ciclo SEGUIR" más abajo para el flujo exacto ya
+   verificado.
+2. **Una carpeta de capturas por pantalla temática, nunca todo bajo
+   `liga-manager/`.** Cada pantalla propia (Resultados, Calendario,
+   Alineación, Táctica, Ver Rival, Caja, Decisiones, Estadio, Plantilla/
+   Fichar, Partido, etc.) tiene su propia subcarpeta en
+   `docs/wiki/in-game/pcf6/screenshots/<tema>/`. Solo lo que es
+   genuinamente del despacho/flujo de creación de partida va en
+   `liga-manager/`. Esta convención se corrigió a mitad de esta propuesta
+   tras feedback explícito del usuario — no revertirla.
+3. **Explorar cada pantalla en profundidad, no solo entrar y volver.**
+   Cada botón visible dentro de una pantalla (pestañas, sub-botones,
+   diálogos que abre) debe pulsarse y documentarse, no solo el botón del
+   despacho que lleva hasta ella. Si un sub-botón concreto no se ha
+   probado, decirlo explícitamente en la sección "Pendiente" de su fichero
+   — nunca omitirlo en silencio como si estuviera cubierto.
+4. **Registrar el progreso en el fichero de la pantalla correspondiente,
+   no solo aquí.** Este fichero (`07-despacho.md`) trackea el estado del
+   despacho y sus 12+4 botones de primer nivel; cada pantalla propia
+   (`13-resultados.md` … `21-plantilla-fichar.md`, etc.) trackea su propio
+   detalle interno en su propia sección "Pendiente". Antes de dar una
+   pantalla por completa, releer su "Pendiente" y tachar/actualizar lo que
+   ya se haya resuelto en la sesión actual.
+5. **Antes de intentar un botón "atascado" repetidamente, recalibrar
+   primero.** La inmensa mayoría de "no responde" en esta exploración
+   resultaron ser error de coordenada (crop+zoom de una captura ya tomada
+   para afinar el centro exacto del botón), no una anomalía real del
+   juego. Solo tras 2-3 recalibraciones distintas fallidas, más doble clic
+   y Enter/Espacio por scancode, se considera candidato a la anomalía real
+   de "diálogo que no responde" (ver "Pendiente" más abajo — ya van 4
+   instancias confirmadas).
+6. **Prioridad de la propuesta**: S1 (despacho + sub-pantallas, este
+   fichero y los que enlaza) primero; S2 (Liga Promanager) segundo; S3
+   (Historia, Goles de la Liga, Desafío América-Europa, Amistoso) último.
+   No saltar a S2/S3 mientras S1 tenga sub-botones sin probar con un
+   enfoque nuevo disponible.
+
 ![El despacho: hub de Liga Manager](screenshots/liga-manager/06-despacho.png)
 
 ```
@@ -69,33 +117,107 @@ que se vuelve constantemente durante toda la carrera.
 
 ## Confirmado navegable
 
+Los doce botones de la rejilla 2×4, más los cuatro de la barra inferior,
+están **todos confirmados navegables** tras la sesión de 2026-08-21 (segunda
+pasada, con un Real Madrid C.F./`dynasty` recién creado):
+
+- **RESULTADOS** → resultados por competición, ver
+  [`13-resultados.md`](13-resultados.md).
 - **CLASIFICACIÓN** → tabla de Liga completa, ver
   [`09-clasificacion.md`](09-clasificacion.md).
+- **CALENDARIO** → mes navegable + próximos partidos, ver
+  [`14-calendario.md`](14-calendario.md).
+- **ALINEACIÓN** → hub de plantilla con cinco sub-pantallas propias
+  (Entrenamiento, Lesionados, Estadísticas...), ver
+  [`15-alineacion.md`](15-alineacion.md).
+- **TÁCTICAS** → editor de formación + tácticas guardables, ver
+  [`16-tacticas.md`](16-tacticas.md).
+- **VER RIVAL** → scouting del próximo contrincante, ver
+  [`17-ver-rival.md`](17-ver-rival.md).
+- **FICHAR** → mercado de fichajes + cartera de seguimiento, ver
+  [`21-plantilla-fichar.md`](21-plantilla-fichar.md).
 - **EMPLEADOS** → plantilla de personal técnico y de club, ver
   [`08-personal-del-club.md`](08-personal-del-club.md).
+- **PLANTILLA** → gestión contractual de la plantilla propia, ver
+  [`21-plantilla-fichar.md`](21-plantilla-fichar.md).
+- **CAJA** → finanzas del club por semana y temporada, ver
+  [`18-caja.md`](18-caja.md).
+- **DECISIONES** → Junta Directiva, historial de manager, TV/merchandising,
+  ver [`19-decisiones.md`](19-decisiones.md).
+- **ESTADIO** → render 3D + estado de las obras, ver
+  [`20-estadio.md`](20-estadio.md).
+- **NOTICIAS** → panel superpuesto con pestañas FICHAJES/LESIONES/
+  SANCIONES por semana (ACTUAL/ANTERIOR), vacío al inicio de temporada.
+  Se cierra con el icono `X` de su esquina — **este `X` sí respondió al
+  primer clic**, sin la anomalía de los diálogos "OK" descritos abajo.
+- **SALIR** → abre un diálogo de confirmación *"¿Estás seguro de que deseas
+  abandonar la competición actual? Sí/No"*
+  (`screenshots/liga-manager/17-salir-confirmacion.png`). **Ambos botones
+  del diálogo responden con normalidad** (probado `No`, sin anomalía) — a
+  diferencia de otros diálogos modales de una sola respuesta documentados
+  más abajo.
+- **SEGUIR** → dispara el flujo completo de avance de jornada/partido, ver
+  "El ciclo SEGUIR: de despacho a despacho" más abajo.
 
-## Pendiente / con comportamiento raro
+## PLANTILLA y FICHAR: la anomalía anterior era de calibración, no de flujo
 
-- **PLANTILLA y FICHAR no navegaron** pese a hover confirmado sobre el botón
-  correcto (cursor visible encima, coordenada verificada). El mensaje del
-  asistente en ese momento decía algo como *"...no tendrás más remedio que
-  realizarlo antes de..."* — hipótesis: alguna acción (¿asignar dorsales?
-  ¿revisar la plantilla desde otro punto?) puede ser un prerrequisito
-  obligatorio antes de que esas pantallas se abran normalmente. No
-  descartada una simple coordenada aún mal calibrada — recalibrar con el
-  método del rectángulo de arrastre (`../como-esta-montado.md`) antes de
-  concluir que es un bloqueo real de flujo.
-- **RESULTADOS, CALENDARIO, ALINEACIÓN, TÁCTICAS, VER RIVAL, CAJA,
-  DECISIONES, ESTADIO, SALIR, GRABAR LIGA, NOTICIAS, SEGUIR** — no
-  probados todavía en esta sesión.
+La entrada previa de este fichero (sesiones anteriores) registraba que
+ambos botones "no navegaban pese a hover confirmado", con la hipótesis de
+un prerrequisito de juego bloqueante. **Esta sesión lo descarta**: con las
+coordenadas de la fila inferior recalibradas (más abajo de lo que sugería
+el cálculo geométrico ingenuo a partir del wireframe de este fichero — unos
+30-40 px más abajo de cada fila), ambos navegan con normalidad a la primera.
+Ver el detalle de ambas pantallas en
+[`21-plantilla-fichar.md`](21-plantilla-fichar.md).
+
+## El ciclo SEGUIR: de despacho a despacho, siempre en modo RESULTADO
+
+Confirmado el ciclo completo de avance de un partido, **siempre forzando
+`RESULTADO` en vez de `VISIONADO`** en la pantalla de configuración (per
+instrucción explícita de esta exploración — nunca "ver partido"):
+
+1. **SEGUIR** desde el despacho → pantalla `OPCIONES DE CONFIGURACIÓN`
+   (`screenshots/partido/01-opciones-configuracion.png`): checkboxes
+   `RESULTADO`/`RESUMEN`/`HIGHLIGHTS`/`VISIONADO`/`INTERACTIVO` (mutuamente
+   excluyentes — marcar uno desmarca los demás), resolución, calidad
+   gráfica, cámara, sonido y duración simulada (4/8/12/20 minutos). Marcar
+   `RESULTADO` y pulsar `SEGUIR` (abajo a la derecha del panel).
+2. **Pantalla estática de estadio + rótulo de porteros**
+   (`screenshots/partido/02-previa-estadio.png`) — **no avanza sola ni con
+   más espera**; requiere una pulsación de **barra espaciadora** (scancode
+   `39`/`b9`) para continuar. Tras el espacio muestra un segundo cuadro con
+   las dos alineaciones completas antes de seguir.
+3. **`FINAL PRIMERA PARTE`**
+   (`screenshots/partido/03-final-primera-parte.png`): marcador,
+   posesión %, tarjetas y goles por equipo, datos de asistencia/
+   recaudación del estadio, botón `SEGUIR`.
+4. **`FINAL DE PARTIDO`**
+   (`screenshots/partido/04-final-de-partido.png`): mismo panel más
+   `JUGADOR DEL PARTIDO`, botón `SEGUIR`.
+5. `SEGUIR` de nuevo devuelve directamente **al despacho**, con la fecha
+   avanzada al día del siguiente partido y la cabecera con los equipos
+   intercambiados si tocó jugar como visitante/local según corresponda.
+
+En ningún punto de este ciclo se mostró el pop-up de recap de Supercopa que
+sí bloqueó sesiones anteriores (ver más abajo) — no está claro si depende
+de si el equipo elegido tenía o no plaza real en la competición
+(ver "Orden real completo" más abajo), de si ya se completó una ronda, o si
+simplemente no siempre aparece.
+
+## Pendiente
+
 - **La pantalla de pretemporada** (calendario de amistosos, mapa
   Europa/Sudamérica, selección de rival por escudo con autocompletado de
-  estadio) apareció entre "Equipos en competiciones"
-  (`screenshots/liga-manager/04-pretemporada.png`) y este despacho, pero no
-  tiene aún ficha propia — el patrón de interacción "elegir de una rejilla →
-  se autocompleta y avanza al siguiente slot" ya se documentó en
-  `05-liga-manager-nueva-partida.md` (incorporarlo también aquí en una
-  próxima pasada).
+  estadio) sigue sin ficha propia — ver captura de referencia con Real
+  Madrid en `screenshots/liga-manager/16-pretemporada-real-madrid.png`. El
+  patrón de interacción "elegir de una rejilla → se autocompleta y avanza
+  al siguiente slot" ya se documentó en `05-liga-manager-nueva-partida.md`
+  (incorporarlo también aquí en una próxima pasada). El botón `NO JUGAR`
+  (esquina superior derecha del bloque España) permite saltar las cinco
+  fechas de amistosos sin asignar rival, confirmado en esta sesión.
+- **`VISIONAR` de CALENDARIO no probado** deliberadamente, por riesgo de
+  disparar un modo de visionado de partido — ver
+  [`14-calendario.md`](14-calendario.md).
 - **Orden real completo confirmado en una segunda pasada (2026-08-21,
   segundo reinicio de VM)**: nombre y equipo → personalización → pretemporada
   → **"Equipos en Competiciones"** (una pantalla de solo lectura, no un
@@ -137,6 +259,48 @@ que se vuelve constantemente durante toda la carrera.
   descartado del todo — solo la hipótesis con más apoyo tras agotar lo
   demás. Se salió de este punto reiniciando la VM (`poweroff` + `vm:start`)
   para poder seguir explorando, sin resolver la causa real.
+- **Contraejemplo parcial a la hipótesis Win32, confirmado en esta sesión
+  (2026-08-21)**: el `VOLVER` de Clasificación, listado como stuck en
+  `09-clasificacion.md`, **respondió con normalidad al primer clic** en
+  esta pasada — mismo estilo visual, mismo flujo de llegada, sin ningún
+  cambio de método de entrada. La anomalía no es determinista por pantalla:
+  puede depender de un estado previo concreto (qué se pulsó justo antes,
+  cuánto tiempo lleva la VM arrancada) más que de qué diálogo es. No se
+  descarta la hipótesis Win32 pero se rebaja su fuerza explicativa.
+- **Cuarta instancia del mismo síntoma, nueva en esta sesión: el diálogo de
+  `GRABAR LIGA`.** Al pulsar `GRABAR LIGA` se abre un selector de slots
+  (columnas LIGA/JUGADOR con partidas guardadas de sesiones anteriores,
+  campo de texto, botones `GRABAR`/`CANCELAR`). **`CANCELAR` no respondió a
+  ningún clic** (varias coordenadas recalibradas con crop de zoom, todas
+  con el cursor confirmado sobre el texto del botón). `GRABAR` sí mostró
+  un cambio visual (borde rojo de "foco/hover" al pasar el cursor) pero
+  **tampoco ejecutó la acción de guardado tras un segundo clic** — se
+  quedó con el mismo borde, sin cerrar el diálogo ni crear una entrada
+  nueva en la lista de partidas. Tampoco respondió Escape (`01`/`81`).
+  Se salió reiniciando la VM (`poweroff` + `vm:start`), como en los casos
+  anteriores — ver `screenshots/liga-manager/15-grabar-liga-stuck.png`.
+  Refuerza que el patrón de "modal con botón(es) rectangular(es) que no
+  ejecuta la acción" no está limitado a un único diálogo fijo del juego:
+  ya son cuatro instancias en tres pantallas distintas (recap de Supercopa,
+  VOLVER de Clasificación —a veces—, ayuda de Historia, y ahora
+  GRABAR LIGA), lo que apunta más a una condición de estado/tiempo
+  compartida que a un diálogo concreto mal soportado.
+- **Sesión 2 (2026-08-21, misma partida continuada tras la primera pasada,
+  ahora en Sábado 23 Agosto 1997, Supercopa vuelta)**: se completó una
+  pasada de profundidad sobre TÁCTICAS, ESTADIO y FICHAR/PLANTILLA — ver
+  el detalle en [`16-tacticas.md`](16-tacticas.md),
+  [`20-estadio.md`](20-estadio.md) y
+  [`21-plantilla-fichar.md`](21-plantilla-fichar.md). Hallazgo relevante:
+  el `OK` de `TÁCTICA DE EQUIPO` pareció al principio una quinta instancia
+  de esta misma anomalía (3 intentos fallidos, incluido Enter) pero se
+  resolvió recalibrando el hitbox — **no cuenta como quinta instancia**,
+  el contador de anomalías reales de diálogo-atascado sigue en 4.
+- **Nuevo hallazgo distinto de la anomalía de diálogo**: en `CAJA`, las
+  pestañas `INGRESOS`/`GASTOS`/`POR SEMANA`/`TEMPORADA` disparan de forma
+  consistente (tras varios reintentos recalibrados) una superposición
+  ambiental `PCFUTBOL 6.0` en vez de cambiar de vista — ver el detalle en
+  [`18-caja.md`](18-caja.md). No se ha resuelto si es un bug reproducible
+  del juego o solo un artefacto de esta build/resolución de captura.
 
 ## Qué exige
 
