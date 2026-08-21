@@ -295,6 +295,31 @@ simplemente no siempre aparece.
   de esta misma anomalía (3 intentos fallidos, incluido Enter) pero se
   resolvió recalibrando el hitbox — **no cuenta como quinta instancia**,
   el contador de anomalías reales de diálogo-atascado sigue en 4.
+- **Segundo contraejemplo a la anomalía del recap de Supercopa (sesión 3,
+  2026-08-21, flujo de Liga Promanager)**: el mismo pop-up "Campeón
+  Supercopa de España" con botón `OK` (idéntico estilo visual, mismo punto
+  del flujo tras "Equipos en Competiciones") **respondió con normalidad al
+  primer clic** al recorrer el flujo equivalente de Liga Promanager (ver
+  [`10-liga-promanager-ofertas.md`](10-liga-promanager-ofertas.md)). Junto
+  con el contraejemplo ya registrado del `VOLVER` de Clasificación, esto
+  refuerza que la anomalía **no es determinista ni ligada a un diálogo
+  fijo** — de los 4 diálogos que alguna vez se quedaron atascados
+  (Supercopa, Clasificación VOLVER, ayuda de Historia, GRABAR LIGA), dos ya
+  tienen al menos una repetición donde respondieron con normalidad. La
+  hipótesis Win32 pierde fuerza todavía más; parece más probable que sea
+  una condición de estado/tiempo intermitente (p. ej. cuántos frames lleva
+  el modal abierto antes del primer clic) que un problema fijo de
+  implementación de ese control concreto.
+- **Tercer contraejemplo (sesión 3, mismo día, flujo de Desafío
+  América-Europa)**: el pop-up de cierre "Campeón Desafío América-Europa"
+  (mismo estilo visual exacto) también **respondió con normalidad al
+  primer clic** — ver
+  [`11-desafio-america-europa.md`](11-desafio-america-europa.md). Van ya
+  tres repeticiones de este estilo de diálogo funcionando sin problema en
+  esta misma sesión, frente a las cuatro instancias históricas donde se
+  quedó atascado. La anomalía sigue sin descartarse del todo pero cada vez
+  parece más una condición de estado/tiempo puntual que un defecto fijo de
+  un tipo de control.
 - **Nuevo hallazgo distinto de la anomalía de diálogo**: en `CAJA`, las
   pestañas `INGRESOS`/`GASTOS`/`POR SEMANA`/`TEMPORADA` disparan de forma
   consistente (tras varios reintentos recalibrados) una superposición

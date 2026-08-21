@@ -80,6 +80,29 @@ Promanager no.** Lleva a una pantalla completamente distinta:
   título con el nombre. Fijar la clave es lo que "activa" el perfil de
   mánager y desbloquea las ofertas, no un mero requisito de seguridad
   cosmético.
+
+### Causa raíz confirmada (sesión 3, 2026-08-21): `PASSWORD` solo responde si ya hay un nombre de mánager escrito
+
+En una sesión posterior se reprodujo un bloqueo completo del clic sobre
+`PASSWORD` — más de 10 intentos con recalibración, doble clic, `--hold-ms`
+más largo (400ms) e incluso clic derecho, todos sin abrir el diálogo. La
+causa: **al entrar en esta pantalla, el foco de teclado ya está puesto por
+defecto en el campo de nombre del mánager** (una barra de texto negra junto
+a `MANAGER 1`, con un cursor parpadeante apenas visible) — no en la tabla.
+Si ese campo sigue vacío, `PASSWORD` en la columna EQUIPO **no es
+clicable todavía**: es un placeholder inerte hasta que existe un nombre de
+mánager. Se confirmó tecleando directamente (sin clicar antes, el foco ya
+estaba ahí) y el nombre apareció en el campo; **solo entonces** el clic
+sobre `PASSWORD` abrió el diálogo `CLAVE DE ACCESO`/`CONFIRMA CLAVE` con
+normalidad, en el primer intento. Nótese que `Tab` **no** mueve el foco
+entre `CLAVE DE ACCESO` y `CONFIRMA CLAVE` dentro de ese diálogo — hay que
+clicar cada campo por separado (se probó y confirmó: Tab reescribe en el
+mismo campo en vez de saltar de campo).
+
+Secuencia mínima reproducible: entrar en "SELECCIÓN DE OFERTAS" → teclear
+un nombre directamente (sin clicar nada primero) → Enter → clicar
+`PASSWORD` → clicar dentro de `CLAVE DE ACCESO`, teclear clave → clicar
+dentro de `CONFIRMA CLAVE`, teclear la misma clave → clicar `OK`.
 - **Este OK sí respondió al primer clic**, con el mismo estilo visual
   (caja blanca con título azul, botón rectangular) que los dos diálogos que
   no responden a ningún método de entrada en Liga Manager (VOLVER en
@@ -104,21 +127,66 @@ temporada explícito por oferta ("No descender"), no solo "juega con este
 equipo" — el objetivo es parte del contrato, y probablemente condiciona
 si el mánager es despedido o asciende de prestigio al final de temporada.
 
+## Selección de oferta: confirmada (sesión 3, 2026-08-21)
+
+![Ofertas para el mánager, con la fila 1 ya asignada](screenshots/promanager/03-ofertas-para-manager.png)
+
+Clicar directamente sobre el nombre del equipo en una fila de la tabla
+`OFERTAS PARA <nombre>` (probado con "Playas Jandía", fila 1) sí funciona:
+la fila 1 de la tabla superior de mánagers se actualiza al instante con
+`EQUIPO=Playas Jandía`, `DIVISIÓN=2ªB`, `OBJETIVO=No descender`, y el
+contador `MANAGER` pasa de `1` a `2` (crea automáticamente un segundo slot
+de mánager vacío, listo para un segundo perfil si se quisiera). El botón
+`SEGUIR` pasa de apagado a su color activo normal en cuanto hay una oferta
+asignada.
+
+**Cuidado con el atajo de teclado `S` para `SEGUIR` en este punto
+concreto**: si el foco de teclado sigue en el campo de nombre del segundo
+mánager (vacío, recién creado), pulsar `S` **teclea la letra dentro de ese
+campo** en vez de activar `SEGUIR` — no navega. Hay que pulsar `SEGUIR` con
+el ratón cuando hay un campo de texto con foco activo; el atajo de teclado
+solo es fiable cuando no hay ningún campo editable enfocado.
+
+## Qué pasa tras aceptar una oferta: confirmado, mismo flujo que Liga Manager
+
+Tras `SEGUIR` desde "SELECCIÓN DE OFERTAS" con una oferta ya asignada, el
+flujo es **idéntico en estructura** al de Liga Manager
+([`07-despacho.md`](07-despacho.md) "Orden real completo"), solo que
+saltándose la pantalla libre de "elige equipo" (aquí el equipo ya viene
+fijado por la oferta aceptada):
+
+1. **`Pretemporada para <equipo>`** (título con el nombre del equipo
+   aceptado, aquí "Pretemporada para Playas Jandía") — mismo componente de
+   calendario de amistosos + mapa Europa/Sudamérica + rejilla de escudos de
+   España que en Liga Manager.
+
+   ![Pretemporada para Playas Jandía](screenshots/promanager/04-pretemporada.png)
+
+2. **`Equipos en Competiciones`** — misma pantalla de solo lectura con las
+   seis competiciones europeas y sus participantes reales de la 97-98.
+
+   ![Equipos en Competiciones](screenshots/promanager/05-equipos-en-competiciones.png)
+
+3. **Pop-up de recap de temporada anterior** ("Campeón Supercopa de
+   España", escudo+nombre+entrenador de campeón/subcampeón, botón `OK`) —
+
+   ![Recap Campeón Supercopa de España](screenshots/promanager/06-supercopa-recap.png)
+
+   **en esta sesión el `OK` respondió con normalidad al primer clic**, sin
+   ningún síntoma de la anomalía de diálogo-atascado documentada en
+   `07-despacho.md`. Es el **segundo contraejemplo** (tras el `VOLVER` de
+   Clasificación) de que este diálogo concreto no está atascado de forma
+   determinista — ver la nota añadida en `07-despacho.md`.
+4. **Despacho propio del Promanager** — ver
+   [`22-promanager-despacho.md`](22-promanager-despacho.md) para la
+   comparación completa contra el despacho de Liga Manager.
+
 ## Pendiente
 
-- **No se logró seleccionar una fila de oferta concreta** — SEGUIR
-  permanece sin efecto con las diez ofertas visibles pero ninguna
-  visiblemente resaltada. Se probó clicar el nombre del equipo, la columna
-  numérica y el icono `▷` de cada fila sin éxito visible. Puede que la
-  selección real esté en una zona de la fila aún no probada (p. ej. la
-  celda OBJETIVO, o requiera doble clic exacto sobre el triángulo) —
-  recalibrar con el método de arrastre en la próxima pasada.
-  Nótese que ninguna disparó el mismo síntoma de "no responde a nada" — no
-  se ha llegado a agotar los métodos de entrada aquí como sí se hizo con
-  los otros dos diálogos, así que no se puede aún clasificar esto como la
-  misma anomalía.
-- Qué pasa tras aceptar una oferta (¿otra pantalla de pretemporada? ¿directo
-  al despacho?) no explorado todavía.
-- Comparar el despacho de Promanager con el de Liga Manager una vez se
-  llegue — ¿mismo hub, o hay diferencias por jugar "contratado" en vez de
-  "dueño"?
+- Solo se probó con una oferta de la lista (fila 1, "Playas Jandía"); no se
+  ha comprobado si aceptar una oferta distinta (p. ej. fila 10) cambia algo
+  del flujo posterior más allá del nombre del equipo.
+- No se ha explorado qué ofrece el segundo slot de mánager que se crea
+  automáticamente al aceptar la primera oferta (¿permite gestionar dos
+  carreras de mánager en paralelo dentro de la misma partida?).
+- No se ha probado `CARGAR LIGA` ni `BORRAR` en esta pantalla.

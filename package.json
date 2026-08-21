@@ -48,6 +48,7 @@
 		"vm:screenshot": "bun tools/scripts/reference/vm.script.ts screenshot",
 		"vm:move": "bun tools/scripts/reference/vm.script.ts move",
 		"vm:click": "bun tools/scripts/reference/vm.script.ts click",
+		"vm:drag": "bun tools/scripts/reference/vm.script.ts drag",
 		"vm:key": "bun tools/scripts/reference/vm.script.ts key",
 		"game:explore": "bun tools/scripts/game/explore.script.ts",
 		"game:resolve": "bun tools/scripts/game/doctor.script.ts --resolve",

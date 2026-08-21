@@ -35,7 +35,9 @@ param(
     [switch]$Click,
     [switch]$RightClick,
     [int]$ClickDelayMs = 150,
-    [int]$HoldMs = 120
+    [int]$HoldMs = 120,
+    [Nullable[int]]$DragToDx = $null,
+    [Nullable[int]]$DragToDy = $null
 )
 
 $ErrorActionPreference = 'Stop'
@@ -81,6 +83,19 @@ try {
     if ($RightClick) {
         Start-Sleep -Milliseconds $ClickDelayMs
         $mouse.PutMouseEvent(0, 0, 0, 0, 2)
+        Start-Sleep -Milliseconds $HoldMs
+        $mouse.PutMouseEvent(0, 0, 0, 0, 0)
+    }
+
+    if ($null -ne $DragToDx -and $null -ne $DragToDy) {
+        # Press at the current (post-move) position, walk to the target
+        # with the button held (buttonState=1 on every packet along the
+        # way — this is what makes it a drag rather than a teleport), then
+        # release. Same packet-safe step size as any other move.
+        Start-Sleep -Milliseconds $ClickDelayMs
+        $mouse.PutMouseEvent(0, 0, 0, 0, 1)
+        Start-Sleep -Milliseconds 80
+        Move-Walked -totalX $DragToDx -totalY $DragToDy -stepSize 3 -buttonState 1
         Start-Sleep -Milliseconds $HoldMs
         $mouse.PutMouseEvent(0, 0, 0, 0, 0)
     }

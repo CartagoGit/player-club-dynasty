@@ -118,6 +118,8 @@ export const moveMouse = async (
 	if (action.click) args.push('-Click');
 	if (action.rightClick) args.push('-RightClick');
 	if (action.holdMs) args.push('-HoldMs', String(action.holdMs));
+	if (action.dragToDx !== undefined) args.push('-DragToDx', String(action.dragToDx));
+	if (action.dragToDy !== undefined) args.push('-DragToDy', String(action.dragToDy));
 	const result = await run(psPath, { args, timeoutMs: 20_000 });
 	return result.exitCode === 0;
 };

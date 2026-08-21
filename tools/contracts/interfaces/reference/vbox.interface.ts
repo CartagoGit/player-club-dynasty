@@ -28,4 +28,7 @@ export interface IVBoxMouseAction {
 	readonly click?: boolean;
 	readonly rightClick?: boolean;
 	readonly holdMs?: number;
+	/** Press the left button at (dx,dy), drag to (dragToDx,dragToDy), then release. */
+	readonly dragToDx?: number;
+	readonly dragToDy?: number;
 }

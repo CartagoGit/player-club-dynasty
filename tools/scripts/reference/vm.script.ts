@@ -20,6 +20,8 @@
  *   bun run vm:click  --game=pcf6 --dx 9 --dy -36             # relative move + click
  *   bun run vm:click  --game=pcf6 --dx 9 --dy -36 --right      # right-click instead
  *   bun run vm:click  --game=pcf6 --dx 9 --dy -36 --hold-ms 500 # longer button-down hold
+ *   bun run vm:drag   --game=pcf6 --reset --dx 100 --dy 100 --to-dx 150 --to-dy 120
+ *                                                             # press at (dx,dy), drag to (to-dx,to-dy), release
  *   bun run vm:key    --game=pcf6 38 0f 8f b8                 # raw scancodes (Alt+Tab)
  *
  * Mouse/keyboard injection goes through VirtualBox's COM `IMouse` API and
@@ -190,6 +192,42 @@ const main = async (): Promise<number> => {
 			return 0;
 		}
 
+		case 'drag': {
+			const psPath = locatePowerShell();
+			if (psPath === null) {
+				process.stderr.write('vm: powershell.exe not found on the Windows host.\n');
+				return 3;
+			}
+			const dx = Number(flagValue(argv, '--dx') ?? '0');
+			const dy = Number(flagValue(argv, '--dy') ?? '0');
+			const toDx = flagValue(argv, '--to-dx');
+			const toDy = flagValue(argv, '--to-dy');
+			if (toDx === null || toDy === null) {
+				process.stderr.write('vm: usage: bun run vm:drag --game=<id> --dx N --dy N --to-dx N --to-dy N [--reset]\n');
+				return 2;
+			}
+			const resetCorner = argv.includes('--reset');
+			const holdMsArg = flagValue(argv, '--hold-ms');
+			const holdMs = holdMsArg === null ? undefined : Number(holdMsArg);
+			const scriptWindowsPath = await toWindowsPath(MOUSE_SCRIPT_PATH);
+			const ok = await moveMouse(psPath, scriptWindowsPath, vmName, {
+				resetCorner,
+				dx,
+				dy,
+				dragToDx: Number(toDx) - dx,
+				dragToDy: Number(toDy) - dy,
+				holdMs,
+			});
+			if (!ok) {
+				process.stderr.write(`vm: drag failed against ${vmName}.\n`);
+				return 1;
+			}
+			process.stdout.write(
+				`vm: drag reset=${resetCorner} from=(${dx},${dy}) to=(${toDx},${toDy}) on ${vmName}\n`,
+			);
+			return 0;
+		}
+
 		case 'key': {
 			const scancodes = argv.slice(1).filter((entry) => !entry.startsWith('--'));
 			if (scancodes.length === 0) {
@@ -207,8 +245,8 @@ const main = async (): Promise<number> => {
 
 		default:
 			process.stderr.write(
-				'vm: usage: bun run vm:<start|stop|poweroff|status|screenshot|list|move|click|key> --game=<id> ' +
-					'[--visible] [--out <path>] [--dx N --dy N] [--reset] [--right] [--hold-ms N]\n',
+				'vm: usage: bun run vm:<start|stop|poweroff|status|screenshot|list|move|click|drag|key> --game=<id> ' +
+					'[--visible] [--out <path>] [--dx N --dy N] [--to-dx N --to-dy N] [--reset] [--right] [--hold-ms N]\n',
 			);
 			return 2;
 	}

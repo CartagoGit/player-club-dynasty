@@ -63,12 +63,91 @@ izquierda=disponibles / derecha=elegidos, más filtros de posición y orden,
 es la referencia directa a replicar — no hace falta una pantalla nueva por
 selección, es una única lista con estado de "ya fichado".
 
+## TERMINAR vs SEGUIR: confirmado (sesión 3, 2026-08-21)
+
+Se fichó manualmente un once completo para Europa (1 portero, 4 defensas,
+4 medios, 2 delanteros — 11 jugadores) y `SEGUIR` **no hizo nada**: la
+pantalla no avanzó. La hipótesis "SEGUIR exige un mínimo de jugadores por
+posición" no explica esto por sí sola — probablemente exige más de 11
+(una plantilla completa con reservas, no solo un once).
+
+![Once titular fichado a mano: 11 jugadores para Europa](screenshots/desafio-america-europa/04-once-titular-manual.png)
+
+**`TERMINAR` no es "dar por cerrado el draft y salir" — es "autocompletar
+la plantilla con los mejores disponibles".** Al pulsarlo con 11 jugadores
+ya fichados, el panel derecho **ganó 5 jugadores más al instante** (Peruzzi,
+Strunz, Beckham, Guardiola, McManaman), sin cerrar la pantalla:
+
+![TERMINAR autocompleta la plantilla a 16+ jugadores](screenshots/desafio-america-europa/05-terminar-autocompleta.png)
+
+Tras esto, `SEGUIR` **sí avanzó** — a la pantalla de draft del **`JUGADOR
+2` (`Ordenador`/CPU)**, con el continente automáticamente asignado al que
+**no** eligió el jugador humano (`América`, ya que Europa se había
+elegido antes) y el pool de jugadores cambiado a futbolistas
+sudamericanos reales de la época. El panel derecho del `JUGADOR 2`
+empieza vacío — la CPU no draftea sola con solo `SEGUIR`.
+
+Pulsando `TERMINAR` en la pantalla del `JUGADOR 2` (CPU), el motor
+**autocompletó instantáneamente una plantilla completa para la CPU** con
+estrellas reales sudamericanas de máxima valoración (Chilavert 87, Roberto
+Carlos 86, Verón 84, Rivaldo 88, Ronaldo 95, Batistuta 85...):
+
+![TERMINAR para la CPU: plantilla de estrellas sudamericanas](screenshots/desafio-america-europa/06-cpu-terminar-dreamteam.png)
+
+`SEGUIR` desde ahí llevó a un **mini-hub de partido**, con la misma
+estructura reducida ya vista en
+[`24-partido-amistoso.md`](24-partido-amistoso.md) (`ALINEACIÓN`/
+`TÁCTICAS`/`VER RIVAL` + `SALIR`/`SEGUIR`), cabecera `Sel. América
+(Ordenador/CPU)` vs. `Sel. Europa (Jugador 1)`, fecha `Domingo 24 Agosto
+1997`:
+
+![Hub de partido tras completar ambos drafts](screenshots/desafio-america-europa/07-hub-tras-drafts.png)
+
+**Conclusión**: `TERMINAR` es el atajo de "que el juego complete el
+resto del equipo automáticamente con los mejores jugadores disponibles del
+pool restante" — útil tanto para el jugador humano (rellenar suplentes sin
+draftear uno a uno) como, aparentemente, obligatorio para que la CPU tenga
+plantilla en absoluto. `SEGUIR` solo avanza de pantalla cuando la
+plantilla actual ya se considera "completa" (umbral exacto no confirmado,
+pero 11 titulares sin resto no basta).
+
+## El partido en sí: un "Final" a un solo choque, con prórroga y penaltis
+
+![Final de Partido: Sel. América 0-0 Sel. Europa, penaltis](screenshots/desafio-america-europa/08-final-de-partido.png)
+
+Completando el ciclo desde el mini-hub (mismo patrón `OPCIONES DE
+CONFIGURACIÓN` con `RESULTADO` ya marcado por defecto, respetado sin
+tocar nada — instrucción permanente de esta exploración): la cabecera
+identifica el partido como **`DAE` / `Final`** (no una liga con jornadas).
+El marcador terminó `0-0` tras un partido con una tarjeta en el minuto
+`120` (indicio de prórroga jugada, no solo 90 minutos), resuelto por
+**"Sel. América gana por penalties"** — confirma que `Desafío
+América-Europa` es un formato de **eliminatoria única a partido final**,
+con prórroga y tanda de penaltis si hace falta, distinto de la liga
+regular de Liga Manager/Promanager.
+
+![Campeón Desafío América-Europa](screenshots/desafio-america-europa/09-campeon-desafio.png)
+
+`SEGUIR` desde `FINAL DE PARTIDO` abre un pop-up de cierre **"CAMPEÓN
+DESAFÍO AMÉRICA-EUROPA"** (mismo estilo visual "caja azul/blanca con
+escudo+nombre+entrenador de campeón/subcampeón, botón OK" que el recap de
+Supercopa documentado en [`07-despacho.md`](07-despacho.md)). **Este `OK`
+respondió con normalidad al primer clic** y devolvió directamente al
+**menú principal** (no hay ciclo de temporada que continuar, es un modo de
+un solo torneo). Es el **tercer contraejemplo** documentado de la anomalía
+de "diálogo que no responde" — junto con el `VOLVER` de Clasificación y el
+recap de Supercopa en el flujo de Promanager (ver `07-despacho.md`), sigue
+sin encontrarse un diálogo de este estilo que falle de forma determinista
+en más de una sesión.
+
 ## Pendiente
 
-- Qué pasa al pulsar SEGUIR sin completar un once (¿bloquea? ¿avisa?) — no
-  probado.
-- TERMINAR vs SEGUIR — diferencia de comportamiento no confirmada.
-- El propio partido de exhibición (¿simulado o jugable?) — no alcanzado
-  todavía.
-- Repetir el mismo flujo eligiendo América, para comparar el pool de
-  jugadores disponible (sudamericanos reales de la época, se asume).
+- El umbral exacto de jugadores que activa `SEGUIR` sin pasar por
+  `TERMINAR` no se ha determinado (se sabe que 11 no basta; no se probó
+  fichar manualmente 16+ para ver si `SEGUIR` se activa solo sin usar
+  `TERMINAR`).
+- `ALINEACIÓN`/`TÁCTICAS`/`VER RIVAL` del mini-hub no se probaron en
+  profundidad (se asume que son los mismos componentes ya documentados en
+  el despacho, pero no confirmado explícitamente en este modo).
+- Repetir el mismo flujo eligiendo América como `JUGADOR 1` (en vez de
+  CPU), para comparar el pool de jugadores disponible desde ese lado.
