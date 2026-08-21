@@ -286,20 +286,100 @@ para PC Dynasty debería reproducir esa asimetría de validación en vez de
 asumir una única regla de "mínimo de criterios" para todas las búsquedas
 de la saga.
 
+## OFERTAS: el fichaje de Popov, resuelto — rechazo del propio jugador (sesión 7, 2026-08-22)
+
+`[jugado]` 2026-08-22. Reabriendo `ESTADO OFERTAS` (tras corregir la
+alineación y avanzar una jornada con `SEGUIR`, ver más abajo), la
+negociación de Popov ya no muestra el último mensaje de la sesión 5
+(la oferta de 1.550 millones al club): en su lugar aparece un mensaje
+nuevo y definitivo, **"(21-09-1997) Popov está contento en su club
+actual y no desea abandonarlo."**
+
+![Estado de las Ofertas con el rechazo definitivo de Popov](screenshots/plantilla-fichar/s7-01-popov-rejected.png)
+
+Es decir: **el fichaje se cierra en rechazo, pero por parte del propio
+jugador**, no del club vendedor — pese a que S.D. Compostela sí había
+mostrado alguna disposición a negociar la cantidad ofrecida (ver el
+mensaje de sesión 5, *"Estamos dispuestos a negociar el traspaso..."*),
+el jugador decide no salir de su club actual independientemente de la
+cantidad ofrecida a la entidad. Esto confirma y refina el hallazgo de
+diseño ya documentado: la negociación con el jugador (ficha, cláusula,
+años) y la negociación con el club (cantidad) son procesos separados
+de verdad, hasta el punto de que **cualquiera de los dos lados puede
+vetar el fichaje por su cuenta**, no solo el club. `Popov` sigue sin
+aparecer en `GESTIÓN DE LA PLANTILLA` — confirmado que la transferencia
+no se completó.
+
+## ALINEACIÓN: el aviso "La alineación no es correcta" — causa confirmada y corrección de un solo clic (sesión 7, 2026-08-22)
+
+`[jugado]` 2026-08-22. El bloqueo de `SEGUIR` de la sesión 5 (jugador
+sancionado en la alineación) se investigó directamente desde
+`ALINEACIÓN` (fuera de `FICHAR`, ver [`15-alineacion.md`](15-alineacion.md)):
+**Kily González aparecía en el once titular con una tarjeta roja y el
+indicador `1 PARTIDO`** (sanción de un partido), confirmando la
+sospecha de la sesión 5.
+
+![Kily González seleccionado, sancionado 1 partido, en el once titular](screenshots/plantilla-fichar/s7-02-kily-suspended-selected.png)
+
+**La corrección resultó ser un mecanismo nuevo, no documentado hasta
+ahora**: seleccionar primero al titular sancionado (clic sobre su fila)
+y **clicar después sobre un jugador de la lista `JUGADORES CONVOCADOS`
+(el banquillo) lo intercambia directamente con el titular
+seleccionado**, sin arrastre ni diálogo de confirmación — un clic
+sobre Aragón (banquillo, `MEDIO CENTRO`) lo colocó de inmediato en el
+puesto de Kily González, y Kily bajó a `JUGADORES CONVOCADOS`:
+
+![Aragón ya en el once titular tras el intercambio de un clic](screenshots/plantilla-fichar/s7-03-aragon-swapped-in.png)
+
+Con la alineación corregida, `SEGUIR` (probado con el atajo de teclado
+`S`, sin `Alt`) avanzó con normalidad — simulado en modo `RESULTADO`
+(nunca `VISIONADO`, según instrucción del usuario): el partido siguiente
+(Mérida C.P., visitante para R. Zaragoza) se resolvió con dos pantallas
+de resumen (`FINAL PRIMERA PARTE` y `FINAL DE PARTIDO`, 1-0 para
+Mérida) sin ningún visionado interactivo, coherente con lo ya
+documentado en sesión 4. Esto es lo que permitió reabrir `ESTADO
+OFERTAS` en la jornada siguiente y ver, por fin, la respuesta a Popov.
+
+**Nota importante sobre el mecanismo de intercambio**: en un segundo
+intento (jornada 4, un nuevo sancionado — Gilmar, tarjeta roja tras el
+partido recién jugado) **clicar directamente sobre un jugador del
+banquillo sin seleccionar antes al titular a sustituir NO produjo
+intercambio alguno** — solo abrió su ficha de atributos, igual que
+cualquier otro clic de selección. El intercambio de un clic **exige
+haber seleccionado primero al titular** cuya fila se va a liberar; el
+segundo clic (sobre el banquillo) es el que dispara el intercambio.
+Repitiendo la secuencia completa (clic en Gilmar → clic en Belsué,
+`LATERAL DER.`/DEF) funcionó igual de bien que con Kily/Aragón,
+confirmando el patrón: **seleccionar titular, luego clicar suplente**.
+
+## Qué exige
+
+Que el motor permita vetar un fichaje **desde cualquiera de los dos
+lados de la negociación** — el club (cantidad) o el propio jugador
+(condiciones personales), de forma independiente y con su propio
+mensaje de resolución fechado — es el matiz de diseño más importante
+de este cierre: un modelo de mercado de PC Dynasty no debería tratar
+"la oferta fue aceptada/rechazada" como un único booleano, sino como
+el resultado de dos aprobaciones independientes que pueden fallar por
+separado. Por otro lado, que el intercambio titular↔suplente en
+`ALINEACIÓN` sea un mecanismo de **dos clics con estado** (seleccionar
+titular, luego clicar suplente) en vez de arrastrar-y-soltar es una
+interacción más simple de reproducir que un editor de posiciones con
+arrastre real, y coherente con que el minicampo de `TÁCTICAS` ya se
+había confirmado de solo lectura (ver `como-esta-montado.md`).
+
 ## Pendiente
 
-- El fichaje de Popov vía `OFERTAS` sigue **sin resolverse**: la última
-  oferta conocida (1.550 millones al club) no llegó a recibir respuesta
-  observada, y Popov no aparecía en la plantilla al cierre de la sesión.
-  Falta reabrir `ESTADO OFERTAS` tras avanzar más jornadas para ver si
-  se acepta, se rechaza definitivamente, o expira.
-- No se ha resuelto el aviso "La alineación no es correcta" que bloqueó
-  `SEGUIR` (aparentemente por un jugador sancionado, Kily González,
-  todavía en la alineación) — pendiente de corregir la alineación desde
-  fuera de FICHAR para poder seguir avanzando jornadas.
 - Ni SECRETARIO ni JUVENILES llegaron a mostrar una lista de resultados
   con nombres — solo el mensaje intermedio "Estoy buscando...". No se
   sabe si hace falta esperar (como con las ofertas) o si esta partida
   concreta no tenía candidatos que encajasen con los criterios probados.
 - No se ha probado `PEDIR CESIÓN` (alternativa a `HACER OFERTA` en el
   formulario de oferta a jugador).
+- Nueva sanción observada tras el partido de la jornada 4 (Gilmar,
+  tarjeta roja, `1 PARTIDO`) ya corregida en la misma sesión
+  (intercambiado por Belsué) — pero como el ciclo de sanciones parece
+  repetirse partido a partido (cada partido jugado en modo RESULTADO
+  reparte tarjetas de forma autónoma), queda abierto si esto se
+  convertirá en una comprobación recurrente antes de cada `SEGUIR`
+  futuro, no un caso aislado.
