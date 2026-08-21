@@ -215,7 +215,7 @@ describirlo.
   comprometida y luego se revirtió, o si nunca llegó a comprometerse
   mientras la sesión siguiera abierta.
 
-## DÍA DE PARTIDO → vallas: intento sin completar, la sesión se cortó aquí
+## DÍA DE PARTIDO → intento sin completar, la sesión se cortó aquí (sesión 6)
 
 `[jugado]` 2026-08-22. Se intentó volver a `DÍA DE PARTIDO` para
 completar por fin el `ACEPTAR` de la oferta de vallas publicitarias
@@ -232,13 +232,92 @@ panel de `DÍA DE PARTIDO` en esta sesión**, y mucho menos de que se
 pulsara su `ACEPTAR` — a diferencia de lo planeado, esta parte de S6
 queda sin ejecutar, no solo sin confirmar.
 
+## DÍA DE PARTIDO: no es un problema de calibración — el botón está deshabilitado cuando el próximo partido es fuera de casa (sesión 7, 2026-08-22)
+
+`[jugado]` 2026-08-22. Antes de reintentar el clic, protocolo de
+diagnóstico de pérdida de foco (`bun tools/scripts/reference/vm.script.ts
+key --game=pcf6 38 0f 8f b8` + captura): **confirmó pérdida de foco
+real** — detrás del panel de `ESTADIO` apareció el escritorio de
+Windows 98 con `PCFUTBOL 6.0` como única entrada en la barra de tareas:
+
+![Alt+Tab revela el escritorio de Windows detrás de ESTADIO](screenshots/estadio/s7-01-alttab-desktop.png)
+
+Clic con `--reset` sobre esa entrada de la barra de tareas devolvió el
+foco al juego con normalidad (mismo patrón ya documentado en
+`como-esta-montado.md`). Pero **tras recuperar el foco, un nuevo clic
+con `--reset` sobre `DÍA DE PARTIDO` (coordenadas recalibradas con el
+método de zoom/crop) siguió sin cambiar el panel** — descartando así la
+pérdida de foco como explicación de los dos intentos fallidos de la
+sesión 6.
+
+Para aislar si el problema era la calibración en sí (no el foco), se
+probó un clic de control sobre `REMODELAR` con las mismas coordenadas
+recalculadas por el mismo método: **`REMODELAR` navegó con normalidad**
+a `REMODELACIÓN` → `GRADAS` a la primera, confirmando que el mecanismo
+de clic y el método de calibración funcionan bien en esta misma fila de
+botones. Con `REMODELAR` ya activo (resaltado en amarillo), un zoom
+sobre la fila de botones reveló la explicación real:
+
+![DÍA DE PARTIDO en gris pálido junto a REMODELAR activo (amarillo) y OBRAS/GRÁFICA en azul normal](screenshots/estadio/s7-02-zoom-diapartido-greyed.png)
+
+**`DÍA DE PARTIDO` se renderiza en un gris pálido claramente distinto**
+del azul oscuro normal de `OBRAS`/`GRÁFICA` (botones inactivos pero
+pulsables) y del amarillo de `REMODELAR` (pestaña activa) — es el
+patrón visual de un botón **deshabilitado**, no de un botón normal sin
+foco de hover. Un intento adicional con el atajo de teclado (tecla `D`,
+sin `Alt`) tampoco produjo cambio alguno, coherente con un control
+deshabilitado (un atajo de teclado no activa un botón que la propia UI
+ha marcado como no pulsable).
+
+**Hipótesis con evidencia de apoyo**: `VOLVER` desde `ESTADIO` al
+despacho reveló que el próximo partido de esta partida es
+**Mérida C.P. (CPU) vs. R. Zaragoza (deep) — Jornada 3, domingo 14 de
+septiembre de 1997**, con Mérida C.P. listado primero (posición
+convencional de local) y R. Zaragoza como visitante:
+
+![Despacho mostrando el próximo partido: Mérida C.P. (local) vs. R. Zaragoza (visitante)](screenshots/estadio/s7-03-despacho-away-match-merida.png)
+
+Es decir: el próximo partido de R. Zaragoza es **fuera de casa**. Si
+`DÍA DE PARTIDO` configura precio de entradas y vallas publicitarias
+*del propio estadio* para el próximo partido concreto (como ya
+documentaba la sesión 2, anclado a un partido específico, no una vista
+genérica), **no tiene sentido que el panel esté disponible cuando ese
+partido no se juega en casa** — no hay entradas ni vallas propias que
+gestionar para un partido de visitante. Esto encaja con el patrón ya
+visto en sesión 2, donde `DÍA DE PARTIDO` sí estaba activo y anclado a
+la vuelta de la Supercopa (que sí era en el propio estadio).
+
+**No confirmado de forma definitiva** (no se pudo alcanzar el
+calendario para verificar explícitamente la etiqueta local/visitante
+del motor, solo la posición convencional en la cabecera del despacho),
+pero es la explicación que mejor encaja con toda la evidencia
+disponible: no es un fallo de calibración ni de foco, es un estado
+deshabilitado condicionado a que el próximo partido sea en casa.
+
+## Qué exige
+
+Que `DÍA DE PARTIDO` se deshabilite por completo (no solo se oculte)
+cuando el próximo partido es a domicilio, en vez de mostrar un panel
+vacío o redirigir, es una señal de diseño clara: la gestión de
+taquilla/vallas de PC Dynasty debería estar condicionada de forma
+explícita a "¿el próximo partido es en mi estadio?", con el control
+inhabilitado (visualmente distinto, no solo bloqueado) en caso
+contrario — no basta con ocultar el botón o dejarlo activo sin efecto.
+
 ## Pendiente
 
-- El botón `DÍA DE PARTIDO` no respondió a los dos clics intentados al
-  final de la sesión 6 (se quedó en `ESTADO DE LAS OBRAS`); sigue
-  pendiente comprobar si es otro caso de calibración fina o algo distinto,
-  y sigue sin pulsarse su oferta de vallas (`ACEPTAR`, 215 millones por
-  el resto de temporada).
+- La oferta de vallas publicitarias (215 millones, sesión 2) sigue sin
+  pulsarse — no por elección deliberada, sino porque `DÍA DE PARTIDO`
+  aparece deshabilitado en el estado actual de la partida (próximo
+  partido a domicilio, ver sección anterior). Pendiente reintentar en
+  una sesión futura cuando el calendario tenga un partido en casa
+  próximo, para confirmar la hipótesis y, si procede, documentar el
+  panel sin pulsar su `ACEPTAR`.
+- No se ha confirmado con el propio motor (etiqueta explícita
+  local/visitante en `CALENDARIO`) que el próximo partido sea
+  efectivamente a domicilio — la conclusión se apoya en la posición
+  convencional de los equipos en la cabecera del despacho, no en un
+  texto literal "visitante".
 - La discrepancia entre "checkbox marcado" y "`TOTAL REMODELACIÓN` en 0
   mill." en `REMODELAR` → `GRADAS` no se ha explicado.
 - No se comprobó `ESTADO DE LAS OBRAS` inmediatamente después del primer
