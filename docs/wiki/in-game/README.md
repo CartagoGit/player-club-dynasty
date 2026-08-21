@@ -93,7 +93,7 @@ redescubrir nada de lo de abajo.
 
 | Carpeta | Título | Qué se llegó a ver |
 |---|---|---|
-| [`pcf6/`](pcf6/00-menu-principal.md) | PC Fútbol 6.0 (temporada 97-98) | Menú principal, submenú modal (Seguimiento), Liga Manager completo hasta el despacho (personalización, nombre/equipo, pretemporada, equipos en competiciones, despacho, personal del club, clasificación con Primera/Segunda/2ªB I-IV), Liga Promanager hasta selección de ofertas (personalización propia, clave de acceso, ofertas de trabajo reales), Desafío América-Europa hasta el draft de jugadores, Base de Datos completa (selección, ficha de club, plantilla), un diálogo de error real |
+| [`pcf6/`](pcf6/00-menu-principal.md) | PC Fútbol 6.0 (temporada 97-98) | Menú principal, submenú modal (Seguimiento), Liga Manager completo hasta el despacho (personalización, nombre/equipo, pretemporada, equipos en competiciones, despacho, personal del club, clasificación con Primera/Segunda/2ªB I-IV), Liga Promanager hasta selección de ofertas (personalización propia, clave de acceso, ofertas de trabajo reales), Desafío América-Europa hasta el draft de jugadores, Historia (palmarés desde 1928-29), Base de Datos completa (selección, ficha de club, plantilla), un diálogo de error real |
 | [`pcf7/`](pcf7/00-menu-principal.md) | PC Fútbol 7 (temporada 98-99) | Menú principal |
 | [`pcbasket65/`](pcbasket65/00-menu-principal.md) | PC Basket 6.5 | Menú principal |
 
