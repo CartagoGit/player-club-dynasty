@@ -68,12 +68,47 @@ desglose de merchandising por línea de producto (con fabricación vs. venta
 vs. beneficio) es igualmente aplicable a cualquier sistema de ingresos
 comerciales que se quiera modelar.
 
+## PRIMAS: el `OK` de "POR PARTIDO" probado a fondo — confirma valor sin diálogo (sesión 7, 2026-08-22)
+
+`[jugado]` 2026-08-22. Nota: en esta partida (Jornada 4) la segunda
+prima de la pantalla se llama **`POR U.E.F.A.`**, no `POR TÍTULO` como
+documentaba la sesión 2 — sugiere que la etiqueta de la segunda prima
+depende de a qué competición europea esté clasificado el club en ese
+momento de la temporada, no un texto fijo.
+
+Se subió `POR PARTIDO` de `0 mill.` a `1 mill.` con el selector `►` y
+se pulsó su `OK`:
+
+![PRIMAS con POR PARTIDO en 1 mill. y su OK ya pulsado (resaltado)](screenshots/decisiones/s7-01-primas-ok-pressed.png)
+
+- **`OK` no abre ningún diálogo de confirmación** — solo queda con un
+  marco rojo de foco/pulsado, sin mensaje ni cambio visible inmediato
+  en pantalla más allá de eso.
+- **El valor sí se confirma de verdad**: saliendo con `VOLVER` al
+  despacho y volviendo a entrar en `DECISIONES`, `POR PARTIDO` seguía
+  mostrando `1 mill.` (no se resetea a `0` al salir de la pantalla):
+
+  ![PRIMAS tras salir y reentrar: 1 mill. persiste](screenshots/decisiones/s7-02-primas-persisted.png)
+
+- No se ha probado revertir a `0` ni pulsar el `OK` de `POR U.E.F.A.`
+  (para no comprometer más presupuesto del necesario en esta sesión) —
+  pero el patrón de "seleccionar valor, pulsar OK, confirma sin
+  diálogo" queda establecido para ambos selectores de `PRIMAS`.
+
+## Qué exige
+
+Que `OK` confirme el valor sin pedir una segunda confirmación, pero que
+el valor sobreviva a salir/reentrar en la pantalla, es el patrón de
+"guardado inmediato, sin doble confirmación" que PC Dynasty debería
+replicar para ajustes económicos de bajo riesgo (primas, no fichajes o
+remodelaciones que sí implican un aviso tipo "las obras comenzarán...").
+
 ## Pendiente
 
 - `OFERTAS TV` y `MERCHANDISING` seguían deshabilitados toda la sesión —
   no se ha llegado al punto en que el club recibe su primera oferta;
   repetir tras avanzar varias semanas con SEGUIR para ver el flujo
   completo de aceptar una oferta.
-- Los dos `OK` de `PRIMAS` no se han pulsado (para no alterar el estado de
-  la partida sin necesidad) — confirmar que aceptan un valor y qué pasa si
-  se deja en 0.
+- El `OK` de `POR U.E.F.A.` (la segunda prima) no se ha pulsado — solo
+  el de `POR PARTIDO`. No se ha probado revertir un valor de prima ya
+  confirmado de vuelta a `0`.

@@ -31,6 +31,34 @@ no solo una cuadrícula de fechas, con saltos directos a resultados y
 clasificación desde el mismo sitio donde se consulta cuándo es el próximo
 partido.
 
+## Navegación de mes: las flechas amarillas no respondieron a ningún método probado (sesión 7, 2026-08-22)
+
+`[jugado]` 2026-08-22. `EL CALENDARIO` muestra dos meses simultáneos
+(el mes actual y el siguiente, p. ej. `SEPTIEMBRE 1997`/`OCTUBRE 1997`
+en Jornada 4), cada uno flanqueado por una flecha amarilla grande
+(izquierda del mes visible a la izquierda, derecha del mes visible a la
+derecha) con apariencia clara de control de paginación.
+
+Se probaron **tres métodos distintos** sobre la flecha derecha, todos
+sin efecto — el calendario se quedó mostrando los mismos dos meses en
+las tres capturas:
+
+1. Clic simple con `--reset` sobre el centro calculado de la flecha.
+2. Clic sostenido (`--hold-ms 300`) sobre el mismo punto, por si el
+   control necesitara una pulsación mantenida en vez de un clic seco.
+3. Tecla de flecha derecha del teclado (`4d`/`cd`), por si la
+   navegación de mes tuviera un atajo de teclado en vez de (o adicional
+   a) el clic de ratón.
+
+**No se puede confirmar con certeza si las flechas son decorativas**
+(el calendario solo mostraría siempre "mes actual + mes siguiente",
+ligado a la fecha de partida, sin paginación real) **o si es otro caso
+de calibración de coordenadas** (la flecha es un triángulo grande y
+visualmente inequívoco, lo que hace menos probable un simple desajuste
+de píxeles, pero no lo descarta del todo). Se deja documentado como
+intento agotado con los métodos disponibles, no como conclusión
+definitiva.
+
 ## Pendiente
 
 - **VISIONAR no probado deliberadamente** — por el nombre, es candidato a
@@ -40,5 +68,8 @@ partido.
   pendiente de una sesión futura que confirme qué hace sin comprometer esa
   regla — puede que solo muestre una alineación probable sin simular nada,
   en cuyo caso sería seguro probarlo.
-- No se ha navegado el calendario a otros meses (flechas de mes, si las
-  hay) para confirmar que cubre toda la temporada.
+- Las flechas de navegación de mes (izquierda/derecha de cada
+  calendario mensual) no respondieron a clic simple, clic sostenido, ni
+  a la tecla de flecha derecha del teclado — no confirmado si son
+  decorativas o si sigue siendo un problema de calibración fino sin
+  resolver.
