@@ -1,5 +1,5 @@
 # Bun config — workspace is a leaf consumer of the fixed DelendAI 0.3.0 install
-# at ~/.local/share/delendai/0.3.0 (not part of its workspace tree). The `link:` protocol in package.json is
+# at ~/.local/share/delendai/stable (not part of its workspace tree). The `link:` protocol in package.json is
 # the supported way to point at the local checkout; bun creates the
 # `node_modules/@delendai/<pkg>` symlinks itself.
 #
