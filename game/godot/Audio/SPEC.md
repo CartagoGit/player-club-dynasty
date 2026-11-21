@@ -4,7 +4,7 @@
 > This document is for humans. Agents and scripts read
 > [`audio-spec.json`](../../content/audio/audio-spec.json) and never this file.
 >
-> Full documentation (manual for humans, mcp-vertex guide for agents,
+> Full documentation (manual for humans, delendai guide for agents,
 > mmx reference, spec format) lives in [`docs/audios/`](../../../docs/audios/).
 
 ## Goal
@@ -119,7 +119,7 @@ Every prompt copies this boilerplate verbatim:
 
 ## Tools the agent has access to
 
-| mcp-vertex tool              | What it does                                                                                |
+| delendai tool              | What it does                                                                                |
 |------------------------------|---------------------------------------------------------------------------------------------|
 | `audio_stage`                | Generates a new variant for a slot. Same as `game:audio:stage`.                              |
 | `audio_list_variants`        | Lists every variant per slot, with wav / final paths.                                       |

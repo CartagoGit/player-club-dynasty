@@ -6,8 +6,8 @@
  * The same TypeScript types are consumed by:
  *   - tools/scripts/content/audio/generate.script.ts (the runner that
  *     talks to mmx + ffmpeg),
- *   - plugins/mcp-vertex_player-club-dynasty/src/lib/domain/audio/audio-manifest.helper.ts
- *     (the mcp-vertex plugin that exposes stage/listen/approve/deprecate
+ *   - plugins/delendai_player-club-dynasty/src/lib/domain/audio/audio-manifest.helper.ts
+ *     (the delendai plugin that exposes stage/listen/approve/deprecate
  *     to agents),
  *   - tools/scripts/content/audio/generate.script.spec.ts (the runner's test suite).
  *

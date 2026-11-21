@@ -9,11 +9,11 @@
 		},
 		{
 			"name": "AGENT-BOOTSTRAP",
-			"startUrl": "docs/mcp-vertex/AGENT-BOOTSTRAP.md"
+			"startUrl": "docs/delendai/AGENT-BOOTSTRAP.md"
 		},
 		{
 			"name": "host-hints",
-			"startUrl": "docs/mcp-vertex/host-hints/agent-instructions.generated.md"
+			"startUrl": "docs/delendai/host-hints/agent-instructions.generated.md"
 		}
 	]
 }

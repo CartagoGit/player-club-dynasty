@@ -1,9 +1,9 @@
-# Bun config — workspace is a leaf consumer of the local mcp-vertex checkout
-# (not part of its workspace tree). The `link:` protocol in package.json is
+# Bun config — workspace is a leaf consumer of the fixed DelendAI 0.3.0 install
+# at ~/.local/share/delendai/0.3.0 (not part of its workspace tree). The `link:` protocol in package.json is
 # the supported way to point at the local checkout; bun creates the
-# `node_modules/@mcp-vertex/<pkg>` symlinks itself.
+# `node_modules/@delendai/<pkg>` symlinks itself.
 #
-# Override the link target by setting MCP_VERTEX_ROOT in the environment
+# Override the link target by setting DELENDAI_ROOT in the environment
 # AND updating the `link:` paths in package.json + plugins/*/package.json
 # (bun does not expand env vars inside `link:` URLs at install time).
 

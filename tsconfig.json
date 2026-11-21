@@ -16,8 +16,8 @@
 		"isolatedModules": true,
 		"types": ["@types/bun"],
 		"paths": {
-			"@mcp-vertex/core/public": ["./node_modules/@mcp-vertex/core/src/public/index.ts"],
-			"@mcp-vertex/core": ["./node_modules/@mcp-vertex/core/src/index.ts"]
+			"@delendai/core/public": ["./node_modules/@delendai/core/src/public/index.ts"],
+			"@delendai/core": ["./node_modules/@delendai/core/src/index.ts"]
 		}
 	},
 	"include": ["tools/**/*"],

@@ -2,23 +2,23 @@
 /**
  * tools/scripts/workspace/link.script.ts
  *
- * Symlink the local mcp-vertex checkout into `node_modules/@mcp-vertex`.
+ * Symlink the local delendai checkout into `node_modules/@delendai`.
  * Runs from `postinstall`; safe to invoke any time.
  */
 
 import { existsSync, lstatSync, mkdirSync, realpathSync, rmSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { resolveMcpVertexRoot, workspaceRoot } from './root.script.ts';
+import { resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
 
-const SCOPE_DIRECTORY = join(workspaceRoot, 'node_modules', '@mcp-vertex');
+const SCOPE_DIRECTORY = join(workspaceRoot, 'node_modules', '@delendai');
 const LINKED_PACKAGES = ['core'] as const;
 
 let root: string;
 try {
-	root = resolveMcpVertexRoot().path;
+	root = resolveDelendaiRoot().path;
 } catch (error) {
-	process.stderr.write(`link-mcp-vertex: ${(error as Error).message}\n`);
+	process.stderr.write(`link-delendai: ${(error as Error).message}\n`);
 	process.exit(0);
 }
 
@@ -29,7 +29,7 @@ for (const packageName of LINKED_PACKAGES) {
 	const linkPath = join(SCOPE_DIRECTORY, packageName);
 
 	if (!existsSync(target)) {
-		process.stderr.write(`link-mcp-vertex: ${target} does not exist; skipped.\n`);
+		process.stderr.write(`link-delendai: ${target} does not exist; skipped.\n`);
 		continue;
 	}
 
@@ -41,5 +41,5 @@ for (const packageName of LINKED_PACKAGES) {
 	}
 
 	symlinkSync(target, linkPath, 'dir');
-	process.stdout.write(`link-mcp-vertex: @mcp-vertex/${packageName} -> ${target}\n`);
+	process.stdout.write(`link-delendai: @delendai/${packageName} -> ${target}\n`);
 }

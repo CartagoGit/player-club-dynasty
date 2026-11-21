@@ -1,7 +1,7 @@
 # Audio workflow — manual (humans)
 
 > The human-facing guide. If you are an AI agent, read
-> [mcp-vertex-usage.md](./mcp-vertex-usage.md) instead.
+> [delendai-usage.md](./delendai-usage.md) instead.
 
 ## TL;DR
 

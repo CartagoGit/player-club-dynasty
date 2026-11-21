@@ -3,14 +3,14 @@
  * tools/scripts/builder/plugin.script.ts
  *
  * Build a single plugin's `dist/` using `bun build` directly. The
- * mcp-vertex upstream build pipeline only knows how to build plugins
+ * delendai upstream build pipeline only knows how to build plugins
  * that live inside its own `plugins/` directory; here our plugins live
  * alongside the game (workspace-local), so we wrap `bun build` with the
  * same shape (entry + externals-resolve + target=node).
  *
  * Usage:
- *   bun tools/scripts/builder/plugin.script.ts mcp-vertex_player-club-dynasty
- *   bun tools/scripts/builder/plugin.script.ts mcp-vertex_player-club-dynasty --watch
+ *   bun tools/scripts/builder/plugin.script.ts delendai_player-club-dynasty
+ *   bun tools/scripts/builder/plugin.script.ts delendai_player-club-dynasty --watch
  */
 
 import { spawnSync } from 'node:child_process';
@@ -40,7 +40,7 @@ const buildArgs = [
 	'--target=node',
 	'--format=esm',
 	'--sourcemap=external',
-	'--external=@mcp-vertex/*',
+	'--external=@delendai/*',
 	...args.slice(1),
 ];
 

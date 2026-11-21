@@ -12,7 +12,7 @@ que se vuelve constantemente durante toda la carrera.
 ## Instrucciones permanentes para cualquier agente que continúe esta exploración
 
 Esto forma parte de la propuesta
-[`d00001`](../../../mcp-vertex/proposals/in-progress/d00001-play-through-liga-manager-and-liga-promanager-screen-by-screen-documenting-every-button.md).
+[`d00001`](../../../delendai/proposals/in-progress/d00001-play-through-liga-manager-and-liga-promanager-screen-by-screen-documenting-every-button.md).
 Léelas antes de tocar la VM:
 
 1. **Modo RESULTADO, nunca visionado.** Cualquier pantalla de configuración

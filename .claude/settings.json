@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-settings.json",
-	"agentInstructionsPath": "../docs/mcp-vertex/AGENT-BOOTSTRAP.md",
+	"agentInstructionsPath": "../docs/delendai/AGENT-BOOTSTRAP.md",
 	"includeCoAuthoredBy": false,
 	"env": {
 		"CLAUDE_CODE_AUTO_COMPACT_WINDOW": "300000"

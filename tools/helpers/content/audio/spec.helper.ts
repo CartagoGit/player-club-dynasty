@@ -5,7 +5,7 @@
  * Shared loader + writer + slot-finder for the audio manifest.
  *
  * Both the runner (tools/scripts/content/generate-audio.script.ts) and
- * the mcp-vertex plugin (plugins/.../lib/audio-manifest.helper.ts) use
+ * the delendai plugin (plugins/.../lib/audio-manifest.helper.ts) use
  * these helpers so the JSON shape and zod validation are checked in one
  * place — no risk of one side accepting a spec the other rejects.
  */
@@ -152,7 +152,7 @@ export const ensureSlotStatus = (
 
 /**
  * Project the spec into a fully-resolved view that consumers can iterate
- * without re-deriving relationships. Used by the mcp-vertex plugin tools.
+ * without re-deriving relationships. Used by the delendai plugin tools.
  */
 export const resolveAudioManifest = (workspaceRoot: string): IResolvedAudioManifest => {
 	const spec = readAudioSpec(workspaceRoot);

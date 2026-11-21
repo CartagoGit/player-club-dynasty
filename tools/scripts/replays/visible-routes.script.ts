@@ -229,7 +229,7 @@ export const loadBaseline = (workspace: string): ReadonlySet<string> => {
 };
 
 export const checkWorkspace = (workspace: string): readonly IRouteViolation[] => {
-	const proposalsRoot = join(workspace, 'docs', 'mcp-vertex', 'proposals');
+	const proposalsRoot = join(workspace, 'docs', 'delendai', 'proposals');
 	if (!existsSync(proposalsRoot)) return [];
 	const waived = loadBaseline(workspace);
 	const fileExists = (relativePath: string): boolean =>

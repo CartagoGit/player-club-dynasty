@@ -8,7 +8,7 @@ PC Dynasty.
 | File | Audience | What you'll find |
 |---|---|---|
 | [manual.md](./manual.md) | **Humans** | How to use the runner from your terminal. Examples for every workflow stage, troubleshooting, recipes for common tasks. |
-| [mcp-vertex-usage.md](./mcp-vertex-usage.md) | **AI agents** | How an MCP agent is expected to drive the workflow through the `player-club-dynasty_*` tools. Includes a decision tree and example dialogues. |
+| [delendai-usage.md](./delendai-usage.md) | **AI agents** | How an MCP agent is expected to drive the workflow through the `player-club-dynasty_*` tools. Includes a decision tree and example dialogues. |
 | [mmx-reference.md](./mmx-reference.md) | Both | Every `mmx music generate` and `mmx speech synthesize` flag the runner relies on, plus the prompt-engineering rules baked into `audio-spec.json`. |
 | [spec-format.md](./spec-format.md) | Both | The exact shape of `game/godot/Audio/audio-spec.json`: groups, slots, the `globalMusicAnchor` and the variant state machine. |
 | [REVIEW-CHECKLIST.md](./REVIEW-CHECKLIST.md) | **Humans (the only file you need)** | Live review: each row has `<audio controls src=".generate/audios/staging/.../track.ogg">` for inline play, `<a download>` for grabbing the .ogg, and HTML checkboxes for OK / Bad / Re-stage. Open in VS Code preview (`Ctrl+Shift+V`) or in a browser. |
@@ -59,7 +59,7 @@ game/godot/Audio/<Music|SFX>/<file>    .deprecated/assets/sounds/<group>/<entry>
 | Open in OS player | `tools/scripts/content/audio/open.script.ts` | Cross-platform open: on WSL → cmd.exe + Windows file association; on Linux → xdg-open. |
 | Pre-compress staged audio→ogg | `tools/scripts/content/audio/precompress.script.ts` | Encodes staged mp3/wav to ogg vorbis 22050 Hz (q=2 SFX / q=3 music). |
 | Batch rebuild | `tools/scripts/content/audio/rebuild-all.script.ts` | Rebuilds all selected slots end-to-end once the backend is available again. |
-| Plugin | `plugins/mcp-vertex_player-club-dynasty/src/lib/audio-manifest.helper.ts` + `src/index.ts` | MCP tools `audio_stage / audio_list_variants / audio_listen / audio_approve / audio_deprecate`. |
+| Plugin | `plugins/delendai_player-club-dynasty/src/lib/audio-manifest.helper.ts` + `src/index.ts` | MCP tools `audio_stage / audio_list_variants / audio_listen / audio_approve / audio_deprecate`. |
 | Runtime location | `game/godot/Audio/{Music,SFX}/` | Where Godot reads approved files (committed). |
 | Runtime README | `game/godot/Audio/SPEC.md` | Godot-side rationale (link to `docs/audios/`). |
 

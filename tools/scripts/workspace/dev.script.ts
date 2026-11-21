@@ -2,7 +2,7 @@
 /**
  * tools/scripts/workspace/dev.script.ts
  *
- * Dev entrypoint — runs the local mcp-vertex host in stdio mode with the
+ * Dev entrypoint — runs the local delendai host in stdio mode with the
  * workspace's plugin set. Pass `--doctor` to validate without serving.
  *
  * Usage:
@@ -24,15 +24,15 @@ if (rootResult.status !== 0) {
 	process.stderr.write(rootResult.stderr);
 	process.exit(rootResult.status ?? 1);
 }
-const mcpVertexRoot = rootResult.stdout.trim();
+const delendaiRoot = rootResult.stdout.trim();
 const entryScript = isDoctor
-	? `${mcpVertexRoot}/packages/cli/src/index.ts`
-	: `${mcpVertexRoot}/tools/scripts/host/host-server.script.ts`;
+	? `${delendaiRoot}/packages/cli/src/index.ts`
+	: `${delendaiRoot}/tools/scripts/host/host-server.script.ts`;
 
 const cmdArgs = [
 	entryScript,
 	`--workspace=${workspaceRoot}`,
-	`--config=${workspaceRoot}/mcp-vertex.config.json`,
+	`--config=${workspaceRoot}/delendai.config.json`,
 	'--preset=swarm',
 	'--exclude-plugins=issues,web-fetch,external-mcps',
 	...passthroughArgs,

@@ -110,6 +110,6 @@ Every prompt in the manifest describes an **original, fictional football world**
 `VideoStage` treats a missing file as normal: it finishes on the next frame and
 the game continues. A fresh clone with an empty `game/godot/Video/` boots
 straight to the menu. That is deliberate — the audio audit
-([`a00041`](../mcp-vertex/proposals/review/a00041-audit-the-audio-pipeline-before-mirroring-it-for-video.md))
+([`a00041`](../delendai/proposals/review/a00041-audit-the-audio-pipeline-before-mirroring-it-for-video.md))
 found a pipeline producing 65 assets that nothing in the game ever loaded, and the
 cheapest way not to repeat it was to ship the consumer first.

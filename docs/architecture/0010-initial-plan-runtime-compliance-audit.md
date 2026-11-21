@@ -4,7 +4,7 @@
 
 Esta auditoría contrasta tres fuentes de verdad:
 
-1. la visión y los requisitos de `docs/mcp-vertex/INITIAL-PLAN.md`;
+1. la visión y los requisitos de `docs/delendai/INITIAL-PLAN.md`;
 2. las decisiones permanentes de `docs/architecture/0001..0009` y la guía
    visual;
 3. el camino que realmente ejecuta `game/godot/Scenes/Main.tscn`.
@@ -322,7 +322,7 @@ pantallas.
 
 ## CI, propuesta y gates
 
-- `bun run validate`, configurado como gate de mcp-vertex, valida la
+- `bun run validate`, configurado como gate de delendai, valida la
   integración MCP/TypeScript, no la solución .NET ni Godot.
 - GitHub Actions compila/testea .NET y ejecuta BDN, pero no instala Godot, no
   compila el proyecto Godot ni ejecuta SmokeBoot.

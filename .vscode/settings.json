@@ -27,10 +27,10 @@
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"yaml.schemas": {
-		"./node_modules/@mcp-vertex/core/schema/mcp-vertex.config.schema.json": [
-			"mcp-vertex.config.json"
+		"./node_modules/@delendai/core/schema/delendai.config.schema.json": [
+			"delendai.config.json"
 		]
 	},
-	"mcp-vertex.workspace": "${workspaceFolder}",
-	"mcp-vertex.configFile": "${workspaceFolder}/mcp-vertex.config.json"
+	"delendai.workspace": "${workspaceFolder}",
+	"delendai.configFile": "${workspaceFolder}/delendai.config.json"
 }

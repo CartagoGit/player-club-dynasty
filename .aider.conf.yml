@@ -1,13 +1,13 @@
 # Aider config — Player Club Dynasty
 
 # Aider reads AGENTS.md at the workspace root, which is a pointer to the
-# universal bootstrap at docs/mcp-vertex/AGENT-BOOTSTRAP.md.
+# universal bootstrap at docs/delendai/AGENT-BOOTSTRAP.md.
 # All agent rules live there; this file just exposes a few read-only paths.
 
 read:
   - AGENTS.md
-  - docs/mcp-vertex/AGENT-BOOTSTRAP.md
-  - docs/mcp-vertex/host-hints/agent-instructions.generated.md
-  - mcp-vertex.config.json
+  - docs/delendai/AGENT-BOOTSTRAP.md
+  - docs/delendai/host-hints/agent-instructions.generated.md
+  - delendai.config.json
   - package.json
   - .vscode/mcp.json

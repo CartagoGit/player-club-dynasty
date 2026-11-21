@@ -22,12 +22,12 @@ const sandbox = (): { workspace: string; checkout: string } => {
 	created.push(base);
 	const workspace = join(base, 'games', 'player-club-dynasty');
 	mkdirSync(workspace, { recursive: true });
-	const checkout = fakeCheckout(join(base, 'mcp-vertex'));
+	const checkout = fakeCheckout(join(base, 'delendai'));
 	return { workspace, checkout };
 };
 
 afterEach(() => {
-	delete process.env.MCP_VERTEX_ROOT;
+	delete process.env.DELENDAI_ROOT;
 	while (created.length > 0) {
 		const path = created.pop();
 		if (path !== undefined) rmSync(path, { recursive: true, force: true });
@@ -36,12 +36,12 @@ afterEach(() => {
 
 describe('expandPath', () => {
 	it('keeps an absolute path untouched', () => {
-		expect(expandPath('/opt/mcp-vertex', '/workspace')).toBe('/opt/mcp-vertex');
+		expect(expandPath('/opt/delendai', '/workspace')).toBe('/opt/delendai');
 	});
 
 	it('resolves a relative path against the workspace', () => {
-		expect(expandPath('../../mcp-vertex', '/home/dev/games/project')).toBe(
-			'/home/dev/mcp-vertex',
+		expect(expandPath('../../delendai', '/home/dev/games/project')).toBe(
+			'/home/dev/delendai',
 		);
 	});
 });
@@ -58,7 +58,7 @@ describe('smokeCheck', () => {
 describe('resolveRoot', () => {
 	it('follows a relative pointer file, so the same value works on any machine', () => {
 		const { workspace, checkout } = sandbox();
-		writeFileSync(join(workspace, '.mcp-vertex-root'), '../../mcp-vertex\n');
+		writeFileSync(join(workspace, '.delendai-root'), '../../delendai\n');
 
 		expect(resolveRoot(workspace)?.path).toBe(checkout);
 	});
@@ -71,16 +71,16 @@ describe('resolveRoot', () => {
 
 	it('lets the environment variable win over the pointer file', () => {
 		const { workspace } = sandbox();
-		writeFileSync(join(workspace, '.mcp-vertex-root'), '../../mcp-vertex\n');
-		const override = fakeCheckout(join(workspace, 'vendor', 'mcp-vertex'));
-		process.env.MCP_VERTEX_ROOT = override;
+		writeFileSync(join(workspace, '.delendai-root'), '../../delendai\n');
+		const override = fakeCheckout(join(workspace, 'vendor', 'delendai'));
+		process.env.DELENDAI_ROOT = override;
 
 		expect(resolveRoot(workspace)?.path).toBe(override);
 	});
 
 	it('reports a broken explicit pointer instead of silently using another checkout', () => {
 		const { workspace } = sandbox();
-		writeFileSync(join(workspace, '.mcp-vertex-root'), './not-a-checkout\n');
+		writeFileSync(join(workspace, '.delendai-root'), './not-a-checkout\n');
 
 		const resolved = resolveRoot(workspace);
 

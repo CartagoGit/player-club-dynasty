@@ -3,7 +3,7 @@
  * tools/scripts/workspace/sync-bootstrap.script.ts
  *
  * Sync the workspace's vendored AGENT-BOOTSTRAP.md from the local
- * mcp-vertex checkout. Re-run after upgrading the upstream.
+ * delendai checkout. Re-run after upgrading the upstream.
  *
  * Usage:
  *   bun tools/scripts/workspace/sync-bootstrap.script.ts
@@ -23,10 +23,10 @@ if (rootResult.status !== 0) {
 	process.stderr.write(rootResult.stderr);
 	process.exit(rootResult.status ?? 1);
 }
-const mcpVertexRoot = rootResult.stdout.trim();
+const delendaiRoot = rootResult.stdout.trim();
 
-const upstream = `${mcpVertexRoot}/docs/mcp-vertex/AGENT-BOOTSTRAP.md`;
-const local = resolve(import.meta.dirname, '../../../docs/mcp-vertex/AGENT-BOOTSTRAP.md');
+const upstream = `${delendaiRoot}/docs/delendai/AGENT-BOOTSTRAP.md`;
+const local = resolve(import.meta.dirname, '../../../docs/delendai/AGENT-BOOTSTRAP.md');
 
 if (!existsSync(upstream)) {
 	process.stderr.write(`Upstream bootstrap not found at ${upstream}\n`);
@@ -49,20 +49,20 @@ if (wantCheck) {
 const preamble = `# Universal agent bootstrap — Player Club Dynasty
 
 > **Source of truth:** this file is a vendored copy of the canonical
-> \`docs/mcp-vertex/AGENT-BOOTSTRAP.md\` shipped by the local mcp-vertex
-> checkout at \`${mcpVertexRoot}\`. When that file changes upstream, re-run
+> \`docs/delendai/AGENT-BOOTSTRAP.md\` shipped by the local delendai
+> checkout at \`${delendaiRoot}\`. When that file changes upstream, re-run
 > \`bun tools/scripts/workspace/sync-bootstrap.script.ts\` to refresh this
 > copy. Until then, treat this copy as authoritative — it is what host
 > instruction files (\`AGENTS.md\`, \`CLAUDE.md\`,
-> \`.github/copilot-instructions.md\`, \`.cursor/rules/mcp-vertex.md\`,
+> \`.github/copilot-instructions.md\`, \`.cursor/rules/delendai.md\`,
 > \`.codex/config.toml\`, \`.aider.conf.yml\`, \`.continue/config.json\`)
 > all point at.
 >
 > This file is the **only** place agent rules live. Every host instruction
 > file in this workspace is a **pointer** to this file.
 
-The server (\`mcp-vertex_overview\`, \`mcp-vertex_agent_catalog\`,
-\`mcp-vertex_agent_bootstrap\` prompt) is the **only** source of truth for
+The server (\`delendai_overview\`, \`delendai_agent_catalog\`,
+\`delendai_agent_bootstrap\` prompt) is the **only** source of truth for
 what is loaded. The agent must **always** ask the server instead of
 guessing from a list, hardcoded id, or copy-pasted previous session.
 

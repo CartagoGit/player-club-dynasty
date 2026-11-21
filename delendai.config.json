@@ -1,0 +1,81 @@
+{
+	"$schema": "./node_modules/@delendai/core/schema/delendai.config.schema.json",
+	"coreVersion": "latest-published",
+	"keepLegacy": false,
+	"cacheDir": ".cache/delendai",
+	"docsDir": "docs/delendai",
+	"convention": {
+		"pluginPathsRoot": "plugins",
+		"sourceRoot": "src"
+	},
+	"plugins": {
+		"git": {
+			"options": {
+				"allowForge": false
+			}
+		},
+		"search": {
+			"options": {
+				"roots": ["plugins", "scripts", "docs"],
+				"extensions": ["ts", "tsx", "js", "mjs", "cjs", "md", "json"],
+				"ignoreDirs": ["node_modules", ".cache", "dist", "build", ".git"]
+			}
+		},
+		"memory": {
+			"options": {
+				"bm25K1": 1.5,
+				"bm25B": 0.75,
+				"titleWeight": 2,
+				"maxNotes": 1000
+			}
+		},
+		"docs": {
+			"options": {
+				"roots": ["docs/delendai", "docs/wiki", "docs/design", "README.md"],
+				"extensions": ["md", "mdx"],
+				"ignoreDirs": ["node_modules", ".cache", "dist"]
+			}
+		},
+		"rules": {
+			"options": {}
+		},
+		"quality": {
+			"options": {}
+		},
+		"deps": {
+			"options": {
+				"manifest": "package.json",
+				"allowNetwork": false,
+				"allowWrite": false
+			}
+		},
+		"proposals": {
+			"options": {
+				"validationCommand": "bun run validate",
+				"namePool": ["lion", "tiger", "puma", "panther", "jaguar"],
+				"orchestration": {
+					"delegateAfterToolCalls": 3
+				}
+			}
+		},
+		"notification": {
+			"options": {
+				"intervalMs": 2000,
+				"heartbeatMs": 30000
+			}
+		},
+		"status-marker": {
+			"options": {}
+		},
+		"test-convention": {
+			"options": {}
+		},
+		"delendai_player-club-dynasty": {
+			"path": "plugins/delendai_player-club-dynasty/dist/index.js",
+			"options": {
+				"dataDir": "data",
+				"savesDir": "saves"
+			}
+		}
+	}
+}

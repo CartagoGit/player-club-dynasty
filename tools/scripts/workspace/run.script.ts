@@ -2,7 +2,7 @@
 /**
  * tools/scripts/workspace/run.script.ts
  *
- * Run a script that lives inside the local mcp-vertex checkout, without
+ * Run a script that lives inside the local delendai checkout, without
  * any workspace file naming a machine-specific absolute path.
  *
  * Usage:
@@ -13,20 +13,20 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { resolveMcpVertexRoot, workspaceRoot } from './root.script.ts';
+import { resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
 
 const [relativeScript, ...forwarded] = process.argv.slice(2);
 
 if (relativeScript === undefined || relativeScript.length === 0) {
 	process.stderr.write(
-		'mcp-vertex-run: expected a checkout-relative script path as the first argument.\n',
+		'delendai-run: expected a checkout-relative script path as the first argument.\n',
 	);
 	process.exit(2);
 }
 
 let root: string;
 try {
-	root = resolveMcpVertexRoot().path;
+	root = resolveDelendaiRoot().path;
 } catch (error) {
 	process.stderr.write(`${(error as Error).message}\n`);
 	process.exit(2);
@@ -34,7 +34,7 @@ try {
 
 const target = join(root, relativeScript);
 if (!existsSync(target)) {
-	process.stderr.write(`mcp-vertex-run: ${relativeScript} does not exist in ${root}.\n`);
+	process.stderr.write(`delendai-run: ${relativeScript} does not exist in ${root}.\n`);
 	process.exit(2);
 }
 

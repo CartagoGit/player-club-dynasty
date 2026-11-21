@@ -3,9 +3,9 @@
  * tools/scripts/workspace/lint-proposals.script.ts
  *
  * Lint **this workspace's** proposal store with the canonical
- * mcp-vertex scaffold linter. The canonical linter resolves its
- * proposals directory relative to the mcp-vertex checkout, so it
- * lints mcp-vertex's proposals and never ours. This wrapper imports
+ * delendai scaffold linter. The canonical linter resolves its
+ * proposals directory relative to the delendai checkout, so it
+ * lints delendai's proposals and never ours. This wrapper imports
  * the same linter as a library and points it at ours.
  *
  * Migrated from `scripts/lint-proposals.script.ts`.
@@ -16,7 +16,7 @@
 
 import { join } from 'node:path';
 
-import { resolveMcpVertexRoot, workspaceRoot } from './root.script.ts';
+import { resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
 
 interface IDuplicateGroup {
 	readonly id: string;
@@ -36,7 +36,7 @@ type LintProposalsDir = (proposalsDirAbs: string) => Promise<ILintSummary>;
 const LINTER_MODULE = 'tools/scripts/lint/proposals.script.ts';
 
 const loadLinter = async (): Promise<LintProposalsDir> => {
-	const root = resolveMcpVertexRoot();
+	const root = resolveDelendaiRoot();
 	const module = (await import(join(root.path, LINTER_MODULE))) as {
 		lintProposalsDir?: LintProposalsDir;
 	};
@@ -48,7 +48,7 @@ const loadLinter = async (): Promise<LintProposalsDir> => {
 
 export const lintWorkspaceProposals = async (workspace: string = workspaceRoot): Promise<ILintSummary> => {
 	const lintProposalsDir = await loadLinter();
-	return lintProposalsDir(join(workspace, 'docs', 'mcp-vertex', 'proposals'));
+	return lintProposalsDir(join(workspace, 'docs', 'delendai', 'proposals'));
 };
 
 if (import.meta.main) {

@@ -2,7 +2,7 @@
 /**
  * tools/scripts/builder/all.script.ts
  *
- * Build every plugin in the workspace against the local mcp-vertex
+ * Build every plugin in the workspace against the local delendai
  * checkout. Iterates `plugins/` and delegates to `plugin.script.ts`.
  *
  * Usage:

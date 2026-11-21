@@ -1,8 +1,0 @@
----
-name: mcp-vertex-implementation-runner
-description: Slice executor (atomic writes with locks) for Player Club Dynasty
-tools: [read, search, edit, execute, todo, mcp-vertex/*]
-user-invocable: false
----
-
-This file is a thin redirector. The canonical contract lives in the `mcp-vertex` MCP server. On the first call of every turn, invoke `mcp-vertex_overview` and follow its `recommendedNextAction`. Claim files before writing with the agent-lock tool `overview` reports; a hardcoded tool list here would go stale. Do not restate the workflow here.

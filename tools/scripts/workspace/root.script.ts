@@ -2,16 +2,16 @@
 /**
  * tools/scripts/workspace/root.script.ts
  *
- * Resolve the local mcp-vertex checkout this workspace bootstraps against.
- * Moved from `scripts/mcp-vertex-root.script.ts` so the workspace follows
+ * Resolve the local delendai checkout this workspace bootstraps against.
+ * Moved from `scripts/delendai-root.script.ts` so the workspace follows
  * the new `tools/scripts/<area>/<verb>.script.ts` convention.
  *
  * Resolution order:
- *   1. `$MCP_VERTEX_ROOT`
- *   2. `<workspace>/.mcp-vertex-root`
- *   3. `<workspace>/node_modules/@mcp-vertex/core` (through the symlink)
- *   4. A `mcp-vertex` sibling of the workspace and each ancestor
- *   5. `$HOME/mcp-vertex` and `$HOME/_projects/mcp-vertex`
+ *   1. `$DELENDAI_ROOT`
+ *   2. `<workspace>/.delendai-root`
+ *   3. `<workspace>/node_modules/@delendai/core` (through the symlink)
+ *   4. A `delendai` sibling of the workspace and each ancestor
+ *   5. `$HOME/delendai` and `$HOME/_projects/delendai`
  *
  * Usage:
  *   bun tools/scripts/workspace/root.script.ts                  # absolute path
@@ -26,9 +26,9 @@ import { dirname, isAbsolute, join, parse, resolve } from 'node:path';
 
 export const SENTINEL_HOST_SCRIPT = 'tools/scripts/host/host-server.script.ts';
 const SENTINEL_CORE_PKG = 'packages/core/package.json';
-const POINTER_FILE = '.mcp-vertex-root';
-const CHECKOUT_DIRECTORY_NAME = 'mcp-vertex';
-const LINKED_CORE = join('node_modules', '@mcp-vertex', 'core');
+const POINTER_FILE = '.delendai-root';
+const CHECKOUT_DIRECTORY_NAME = 'delendai';
+const LINKED_CORE = join('node_modules', '@delendai', 'core');
 
 export const workspaceRoot = resolve(import.meta.dirname, '..', '..', '..');
 
@@ -88,7 +88,7 @@ interface ICandidate {
 }
 
 const candidates = (workspace: string): readonly ICandidate[] => {
-	const fromEnv = process.env.MCP_VERTEX_ROOT?.trim();
+	const fromEnv = process.env.DELENDAI_ROOT?.trim();
 	const pointer = readPointer(workspace);
 	const siblings = ancestors(workspace).map((ancestor) => ({
 		source: `sibling checkout in ${ancestor}`,
@@ -98,7 +98,7 @@ const candidates = (workspace: string): readonly ICandidate[] => {
 
 	return [
 		{
-			source: 'MCP_VERTEX_ROOT env var',
+			source: 'DELENDAI_ROOT env var',
 			path: fromEnv ? expandPath(fromEnv, workspace) : undefined,
 			explicit: true,
 		},
@@ -108,7 +108,7 @@ const candidates = (workspace: string): readonly ICandidate[] => {
 			explicit: true,
 		},
 		{
-			source: 'linked @mcp-vertex/core package',
+			source: 'linked @delendai/core package',
 			path: fromLinkedPackage(workspace),
 			explicit: false,
 		},
@@ -136,17 +136,17 @@ export const resolveRoot = (workspace: string = workspaceRoot): IResolvedRoot | 
 	return null;
 };
 
-export const resolveMcpVertexRoot = (workspace: string = workspaceRoot): IResolvedRoot => {
+export const resolveDelendaiRoot = (workspace: string = workspaceRoot): IResolvedRoot => {
 	const resolved = resolveRoot(workspace);
 	if (resolved === null) {
 		throw new Error(
-			`Could not locate the local mcp-vertex checkout. Clone it next to this workspace, set MCP_VERTEX_ROOT, or write its path into ${POINTER_FILE} (relative paths are resolved against the workspace).`,
+			`Could not locate the local delendai checkout. Clone it next to this workspace, set DELENDAI_ROOT, or write its path into ${POINTER_FILE} (relative paths are resolved against the workspace).`,
 		);
 	}
 	const check = smokeCheck(resolved.path);
 	if (!check.ok) {
 		throw new Error(
-			`mcp-vertex checkout at ${resolved.path} (from ${resolved.source}) is missing: ${check.missing.join(', ')}`,
+			`delendai checkout at ${resolved.path} (from ${resolved.source}) is missing: ${check.missing.join(', ')}`,
 		);
 	}
 	return resolved;
@@ -155,7 +155,7 @@ export const resolveMcpVertexRoot = (workspace: string = workspaceRoot): IResolv
 if (import.meta.main) {
 	const args = new Set(process.argv.slice(2));
 	try {
-		const resolved = resolveMcpVertexRoot();
+		const resolved = resolveDelendaiRoot();
 		const value = args.has('--host-script')
 			? join(resolved.path, SENTINEL_HOST_SCRIPT)
 			: resolved.path;
