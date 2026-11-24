@@ -50,7 +50,7 @@ const preamble = `# Universal agent bootstrap — Player Club Dynasty
 
 > **Source of truth:** this file is a vendored copy of the canonical
 > \`docs/delendai/AGENT-BOOTSTRAP.md\` shipped by the local delendai
-> checkout at \`${delendaiRoot}\`. When that file changes upstream, re-run
+> checkout at \`.cache/delendai-runtime\`. When that file changes upstream, re-run
 > \`bun tools/scripts/workspace/sync-bootstrap.script.ts\` to refresh this
 > copy. Until then, treat this copy as authoritative — it is what host
 > instruction files (\`AGENTS.md\`, \`CLAUDE.md\`,

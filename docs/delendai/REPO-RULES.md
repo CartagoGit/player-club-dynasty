@@ -14,8 +14,8 @@ project's own MCP plugin lives under `plugins/player-club/`. The
 delendai core + every first-party plugin we use (proposals, memory,
 search, git, docs, deps, rules, quality, notification, status-marker,
 test-convention) come from the **local checkout** resolved by
-`tools/scripts/workspace/root.script.ts` (env var, `.delendai-root` pointer,
-linked package, or a `delendai` sibling directory) — no npm publish
+`tools/scripts/workspace/root.script.ts` (env var, the `.cache/delendai-runtime` link,
+linked package, the stable install, or a `delendai` sibling directory) — no npm publish
 required and no machine-specific path is committed.
 
 ## Layout
@@ -33,7 +33,7 @@ required and no machine-specific path is committed.
 | `plugins/player-club/` | The project's own MCP plugin (`@player-club/plugin`). |
 | `scripts/` | Workspace-local helpers (build, dev, sync-bootstrap, root resolver). |
 | `.cache/delendai/` | Scratch root, per-plugin subdirectories created on first boot. |
-| `.delendai-root` | Pointer file consumed by `tools/scripts/workspace/root.script.ts`. Holds a path relative to the workspace; overridable via `DELENDAI_ROOT`. |
+| `.cache/delendai-runtime` | Gitignored link created by `prepare` (`tools/scripts/workspace/link.script.ts`) to `$DELENDAI_PATH` or `~/.local/share/delendai/stable`; the only delendai path committed files may name. `.delendai-root` remains an optional untracked per-machine override. |
 
 ## Design knowledge base — read before touching the UI
 
@@ -82,7 +82,7 @@ Hard rules that come from it:
 
 ## Repo-level hard rules
 
-1. **delendai stays local-only for now.** No npm publish, no `@delendai/*` from the npm registry. Every first-party package resolves from the local checkout via `tools/scripts/workspace/root.script.ts`. Bump the `.delendai-root` pointer (or set `DELENDAI_ROOT`) when upgrading.
+1. **delendai stays local-only for now.** No npm publish, no `@delendai/*` from the npm registry. Every first-party package resolves from the local checkout via `tools/scripts/workspace/root.script.ts`. Move the stable channel (or set `DELENDAI_PATH`) when upgrading.
 2. **The plugin set is curated, not exhaustive.** The workspace loads `swarm` plus `player-club`, with `issues` / `web-fetch` / `external-mcps` excluded by default. Add new plugins deliberately; update both `delendai.config.json` and `.vscode/mcp.json`'s `--plugins=` flag together.
 3. **Plugins live under `plugins/`.** Every project-scoped MCP capability is a plugin, never a stray tool added to a config. The `--plugins=<path>` CLI form (f00087) is the canonical way to point at a local plugin without polluting the host's MCP config.
 4. **Host instruction files are pointers only.** `AGENTS.md`, `CLAUDE.md`, etc. must not enumerate tool / skill / proposal ids. The server is the source of truth. If you find yourself wanting to write a list, call `delendai_agent_catalog` instead.
@@ -120,8 +120,8 @@ open proposals — the orchestrator will assign the first ID on the next
 ## When the local checkout moves
 
 ```bash
-# 1. Update the pointer (relative to this workspace, or absolute)
-echo "../../delendai" > .delendai-root
+# 1. Point DELENDAI_PATH at it and refresh the link
+DELENDAI_PATH=../../delendai bun run prepare
 
 # 2. Confirm
 bun tools/scripts/workspace/root.script.ts --check

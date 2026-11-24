@@ -1,17 +1,16 @@
 # Codex config — Player Club Dynasty
 # Codex reads workspace AGENTS.md by default; the file is a pointer to
 # docs/delendai/AGENT-BOOTSTRAP.md. This file just records the local
-# MCP server entry (matches .vscode/mcp.json).
-
-[projects."/home/cartago/_projects/games/player-club-dynasty"]
-trust_level = "trusted"
+# MCP server entry (matches .mcp.json). Paths are relative to the workspace,
+# so the file is identical on every machine.
 
 [mcp_servers.delendai]
 command = "bun"
 args = [
-  "/home/cartago/_projects/delendai/tools/scripts/host/host-server.script.ts",
-  "--workspace=/home/cartago/_projects/games/player-club-dynasty",
-  "--config=/home/cartago/_projects/games/player-club-dynasty/delendai.config.json",
+  "./tools/scripts/workspace/run.script.ts",
+  "tools/scripts/host/host-server.script.ts",
+  "--workspace=.",
+  "--config=./delendai.config.json",
   "--preset=swarm",
   "--exclude-plugins=issues,web-fetch,external-mcps",
 ]

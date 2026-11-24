@@ -13,7 +13,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
+import { ensureRuntimeLink, resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
 
 const [relativeScript, ...forwarded] = process.argv.slice(2);
 
@@ -30,6 +30,12 @@ try {
 } catch (error) {
 	process.stderr.write(`${(error as Error).message}\n`);
 	process.exit(2);
+}
+
+try {
+	ensureRuntimeLink();
+} catch (error) {
+	process.stderr.write(`delendai-run: ${(error as Error).message}\n`);
 }
 
 const target = join(root, relativeScript);

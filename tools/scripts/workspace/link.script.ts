@@ -2,14 +2,14 @@
 /**
  * tools/scripts/workspace/link.script.ts
  *
- * Symlink the local delendai checkout into `node_modules/@delendai`.
+ * Symlink the local delendai checkout into `node_modules/@delendai` and refresh `.cache/delendai-runtime`.
  * Runs from `postinstall`; safe to invoke any time.
  */
 
 import { existsSync, lstatSync, mkdirSync, realpathSync, rmSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
+import { ensureRuntimeLink, resolveDelendaiRoot, workspaceRoot } from './root.script.ts';
 
 const SCOPE_DIRECTORY = join(workspaceRoot, 'node_modules', '@delendai');
 const LINKED_PACKAGES = ['core'] as const;
@@ -20,6 +20,12 @@ try {
 } catch (error) {
 	process.stderr.write(`link-delendai: ${(error as Error).message}\n`);
 	process.exit(0);
+}
+
+try {
+	ensureRuntimeLink();
+} catch (error) {
+	process.stderr.write(`link-delendai: ${(error as Error).message}\n`);
 }
 
 mkdirSync(SCOPE_DIRECTORY, { recursive: true });

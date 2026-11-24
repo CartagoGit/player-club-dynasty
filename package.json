@@ -76,7 +76,8 @@
 		"game:architecture": "bun tools/scripts/gate/architecture.script.ts",
 		"game:hygiene": "bun tools/scripts/gate/hygiene.script.ts",
 		"game:benchmarks": "bun tools/scripts/gate/benchmarks.script.ts",
-		"postinstall": "bun tools/scripts/workspace/link.script.ts"
+		"prepare": "bun tools/scripts/workspace/link.script.ts || true",
+		"delendai:check-paths": "bun tools/scripts/workspace/portable-paths.script.ts --check"
 	},
 	"devDependencies": {
 		"@types/bun": "1.3.14",

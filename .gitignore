@@ -1,5 +1,6 @@
 # delendai scratch + caches
 .cache/
+.delendai-root
 .verify-tmp/
 
 # bun / node

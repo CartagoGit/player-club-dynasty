@@ -2,16 +2,16 @@
 
 > **Source of truth:** this file is a vendored copy of the canonical
 > `docs/delendai/AGENT-BOOTSTRAP.md` shipped by the local delendai
-> checkout at `/home/cartago/_projects/delendai`. When that file
-> changes upstream, re-run `bun tools/scripts/workspace/sync-bootstrap.script.ts` to
-> refresh this copy. Until then, treat this copy as authoritative —
-> it is what host instruction files (`AGENTS.md`, `CLAUDE.md`,
+> checkout at `.cache/delendai-runtime`. When that file changes upstream, re-run
+> `bun tools/scripts/workspace/sync-bootstrap.script.ts` to refresh this
+> copy. Until then, treat this copy as authoritative — it is what host
+> instruction files (`AGENTS.md`, `CLAUDE.md`,
 > `.github/copilot-instructions.md`, `.cursor/rules/delendai.md`,
 > `.codex/config.toml`, `.aider.conf.yml`, `.continue/config.json`)
 > all point at.
 >
-> This file is the **only** place agent rules live. Every host
-> instruction file in this workspace is a **pointer** to this file.
+> This file is the **only** place agent rules live. Every host instruction
+> file in this workspace is a **pointer** to this file.
 
 The server (`delendai_overview`, `delendai_agent_catalog`,
 `delendai_agent_bootstrap` prompt) is the **only** source of truth for
@@ -28,14 +28,11 @@ guessing from a list, hardcoded id, or copy-pasted previous session.
 4. [Workflow loop](#4-workflow-loop)
 5. [Definition of done](#5-definition-of-done)
 6. [Invariants you must not break](#6-invariants-you-must-not-break)
-7. [Repo-level rules (only when the host reads `AGENTS.md`)](#7-repo-level-rules-only-when-the-host-reads-agentsmd)
+7. [Repo-level rules (only when the host reads `AGENTS.md`)](#7-repo-level-rules--only-when-the-host-reads-agentsmd)
 8. [Host appendices](#8-host-appendices)
-   - 8.1 [Copilot Chat — close-marker contract](#81-copilot-chat--close-marker-contract)
-   - 8.2 [Claude Code — keep the main thread cheap](#82-claude-code--keep-the-main-thread-cheap)
-   - 8.3 [Codex CLI — custom subagents + workspace AGENTS.md](#83-codex-cli--custom-subagents--workspace-agentsmd)
-   - 8.4 [Cursor / Aider / Continue — generic LLM hosts](#84-cursor--aider--continue--generic-llm-hosts)
 
----
+The remainder of this file is byte-identical to the upstream body. The
+auto-generated preamble above is the only divergence.
 
 ## 1. Orient first — one cheap call
 
@@ -45,10 +42,14 @@ When the `delendai` server is connected, call:
 delendai_overview { compact: true }
 ````
 
-That single call returns the full picture of what is loaded (plugins,
-tools, host info, recommended next action). **Do not** crawl the
+That single call returns the visible surface, brokered catalog counts,
+runtime state, host info, and the recommended next action. **Do not** crawl the
 filesystem, list the repo root, or enumerate `packages/`, `plugins/`,
 or `extensions/` to rediscover what the server already told you.
+If a capability is absent from `tools/list`, do not assume it is unavailable:
+in managed surfaces, hidden capabilities remain callable through the brokered
+path (`resolve_capability`, `compact_router`, or the proposals/orchestrator
+entrypoints that wrap them).
 
 ## 2. Route work — ask the server
 
@@ -62,8 +63,7 @@ delendai_agent_catalog { mode: "compact" }
 - `mode: "compact"` (default) returns the actionable proposal list plus
   counts per status, plus lean skill ids. Tool names are NOT repeated
   here — `delendai_overview { compact: true }` already lists them all,
-  grouped by plugin. Measured ~2.3 KB against this repo (was 14 KB
-  before the orientation projection).
+  grouped by plugin. Measured ~2.3 KB against this repo.
 - `mode: "full"` returns the whole catalog.
 - `section: "tools" | "skills" | "proposals"` narrows to one slice.
 - `query: "..."` filters by id / name / tag / title.
@@ -87,6 +87,24 @@ to inspect dependencies or contention, can use the existing plan/claim tools
 after `auto_work`. This fallback is compatible by design, but it is not the
 normal bootstrap path.
 
+### 2.1 Brokered invocation (f00521)
+
+In `managed` mode, visible and callable are not synonyms. The happy path is
+brokered:
+
+- Use `tool_search` to discover the capability and its current metadata.
+- If the search result carries a `detailsId`, fetch the schema-level detail
+  through `knowledge` instead of widening `tools/list`.
+- Invoke through `resolve_capability` when you have an exact
+  `qualifiedName` or a `(domain, action)` pair.
+- Invoke through `compact_router` when you want the `(domain, action, args)`
+  shorthand. Since f00521 it routes through the same broker path as
+  `resolve_capability`; it is not a parallel activation mechanism.
+
+The runtime may keep a large internal catalog and a changing warm set while the
+public MCP surface stays intentionally small. Do not infer "not callable" from
+"not currently listed".
+
 ## 3. Bootstrap prompt — insert when the host supports it
 
 The server exposes a bootstrap prompt (`delendai_agent_bootstrap`) that
@@ -99,30 +117,55 @@ the equivalent and equally cheap.
 
 ## 4. Workflow loop
 
-- **Delegate non-trivial work.** For any real change to `plugins/*`,
-  `src/`, `scripts/`, the build/release scripts, use the
-  `delendai-orchestrator` subagent (or the agent the host registers
-  as orchestrator). The orchestrator owns the proposal state machine,
-  locks, drift guards, and recovery from `stop: true`.
+- **Delegate non-trivial work.** For any real change to `packages/core`,
+  a plugin, the build/release scripts, `apps/web` or the VS Code
+  extension, use the `delendai-orchestrator` subagent (or whichever
+  agent the host registers as orchestrator). It owns the proposal state
+  machine, locks, drift guards and `stop: true` recovery.
 - **Don't poll.** When you need a lock another agent holds, wait for
   the `lock-released` notification (notification plugin). When
   `auto_work` returns `stop: true`, recover by calling
   `proposals_continue_proposal { mode: "auto" }` or by reading
   `proposals_compact_status` — do NOT re-call `auto_work` until you
   have made progress (a slice closed, a lock released, a file edited).
-- **Re-read discipline.** Do not re-read a file whose digest hasn't
-  changed. `round_context` and the docs tools expose digests for exactly
-  this. Re-reading unchanged content is the #1 token waste.
+- **Read what you need, once.** Filter output (`grep … | head`,
+  `--jq`), read a line range instead of the whole file, take the one
+  failing assertion from a CI log, keep commit bodies short, and do not
+  re-read a file you just wrote or re-run a check that passed while
+  nothing has changed since. Your own
+  transcript is the #1 token waste.
+
+- **`create_proposal` publishes it.** If it reports
+  `published: false`, do its `nextAction`. Never move another's.
 
 - **Archived proposals are frozen.** `legacy/closed/<kind>/` is the
-  reaper's destination (f00076). Reaped proposals stay indexed (with
-  `archived: true` in the registry), keep their `status: done`, and
-  **must not** be transitioned, edited, or have their slice statuses
-  changed. The `lint:closed-frozen-guard` script enforces this in
-  `bun run validate`. Reaper entry point:
-  `bun run archive:proposals:reap` (dry-run by default; pass `--apply`
-  via the underlying `tools/scripts/lint/reap-legacy-proposals.script.ts`
-  to actually move files).
+  reaper's destination (f00076). Reaped proposals stay indexed
+  (`archived: true`), keep `status: done`, and must not be transitioned,
+  edited, or have slice statuses changed — `lint:closed-frozen-guard`
+  enforces it in `bun run validate`. Reaper:
+  `bun run archive:proposals:reap` (dry-run; `--apply` moves files).
+
+- **Proposal filenames follow one canonical shape — no exceptions.**
+  `<prefix><NNNNN>-<kebab-slug>.md` where `<prefix>` is the kind's
+  lowercase letter and `<NNNNN>` is a 5+ digit serial (see
+  `PROPOSAL_PREFIX_BY_KIND` + the regex in `filename-linter.ts`).
+  NO date prefix (`2026-09-06-…`), NO `repairs/` subfolder, NO
+  `superseded-by-<…>` rename. Names that don't match are dropped by
+  `isNewSystemFilename` and hidden from the registry index.
+- **A duplicate id is a retire, not a sibling.** Auto-repair cascades
+  that re-allocate an already-used id MUST still obey the canonical
+  shape: `<prefix><NNNNN>-<slug>.md` parked under `retired/` with
+  frontmatter `superseded-by: <id>`. A name like
+  `2026-09-06-x00504-superseded-by-pre-existing-f00505.md` starts
+  with `2`, not a kind prefix — silent drop.
+- **Slice commits are resolved, never guessed.** A slice commit is valid
+  only when the staged git paths are a subset of the machine-resolved
+  scope at the instant the transition was emitted. Resolution excludes
+  entries that are not canonical git paths. Foreign dirty files in the
+  workspace may coexist, but they must never enter a different slice's
+  commit, and no configuration disables that boundary. Terminal
+  outcomes (`NO_CHANGE`, `CAUSALITY_VIOLATION`, `PERMANENT_REFUSAL`)
+  are persisted and never retried.
 
 ### 4.c Session hygiene — keep host usage intentional
 
@@ -150,6 +193,45 @@ These are guardrails, not a claim that the server can account for Claude,
 Codex, or another host's subscription usage. `usage-tracking` remains useful
 for local MCP activity, while the host dashboard remains the source of truth
 for host-level limits.
+
+### 4.d Checkpoint advisories (f00156)
+
+When any delendai tool result carries `checkpointAdvisory` in the result
+`_meta` (the protocol metadata channel — never `structuredContent`, which is
+schema-validated) with `triggered: true`:
+
+1. Surface `checkpointAdvisory.message` to the user **verbatim**. Do not
+   silently consume or paraphrase it.
+2. Explain the reason in at most one short sentence.
+3. Follow `nextAction` unless the user explicitly asks to continue.
+4. Never repeat the same advisory until its `dedupeKey` changes.
+
+Every visible recommendation begins with **At this point, I recommend**.
+
+**Agent-enforced fallback (host-private terminals):** if you run two or more
+equivalent validation cycles without a meaningful implementation delta, treat
+it as a micro-validation loop and surface the same advisory. That signal is
+agent-enforced; server-observed validation is whatever MCP quality/git tools
+the server can see. See `docs/delendai/CHECKPOINT-ADVISORIES.md`.
+
+Preferred fresh-session sequence: coherent boundary → semantic checkpoint →
+persist proposal/slice state → release unnecessary locks → new session →
+orient → resume from `memory_checkpoint_packet`. Session age by itself must
+never hard-block work.
+
+### 4.e Rebaseline with `--update`
+
+When a lint fails because a **baselined historical value** drifted (for example,
+an already-closed proposal still cites an old path or an old orphan commit), do
+not hand-edit the baseline JSON unless the script explicitly tells you to. First
+check whether the lint supports `--update` and re-run the lint through that
+entrypoint so the script itself rewrites its canonical baseline format. Manual
+edits are the fallback only when no `--update` mode exists.
+
+| Lint / script                                             | `--update` support | Use case                                                                                                                                                      |
+| --------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bun tools/scripts/lint/proposal-files-exist.script.ts`   | Yes                | Rebaseline known dangling `Files:` references in historical `done/`, `review/` or `in-progress` proposals after an intentional rename or archived path drift. |
+| `bun tools/scripts/lint/proposal-cited-commits.script.ts` | Yes                | Rebaseline known orphan commit citations in historical `done/*` proposals when the commit was intentionally rebased away or documented as legacy debt.        |
 
 ### 4.b Coexistence with parallel work (c00012)
 
@@ -195,9 +277,42 @@ restates the rule for swarm context.
 
 ## 5. Definition of done
 
+### Integration branch protection
+
+The integration branch is protected by the aggregate check the policy
+names; `.github/` is generated from it, so never edit those by hand. Make
+the focused validation pass before committing. The read-only guard is
+`bun tools/scripts/lint/branch-protection-guard.script.ts` (`--live` when
+`gh` is authenticated). Never weaken a required check to pass a gate.
+
+### Cross-plugin configuration compatibility
+
+Plugin options are persistent host configuration, not suggestions. Plugins
+may complement one another when they own different effects, but the core
+performs a compatibility preflight before any plugin `register()` hook runs.
+If enabled plugins claim the same automatic side effect, startup stops with a
+diagnostic containing the exact configuration keys, effective values,
+precedence, and a JSON patch for `delendai.config.json`. The core remains
+agnostic; each plugin declares only the compatibility rules for its own
+interactions. Two common `delendai.config.json` trip-ups (and their fixes)
+are catalogued in [ADOPTER-CONFIG-FOOTGUNS.md](ADOPTER-CONFIG-FOOTGUNS.md).
+
 - `bun run validate` is green (typecheck + lint + tests + drift guards).
 - Conventional Commits (`fix:` / `feat:` / `feat!:`) — versioning is
   automatic on `main`. No manual bumps.
+- **Work is committed and pushed under the configured author identity.**
+  A finished task ends with its changes committed (Conventional Commit)
+  and pushed — via the git write tools when the host enabled them, or the
+  proposals persist step otherwise. The author is resolved centrally, so
+  never ask the user whose name to use and never leave completed work
+  uncommitted waiting for a reminder.
+
+- **Delegated agents follow the configured workspace policy.** With
+  `agentWorktree: false`, agents edit the shared checkout and never move
+  it (§6). With `agentWorktree: true`, `proposals_delegate` creates the
+  worktree before claiming files and returns `worktree.path` and `cwd`;
+  the host launches the agent there. A host never infers a different
+  workspace policy from a tool handoff.
 - Touched a tool? Kept its `outputSchema`. Added a tool? Added its
   output to the catalog generator (if it isn't picked up automatically).
 - Persisted state? Routed through `withFileMutex` + `writeFileAtomic`.
@@ -205,65 +320,133 @@ restates the rule for swarm context.
 
 ## 6. Invariants you must not break
 
-- **Players-club plugins stay project-scoped.** They live under
-  `plugins/` and own domain vocabulary (clubs, players, seasons).
-  `packages/core` (or any of its plugins) must never import them.
+- **The right path, inside your task.** Analyse what your proposal touches
+  and do that work the efficient, correct way: fewest tokens that keep it
+  effective, one source of truth for each fact. Refactor only inside its
+  scope. Anything else you find becomes a proposal, not a change. Never
+  alter another agent's work, weaken a gate, or drop behaviour.
+- **Every agent is held to the workflow, whatever its model.** Set
+  `DELENDAI_AGENT_ID` to your exact model id before any delendai or git call.
+  Unidentified writers are judged per `development.guard.unknownActor`
+  (default `agent` in shared checkouts): never commit on the integration
+  branch; get a unit via `delendai work enter`. A model-less host is
+  named per `development.identity`.
+- **The dogfooding host is a one-shot process.** Keep `.vscode/mcp.json` and
+  `.mcp.json` pointed at the repo-local host with
+  `bun tools/scripts/host/host-server.script.ts` and the appropriate workspace
+  argument. A restarted host must be started explicitly so each session has
+  one composition root and one resource registration set. The
+  `lint:self-host-dogfood` gate must remain green.
+- **Scratch files never touch the repository.** Repro scripts, captured
+  output and throwaway fixtures go in your host's own scratchpad, outside
+  the working tree — not the repo root, and not `.cache/delendai/`
+  (engine and plugin state). "I will delete it afterwards" is not enough:
+  commit-policy sweeps the whole dirty worktree on a timer, so anything
+  left in the tree can be pushed inside another agent's commit first.
+  `lint:stray-cache-files` fails on an untracked root directory.
+- Core stays agnostic. No project vocabulary (role enums, model names,
+  folder names) inside `packages/core`. Plugins receive everything
+  resolved through `IMcpPluginContext`.
 - No `process.cwd()` in engines. Paths come from `ctx.workspace` /
   `corePaths` / injected options.
 - Async I/O only in hot paths. `*Sync` is boot-time only.
 - Workspace-scoped path inputs are contained via `resolveWorkspaceContained`.
 - Token budget is a protected invariant. `overview` (compact) +
   `auto_work` stay under their measured budgets.
-- **Every agent MUST hold an active lock claim (`agent_lock`) for the files it edits.**
-  The validation gate enforces this via `lint:agent-claims`, and
-  commits/pushes violating this will be rejected by git hooks.
+- **Every agent MUST hold an active `agent_lock` claim for the files it
+  edits.** `lint:agent-claims` enforces it and the git hooks reject
+  violations (x00080). The check is a lefthook-installed TypeScript hook
+  (`tools/scripts/hooks/pre-commit.ts`) — every hook here is TypeScript,
+  per rule #10 below.
+- **Agents own work, not branches — git enforces it.** How work starts
+  and lands (unit of work, pull request, merge or direct commit) is the
+  project's `development` profile, and the server states it: in its
+  connect-time instructions, `agent_bootstrap`, `overview` (`workModel`)
+  and every refusal. Follow that, never this file or a design doc. The
+  shared checkout never moves; `delendai work status` says where it
+  stands.
+- **No orphaned branches or stashes — always reconcile (this repo).**
+  A unit ends in `delendai work publish` or `delendai work retire`
+  (keeps its tip). Before closing a session run `bun run reclaim:orphans`:
+  live units are no orphans; idle/abandoned ones print their remedy;
+  `--apply` removes lossless branches and delivered units, never stashes.
+- **Slice commits are causally bounded (f00417).** A slice commit is
+  only valid if the staged paths are a subset of the **machine-resolved
+  scope** at the moment the transition was emitted. The resolver
+  classifies every declared `Files:` entry as either canonical
+  git-path or unresolved (recorded in WARN, never refusal). Foreign
+  dirty files in the workspace MAY coexist; they MUST NOT enter a
+  different slice's commit. No configuration disables this. Terminal
+  outcomes (NO_CHANGE, CAUSALITY_VIOLATION, PERMANENT_REFUSAL) are
+  persisted and never retried. Every refutation path is exercised by
+  `bun tools/scripts/lint/causality-regression.script.ts` and the e2e
+  tests in `plugins/commit-policy/tests/src/e2e/causality-*.spec.ts`.
 - Every public tool declares an `outputSchema`. `catchall` is documented,
   not default.
 - **No hardcoded lists of skills / tools / proposal ids in any host
   file, agent answer, or generated fragment.** The server is the only
   source. If you find yourself wanting to list them, **stop** and call
   `delendai_agent_catalog` instead.
-- **Code quality is a non-negotiable default.** Every design, code
-  change, file or folder name, proposal, slice and answer must reflect,
-  by default and without reminder, SOLID (SRP, OCP, LSP, ISP, DIP),
-  Clean Code (intention-revealing names, small single-purpose
-  functions, comments only when they explain *why*, no swallowed
-  errors, no dead code, no magic numbers, no commented-out branches),
-  reusable code (narrow interfaces, registries over long `switch`/
-  `if-else` chains, dependency injection, no painful duplication,
-  shared helpers) and general best practices (tests for non-trivial
-  logic, validation at I/O edges, low coupling, high cohesion, strict
-  types, declared dependencies). The only acceptable escapes are (a)
-  the user explicitly asks for a relaxation in the request ("quick and
-  dirty", "skip refactoring now", etc.) or (b) the project's own
-  binding instructions force it. When an escape applies, state it
-  explicitly in the response so the relaxation stays auditable.
-- **Agents and tools invoke shell through `bash`, never `zsh` or
-  `sh`.** Any agent-driven shell call — direct `run_in_terminal`,
-  subagent shell, CI bridge, MCP tool handler that shells out — must
-  launch `/bin/bash -c '<cmd>'` (or `bash --noprofile --norc -c
-  '<cmd>'` for stricter isolation). Reasons: p10k instant prompt opens
-  the alternate screen buffer during zsh init, which silently breaks
-  wrappers that detect TTY state and report "El comando abrió el
-  búfer alternativo" instead of returning stdout. Bash has no init
-  scripts by default, never touches the TTY layout, and supports the
-  POSIX-plus-extensions syntax agents generate by reflex. If the
-  shell still gets stuck on that "búfer alternativo" symptom, follow
-  the shell-fallback ladder in
-  [`docs/delendai/skills/shell-fallback/SKILL.md`](skills/shell-fallback/SKILL.md).
+- **Code quality is a non-negotiable default.** In this project and in
+  any project that uses `delendai`, every design, code change, file
+  or folder name, proposal, slice and answer must reflect, by default
+  and without reminder, SOLID (SRP, OCP, LSP, ISP, DIP), Clean Code
+  (intention-revealing names, small single-purpose functions, comments
+  only when they explain *why*, no swallowed errors, no dead code, no
+  magic numbers, no commented-out branches), reusable code (narrow
+  interfaces, registries over long `switch`/`if-else` chains,
+  dependency injection, no painful duplication, shared helpers) and
+  general best practices (tests for non-trivial logic, validation at
+  I/O edges, low coupling, high cohesion, strict types, declared
+  dependencies). The only acceptable escapes are (a) the user
+  explicitly asks for a relaxation in the request ("quick and dirty",
+  "skip refactoring now", etc.) or (b) the project's own binding
+  instructions force it (legacy compatibility, externally-pinned
+  contracts, mandatory upstream style). When an escape applies, state
+  it explicitly in the response so the relaxation stays auditable.
+- **Agents and tools discover the shell through `shell_status` before
+  their first terminal call.** Use its measured `safeModes`, pager
+  recommendations, and tool inventory when choosing an invocation. If
+  the snapshot is unavailable or any relevant capability is `inferred`,
+  use the isolated bash fallback below; never invoke agent work through
+  `zsh` or `sh`. The user keeps `zsh` for their own sessions
+  (Powerlevel10k,
+  oh-my-zsh, completions, prompt). Any agent-driven shell call —
+  direct `run_in_terminal`, subagent shell, CI bridge, MCP tool
+  handler that shells out — must launch `/bin/bash -c '<cmd>'` (or
+  `/bin/bash --noprofile --norc -c '<cmd>'` for stricter isolation).
+  Reasons: p10k instant prompt opens the alternate screen buffer
+  during zsh init, which silently breaks wrappers that detect TTY
+  state and report `The command opened the alternate buffer` instead of
+  returning stdout. `sh` is not a stable target either: it is `dash`
+  on Debian/Ubuntu/WSL, `ash` on Alpine, and old `bash` on macOS, so
+  agents would have to second-guess which shell dialect they are in on
+  every invocation. Bash has no init scripts by default, never touches
+  the TTY layout, and supports the POSIX-plus-extensions syntax agents
+  generate by reflex. This rule applies to every host (Copilot,
+  Claude Code, Cursor, Aider, subagents, swarm runners).
+  If the shell still gets stuck on that "alternate buffer" symptom,
+  do not retry the same `mode: "sync"` call — follow the shell-fallback
+  ladder in
+  [`packages/core/skills/shell-fallback/SKILL.md`](../../packages/core/skills/shell-fallback/SKILL.md)
+  (`withShellFallback` from `@delendai/core/public`: re-issue as
+  `mode: "async"` and poll, then fall back to file tools).
 
 ## 7. Repo-level rules (only when the host reads `AGENTS.md`)
 
 If the host you are running in reads a workspace-root `AGENTS.md`, read
 [`REPO-RULES.md`](REPO-RULES.md) for the canonical repo-level content
-(this project layout, commands, hard rules, conventions, tooling
-posture, proposal ID prefixes, plugin/audit checklists, root layout
-policy).
+(monorepo layout, commands, hard rules, conventions, tooling posture,
+proposal ID prefixes, plugin/audit checklists, root layout policy).
+That file is the canonical version for `@delendai/core` itself;
+downstream projects adapt it to their own monorepo shape.
 
 Hosts that do **not** read a workspace-root `AGENTS.md` (most standalone
 MCP clients) never need `REPO-RULES.md` — nothing in the rest of this
 bootstrap (§§1-6, 8) depends on it, so skip it entirely and save the
-tokens.
+tokens (a00086: this section used to inline all of that content here,
+~10.6 KB read into every session regardless of whether the host even
+consults `AGENTS.md`).
 
 ## 8. Host appendices
 
@@ -308,19 +491,25 @@ byte-identical to legacy) and `'en'` (shorter English tokens —
 `[DONE]`, `[HANDOFF]`, `[REPIVOT]`, `[CHECKPOINT]`, `[REPAIR]`,
 `[BLOCKED]`, `[NO_FREE_PROPOSALS]`, `[NO_WORK]`). Pass `locale: "en"`
 to `<prefix>_close` (or to `formatCloseMarker` directly) to switch.
+The validator and the 8-state semantics are unchanged — only the
+bracket text differs; pick whichever locale matches the host's UI.
+The detailed contract lives in the status-marker skill (use
+`delendai_agent_catalog` to find its current path).
 
 ### 8.2 Claude Code — keep the main thread cheap
 
-This workspace's MCP host loads the `swarm` preset. Tool *results* stay
-in context for the rest of the session, so how you call these tools
-matters:
+This repo's MCP host (`scripts/host-server.ts`) runs `--preset=swarm`,
+which loads the active plugin preset. Tool *results* stay in context
+for the rest of the session, so how you call these tools matters:
 
-- **Delegate non-trivial work.** For any real change to `plugins/*`,
-  `src/`, `scripts/`, use the `delendai-orchestrator` subagent
-  instead of driving `proposals_*` tools directly from the main
-  thread. As an operational threshold, treat a task as non-trivial
-  once it needs more than 3 tool calls, touches multiple files, or
-  needs repeated MCP reads to complete.
+- **Delegate non-trivial work.** For any real change to `packages/core`,
+  a plugin, the build/release scripts, or `apps/web`, use the
+  `delendai-orchestrator` subagent instead of driving `proposals_*`
+  tools directly from the main thread. As an operational threshold,
+  treat a task as non-trivial once it needs more than 3 tool calls,
+  touches multiple files, or needs repeated MCP reads to complete. It
+  knows the working loop, the invariants, and the multi-agent
+  coordination primitives.
 - **Prefer compact tools when orienting directly.** Use
   `delendai_overview` with `compact: true`, `proposals_auto_work`,
   and `proposals_compact_status` over verbose equivalents
@@ -333,9 +522,12 @@ matters:
 - **`/compact` between unrelated tasks.** Once a slice/proposal is
   closed and before starting unrelated work, compact — don't carry its
   tool output forward for the rest of the session.
-- **Rotate before the danger zone.** At the host's context warning
-  (or about 100k tokens when Claude exposes the meter), checkpoint
-  with the memory digest, then start a fresh session.
+- **Rotate before the danger zone.** At the host's context warning (or about
+  100k tokens when Claude exposes the meter), checkpoint with the memory
+  digest, then start a fresh session. Use `/compact` only to continue related
+  work; use `/clear` before unrelated work. Do not leave an idle Claude Code
+  session running in the background; a continuous session beyond two hours
+  needs an intentional checkpoint, and one approaching many hours should end.
 
 ### 8.3 Codex CLI — custom subagents + workspace AGENTS.md
 
@@ -344,19 +536,29 @@ Chat — no per-host duplication) and recognises **custom subagents**
 defined as `.codex/agents/<name>.md`. The scaffolder emits one file
 per role (`orchestrator`, `proposal-guardian`, `implementation-runner`,
 `delivery-verifier`, `technical-investigator`) whenever it runs in any
-mode. Do not delete them — the orchestrator subagent becomes invisible
-to Codex without them, even though `AGENTS.md` is present.
+mode (`create_project { kind: "host" }`, `delendai init`, or
+`delendai init:default`). Do not delete them — the orchestrator subagent
+becomes invisible to Codex without them, even though `AGENTS.md` is
+present.
 
 Frontmatter contract for `.codex/agents/<name>.md`:
 
 - `name` — kebab-case (e.g. `orchestrator`, `proposal-guardian`).
-- `description` — single-line, describes when to invoke.
+- `description` — single-line, describes when to invoke. The
+  scaffolder's wording is: "Root orchestrator for <project>. The real
+  contract lives in the delendai MCP server — use for any
+  non-trivial change (more than 3 tool calls, multiple files, or
+  repeated MCP reads)."
 - No `tools:` field is emitted — Codex inherits every tool available
-  to subagents in the session.
+  to subagents in the session. Inventing a per-host vocabulary
+  mapping would trade one inaccuracy for another.
 
-The MCP server config is in `.codex/config.toml` and points at the
-local delendai checkout's host script (`bun
-/home/cartago/_projects/delendai/tools/scripts/host/host-server.script.ts`).
+The MCP server config is in `.codex/config.toml` and is generated by
+`delendai init` (or hand-authored). It launches the repo-local delendai
+host (`bun tools/scripts/host/host-server.script.ts`). Codex CLI's
+custom-agent feature treats a subagent file as a named, invocable
+prompt template — the body is free-form Markdown after the closing
+`---`.
 
 ### 8.4 Cursor / Aider / Continue — generic LLM hosts
 
@@ -378,3 +580,29 @@ or have their own config file. Use the same single-pointer pattern:
 
 - That's it. No other content. When the bootstrap changes, the host
   picks it up on the next session.
+
+
+## Build / dist layout
+
+Compiled artifacts land in `/build/{group}/{name}/{version}/`; `bun run
+build` is the only producer. It mirrors each package's output into its
+`dist/` because manifests keep `"main": "./dist/index.js"`. `/build/` and
+`/dist/` are gitignored; a publish stages a temporary `dist/`
+(`stageBuildForPublish`).
+
+**Scripts never resolve against `build/`.** `bun run`, `vitest` and
+`tsc --noEmit` inject the `@delendai/source` condition (`bunfig.toml`,
+`tsconfig.base.json`, `vitest.shared.ts`), so `@delendai/*` resolves to
+`src/`. A call that resolves into `build/` is missing the condition.
+
+`lint:no-build-imports-from-src` fails if anything under `build/**/*.js`
+imports `../src/`.
+
+## Architecture decisions
+
+Durable architecture decisions live as ADRs in `docs/delendai/adr/`,
+not only in commit messages. This section indexes the ones worth a
+newcomer's attention before they re-litigate a closed decision.
+
+- [ADR 0007 — `@delendai/core/contracts` (subpath) vs a separate package](adr/0007-core-contracts-subpath-vs-package.md)
+- [ADR 0019 — Branch model: `develop` is the lab, `main` is release](adr/0019-branch-model-develop-lab-main-release.md)

@@ -6,8 +6,9 @@ A football-manager simulation scaffolded for AI-assisted development with
 > **Local-only mode.** This workspace does **not** publish to npm. The
 > delendai core + every first-party plugin we use is loaded from a
 > **local checkout** discovered by `tools/scripts/workspace/root.script.ts`, not from
-> the npm registry. The pointer file is `.delendai-root` (override
-> with `DELENDAI_ROOT`).
+> the npm registry. `bun install` (the `prepare` script) links it at the
+> gitignored `.cache/delendai-runtime`: `DELENDAI_PATH` if set, else
+> `~/.local/share/delendai/stable`.
 
 ---
 
@@ -49,7 +50,7 @@ player-club-dynasty/
 ├─ package.json                         bun workspaces + npm scripts
 ├─ bunfig.toml                          bun install scopes → local delendai packages
 ├─ tsconfig.json                        @delendai/core/* via absolute paths
-├─ .delendai-root                     pointer file → the delendai checkout (relative)
+├─ .cache/delendai-runtime            gitignored link → this machine's delendai (created by prepare)
 ├─ .gitignore                           excludes .cache/, node_modules/, dist/, data/, saves/
 ├─ docs/delendai/
 │  ├─ AGENT-BOOTSTRAP.md                vendored from local delendai checkout
@@ -119,8 +120,8 @@ pointer file as the canonical "where is the source of truth right
 now". When the team is ready to ship to npm:
 
 ```bash
-# 1. Remove the pointer file (or point at the published version)
-rm .delendai-root
+# 1. Remove the runtime link (or point at the published version)
+rm .cache/delendai-runtime
 
 # 2. Switch .vscode/mcp.json to the canonical npm launch shape:
 #    bunx --package @delendai/cli mcpv __serve \
